@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="org.localareadelivery.distributorapp">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".ShopList.Home"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Login"
+            android:label="@string/title_activity_login"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ShopHome.ShopHome"
+            android:label="@string/title_activity_shop_home"
+            android:parentActivityName=".ShopList.Home"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.localareadelivery.distributorapp.ShopList.Home" />
+        </activity>
+        <activity
+            android:name=".categories_items.ItemCategories"
+            android:label="@string/title_activity_item_categories"
+            android:parentActivityName=".ShopHome.ShopHome"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.localareadelivery.distributorapp.ShopHome.ShopHome" />
+        </activity>
+        <activity
+            android:name=".categories_items.AddItemCategory"
+            android:label="@string/title_activity_add_item_category"
+            android:parentActivityName=".categories_items.ItemCategories"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.localareadelivery.distributorapp.categories_items.ItemCategories" />
+        </activity>
+        <activity
+            android:name=".categories_items.EditItemCategory"
+            android:label="@string/title_activity_edit_item_category"
+            android:parentActivityName=".categories_items.ItemCategories"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.localareadelivery.distributorapp.categories_items.ItemCategories" />
+        </activity>
+        <activity
+            android:name=".Items.Items"
+            android:label="@string/title_activity_items"
+            android:parentActivityName=".categories_items.ItemCategories"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.localareadelivery.distributorapp.categories_items.ItemCategories" />
+        </activity>
+        <activity
+            android:name=".Items.AddItem"
+            android:label="@string/title_activity_add_item"
+            android:parentActivityName=".categories_items.ItemCategories"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.localareadelivery.distributorapp.categories_items.ItemCategories" />
+        </activity>
+        <activity
+            android:name=".Items.EditItem"
+            android:label="@string/title_activity_edit_item"
+            android:parentActivityName=".Items.Items"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.localareadelivery.distributorapp.Items.Items" />
+        </activity>
+        <activity
+            android:name=".ShopList.AddShop"
+            android:label="@string/title_activity_add_shop"
+            android:parentActivityName=".ShopList.Home"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.localareadelivery.distributorapp.ShopList.Home" />
+        </activity>
+        <activity
+            android:name=".ShopList.EditShop"
+            android:label="@string/title_activity_edit_shop"
+            android:parentActivityName=".ShopList.Home"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.localareadelivery.distributorapp.ShopList.Home" />
+        </activity>
+    </application>
+
+</manifest>

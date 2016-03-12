@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="org.localareadelivery.distributorapp.ShopHome.ShopHome"
+    tools:showIn="@layout/activity_shop_home">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin">
+
+
+    <Button
+        android:id="@+id/addRemoveItemsButton"
+        android:background="@color/orange"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:text="Add / Remove Items"/>
+
+    <Button
+        android:id="@+id/addStockButton"
+        android:layout_marginTop="10dp"
+        android:background="@color/buttonColor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:text="Add / Edit Stock"/>
+
+
+
+    <Button
+        android:id="@+id/ordersButton"
+        android:layout_marginTop="10dp"
+        android:background="@color/buttonColor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:text="Orders"/>
+
+    <Button
+        android:layout_marginTop="10dp"
+        android:background="@color/buttonColor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:text="Statistics"/>
+
+
+    <LinearLayout
+        android:padding="10dp"
+        android:background="@color/buttonColor"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <android.support.v7.widget.AppCompatImageView
+            android:padding="0dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            />
+
+        <TextView
+            android:gravity="center_horizontal|center_vertical"
+            android:textSize="30dp"
+            android:textColor="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Billig Options"/>
+
+
+    </LinearLayout>
+
+</LinearLayout>
+
+</ScrollView>
