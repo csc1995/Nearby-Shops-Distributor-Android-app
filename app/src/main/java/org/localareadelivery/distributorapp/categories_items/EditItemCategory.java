@@ -66,10 +66,6 @@ public class EditItemCategory extends AppCompatActivity implements View.OnClickL
             public void onResponse(String response) {
 
                 parseGETJSON(response);
-
-
-
-
             }
 
         }, new Response.ErrorListener() {
@@ -81,7 +77,6 @@ public class EditItemCategory extends AppCompatActivity implements View.OnClickL
         });
 
         VolleySingleton.getInstance(this).addToRequestQueue(request);
-
 
     }
 
@@ -140,6 +135,7 @@ public class EditItemCategory extends AppCompatActivity implements View.OnClickL
     }
 
 
+
     public void parseJSON(String jsonString)
     {
         try {
@@ -164,9 +160,9 @@ public class EditItemCategory extends AppCompatActivity implements View.OnClickL
 
             e1.printStackTrace();
         }
-
-
     }
+
+
 
     public void parseGETJSON(String jsonString)
     {
@@ -176,6 +172,7 @@ public class EditItemCategory extends AppCompatActivity implements View.OnClickL
             JSONObject jsonObject = new JSONObject(jsonString);
 
             ItemCategory itemCategory = new ItemCategory();
+
             itemCategory.setItemCategoryID(jsonObject.getInt("itemCategoryID"));
             itemCategory.setCategoryName(jsonObject.getString("categoryName"));
             itemCategory.setCategoryDescription(jsonObject.getString("categoryDescription"));

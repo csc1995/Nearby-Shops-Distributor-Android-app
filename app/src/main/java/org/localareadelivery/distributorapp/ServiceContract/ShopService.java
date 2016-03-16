@@ -4,7 +4,9 @@ import org.localareadelivery.distributorapp.Model.Shop;
 
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
@@ -28,9 +30,9 @@ public interface ShopService {
     Call<Shop> insertShop(@Body Shop shop);
 
     @PUT("/api/Shop/{id}")
-    Call<Shop> updateShop(@Body Shop shop,@Path("id") int id);
+    Call<Response> updateShop(@Body Shop shop, @Path("id") int id);
 
     @DELETE("/api/Shop/{id}")
-    Call<Shop> deleteShop(@Path("id") int id);
+    Call<Response> deleteShop(@Path("id") int id);
 
 }

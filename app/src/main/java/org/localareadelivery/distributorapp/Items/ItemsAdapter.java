@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -17,42 +18,87 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 
 
+import org.localareadelivery.distributorapp.ApplicationState.ApplicationState;
 import org.localareadelivery.distributorapp.Model.Item;
+import org.localareadelivery.distributorapp.Model.ShopItem;
 import org.localareadelivery.distributorapp.R;
+import org.localareadelivery.distributorapp.ServiceContract.ShopItemService;
+import org.localareadelivery.distributorapp.ServiceContract.ShopService;
 import org.localareadelivery.distributorapp.VolleySingleton;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Path;
 
 /**
  * Created by sumeet on 20/12/15.
  */
 public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder>{
 
-    ArrayList<Item> dataset;
+    ArrayList<Item> dataset = null;
     Context context;
-    Items itemsActivity;
+    Items itemsActivity = null;
+    int itemCategoryID = 0;
+
+    Map<Integer,ShopItem> shopItemDataset = null;
 
 
-    public ItemsAdapter(ArrayList<Item> dataset, Context context, Items itemsActivity) {
+    public ItemsAdapter(ArrayList<Item> dataset, Context context, Items itemsActivity,int itemCategoryID) {
         this.dataset = dataset;
         this.context = context;
         this.itemsActivity = itemsActivity;
+        this.itemCategoryID = itemCategoryID;
+        makeShopItemRequest();
+
     }
+
+
 
     @Override
     public ItemsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
+
+
+
+
+
+        // Usual view holder initialization code
         View v = LayoutInflater.from(context).inflate(R.layout.item_items_list,parent,false);
 
         return new ViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(ItemsAdapter.ViewHolder holder, final int position) {
+    public void onBindViewHolder(final ItemsAdapter.ViewHolder holder, final int position) {
+
+
+
 
         holder.itemName.setText(dataset.get(position).getItemName());
         holder.itemBrandName.setText(dataset.get(position).getBrandName());
         holder.itemDescription.setText(dataset.get(position).getItemDescription());
+
+        if(shopItemDataset!=null) {
+
+            if (shopItemDataset.containsKey(dataset.get(position).getItemID())) {
+                holder.itemsListItem.setBackgroundColor(context.getResources().getColor(R.color.itemAvailable));
+            }
+        }
+
+
+
 
         holder.deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,6 +147,32 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder>{
         });
 
 
+        holder.itemsListItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(shopItemDataset!=null) {
+
+                    if (shopItemDataset.containsKey(dataset.get(position).getItemID())) {
+
+                            deleteShopItemRequest(ApplicationState.getInstance().getCurrentShop().getShopID(),dataset.get(position).getItemID(),holder,position);
+
+
+                    } else
+                    {
+
+                        postShopItem(ApplicationState.getInstance().getCurrentShop().getShopID(),dataset.get(position).getItemID(),holder,position);
+
+
+                    }
+
+
+                }
+
+            }
+        });
+
+
     }
 
     @Override
@@ -108,10 +180,16 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder>{
         return dataset.size();
     }
 
+
+
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        private TextView itemName,itemDescription,itemBrandName;
-        private Button editButton,detachButton,deleteButton;
+        TextView itemName,itemDescription,itemBrandName;
+        Button editButton,detachButton,deleteButton;
+
+
+        @Bind(R.id.itemsListItem)LinearLayout itemsListItem;
+
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -120,14 +198,14 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder>{
             itemDescription = (TextView) itemView.findViewById(R.id.itemDescription);
             itemBrandName = (TextView) itemView.findViewById(R.id.brandName);
 
-
             editButton = (Button) itemView.findViewById(R.id.editButton);
             detachButton = (Button) itemView.findViewById(R.id.detachButton);
             deleteButton = (Button) itemView.findViewById(R.id.deleteButton);
+
+            ButterKnife.bind(this,itemView);
+
         }
     }
-
-
 
 
     public String  getServiceURL()
@@ -147,5 +225,181 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder>{
         }
     }
 
+
+
+    public void makeShopItemRequest()
+    {
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(getServiceURL())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        ShopItemService shopItemService = retrofit.create(ShopItemService.class);
+
+        // 0 for shop ID indicates get all items for the given shop
+        final Call<List<ShopItem>> shopItemCall = shopItemService.getShopItems(ApplicationState.getInstance().getCurrentShop().getShopID(),0,itemCategoryID);
+
+
+
+        shopItemCall.enqueue(new Callback<List<ShopItem>>() {
+            @Override
+            public void onResponse(Call<List<ShopItem>> call, retrofit2.Response<List<ShopItem>> response) {
+
+                List<ShopItem> shopItemList = response.body();
+
+
+
+                shopItemDataset = new HashMap<Integer, ShopItem>();
+
+                if(shopItemList!=null) {
+
+                    for (ShopItem shopItem : shopItemList) {
+
+                        shopItemDataset.put(shopItem.getItemID(), shopItem);
+                    }
+                }
+
+
+                notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Call<List<ShopItem>> call, Throwable t) {
+
+            }
+        });
+
+    }
+
+
+
+    boolean isDeleted = false;
+
+    public boolean deleteShopItemRequest(int shopID,int itemID,final ItemsAdapter.ViewHolder holder,final int position)
+    {
+
+
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(getServiceURL())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+
+
+        ShopItemService shopItemService = retrofit.create(ShopItemService.class);
+
+        Call<ResponseBody> responseCall = shopItemService.deleteShopItem(shopID,itemID);
+
+        retrofit2.Response<ResponseBody> response = null;
+
+
+        responseCall.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+
+                if(response.code() == 304)
+                {
+                    isDeleted = false;
+                    Log.d("applog","response code=" + String.valueOf(304));
+
+                }else if(response.code() == 200)
+                {
+                    Log.d("applog","response code=" + String.valueOf(200));
+                    isDeleted = true;
+
+                    holder.itemsListItem.setBackgroundColor(context.getResources().getColor(R.color.white));
+                    shopItemDataset.remove(dataset.get(position).getItemID());
+
+                    notifyDataSetChanged();
+
+
+                }
+
+
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
+
+
+
+        return isDeleted;
+
+    }
+
+
+
+    boolean isCreated = false;
+
+    public boolean postShopItem(int shopID,int itemID,final ItemsAdapter.ViewHolder holder, final int position){
+
+
+        ShopItem shopItem = new ShopItem();
+
+        shopItem.setItemID(itemID);
+        shopItem.setShopID(shopID);
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(getServiceURL())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+
+
+        ShopItemService shopItemService = retrofit.create(ShopItemService.class);
+
+        Call<ResponseBody> responseCall = shopItemService.postShopItem(shopItem);
+
+        retrofit2.Response<ResponseBody> response = null;
+
+
+
+        responseCall.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+
+                if(response.code() == 201){
+
+                    Log.d("applog","response code=" + String.valueOf(201));
+                    isCreated = true;
+                }else
+                {
+                    isCreated = false;
+                }
+
+                holder.itemsListItem.setBackgroundColor(context.getResources().getColor(R.color.itemAvailable));
+
+
+
+                ShopItem shopItem = new ShopItem();
+                shopItem.setShopID(ApplicationState.getInstance().getCurrentShop().getShopID());
+                shopItem.setItemID(dataset.get(position).getItemID());
+
+
+                shopItemDataset.put(shopItem.getItemID(),shopItem);
+
+                notifyDataSetChanged();
+
+
+
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
+
+
+        return isCreated;
+
+    }
 
 }

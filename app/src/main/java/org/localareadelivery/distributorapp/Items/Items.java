@@ -21,14 +21,28 @@ import com.android.volley.toolbox.StringRequest;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.localareadelivery.distributorapp.ApplicationState.ApplicationState;
 import org.localareadelivery.distributorapp.DividerItemDecoration;
 import org.localareadelivery.distributorapp.Model.Item;
+import org.localareadelivery.distributorapp.Model.ShopItem;
 import org.localareadelivery.distributorapp.R;
+import org.localareadelivery.distributorapp.ServiceContract.ShopItemService;
 import org.localareadelivery.distributorapp.VolleySingleton;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Items extends AppCompatActivity {
+
+
+
 
 
     ArrayList<Item> dataset = new ArrayList<>();
@@ -68,7 +82,7 @@ public class Items extends AppCompatActivity {
 
         // setup recycler View
         itemsList = (RecyclerView) findViewById(R.id.recyclerViewItems);
-        itemsAdapter = new ItemsAdapter(dataset,this,this);
+        itemsAdapter = new ItemsAdapter(dataset,this,this,getIntent().getIntExtra(ITEM_CATEGORY_ID_KEY,0));
         itemsList.setAdapter(itemsAdapter);
         itemsList.setLayoutManager(new GridLayoutManager(this,1));
         itemsList.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL_LIST));
@@ -166,4 +180,10 @@ public class Items extends AppCompatActivity {
         makeRequest();
 
     }
+
+
+
+
+
+
 }

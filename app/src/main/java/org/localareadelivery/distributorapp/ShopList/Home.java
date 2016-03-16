@@ -25,9 +25,16 @@ import org.json.JSONObject;
 import org.localareadelivery.distributorapp.DividerItemDecoration;
 import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.R;
+import org.localareadelivery.distributorapp.ServiceContract.ShopService;
 import org.localareadelivery.distributorapp.VolleySingleton;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Home extends AppCompatActivity {
 
@@ -95,6 +102,41 @@ public class Home extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
+
+    public void makeRetrofitRequest()
+    {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(getServiceURL())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        ShopService shopService = retrofit.create(ShopService.class);
+
+        Call<List<Shop>> shopCall = shopService.getShops(getDistributorID());
+
+
+        shopCall.enqueue(new Callback<List<Shop>>() {
+            @Override
+            public void onResponse(Call<List<Shop>> call, retrofit2.Response<List<Shop>> response) {
+
+                List<Shop> shopsList = response.body();
+
+                dataset.clear();
+                dataset.addAll(shopsList);
+                Home.this.shopListAdapter.notifyDataSetChanged();
+
+            }
+
+            @Override
+            public void onFailure(Call<List<Shop>> call, Throwable t) {
+
+            }
+        });
+
+
+
+    }
 
 
     public void makeRequest()
@@ -187,7 +229,13 @@ public class Home extends AppCompatActivity {
         super.onResume();
 
         dataset.clear();
-        makeRequest();
+        makeRetrofitRequest();
+    }
+
+    void notifyDelete()
+    {
+        dataset.clear();
+        makeRetrofitRequest();
     }
 
 

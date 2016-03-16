@@ -54,6 +54,8 @@ public class ShopHome extends AppCompatActivity implements View.OnClickListener 
 
                 startActivity(new Intent(this, ItemCategories.class));
 
+
+
                 break;
 
             default:
