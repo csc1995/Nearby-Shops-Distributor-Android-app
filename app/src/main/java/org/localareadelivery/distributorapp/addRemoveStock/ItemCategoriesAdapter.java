@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import org.localareadelivery.distributorapp.Model.ItemCategory;
 import org.localareadelivery.distributorapp.R;
-import org.localareadelivery.distributorapp.addRemoveItems.Items.Items;
 
 import java.util.ArrayList;
 
@@ -62,7 +61,7 @@ public class ItemCategoriesAdapter extends RecyclerView.Adapter<ItemCategoriesAd
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(context,Items.class);
+                Intent intent = new Intent(context, org.localareadelivery.distributorapp.addRemoveStock.Items.class);
 
                 intent.putExtra(ItemCategories.ITEM_CATEGORY_INTENT_KEY,dataset.get(position));
 

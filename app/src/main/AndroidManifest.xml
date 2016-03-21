@@ -54,6 +54,17 @@
                 android:value="org.localareadelivery.distributorapp.ShopHome.ShopHome" />
         </activity>
 
+
+        <activity
+            android:name=".addRemoveStock.Items"
+            android:label="@string/title_activity_item_categories"
+            android:parentActivityName=".addRemoveStock.ItemCategories"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.localareadelivery.distributorapp.ShopHome.ShopHome" />
+        </activity>
+
         <activity
             android:name=".addRemoveItems.categories_items.AddItemCategory"
             android:label="@string/title_activity_add_item_category"

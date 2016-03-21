@@ -66,10 +66,6 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder>{
     public ItemsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
 
-
-
-
-
         // Usual view holder initialization code
         View v = LayoutInflater.from(context).inflate(R.layout.list_item_items_list,parent,false);
 

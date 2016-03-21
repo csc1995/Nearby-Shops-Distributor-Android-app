@@ -3,7 +3,7 @@ package org.localareadelivery.distributorapp.addRemoveStock;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
+
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,11 +20,14 @@ import com.android.volley.toolbox.StringRequest;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.localareadelivery.distributorapp.ApplicationState.ApplicationState;
 import org.localareadelivery.distributorapp.DividerItemDecoration;
 import org.localareadelivery.distributorapp.Model.Item;
+import org.localareadelivery.distributorapp.Model.ItemCategory;
+import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.VolleySingleton;
-import org.localareadelivery.distributorapp.addRemoveItems.Items.AddItem;
+
 
 import java.util.ArrayList;
 
@@ -42,6 +45,8 @@ public class Items extends AppCompatActivity {
 
     TextView itemCategoryName;
 
+    ItemCategory itemCategory;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,15 +62,18 @@ public class Items extends AppCompatActivity {
         // setup recycler View
         itemsList = (RecyclerView) findViewById(R.id.recyclerViewItems);
         //itemsAdapter = new ItemsAdapter(dataset,this,this,getIntent().getIntExtra(ITEM_CATEGORY_ID_KEY,0));
+
+        itemCategory = (ItemCategory) getIntent().getParcelableExtra(ItemCategories.ITEM_CATEGORY_INTENT_KEY);
+        itemsAdapter = new ItemsAdapter(dataset,this,this,itemCategory);
+
+        Log.d("applog","CategoryID : " + String.valueOf(itemCategory.getItemCategoryID()));
+
         itemsList.setAdapter(itemsAdapter);
         itemsList.setLayoutManager(new GridLayoutManager(this,1));
         itemsList.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL_LIST));
 
-
         itemCategoryName = (TextView) findViewById(R.id.categoryName);
-        //itemCategoryName.setText("// " + getIntent().getStringExtra(ITEM_CATEGORY_NAME_KEY));
-
-        //makeRequest();
+        itemCategoryName.setText("// " + itemCategory.getCategoryName());
 
 
     }
@@ -73,9 +81,15 @@ public class Items extends AppCompatActivity {
 
     public void makeRequest()
     {
-        //String url = getServiceURL() + "/api/Item?ItemCategoryID=" + String.valueOf(getIntent().getIntExtra(ITEM_CATEGORY_ID_KEY,0));
 
         String url = "";
+
+        Shop shop = ApplicationState.getInstance().getCurrentShop();
+
+        if(itemCategory!=null) {
+            url = getServiceURL() + "/api/Item?ItemCategoryID=" + itemCategory.getItemCategoryID() + "&ShopID=" + shop.getShopID();
+        }
+
         Log.d("response",url);
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
@@ -154,11 +168,9 @@ public class Items extends AppCompatActivity {
         dataset.clear();
         makeRequest();
 
+
+
+
     }
-
-
-
-
-
 
 }

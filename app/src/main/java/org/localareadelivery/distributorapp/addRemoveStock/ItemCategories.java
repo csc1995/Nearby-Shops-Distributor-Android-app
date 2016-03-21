@@ -60,8 +60,6 @@ public class ItemCategories extends AppCompatActivity {
         itemCategoriesList.setLayoutManager(layoutManager);
         itemCategoriesList.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL_LIST));
 
-        //makeRequest();
-
     }
 
 

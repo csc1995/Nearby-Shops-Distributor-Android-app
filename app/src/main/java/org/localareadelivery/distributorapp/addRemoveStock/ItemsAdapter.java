@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -48,7 +49,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder>{
         this.context = context;
         this.itemsActivity = itemsActivity;
         this.itemCategory = itemCategory;
-        makeShopItemRequest();
+        //makeShopItemRequest();
 
     }
 
@@ -57,12 +58,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder>{
     @Override
     public ItemsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-
-
-
-
-
-        // Usual view holder initialization code
+       // Usual view holder initialization code
         View v = LayoutInflater.from(context).inflate(R.layout.list_item_items_list,parent,false);
 
         return new ViewHolder(v);
@@ -92,7 +88,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder>{
         @Bind(R.id.brandName) TextView itemBrandName;
 
         @Bind(R.id.itemsListItem)LinearLayout itemsListItem;
-
+        //@Bind(R.id.addStockButton)Button addStockButton;
 
         public ViewHolder(View itemView) {
             super(itemView);
