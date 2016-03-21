@@ -1,8 +1,9 @@
-package org.localareadelivery.distributorapp.categories_items;
+package org.localareadelivery.distributorapp.addRemoveItems.categories_items;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +18,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 
 
-import org.localareadelivery.distributorapp.Items.Items;
+import org.localareadelivery.distributorapp.addRemoveItems.Items.Items;
 import org.localareadelivery.distributorapp.Model.ItemCategory;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.VolleySingleton;
@@ -53,7 +54,7 @@ public class ItemCategoriesAdapter extends RecyclerView.Adapter<ItemCategoriesAd
     @Override
     public ItemCategoriesAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_item_category,parent,false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_item_category,parent,false);
 
         return new ViewHolder(v);
     }
@@ -64,12 +65,20 @@ public class ItemCategoriesAdapter extends RecyclerView.Adapter<ItemCategoriesAd
         holder.categoryName.setText(dataset.get(position).getCategoryName());
         holder.categoryDescription.setText(dataset.get(position).getCategoryDescription());
 
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
+
+
+        }
+
+
         holder.editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 Intent intent = new Intent(context,EditItemCategory.class);
                 intent.putExtra(EditItemCategory.ITEM_CATEGORY_ID_KEY,dataset.get(position).getItemCategoryID());
+
 
                 context.startActivity(intent);
             }

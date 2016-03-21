@@ -1,6 +1,9 @@
 package org.localareadelivery.distributorapp.Model;
 
-public class ItemCategory {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class ItemCategory implements Parcelable{
 
 	
 	int itemCategoryID;
@@ -27,7 +30,37 @@ public class ItemCategory {
 	
 	
 	//Getters and Setters
-	
+
+	protected ItemCategory(Parcel in) {
+		itemCategoryID = in.readInt();
+		categoryName = in.readString();
+		categoryDescription = in.readString();
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeInt(itemCategoryID);
+		dest.writeString(categoryName);
+		dest.writeString(categoryDescription);
+	}
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	public static final Creator<ItemCategory> CREATOR = new Creator<ItemCategory>() {
+		@Override
+		public ItemCategory createFromParcel(Parcel in) {
+			return new ItemCategory(in);
+		}
+
+		@Override
+		public ItemCategory[] newArray(int size) {
+			return new ItemCategory[size];
+		}
+	};
+
 	public String getCategoryName() {
 		return categoryName;
 	}

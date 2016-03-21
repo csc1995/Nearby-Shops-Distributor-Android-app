@@ -2,8 +2,6 @@ package org.localareadelivery.distributorapp.ShopHome;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -11,7 +9,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import org.localareadelivery.distributorapp.R;
-import org.localareadelivery.distributorapp.categories_items.ItemCategories;
+import org.localareadelivery.distributorapp.addRemoveItems.categories_items.ItemCategories;
 
 public class ShopHome extends AppCompatActivity implements View.OnClickListener {
 
@@ -38,6 +36,7 @@ public class ShopHome extends AppCompatActivity implements View.OnClickListener 
         addRemoveItemsButton.setOnClickListener(this);
 
         addEditStockButton = (Button) findViewById(R.id.addStockButton);
+        addEditStockButton.setOnClickListener(this);
 
 
 
@@ -55,6 +54,12 @@ public class ShopHome extends AppCompatActivity implements View.OnClickListener 
                 startActivity(new Intent(this, ItemCategories.class));
 
 
+
+                break;
+
+            case R.id.addStockButton:
+
+                startActivity(new Intent(this, org.localareadelivery.distributorapp.addRemoveStock.ItemCategories.class));
 
                 break;
 

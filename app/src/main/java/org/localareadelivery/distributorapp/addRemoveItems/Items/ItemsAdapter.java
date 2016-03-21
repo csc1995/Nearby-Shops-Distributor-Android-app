@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.Items;
+package org.localareadelivery.distributorapp.addRemoveItems.Items;
 
 import android.content.Context;
 import android.content.Intent;
@@ -23,10 +23,8 @@ import org.localareadelivery.distributorapp.Model.Item;
 import org.localareadelivery.distributorapp.Model.ShopItem;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.ServiceContract.ShopItemService;
-import org.localareadelivery.distributorapp.ServiceContract.ShopService;
 import org.localareadelivery.distributorapp.VolleySingleton;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,13 +32,11 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.Path;
 
 /**
  * Created by sumeet on 20/12/15.
@@ -75,7 +71,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder>{
 
 
         // Usual view holder initialization code
-        View v = LayoutInflater.from(context).inflate(R.layout.item_items_list,parent,false);
+        View v = LayoutInflater.from(context).inflate(R.layout.list_item_items_list,parent,false);
 
         return new ViewHolder(v);
     }
@@ -94,6 +90,10 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder>{
 
             if (shopItemDataset.containsKey(dataset.get(position).getItemID())) {
                 holder.itemsListItem.setBackgroundColor(context.getResources().getColor(R.color.itemAvailable));
+            }
+            else
+            {
+                holder.itemsListItem.setBackgroundColor(context.getResources().getColor(R.color.white));
             }
         }
 
@@ -155,7 +155,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder>{
 
                     if (shopItemDataset.containsKey(dataset.get(position).getItemID())) {
 
-                            deleteShopItemRequest(ApplicationState.getInstance().getCurrentShop().getShopID(),dataset.get(position).getItemID(),holder,position);
+                        deleteShopItemRequest(ApplicationState.getInstance().getCurrentShop().getShopID(),dataset.get(position).getItemID(),holder,position);
 
 
                     } else
@@ -312,7 +312,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder>{
                     holder.itemsListItem.setBackgroundColor(context.getResources().getColor(R.color.white));
                     shopItemDataset.remove(dataset.get(position).getItemID());
 
-                    notifyDataSetChanged();
+                   //notifyDataSetChanged();
 
 
                 }
@@ -384,7 +384,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder>{
 
                 shopItemDataset.put(shopItem.getItemID(),shopItem);
 
-                notifyDataSetChanged();
+                //notifyDataSetChanged();
 
 
 

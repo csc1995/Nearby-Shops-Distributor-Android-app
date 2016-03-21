@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.Items;
+package org.localareadelivery.distributorapp.addRemoveStock;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,27 +17,16 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.localareadelivery.distributorapp.ApplicationState.ApplicationState;
 import org.localareadelivery.distributorapp.DividerItemDecoration;
 import org.localareadelivery.distributorapp.Model.Item;
-import org.localareadelivery.distributorapp.Model.ShopItem;
 import org.localareadelivery.distributorapp.R;
-import org.localareadelivery.distributorapp.ServiceContract.ShopItemService;
 import org.localareadelivery.distributorapp.VolleySingleton;
+import org.localareadelivery.distributorapp.addRemoveItems.Items.AddItem;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Items extends AppCompatActivity {
 
@@ -47,8 +36,6 @@ public class Items extends AppCompatActivity {
 
     ArrayList<Item> dataset = new ArrayList<>();
 
-    public static final String ITEM_CATEGORY_ID_KEY = "itemCategoryIDKey";
-    public static final String ITEM_CATEGORY_NAME_KEY="itemCategoryNameKey";
 
     RecyclerView itemsList;
     ItemsAdapter itemsAdapter;
@@ -62,34 +49,21 @@ public class Items extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-               // Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                 //       .setAction("Action", null).show();
-
-                Intent intent = new Intent(Items.this,AddItem.class);
-                intent.putExtra(AddItem.ITEM_CATEGORY_ID_KEY,getIntent().getIntExtra(ITEM_CATEGORY_ID_KEY,0));
-                startActivity(intent);
-
-            }
-        });
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
         // setup recycler View
         itemsList = (RecyclerView) findViewById(R.id.recyclerViewItems);
-        itemsAdapter = new ItemsAdapter(dataset,this,this,getIntent().getIntExtra(ITEM_CATEGORY_ID_KEY,0));
+        //itemsAdapter = new ItemsAdapter(dataset,this,this,getIntent().getIntExtra(ITEM_CATEGORY_ID_KEY,0));
         itemsList.setAdapter(itemsAdapter);
         itemsList.setLayoutManager(new GridLayoutManager(this,1));
         itemsList.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL_LIST));
 
 
         itemCategoryName = (TextView) findViewById(R.id.categoryName);
-        itemCategoryName.setText("// " + getIntent().getStringExtra(ITEM_CATEGORY_NAME_KEY));
+        //itemCategoryName.setText("// " + getIntent().getStringExtra(ITEM_CATEGORY_NAME_KEY));
 
         //makeRequest();
 
@@ -99,8 +73,9 @@ public class Items extends AppCompatActivity {
 
     public void makeRequest()
     {
-        String url = getServiceURL() + "/api/Item?ItemCategoryID=" + String.valueOf(getIntent().getIntExtra(ITEM_CATEGORY_ID_KEY,0));
+        //String url = getServiceURL() + "/api/Item?ItemCategoryID=" + String.valueOf(getIntent().getIntExtra(ITEM_CATEGORY_ID_KEY,0));
 
+        String url = "";
         Log.d("response",url);
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {

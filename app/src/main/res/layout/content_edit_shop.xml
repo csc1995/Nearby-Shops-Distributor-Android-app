@@ -56,7 +56,7 @@
             android:id="@+id/radiusOfService"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="number"
+            android:inputType="numberDecimal"
             android:hint="Enter Range of Delivery"/>
 
     </android.support.design.widget.TextInputLayout>
@@ -71,7 +71,7 @@
             android:id="@+id/latitude"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="number"
+            android:inputType="numberDecimal"
             android:hint="Enter Latitude"/>
 
     </android.support.design.widget.TextInputLayout>
@@ -85,7 +85,7 @@
             android:id="@+id/longitude"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="number"
+            android:inputType="numberDecimal"
             android:hint="Enter Longitude"/>
 
     </android.support.design.widget.TextInputLayout>
@@ -100,7 +100,7 @@
             android:id="@+id/averageRating"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="number"
+            android:inputType="numberDecimal"
             android:hint="Enter Average Rating"/>
 
     </android.support.design.widget.TextInputLayout>

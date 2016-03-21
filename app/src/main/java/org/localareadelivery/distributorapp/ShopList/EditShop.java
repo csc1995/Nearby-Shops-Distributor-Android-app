@@ -121,24 +121,23 @@ public class EditShop extends AppCompatActivity {
         // store the recently updated data to the shop object
         getDataFromEditText();
 
-        Call<Response> shopCall = shopService.updateShop(shop,shop.getShopID());
+        Call<ResponseBody> shopCall = shopService.updateShop(shop,shop.getShopID());
 
-        shopCall.enqueue(new Callback<Response>() {
+        shopCall.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Call<Response> call, Response<Response> response) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
 
                 response.body();
 
-                Response responseBody = response.body();
+                ResponseBody responseBody = response.body();
 
-                Log.d("applog",String.valueOf(response.isSuccess()) + response.toString());
+                Log.d("applog",String.valueOf(response.isSuccessful()) + response.toString());
 
                 displayResult();
-
             }
 
             @Override
-            public void onFailure(Call<Response> call, Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
 
             }
         });

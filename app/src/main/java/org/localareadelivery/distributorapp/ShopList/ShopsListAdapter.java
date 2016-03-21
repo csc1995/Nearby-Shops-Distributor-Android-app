@@ -46,7 +46,7 @@ public class ShopsListAdapter extends RecyclerView.Adapter<ShopsListAdapter.View
     @Override
     public ShopsListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.shop_list_item,parent,false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_shop_list,parent,false);
 
         return new ViewHolder(v);
     }
@@ -108,29 +108,26 @@ public class ShopsListAdapter extends RecyclerView.Adapter<ShopsListAdapter.View
 
                 ShopService shopService = retrofit.create(ShopService.class);
 
-                Call<Response> shopCall = shopService.deleteShop(dataset.get(holder.getAdapterPosition()).getShopID());
+                Call<ResponseBody> shopCall = shopService.deleteShop(dataset.get(holder.getAdapterPosition()).getShopID());
 
                 Log.d("applog",String.valueOf(position) + " : " + dataset.get(position).toString());
 
 
-
-                shopCall.enqueue(new Callback<Response>() {
+                shopCall.enqueue(new Callback<ResponseBody>() {
                     @Override
-                    public void onResponse(Call<Response> call, Response<Response> response) {
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
 
-                        if(response.isSuccess()) {
+                        if(response.isSuccessful()) {
                             notifyDelete();
                         }
+
                     }
 
                     @Override
-                    public void onFailure(Call<Response> call, Throwable t) {
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
 
                     }
                 });
-
-
-
 
             }
         });

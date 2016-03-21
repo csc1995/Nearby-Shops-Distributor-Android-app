@@ -30,9 +30,9 @@ public interface ShopService {
     Call<Shop> insertShop(@Body Shop shop);
 
     @PUT("/api/Shop/{id}")
-    Call<Response> updateShop(@Body Shop shop, @Path("id") int id);
+    Call<ResponseBody> updateShop(@Body Shop shop, @Path("id") int id);
 
     @DELETE("/api/Shop/{id}")
-    Call<Response> deleteShop(@Path("id") int id);
+    Call<ResponseBody> deleteShop(@Path("id") int id);
 
 }

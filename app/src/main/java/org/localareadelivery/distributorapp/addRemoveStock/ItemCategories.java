@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.categories_items;
+package org.localareadelivery.distributorapp.addRemoveStock;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,10 +20,12 @@ import com.android.volley.toolbox.StringRequest;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.localareadelivery.distributorapp.ApplicationState.ApplicationState;
 import org.localareadelivery.distributorapp.DividerItemDecoration;
 import org.localareadelivery.distributorapp.Model.ItemCategory;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.VolleySingleton;
+import org.localareadelivery.distributorapp.addRemoveItems.categories_items.*;
 
 import java.util.ArrayList;
 
@@ -34,26 +36,17 @@ public class ItemCategories extends AppCompatActivity {
     ItemCategoriesAdapter listAdapter;
     RecyclerView.LayoutManager layoutManager;
 
+
+    public static final String ITEM_CATEGORY_INTENT_KEY = "itemCategoryIntentKey";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_item_categories);
+        setContentView(R.layout.activity_item_categories_addstock);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-
-                startActivity(new Intent(ItemCategories.this,AddItemCategory.class));
-                //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                  //      .setAction("Action", null).show();
-
-            }
-        });
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -63,7 +56,7 @@ public class ItemCategories extends AppCompatActivity {
 
         itemCategoriesList.setAdapter(listAdapter);
         layoutManager = new GridLayoutManager(null,1);
-        //layoutManager = new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL);
+
         itemCategoriesList.setLayoutManager(layoutManager);
         itemCategoriesList.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL_LIST));
 
@@ -76,7 +69,9 @@ public class ItemCategories extends AppCompatActivity {
     public void makeRequest()
     {
 
-        String url = getServiceURL() + "/api/ItemCategory";
+        int shopID = ApplicationState.getInstance().getCurrentShop().getShopID();
+
+        String url = getServiceURL() + "/api/ItemCategory?ShopID=" + shopID;
 
         Log.d("response",url);
 
