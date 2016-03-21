@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.addRemoveItems.categories_items;
+package org.localareadelivery.distributorapp.addItems.ItemCategories;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;

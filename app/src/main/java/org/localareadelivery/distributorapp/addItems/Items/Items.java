@@ -1,9 +1,9 @@
-package org.localareadelivery.distributorapp.addRemoveStock;
+package org.localareadelivery.distributorapp.addItems.Items;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,17 +17,14 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.localareadelivery.distributorapp.ApplicationState.ApplicationState;
 import org.localareadelivery.distributorapp.DividerItemDecoration;
 import org.localareadelivery.distributorapp.Model.Item;
-import org.localareadelivery.distributorapp.Model.ItemCategory;
-import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.VolleySingleton;
-
 
 import java.util.ArrayList;
 
@@ -39,13 +36,14 @@ public class Items extends AppCompatActivity {
 
     ArrayList<Item> dataset = new ArrayList<>();
 
+    public static final String ITEM_CATEGORY_ID_KEY = "itemCategoryIDKey";
+    public static final String ITEM_CATEGORY_NAME_KEY="itemCategoryNameKey";
+    public static final String ITEM_CATEGORY_INTENT_KEY = "itemCategoryIntentKey";
 
     RecyclerView itemsList;
     ItemsAdapter itemsAdapter;
 
     TextView itemCategoryName;
-
-    ItemCategory itemCategory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,26 +52,36 @@ public class Items extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+               // Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                 //       .setAction("Action", null).show();
+
+                Intent intent = new Intent(Items.this,AddItem.class);
+                intent.putExtra(AddItem.ITEM_CATEGORY_ID_KEY,getIntent().getIntExtra(ITEM_CATEGORY_ID_KEY,0));
+                startActivity(intent);
+
+            }
+        });
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
         // setup recycler View
         itemsList = (RecyclerView) findViewById(R.id.recyclerViewItems);
-        //itemsAdapter = new ItemsAdapter(dataset,this,this,getIntent().getIntExtra(ITEM_CATEGORY_ID_KEY,0));
-
-        itemCategory = (ItemCategory) getIntent().getParcelableExtra(ItemCategories.ITEM_CATEGORY_INTENT_KEY);
-        itemsAdapter = new ItemsAdapter(dataset,this,this,itemCategory);
-
-        Log.d("applog","CategoryID : " + String.valueOf(itemCategory.getItemCategoryID()));
-
+        itemsAdapter = new ItemsAdapter(dataset,this,this,getIntent().getIntExtra(ITEM_CATEGORY_ID_KEY,0));
         itemsList.setAdapter(itemsAdapter);
         itemsList.setLayoutManager(new GridLayoutManager(this,1));
         itemsList.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL_LIST));
 
+
         itemCategoryName = (TextView) findViewById(R.id.categoryName);
-        itemCategoryName.setText("// " + itemCategory.getCategoryName());
+        itemCategoryName.setText("// " + getIntent().getStringExtra(ITEM_CATEGORY_NAME_KEY));
+
+        //makeRequest();
 
 
     }
@@ -81,14 +89,7 @@ public class Items extends AppCompatActivity {
 
     public void makeRequest()
     {
-
-        String url = "";
-
-        Shop shop = ApplicationState.getInstance().getCurrentShop();
-
-        if(itemCategory!=null) {
-            url = getServiceURL() + "/api/Item?ItemCategoryID=" + itemCategory.getItemCategoryID() + "&ShopID=" + shop.getShopID();
-        }
+        String url = getServiceURL() + "/api/Item?ItemCategoryID=" + String.valueOf(getIntent().getIntExtra(ITEM_CATEGORY_ID_KEY,0));
 
         Log.d("response",url);
 
@@ -168,9 +169,11 @@ public class Items extends AppCompatActivity {
         dataset.clear();
         makeRequest();
 
-
-
-
     }
+
+
+
+
+
 
 }

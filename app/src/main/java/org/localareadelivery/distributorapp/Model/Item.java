@@ -1,7 +1,10 @@
 package org.localareadelivery.distributorapp.Model;
 
 
-public class Item {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Item implements Parcelable{
 
 	int itemID;
 	
@@ -38,7 +41,7 @@ public class Item {
 	}
 
 
-	
+
 	//No-args constructor
 
 	public Item() {
@@ -47,7 +50,7 @@ public class Item {
 	}
 
 
-	
+
 	// getters and Setter methods
 
 	public int getItemID() {
@@ -104,4 +107,50 @@ public class Item {
 	public void setItemName(String itemName) {
 		this.itemName = itemName;
 	}
+
+
+
+
+
+	// parcelable interface implementation
+
+	protected Item(Parcel in) {
+		itemID = in.readInt();
+		itemName = in.readString();
+		itemDescription = in.readString();
+		itemImageURL = in.readString();
+		brandName = in.readString();
+		itemCategory = in.readParcelable(ItemCategory.class.getClassLoader());
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeInt(itemID);
+		dest.writeString(itemName);
+		dest.writeString(itemDescription);
+		dest.writeString(itemImageURL);
+		dest.writeString(brandName);
+		dest.writeParcelable(itemCategory, flags);
+	}
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	public static final Creator<Item> CREATOR = new Creator<Item>() {
+		@Override
+		public Item createFromParcel(Parcel in) {
+			return new Item(in);
+		}
+
+		@Override
+		public Item[] newArray(int size) {
+			return new Item[size];
+		}
+	};
+
+
+
+
 }

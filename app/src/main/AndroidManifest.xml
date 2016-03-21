@@ -34,7 +34,7 @@
                 android:value="org.localareadelivery.distributorapp.ShopList.Home" />
         </activity>
         <activity
-            android:name=".addRemoveItems.categories_items.ItemCategories"
+            android:name=".addItems.ItemCategories.ItemCategories"
             android:label="@string/title_activity_item_categories"
             android:parentActivityName=".ShopHome.ShopHome"
             android:theme="@style/AppTheme.NoActionBar">
@@ -42,10 +42,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.localareadelivery.distributorapp.ShopHome.ShopHome" />
         </activity>
-
-
         <activity
-            android:name=".addRemoveStock.ItemCategories"
+            android:name=".addStock.ItemCategories"
             android:label="@string/title_activity_item_categories"
             android:parentActivityName=".ShopHome.ShopHome"
             android:theme="@style/AppTheme.NoActionBar">
@@ -53,62 +51,59 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.localareadelivery.distributorapp.ShopHome.ShopHome" />
         </activity>
-
-
         <activity
-            android:name=".addRemoveStock.Items"
+            android:name=".addStock.Items"
             android:label="@string/title_activity_item_categories"
-            android:parentActivityName=".addRemoveStock.ItemCategories"
+            android:parentActivityName=".addStock.ItemCategories"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.localareadelivery.distributorapp.ShopHome.ShopHome" />
         </activity>
-
         <activity
-            android:name=".addRemoveItems.categories_items.AddItemCategory"
+            android:name=".addItems.ItemCategories.AddItemCategory"
             android:label="@string/title_activity_add_item_category"
-            android:parentActivityName=".addRemoveItems.categories_items.ItemCategories"
+            android:parentActivityName=".addItems.ItemCategories.ItemCategories"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".addRemoveItems.categories_items.ItemCategories" />
+                android:value=".addItems.ItemCategories.ItemCategories" />
         </activity>
         <activity
-            android:name=".addRemoveItems.categories_items.EditItemCategory"
+            android:name=".addItems.ItemCategories.EditItemCategory"
             android:label="@string/title_activity_edit_item_category"
-            android:parentActivityName=".addRemoveItems.categories_items.ItemCategories"
+            android:parentActivityName=".addItems.ItemCategories.ItemCategories"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".addRemoveItems.categories_items.ItemCategories" />
+                android:value=".addItems.ItemCategories.ItemCategories" />
         </activity>
         <activity
-            android:name=".addRemoveItems.Items.Items"
+            android:name=".addItems.Items.Items"
             android:label="@string/title_activity_items"
-            android:parentActivityName=".addRemoveItems.categories_items.ItemCategories"
+            android:parentActivityName=".addItems.ItemCategories.ItemCategories"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".addRemoveItems.categories_items.ItemCategories" />
+                android:value=".addItems.ItemCategories.ItemCategories" />
         </activity>
         <activity
-            android:name=".addRemoveItems.Items.AddItem"
+            android:name=".addItems.Items.AddItem"
             android:label="@string/title_activity_add_item"
-            android:parentActivityName=".addRemoveItems.categories_items.ItemCategories"
+            android:parentActivityName=".addItems.ItemCategories.ItemCategories"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".addRemoveItems.categories_items.ItemCategories" />
+                android:value=".addItems.ItemCategories.ItemCategories" />
         </activity>
         <activity
-            android:name=".addRemoveItems.Items.EditItem"
+            android:name=".addItems.Items.EditItem"
             android:label="@string/title_activity_edit_item"
-            android:parentActivityName=".addRemoveItems.Items.Items"
+            android:parentActivityName=".addItems.Items.Items"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".addRemoveItems.Items.Items" />
+                android:value=".addItems.Items.Items" />
         </activity>
         <activity
             android:name=".ShopList.AddShop"
@@ -127,6 +122,15 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.localareadelivery.distributorapp.ShopList.Home" />
+        </activity>
+        <activity
+            android:name=".addStock.AddStock"
+            android:label="@string/title_activity_add_stock"
+            android:parentActivityName=".addStock.Items"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.localareadelivery.distributorapp.addStock.Items" />
         </activity>
     </application>
 

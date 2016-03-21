@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.addRemoveItems.Items;
+package org.localareadelivery.distributorapp.addItems.Items;
 
 import android.content.Context;
 import android.content.Intent;
@@ -67,7 +67,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder>{
 
 
         // Usual view holder initialization code
-        View v = LayoutInflater.from(context).inflate(R.layout.list_item_items_list,parent,false);
+        View v = LayoutInflater.from(context).inflate(R.layout.list_item_items_list_additems,parent,false);
 
         return new ViewHolder(v);
     }

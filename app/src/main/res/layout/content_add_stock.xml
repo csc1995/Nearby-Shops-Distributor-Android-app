@@ -1,28 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="?attr/actionBarSize">
-
-
-
+    android:layout_marginTop="?attr/actionBarSize"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
 
 <LinearLayout
-
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".addItems.ItemCategories.AddItemCategory"
-    tools:showIn="@layout/activity_add_item_category">
+    tools:context="org.localareadelivery.distributorapp.addStock.AddStock"
+    tools:showIn="@layout/activity_add_stock">
+
+
+    <TextView
+        android:id="@+id/itemName"
+        android:text="Item Name"
+        android:textSize="30sp"
+        android:layout_marginBottom="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:inputType="number"
+            android:id="@+id/availableItems"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Available Items"/>
+
+    </android.support.design.widget.TextInputLayout>
+
 
 
 
@@ -31,41 +51,31 @@
         android:layout_height="wrap_content">
 
         <EditText
-            android:id="@+id/itemCategoryName"
+            android:inputType="numberDecimal"
+            android:id="@+id/itemPrice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter Item Category Name"/>
+            android:hint="Enter Item Price"/>
 
     </android.support.design.widget.TextInputLayout>
 
-
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <EditText
-            android:id="@+id/itemCategoryDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Enter Item Category Description"/>
-
-    </android.support.design.widget.TextInputLayout>
 
 
     <Button
-        android:id="@+id/addItemCategory"
+        android:layout_marginTop="20dp"
+        android:id="@+id/updateStockButton"
+        android:background="@drawable/buttonselector"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Add Item Category"
-        android:textColor="@color/white"
-        android:background="@drawable/selector"/>
+        android:text="Update Stock"
+        android:textColor="@color/white"/>
 
     <TextView
-        android:id="@+id/result"
         android:layout_marginTop="20dp"
+        android:id="@+id/results"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Result:"/>
+        android:text="Results : "/>
 
 </LinearLayout>
 

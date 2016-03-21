@@ -9,7 +9,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import org.localareadelivery.distributorapp.R;
-import org.localareadelivery.distributorapp.addRemoveItems.categories_items.ItemCategories;
+import org.localareadelivery.distributorapp.addItems.ItemCategories.ItemCategories;
 
 public class ShopHome extends AppCompatActivity implements View.OnClickListener {
 
@@ -59,7 +59,7 @@ public class ShopHome extends AppCompatActivity implements View.OnClickListener 
 
             case R.id.addStockButton:
 
-                startActivity(new Intent(this, org.localareadelivery.distributorapp.addRemoveStock.ItemCategories.class));
+                startActivity(new Intent(this, org.localareadelivery.distributorapp.addStock.ItemCategories.class));
 
                 break;
 

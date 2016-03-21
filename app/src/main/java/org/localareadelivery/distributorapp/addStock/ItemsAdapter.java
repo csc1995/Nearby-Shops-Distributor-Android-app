@@ -1,12 +1,12 @@
-package org.localareadelivery.distributorapp.addRemoveStock;
+package org.localareadelivery.distributorapp.addStock;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -59,7 +59,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder>{
     public ItemsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
        // Usual view holder initialization code
-        View v = LayoutInflater.from(context).inflate(R.layout.list_item_items_list,parent,false);
+        View v = LayoutInflater.from(context).inflate(R.layout.list_item_items_list_addstock,parent,false);
 
         return new ViewHolder(v);
     }
@@ -70,6 +70,22 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder>{
         holder.itemName.setText(itemDataset.get(position).getItemName());
         holder.itemBrandName.setText(itemDataset.get(position).getBrandName());
         holder.itemDescription.setText(itemDataset.get(position).getItemDescription());
+
+        holder.itemsListItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                Intent intent = new Intent(context,AddStock.class);
+
+                intent.putExtra(AddStock.ITEM_INTENT_KEY,itemDataset.get(position));
+
+                context.startActivity(intent);
+
+
+
+            }
+        });
 
 
     }
@@ -88,7 +104,6 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder>{
         @Bind(R.id.brandName) TextView itemBrandName;
 
         @Bind(R.id.itemsListItem)LinearLayout itemsListItem;
-        //@Bind(R.id.addStockButton)Button addStockButton;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -114,57 +129,6 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder>{
         if(itemsActivity!=null) {
             itemsActivity.notifyDelete();
         }
-    }
-
-
-
-    public void makeShopItemRequest()
-    {
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getServiceURL())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        ShopItemService shopItemService = retrofit.create(ShopItemService.class);
-
-        // 0 for item ID indicates - get all items for the given shop
-        final Call<List<ShopItem>> shopItemCall = shopItemService.getShopItems(
-                ApplicationState.getInstance().getCurrentShop().getShopID(),
-                0, itemCategory.getItemCategoryID());
-
-
-
-        shopItemCall.enqueue(new Callback<List<ShopItem>>() {
-            @Override
-            public void onResponse(Call<List<ShopItem>> call, retrofit2.Response<List<ShopItem>> response) {
-
-                List<ShopItem> shopItemList = response.body();
-
-
-
-                shopItemDataset = new HashMap<Integer, ShopItem>();
-
-
-                // Store the shopItems from the List to a Map in order to easy Access
-                if(shopItemList!=null) {
-
-                    for (ShopItem shopItem : shopItemList) {
-
-                        shopItemDataset.put(shopItem.getItemID(), shopItem);
-                    }
-                }
-
-
-                notifyDataSetChanged();
-            }
-
-            @Override
-            public void onFailure(Call<List<ShopItem>> call, Throwable t) {
-
-            }
-        });
-
     }
 
 }
