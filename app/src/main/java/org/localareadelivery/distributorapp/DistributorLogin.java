@@ -19,6 +19,7 @@ public class DistributorLogin extends AppCompatActivity implements View.OnClickL
     Button loginButton, signUpButton;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
