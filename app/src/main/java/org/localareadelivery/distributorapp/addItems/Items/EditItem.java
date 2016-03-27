@@ -120,7 +120,7 @@ public class EditItem extends AppCompatActivity implements View.OnClickListener 
 
     public void makeRequest()
     {
-        String url = getServiceURL() + "/api/Item/" + getIntent().getIntExtra(ITEM_ID_KEY,0) + "?categoryID=" + getIntent().getIntExtra(ITEM_CATEGORY_ID_KEY,0);
+        String url = getServiceURL() + "/api/Item/" + getIntent().getIntExtra(ITEM_ID_KEY,0);
 
         StringRequest request = new StringRequest(Request.Method.PUT, url, new Response.Listener<String>() {
             @Override
@@ -145,6 +145,8 @@ public class EditItem extends AppCompatActivity implements View.OnClickListener 
                 return "application/json";
             }
 
+            // + "?categoryID=" + getIntent().getIntExtra(ITEM_CATEGORY_ID_KEY,0)
+
             @Override
             public byte[] getBody() throws AuthFailureError {
 
@@ -158,6 +160,7 @@ public class EditItem extends AppCompatActivity implements View.OnClickListener 
                     jsonObject.put("itemName",itemName.getText().toString());
                     jsonObject.put("brandName",itemBrandName.getText().toString());
                     jsonObject.put("itemDescription",itemDescription.getText().toString());
+                    jsonObject.put("itemCategoryID",getIntent().getIntExtra(ITEM_CATEGORY_ID_KEY,0));
 
 
                 } catch (JSONException e) {
@@ -203,8 +206,6 @@ public class EditItem extends AppCompatActivity implements View.OnClickListener 
 
 
     }
-
-
 
 
     public String  getServiceURL()

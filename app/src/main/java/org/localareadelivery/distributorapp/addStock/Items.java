@@ -68,7 +68,7 @@ public class Items extends AppCompatActivity {
 
         itemsList.setAdapter(itemsAdapter);
         itemsList.setLayoutManager(new GridLayoutManager(this,1));
-        itemsList.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL_LIST));
+        //itemsList.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL_LIST));
 
         itemCategoryName = (TextView) findViewById(R.id.categoryName);
         itemCategoryName.setText("// " + itemCategory.getCategoryName());

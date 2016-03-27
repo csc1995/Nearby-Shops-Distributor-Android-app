@@ -31,9 +31,6 @@ import java.util.ArrayList;
 public class Items extends AppCompatActivity {
 
 
-
-
-
     ArrayList<Item> dataset = new ArrayList<>();
 
     public static final String ITEM_CATEGORY_ID_KEY = "itemCategoryIDKey";
@@ -52,20 +49,6 @@ public class Items extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-               // Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                 //       .setAction("Action", null).show();
-
-                Intent intent = new Intent(Items.this,AddItem.class);
-                intent.putExtra(AddItem.ITEM_CATEGORY_ID_KEY,getIntent().getIntExtra(ITEM_CATEGORY_ID_KEY,0));
-                startActivity(intent);
-
-            }
-        });
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 

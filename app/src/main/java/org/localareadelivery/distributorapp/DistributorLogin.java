@@ -13,7 +13,7 @@ import android.widget.EditText;
 
 import org.localareadelivery.distributorapp.ShopList.Home;
 
-public class Login extends AppCompatActivity implements View.OnClickListener {
+public class DistributorLogin extends AppCompatActivity implements View.OnClickListener {
 
     EditText serviceUrlEditText,distributorIDEditText;
     Button loginButton, signUpButton;

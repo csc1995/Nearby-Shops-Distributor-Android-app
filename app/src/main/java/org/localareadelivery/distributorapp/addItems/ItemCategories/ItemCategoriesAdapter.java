@@ -40,6 +40,7 @@ public class ItemCategoriesAdapter extends RecyclerView.Adapter<ItemCategoriesAd
 
 
     public ItemCategoriesAdapter(ArrayList<ItemCategory> dataset, Context context,ItemCategories itemCategories) {
+
         this.dataset = dataset;
         this.context = context;
         this.itemCategories = itemCategories;
@@ -113,13 +114,21 @@ public class ItemCategoriesAdapter extends RecyclerView.Adapter<ItemCategoriesAd
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(context,Items.class);
 
-                intent.putExtra(Items.ITEM_CATEGORY_ID_KEY,dataset.get(position).getItemCategoryID());
-                intent.putExtra(Items.ITEM_CATEGORY_NAME_KEY,dataset.get(position).getCategoryName());
+                if (dataset.get(position).getIsLeafNode()) {
 
-                context.startActivity(intent);
+                    Intent intent = new Intent(context, Items.class);
 
+                    intent.putExtra(Items.ITEM_CATEGORY_ID_KEY, dataset.get(position).getItemCategoryID());
+                    intent.putExtra(Items.ITEM_CATEGORY_NAME_KEY, dataset.get(position).getCategoryName());
+
+                    context.startActivity(intent);
+
+                }
+                else
+                {
+                        itemCategories.notifyRequestSubCategory(dataset.get(position));
+                }
 
             }
         });
@@ -171,4 +180,16 @@ public class ItemCategoriesAdapter extends RecyclerView.Adapter<ItemCategoriesAd
 
         return service_url;
     }
+
+
+
+
+
+    public interface requestSubCategory
+    {
+        // method for notifying the list object to request sub category
+        public void notifyRequestSubCategory(ItemCategory itemCategory);
+
+    }
+
 }

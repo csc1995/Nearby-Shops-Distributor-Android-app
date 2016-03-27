@@ -19,8 +19,42 @@ public class ItemCategory implements Parcelable{
 	//List<Item> items = new ArrayList<Item>();
 
 
+	int parentCategoryID;
+	boolean isLeafNode;
 
-	
+
+
+	// variables for utility functions
+
+	ItemCategory parentCategory = null;
+
+
+
+
+
+
+
+
+
+	public int getParentCategoryID() {
+		return parentCategoryID;
+	}
+
+	public void setParentCategoryID(int parentCategoryID) {
+		this.parentCategoryID = parentCategoryID;
+	}
+
+
+	public boolean getIsLeafNode() {
+		return isLeafNode;
+	}
+
+	public void setIsLeafNode(boolean isLeafNode) {
+		this.isLeafNode = isLeafNode;
+	}
+
+
+
 	//no-args Constructor
 	public ItemCategory() {
 		super();
@@ -84,5 +118,13 @@ public class ItemCategory implements Parcelable{
 	public void setItemCategoryID(int itemCategoryID) {
 		this.itemCategoryID = itemCategoryID;
 	}
-	
+
+
+	public ItemCategory getParentCategory() {
+		return parentCategory;
+	}
+
+	public void setParentCategory(ItemCategory parentCategory) {
+		this.parentCategory = parentCategory;
+	}
 }
