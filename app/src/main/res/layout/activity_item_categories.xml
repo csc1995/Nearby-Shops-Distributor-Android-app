@@ -14,11 +14,25 @@
 
         <android.support.v7.widget.Toolbar
 
+            app:layout_scrollFlags = "scroll|enterAlways"
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/categoryIndicatorLabel"
+            android:textSize="20sp"
+            android:padding="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <!-- android:text="//Groceries\n\n- Rice \n- Basmati"-->
 
     </android.support.design.widget.AppBarLayout>
 

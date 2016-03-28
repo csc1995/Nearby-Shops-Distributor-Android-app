@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -143,7 +144,7 @@ public class ShopsListAdapter extends RecyclerView.Adapter<ShopsListAdapter.View
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         TextView shopName,shopRadius;
-        Button editButton,deleteButton;
+        ImageView editButton,deleteButton;
         LinearLayout shopListItem;
 
         public ViewHolder(View itemView) {
@@ -152,9 +153,9 @@ public class ShopsListAdapter extends RecyclerView.Adapter<ShopsListAdapter.View
             shopListItem = (LinearLayout) itemView.findViewById(R.id.shopListItem);
             shopName = (TextView) itemView.findViewById(R.id.shopName);
             shopRadius = (TextView) itemView.findViewById(R.id.radiusOfService);
-            editButton = (Button) itemView.findViewById(R.id.editButton);
+            editButton = (ImageView) itemView.findViewById(R.id.editIcon);
 
-            deleteButton = (Button) itemView.findViewById(R.id.deleteButton);
+            deleteButton = (ImageView) itemView.findViewById(R.id.deleteIcon);
 
         }
     }

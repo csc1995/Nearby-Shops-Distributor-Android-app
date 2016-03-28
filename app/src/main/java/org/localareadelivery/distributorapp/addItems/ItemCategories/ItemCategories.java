@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -31,6 +32,9 @@ import org.localareadelivery.distributorapp.VolleySingleton;
 
 import java.util.ArrayList;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 public class ItemCategories extends AppCompatActivity implements  ItemCategoriesAdapter.requestSubCategory{
 
     ArrayList<ItemCategory> dataset = new ArrayList<>();
@@ -40,6 +44,11 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
     GridLayoutManager layoutManager;
 
     Shop shop = null;
+
+
+    @Bind(R.id.categoryIndicatorLabel)
+    TextView categoryLabel;
+
 
 
     public ItemCategories() {
@@ -54,6 +63,9 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_categories);
+
+        ButterKnife.bind(this);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -205,6 +217,12 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
     }
 
 
+
+    String categoryhash = "--";
+    boolean isFirstCategory = true;
+    StringBuilder stringBuilder = new StringBuilder();
+
+
     @Override
     public void notifyRequestSubCategory(ItemCategory itemCategory) {
 
@@ -215,6 +233,24 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
         currentCategory = itemCategory;
 
         currentCategory.setParentCategory(temp);
+
+
+        stringBuilder.append(categoryhash);
+
+        if(isFirstCategory == true) {
+            categoryLabel.setVisibility(View.VISIBLE);
+            categoryLabel.setText(stringBuilder.toString() + " " + currentCategory.getCategoryName());
+            isFirstCategory = false;
+
+
+
+        }else
+        {
+            categoryLabel.setText(categoryLabel.getText() + "\n" + stringBuilder.toString() + " " + currentCategory.getCategoryName());
+
+        }
+
+
 
         makeRequest();
     }
@@ -247,5 +283,13 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
         {
             super.onBackPressed();
         }
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        ButterKnife.unbind(this);
     }
 }
