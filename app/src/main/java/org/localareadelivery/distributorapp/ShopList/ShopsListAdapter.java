@@ -57,7 +57,7 @@ public class ShopsListAdapter extends RecyclerView.Adapter<ShopsListAdapter.View
     public void onBindViewHolder(final ShopsListAdapter.ViewHolder holder, final int position) {
 
         holder.shopName.setText(dataset.get(position).getShopName());
-        holder.shopRadius.setText(String.valueOf(dataset.get(position).getRadiusOfService()));
+        holder.shopRadius.setText(String.valueOf("Delivery Range : " + dataset.get(position).getRadiusOfService()) + "Km");
 
         final int positionfinal = position;
 
