@@ -21,11 +21,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
-
 import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.ServiceContract.ShopService;
@@ -41,7 +36,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class EditShop extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, com.google.android.gms.location.LocationListener {
+public class EditShop extends AppCompatActivity implements LocationListener {
 
 
     public static final String INTENT_EXTRA_SHOP_KEY = "intentExtraShopKey";
@@ -72,7 +67,7 @@ public class EditShop extends AppCompatActivity implements GoogleApiClient.Conne
     @Bind(R.id.getCurrentLocationButton)
     Button getCurrentLocation;
 
-    GoogleApiClient mGoogleApiClient;
+    //GoogleApiClient mGoogleApiClient;
 
 
     Shop shop = null;
@@ -97,6 +92,8 @@ public class EditShop extends AppCompatActivity implements GoogleApiClient.Conne
         bindData();
 
 
+
+        /*
         // for getting the current Location
         if (mGoogleApiClient != null) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -105,14 +102,12 @@ public class EditShop extends AppCompatActivity implements GoogleApiClient.Conne
                     .addApi(LocationServices.API)
                     .build();
         }
+        */
 
 
         //requestPermission();
 
     }
-
-
-
 
 
     void bindData() {
@@ -275,8 +270,14 @@ public class EditShop extends AppCompatActivity implements GoogleApiClient.Conne
     public void requestPermission() {
 
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission
+                (this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+
+            /// / TODO: Consider calling
             //    ActivityCompat#requestPermissions
             // here to request the missing permissions, and then overriding
             //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
@@ -294,13 +295,12 @@ public class EditShop extends AppCompatActivity implements GoogleApiClient.Conne
         }
 
         mlocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
         mlocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 5, this);
-
-
     }
 
 
+
+    /*
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -368,12 +368,7 @@ public class EditShop extends AppCompatActivity implements GoogleApiClient.Conne
             return;
         }
     }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-
-
-    }
+    */
 
 
     @Override
@@ -391,13 +386,26 @@ public class EditShop extends AppCompatActivity implements GoogleApiClient.Conne
 
         //      mGoogleApiClient.disconnect();
 
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+
+
+        if(mlocationManager!=null)
+        {
+
+            mlocationManager.removeUpdates(this);
+        }
     }
 
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
-
-    }
 
     @Override
     public void onLocationChanged(Location location) {
@@ -411,7 +419,13 @@ public class EditShop extends AppCompatActivity implements GoogleApiClient.Conne
         longitude.setText(String.valueOf(location.getLongitude()));
         latitude.setText(String.valueOf(location.getLatitude()));
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission
+                (this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
             // here to request the missing permissions, and then overriding
@@ -419,9 +433,12 @@ public class EditShop extends AppCompatActivity implements GoogleApiClient.Conne
             //                                          int[] grantResults)
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
+
             return;
+
         }
-        mlocationManager.removeUpdates(this);
+
+            mlocationManager.removeUpdates(this);
 
         }
     }
@@ -440,4 +457,7 @@ public class EditShop extends AppCompatActivity implements GoogleApiClient.Conne
     public void onProviderDisabled(String provider) {
 
     }
+
+
+
 }

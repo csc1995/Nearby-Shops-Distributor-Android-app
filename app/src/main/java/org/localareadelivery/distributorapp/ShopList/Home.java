@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.Menu;
@@ -31,6 +32,9 @@ import org.localareadelivery.distributorapp.VolleySingleton;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
@@ -41,42 +45,57 @@ public class Home extends AppCompatActivity {
 
     ArrayList<Shop> dataset = new ArrayList<>();
 
+    @Bind(R.id.shopsList)
     RecyclerView shopList;
+
     ShopsListAdapter shopListAdapter;
-    RecyclerView.LayoutManager layoutManager;
+    GridLayoutManager layoutManager;
+
+    @Bind(R.id.fab)
+    FloatingActionButton fab;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        ButterKnife.bind(this);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+        //FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
 
-                //Intent intent = new Intent(Home.this,AddShop.class);
 
-                startActivity(new Intent(Home.this,AddShop.class));
-
-            }
-        });
-
-
-        shopList = (RecyclerView) findViewById(R.id.shopsList);
+        //shopList = (RecyclerView) findViewById(R.id.shopsList);
         shopListAdapter = new ShopsListAdapter(this,dataset,this);
         shopList.setAdapter(shopListAdapter);
+
         layoutManager = new GridLayoutManager(null,1);
+
         shopList.setLayoutManager(layoutManager);
-        shopList.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL_LIST));
+        //shopList.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.HORIZONTAL_LIST));
 
 
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+
+        layoutManager.setSpanCount(metrics.widthPixels/350);
+
+    }
+
+
+    @OnClick(R.id.fab)
+    public void fabClick(View view)
+    {
+
+        Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
+
+        startActivity(new Intent(Home.this,AddShop.class));
 
     }
 
@@ -133,9 +152,6 @@ public class Home extends AppCompatActivity {
 
             }
         });
-
-
-
     }
 
 
@@ -239,4 +255,10 @@ public class Home extends AppCompatActivity {
     }
 
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        ButterKnife.unbind(this);
+    }
 }

@@ -13,10 +13,24 @@ import android.widget.EditText;
 
 import org.localareadelivery.distributorapp.ShopList.Home;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 public class DistributorLogin extends AppCompatActivity implements View.OnClickListener {
 
-    EditText serviceUrlEditText,distributorIDEditText;
-    Button loginButton, signUpButton;
+    @Bind(R.id.serviceURLEditText)
+    EditText serviceUrlEditText;
+
+    @Bind(R.id.distributorIDEdittext)
+    EditText distributorIDEditText;
+
+
+    @Bind(R.id.loginButton)
+    Button loginButton;
+
+    @Bind(R.id.signUpButton)
+    Button signUpButton;
 
 
 
@@ -27,16 +41,18 @@ public class DistributorLogin extends AppCompatActivity implements View.OnClickL
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
-        loginButton = (Button) findViewById(R.id.loginButton);
-        signUpButton = (Button) findViewById(R.id.signUpButton);
-
-        loginButton.setOnClickListener(this);
+        ButterKnife.bind(this);
 
 
+        //loginButton = (Button) findViewById(R.id.loginButton);
+        //signUpButton = (Button) findViewById(R.id.signUpButton);
 
-        serviceUrlEditText = (EditText) findViewById(R.id.serviceURLEditText);
-        distributorIDEditText = (EditText) findViewById(R.id.distributorIDEdittext);
+        //loginButton.setOnClickListener(this);
+
+
+
+        //serviceUrlEditText = (EditText) findViewById(R.id.serviceURLEditText);
+        //distributorIDEditText = (EditText) findViewById(R.id.distributorIDEdittext);
 
         serviceUrlEditText.setText(getServiceURL());
         distributorIDEditText.setText(String.valueOf(getDistributorID()));
@@ -151,5 +167,20 @@ public class DistributorLogin extends AppCompatActivity implements View.OnClickL
 
         }
 
+    }
+
+
+    @OnClick(R.id.loginButton)
+    public void login()
+    {
+        startActivity(new Intent(this,Home.class));
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        ButterKnife.unbind(this);
     }
 }

@@ -64,9 +64,6 @@
     <LinearLayout
         android:id="@+id/itemCategoryListItem"
         android:padding="5dp"
-
-        android:elevation="0dp"
-        android:translationZ="5dp"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -103,15 +100,32 @@
                 android:text="Edit"/>
 
             <Button
-                android:id="@+id/detachButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Detach"/>
-            <Button
                 android:id="@+id/deleteButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Delete"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <Button
+                android:id="@+id/detachButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Detach"/>
+
+
+            <Button
+                android:id="@+id/changeCategoryButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Change parent"/>
+
+
         </LinearLayout>
 
 
