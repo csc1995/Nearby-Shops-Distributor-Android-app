@@ -68,31 +68,39 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:scaleType="centerCrop"
+                android:layout_width="wrap_content"
+                android:layout_height="150dp"
+                android:src="@drawable/carrots"/>
 
 
-        <ImageView
-            android:scaleType="centerCrop"
-            android:layout_width="wrap_content"
-            android:layout_height="150dp"
-            android:src="@drawable/carrots"/>
 
+            <TextView
+                android:layout_marginLeft="5dp"
+                android:textColor="@color/white"
+                android:layout_marginTop="5dp"
+                android:id="@+id/categoryName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="30sp"
+                android:text="Category Name"/>
 
+            <TextView
+                android:layout_marginLeft="5dp"
+                android:textColor="@color/white"
+                android:id="@+id/categoryDescription"
+                android:layout_marginTop="55dp"
+                android:layout_marginBottom="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Category Description"/>
 
-        <TextView
-            android:layout_marginTop="5dp"
-            android:id="@+id/categoryName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="30sp"
-            android:text="Category Name"/>
-
-        <TextView
-            android:id="@+id/categoryDescription"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Category Description"/>
+        </RelativeLayout>
 
         <LinearLayout
             android:visibility="gone"
@@ -142,6 +150,7 @@
 
 
         <LinearLayout
+            android:layout_marginTop="5dp"
             android:background="#88000000"
             android:layout_width="match_parent"
             android:layout_height="1dp"/>
@@ -161,23 +170,114 @@
             <ImageView
 
                 android:id="@+id/editIcon"
-                android:padding="10dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingRight="5dp"
+                android:paddingLeft="10dp"
 
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_edit_black_48px"/>
 
+            <TextView
+                android:layout_marginRight="5dp"
+                android:layout_gravity="center_vertical"
+                android:text="Edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="5dp"
+
+                android:background="#88000000"
+                android:layout_width="1dp"
+                android:layout_height="25dp"/>
+
+
             <ImageView
                 android:id="@+id/deleteIcon"
-                android:padding="10dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingRight="5dp"
+                android:paddingLeft="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_delete_black_48px"/>
 
+            <TextView
+                android:layout_marginRight="5dp"
+                android:layout_gravity="center_vertical"
+                android:text="Delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
         </LinearLayout>
 
 
+        <LinearLayout
 
-</LinearLayout>
+            android:background="#88000000"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"/>
+
+
+            <ImageView
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingRight="5dp"
+                android:paddingLeft="10dp"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_delete_black_48px"/>
+
+            <TextView
+                android:layout_marginRight="5dp"
+                android:layout_gravity="center_vertical"
+                android:text="Detach"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="5dp"
+
+                android:background="#88000000"
+                android:layout_width="1dp"
+                android:layout_height="25dp"/>
+
+
+            <ImageView
+
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingRight="5dp"
+                android:paddingLeft="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_delete_black_48px"/>
+
+            <TextView
+                android:layout_marginRight="5dp"
+                android:layout_gravity="center_vertical"
+                android:text="Change Category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </android.support.v7.widget.CardView>

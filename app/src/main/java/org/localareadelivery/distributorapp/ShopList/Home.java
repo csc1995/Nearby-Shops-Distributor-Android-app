@@ -84,7 +84,6 @@ public class Home extends AppCompatActivity {
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
         layoutManager.setSpanCount(metrics.widthPixels/350);
-
     }
 
 

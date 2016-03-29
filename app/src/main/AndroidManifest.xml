@@ -3,9 +3,10 @@
     package="org.localareadelivery.distributorapp">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"
@@ -20,21 +21,21 @@
         <activity
             android:name=".DistributorLogin"
             android:label="@string/title_activity_login"
-            android:theme="@style/AppTheme.NoActionBar">
 
+            android:theme="@style/AppTheme.NoActionBar">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
         <activity
             android:name=".ShopHome.ShopHome"
             android:label="@string/title_activity_shop_home"
             android:parentActivityName=".ShopList.Home"
             android:theme="@style/AppTheme.NoActionBar">
-
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.localareadelivery.distributorapp.ShopList.Home" />
@@ -125,8 +126,6 @@
             android:label="@string/title_activity_edit_shop"
             android:parentActivityName=".ShopList.Home"
             android:theme="@style/AppTheme.NoActionBar">
-
-
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.localareadelivery.distributorapp.ShopList.Home" />
@@ -140,6 +139,18 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.localareadelivery.distributorapp.addStock.Items" />
         </activity>
+        <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
+
+        <activity android:name=".EntryPoint"
+            android:theme="@style/Theme.Intro">
+        </activity>
+
+        <activity
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+
+
     </application>
 
 </manifest>

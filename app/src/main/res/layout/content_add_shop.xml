@@ -123,8 +123,36 @@
 
         </android.support.design.widget.TextInputLayout>
 
+
+        <ImageView
+            android:id="@+id/uploadImage"
+            android:layout_width="match_parent"
+            android:layout_height="250dp" />
+
         <Button
 
+            android:id="@+id/uploadShopImage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Pick Image"
+            android:textColor="@color/white"
+            android:background="@drawable/selector"/>
+
+
+        <Button
+
+            android:layout_marginTop="10dp"
+            android:id="@+id/uploadPickedImage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Upload Image"
+            android:textColor="@color/white"
+            android:background="@drawable/selector"/>
+
+
+
+        <Button
+            android:layout_marginTop="10dp"
             android:id="@+id/addShopButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
