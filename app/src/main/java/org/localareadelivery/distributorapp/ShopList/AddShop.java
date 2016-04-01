@@ -5,18 +5,27 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -24,7 +33,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.soundcloud.android.crop.Crop;
+import com.squareup.picasso.Picasso;
 import com.yalantis.ucrop.UCrop;
+import com.yalantis.ucrop.UCropActivity;
 
 import org.localareadelivery.distributorapp.Model.Image;
 import org.localareadelivery.distributorapp.Model.Shop;
@@ -53,26 +64,48 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class AddShop extends AppCompatActivity {
+public class AddShop extends AppCompatActivity implements LocationListener {
 
 
-    @Bind(R.id.shopName) EditText shopName;
-    @Bind(R.id.radiusOfService) EditText radiusOfService;
-    @Bind(R.id.latitude) EditText latitude;
-    @Bind(R.id.longitude) EditText longitude;
-    @Bind(R.id.averageRating) EditText averageRating;
-    @Bind(R.id.deliveryCharges) EditText deliveryCharges;
-    @Bind(R.id.distributorID) EditText distributorID;
 
-    @Bind(R.id.addShopButton) Button addShop;
 
-    @Bind(R.id.uploadShopImage) Button uploadShopImage;
+    private static final int REQUEST_CODE_READ_EXTERNAL_STORAGE = 56;
 
-    @Bind(R.id.result)TextView result;
+    @Bind(R.id.shopName)
+    EditText shopName;
+
+    @Bind(R.id.radiusOfService)
+    EditText radiusOfService;
+
+    @Bind(R.id.latitude)
+    EditText latitude;
+
+    @Bind(R.id.longitude)
+    EditText longitude;
+
+    @Bind(R.id.deliveryCharges)
+    EditText deliveryCharges;
+
+    @Bind(R.id.distributorID)
+    EditText distributorID;
+
+    @Bind(R.id.addShopButton)
+    Button addShop;
+
+    @Bind(R.id.removePicture)
+    TextView removePicture;
+
+    @Bind(R.id.result)
+    TextView result;
 
     @Bind(R.id.uploadImage)
     ImageView resultView;
 
+    final String IMAGES_END_POINT_URL = "/api/Images";
+
+
+    @Bind(R.id.coordinatorLayout)
+    CoordinatorLayout coordinatorLayout;
 
 
     @Override
@@ -88,15 +121,30 @@ public class AddShop extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-
-
-
         distributorID.setText(String.valueOf(getDistributorID()));
+
+
+        if(savedInstanceState==null) {
+
+            // delete previous file in the cache - This will prevent accidently uploading the previous image
+            File file = new File(getCacheDir().getPath() + "/" + "SampleCropImage.jpeg");
+            showMessageSnackBar("File delete Status : " + String.valueOf(file.delete()));
+
+
+        }
+
     }
 
 
-    void makeRequest(Shop shop)
-    {
+
+
+    void showMessageSnackBar(String message) {
+
+        Snackbar.make(coordinatorLayout, message, Snackbar.LENGTH_SHORT).show();
+    }
+
+
+    void makeRequest(Shop shop) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(getServiceURL())
                 .addConverterFactory(GsonConverterFactory.create())
@@ -114,7 +162,19 @@ public class AddShop extends AppCompatActivity {
 
                 Shop shopResponse = response.body();
 
+                if (response.code() == 201) {
+
+                    showMessageSnackBar("Shop added Successfully !");
+
+                } else {
+
+                    showMessageSnackBar("Error: Unable to add shop !");
+                }
+
                 displayResult(shopResponse);
+
+                // // TODO: 30/3/16
+                // Show snack bar in order to display successful or failure of the image upload
             }
 
             @Override
@@ -122,48 +182,39 @@ public class AddShop extends AppCompatActivity {
 
             }
         });
-
-
     }
 
 
+    void displayResult(Shop shop) {
 
-    void displayResult(Shop shop)
-    {
         String resultString = "ID : " + shop.getShopID()
-                        +"\n : " + shop.getShopName()
-                        +"\n : " + String.valueOf(shop.getLatitude());
-
-
+                + "\n : " + shop.getShopName()
+                + "\n : " + String.valueOf(shop.getLatitude())
+                + "\n : " + String.valueOf(shop.getLongitude())
+                + "\n : " + shop.getImagePath();
 
         result.setText(resultString);
     }
 
 
+    String imagePath = "";
 
+    void addShop() {
 
-    @OnClick(R.id.addShopButton)
-    void addShop()
-    {
-
-
+        //uploadPickedImage();
 
         Shop shop = new Shop();
-
         shop.setDistributorID(getDistributorID());
         shop.setShopName(shopName.getText().toString());
+        shop.setImagePath(imagePath);
 
         try {
 
-            shop.setAverageRating(Double.parseDouble(averageRating.getText().toString()));
-            shop.setDeliveryCharges(Double.parseDouble(averageRating.getText().toString()));
             shop.setLatitude(Double.parseDouble(latitude.getText().toString()));
             shop.setLongitude(Double.parseDouble(longitude.getText().toString()));
             shop.setRadiusOfService(Double.parseDouble(radiusOfService.getText().toString()));
 
-
-        }catch (Exception ex)
-        {
+        } catch (Exception ex) {
 
         }
 
@@ -172,83 +223,20 @@ public class AddShop extends AppCompatActivity {
 
 
 
-    private Uri mDestinationUri;
-
-    private static final String SAMPLE_CROPPED_IMAGE_NAME = "SampleCropImage.jpeg";
-
-    @OnClick(R.id.uploadShopImage)
-    void uploadShopImage()
-    {
 
 
-        mDestinationUri = Uri.fromFile(new File(getCacheDir(), SAMPLE_CROPPED_IMAGE_NAME));
+    void loadImage(String imagePath) {
 
-
-        Log.d("applog", "Cache Dir Path : " + getCacheDir().getPath());
-
-        resultView.setImageDrawable(null);
-        //Crop.pickImage(this);
-
-        showFileChooser();
-
+        Picasso.with(this).load(getServiceURL() + IMAGES_END_POINT_URL + imagePath).into(resultView);
     }
-
-
-    @Bind(R.id.uploadPickedImage) Button uploadPickedImage;
-
-
-
-
-
-    public void startCropActivity(Uri sourceUri)
-    {
-
-        UCrop.of(sourceUri, mDestinationUri)
-
-                .start(this);
-
-
-        //.withMaxResultSize(500, 400)
-        //.withAspectRatio(16, 9)
-    }
-
-
-    /*
-
-
-            // MultipartBody.Part is used to send also the actual file name
-            MultipartBody.Part body =
-                    MultipartBody.Part.createFormData("picture", file.getName(), requestFile);
-
-
-
-
-
-
-            // add another part within the multipart request
-            String descriptionString = "hello, this is description speaking";
-
-
-
-            RequestBody description =
-                    RequestBody.create(
-                            MediaType.parse("image/jpeg"), descriptionString);
-
-
-
-
-     */
-
-
 
 
 
 
     Image image = null;
 
-    @OnClick(R.id.uploadPickedImage)
-    void uploadPickedImage()
-    {
+    @OnClick(R.id.addShopButton)
+    void uploadPickedImage() {
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(getServiceURL())
@@ -257,35 +245,280 @@ public class AddShop extends AppCompatActivity {
 
         ImageService imageService = retrofit.create(ImageService.class);
 
-        //ShopService shopService = retrofit.create(ShopService.class);
 
-        //Call<Image> shopCall = imageService.uploadImage();
-
-        Log.d("applog","onClickUploadImage");
+        Log.d("applog", "onClickUploadImage");
 
 
+        // code for checking the Read External Storage Permission and granting it.
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+
+            /// / TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    REQUEST_CODE_READ_EXTERNAL_STORAGE);
+
+            return;
+
+        }
+
+
+        File file = new File(getCacheDir().getPath() + "/" + "SampleCropImage.jpeg");
+
+        // Marker
+
+        RequestBody requestBodyBinary = null;
+
+        InputStream in = null;
+
+        try {
+            in = new FileInputStream(file);
+
+            byte[] buf;
+            buf = new byte[in.available()];
+            while (in.read(buf) != -1) ;
+
+            requestBodyBinary = RequestBody
+
+                    .create(MediaType.parse("application/octet-stream"), buf);
+
+            //Bitmap.createScaledBitmap()
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Call<Image> imageCall = imageService.uploadImage(requestBodyBinary);
+
+        imageCall.enqueue(new Callback<Image>() {
+            @Override
+            public void onResponse(Call<Image> call, Response<Image> response) {
+
+                image = response.body();
+
+                Log.d("applog", "inside retrofit call !" + String.valueOf(response.code()));
+                Log.d("applog", "image Path : " + image.getPath());
+
+
+                //// TODO: 31/3/16
+                // check whether load image call is required. or Not
+
+                loadImage(image.getPath());
+
+                imagePath = image.getPath();
+
+                if (response.code() != 201) {
+                    showMessageSnackBar("Unable to upload Image. Try changing the image by in the Edit Screen !");
+
+                    result.setText("Unable to upload Image. Try changing the image by in the Edit Screen !");
+
+                }
+
+                addShop();
+            }
+
+            @Override
+            public void onFailure(Call<Image> call, Throwable t) {
+
+                Log.d("applog", "inside Error: " + t.getMessage());
+
+                showMessageSnackBar("Unable to upload Image. Try changing the image by in the Edit Screen !");
+
+                result.setText("Unable to upload Image. Try changing the image by in the Edit Screen !");
+
+                addShop();
+
+            }
+        });
+    }
 
 
 
-        if(imageUri!=null)
+
+
+
+    public int getDistributorID() {
+        // Get a handle to shared preference
+        SharedPreferences sharedPref;
+        sharedPref = this.getSharedPreferences(getString(R.string.preference_file_name), this.MODE_PRIVATE);
+
+        // read from shared preference
+        int distributorID = sharedPref.getInt(getString(R.string.preference_distributor_id_key), 0);
+
+        return distributorID;
+    }
+
+
+    public String getServiceURL() {
+        SharedPreferences sharedPref = this.getSharedPreferences(getString(R.string.preference_file_name), this.MODE_PRIVATE);
+
+        String service_url = sharedPref.getString(getString(R.string.preference_service_url_key), "default");
+
+        return service_url;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        ButterKnife.unbind(this);
+    }
+
+
+    /*
+
+     Code for adding the location
+
+     */
+
+
+
+
+    @Bind(R.id.getCurrentLocationButton) Button getCurrentLocation;
+
+    final int MY_PERMISSIONS_REQUEST_READ_LOCATION = 1;
+
+    LocationManager mlocationManager;
+
+
+    @OnClick(R.id.getCurrentLocationButton)
+    public void requestPermission() {
+
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission
+                (this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+
+            /// / TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    MY_PERMISSIONS_REQUEST_READ_LOCATION);
+
+            return;
+        }
+
+        mlocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        mlocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 5, this);
+    }
+
+
+
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_READ_LOCATION:
+
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+
+                    LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+                    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                            != PackageManager.PERMISSION_GRANTED
+                            && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                            != PackageManager.PERMISSION_GRANTED) {
+
+                        // TODO: Consider calling
+                        //    ActivityCompat#requestPermissions
+                        // here to request the missing permissions, and then overriding
+                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                        //                                          int[] grantResults)
+                        // to handle the case where the user grants the permission. See the documentation
+                        // for ActivityCompat#requestPermissions for more details.
+                        return;
+                    }
+
+                    mlocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+                    mlocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 5, this);
+
+                }
+                break;
+
+
+            case REQUEST_CODE_READ_EXTERNAL_STORAGE:
+
+                uploadPickedImage();
+
+                break;
+        }
+    }
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        //      mGoogleApiClient.disconnect();
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission
+                (this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED)
+
         {
-            // do upload operations
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+
+
+        if(mlocationManager!=null)
+        {
+
+            mlocationManager.removeUpdates(this);
+        }
+    }
 
 
 
-            Log.d("applog","inside image URI !=null");
+    @Override
+    public void onLocationChanged(Location location) {
 
+        if(location!=null)
+        {
 
-            // use the FileUtils to get the actual file by uri
-          //File file = File.getFile(this, imageUri);
+            longitude.setText(String.valueOf(location.getLongitude()));
+            latitude.setText(String.valueOf(location.getLatitude()));
 
-
-
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission
+                    (this, Manifest.permission.ACCESS_COARSE_LOCATION)
                     != PackageManager.PERMISSION_GRANTED) {
 
 
-                /// / TODO: Consider calling
+                // TODO: Consider calling
                 //    ActivityCompat#requestPermissions
                 // here to request the missing permissions, and then overriding
                 //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
@@ -293,267 +526,71 @@ public class AddShop extends AppCompatActivity {
                 // to handle the case where the user grants the permission. See the documentation
                 // for ActivityCompat#requestPermissions for more details.
 
-
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                        1);
-
                 return;
-
             }
 
-
-
-            //String filePath = getFilePath(this,imageUri);
-
-
-            String filePath2 = getRealPathFromURI(imageUri);
-
-            //String filepath3 = getRealPathFromURI2(imageUri);
-
-
-            File file = new File(getCacheDir().getPath() + "/" + "SampleCropImage.jpeg");
-
-
-
-
-
-
-
-
-            //byte [] data = BitmapUtility.getBitmapToBytes(((BitmapDrawable) resultView.getDrawable()).getBitmap());
-
-
-            //Log.d("applog",imageUri.toString());
-
-            //multipart/form-data
-            // create RequestBody instance from file
-            RequestBody requestFile =
-                    RequestBody.create(MediaType.parse("image/jpeg"), file);
-
-            //imageService.uploadImageMultipart(body)
-
-
-            //.addPart(Headers.of("Content-Type", "image/png"),
-                //RequestBody.create(MediaType.parse("image/png"), file))
-
-
-            //.addPart(RequestBody.create(MediaType.parse("image/png"), file))
-
-            RequestBody requestBodyMulti = new MultipartBody.Builder()
-                    .setType(MultipartBody.FORM)
-                    .addFormDataPart("sample",file.getName(),requestFile)
-                    .build();
-
-
-            MediaType MEDIA_TYPE_PNG = MediaType.parse("multipart/form-data");
-
-            RequestBody requestBody = RequestBody.create(MEDIA_TYPE_PNG, file);
-
-
-
-
-            // Marker
-
-            RequestBody requestBodyBinary = null;
-
-            InputStream in = null;
-
-            try {
-                in = new FileInputStream(file);
-
-            byte[] buf;
-            buf = new byte[in.available()];
-            while (in.read(buf) != -1);
-
-                requestBodyBinary = RequestBody
-
-                    .create(MediaType.parse("application/octet-stream"), buf);
-
-
-
-                //Bitmap.createScaledBitmap()
-
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-
-
-            Call<Image> imageCall = imageService.uploadImage(requestBodyBinary);
-
-
-
-            imageCall.enqueue(new Callback<Image>() {
-                @Override
-                public void onResponse(Call<Image> call, Response<Image> response) {
-
-                    image = response.body();
-
-                    Log.d("applog","inside retrofit call !" + String.valueOf(response.code()));
-
-                }
-
-                @Override
-                public void onFailure(Call<Image> call, Throwable t) {
-
-                    Log.d("applog","inside Error: " + t.getMessage());
-
-
-                }
-            });
-
-
-            if(image!=null) {
-
-                Toast.makeText(this, "inside File Upload : " + image.getPath(), Toast.LENGTH_SHORT).show();
-
-                Log.d("applog","image Path : " + image.getPath());
-
-            }
+            mlocationManager.removeUpdates(this);
         }
     }
-
-
-
-    //Convert the image URI to the direct file system path of the image file
-    public String getRealPathFromURI2(Uri contentUri) {
-        String [] proj={MediaStore.Images.Media.DATA};
-        android.database.Cursor cursor = managedQuery( contentUri,
-                proj,     // Which columns to return
-                null,     // WHERE clause; which rows to return (all rows)
-                null,     // WHERE clause selection arguments (none)
-                null);     // Order-by clause (ascending by name)
-        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        cursor.moveToFirst();
-        return cursor.getString(column_index);
-    }
-
-
-    @SuppressLint("NewApi")
-    public String getFilePath(Context context, Uri uri)
-    {
-        String filePath = "";
-        String wholeID = DocumentsContract.getDocumentId(uri);
-
-        // Split at colon, use second item in the array
-        String id = wholeID.split(":")[1];
-
-        String[] column = { MediaStore.Images.Media.DATA };
-
-        // where id is equal to
-        String sel = MediaStore.Images.Media._ID + "=?";
-
-        Cursor cursor = context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                column, sel, new String[]{ id }, null);
-
-        int columnIndex = cursor.getColumnIndex(column[0]);
-
-        if (cursor.moveToFirst()) {
-            filePath = cursor.getString(columnIndex);
-        }
-        cursor.close();
-        return filePath;
-    }
-
-
-    private String getRealPathFromURI(Uri contentURI) {
-        String result;
-        Cursor cursor = getContentResolver().query(contentURI, null, null, null, null);
-        if (cursor == null) { // Source is Dropbox or other similar local file path
-            result = contentURI.getPath();
-        } else {
-            cursor.moveToFirst();
-            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-            result = cursor.getString(idx);
-            cursor.close();
-        }
-        return result;
-    }
-
-
-
-
-
-
-    Uri imageUri = null;
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent result) {
+    public void onStatusChanged(String provider, int status, Bundle extras) {
 
-        super.onActivityResult(requestCode, resultCode, result);
-
-
-        if (requestCode == Crop.REQUEST_PICK && resultCode == RESULT_OK) {
-            beginCrop(result.getData());
-        } else if (requestCode == Crop.REQUEST_CROP) {
-            handleCrop(resultCode, result);
-        }
-
-
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && result != null && result.getData() != null) {
-
-            Uri filePath = result.getData();
-
-            //imageUri = filePath;
-
-            if (filePath != null) {
-                startCropActivity(result.getData());
-            }
-
-           }
-
-
-
-        if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
-            final Uri resultUri = UCrop.getOutput(result);
-
-            imageUri = resultUri;
-
-            try {
-                //Getting the Bitmap from Gallery
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), resultUri);
-                //Setting the Bitmap to ImageView
-                resultView.setImageBitmap(bitmap);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-
-        } else if (resultCode == UCrop.RESULT_ERROR) {
-            final Throwable cropError = UCrop.getError(result);
-        }
     }
 
-    private void beginCrop(Uri source) {
+    @Override
+    public void onProviderEnabled(String provider) {
 
-        //imageUri = source;
+    }
 
-        Uri destination = Uri.fromFile(new File(getCacheDir(), "cropped"));
-        Crop.of(source, destination).withAspect(16,9).withMaxSize(300,200).start(this);
+    @Override
+    public void onProviderDisabled(String provider) {
+
     }
 
 
 
-    private void handleCrop(int resultCode, Intent result) {
-        if (resultCode == RESULT_OK) {
 
-            imageUri = Crop.getOutput(result);
 
-            resultView.setImageURI(imageUri);
 
-        } else if (resultCode == Crop.RESULT_ERROR) {
+    // code for changing / picking image and saving it in the cache folder
 
-            Toast.makeText(this, Crop.getError(result).getMessage(), Toast.LENGTH_SHORT).show();
-        }
+
+    @OnClick(R.id.removePicture)
+    void removeImage()
+    {
+
+        File file = new File(getCacheDir().getPath() + "/" + "SampleCropImage.jpeg");
+        showMessageSnackBar("File delete Status : " + String.valueOf(file.delete()));
+
+
+        imagePath = "";
+        resultView.setImageDrawable(null);
     }
 
 
+
+
+    private static final String SAMPLE_CROPPED_IMAGE_NAME = "SampleCropImage.jpeg";
+    private Uri mDestinationUri;
+
+    @Bind(R.id.textChangePicture)
+    TextView changePicture;
+
+
+    @OnClick(R.id.textChangePicture)
+    void pickShopImage() {
+        mDestinationUri = Uri.fromFile(new File(getCacheDir(), SAMPLE_CROPPED_IMAGE_NAME));
+
+        Log.d("applog", "Cache Dir Path : " + getCacheDir().getPath());
+
+        resultView.setImageDrawable(null);
+        //Crop.pickImage(this);
+
+        showFileChooser();
+    }
 
     private int PICK_IMAGE_REQUEST = 21;
-
-
 
     private void showFileChooser() {
         Intent intent = new Intent();
@@ -563,37 +600,62 @@ public class AddShop extends AppCompatActivity {
     }
 
 
+    public void startCropActivity(Uri sourceUri) {
+
+        UCrop.Options options = new UCrop.Options();
+        options.setCompressionFormat(Bitmap.CompressFormat.JPEG);
+        options.setCompressionQuality(100);
+
+        options.setToolbarColor(getResources().getColor(R.color.cyan900));
+        options.setAllowedGestures(UCropActivity.SCALE, UCropActivity.SCALE, UCropActivity.SCALE);
 
 
+        // this function takes the file from the source URI and saves in into the destination URI location.
+        UCrop.of(sourceUri, mDestinationUri)
+                .withOptions(options)
+                .start(this);
 
-
-    public int getDistributorID()
-    {
-        // Get a handle to shared preference
-        SharedPreferences sharedPref;
-        sharedPref = this.getSharedPreferences(getString(R.string.preference_file_name), this.MODE_PRIVATE);
-
-        // read from shared preference
-        int distributorID = sharedPref.getInt(getString(R.string.preference_distributor_id_key),0);
-
-        return distributorID;
+        //.withMaxResultSize(500, 400)
+        //.withAspectRatio(16, 9)
     }
 
 
-    public String  getServiceURL()
-    {
-        SharedPreferences sharedPref = this.getSharedPreferences(getString(R.string.preference_file_name), this.MODE_PRIVATE);
 
-        String service_url = sharedPref.getString(getString(R.string.preference_service_url_key),"default");
-
-        return service_url;
-    }
 
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void onActivityResult(int requestCode, int resultCode, Intent result) {
 
-        ButterKnife.unbind(this);
+        super.onActivityResult(requestCode, resultCode, result);
+
+
+        if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
+
+            resultView.setImageURI(UCrop.getOutput(result));
+
+
+        } else if (resultCode == UCrop.RESULT_ERROR) {
+
+            final Throwable cropError = UCrop.getError(result);
+
+        }
+
+
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
+                && result != null
+                && result.getData() != null) {
+
+
+            Uri filePath = result.getData();
+
+            //imageUri = filePath;
+
+            if (filePath != null) {
+                startCropActivity(result.getData());
+            }
+
+        }
     }
+
+
 }

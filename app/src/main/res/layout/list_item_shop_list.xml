@@ -20,11 +20,13 @@
         android:layout_height="wrap_content">
 
         <ImageView
+            android:id="@+id/shopImage"
             android:contentDescription="A sample description"
             android:scaleType="centerCrop"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:src="@drawable/carrots"/>
+            android:background="#66000000"
+            android:src="@drawable/nature_people"/>
 
         <TextView
             android:padding="5dp"

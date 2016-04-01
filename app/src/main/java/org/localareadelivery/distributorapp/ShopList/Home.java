@@ -141,7 +141,13 @@ public class Home extends AppCompatActivity {
                 List<Shop> shopsList = response.body();
 
                 dataset.clear();
-                dataset.addAll(shopsList);
+
+
+                if(shopsList!=null)
+                {
+                    dataset.addAll(shopsList);
+                }
+
                 Home.this.shopListAdapter.notifyDataSetChanged();
 
             }

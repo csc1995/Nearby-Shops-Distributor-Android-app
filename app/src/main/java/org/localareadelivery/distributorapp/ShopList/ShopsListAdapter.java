@@ -13,6 +13,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import org.localareadelivery.distributorapp.ApplicationState.ApplicationState;
 import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.R;
@@ -21,6 +23,8 @@ import org.localareadelivery.distributorapp.ShopHome.ShopHome;
 
 import java.util.ArrayList;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -53,11 +57,20 @@ public class ShopsListAdapter extends RecyclerView.Adapter<ShopsListAdapter.View
     }
 
 
+
+    final String IMAGE_ENDPOINT_URL = "/api/Images";
+
+
     @Override
     public void onBindViewHolder(final ShopsListAdapter.ViewHolder holder, final int position) {
 
         holder.shopName.setText(dataset.get(position).getShopName());
         holder.shopRadius.setText(String.valueOf("Delivery Range : " + dataset.get(position).getRadiusOfService()) + "Km");
+
+        String imagePath = getServiceURL() + IMAGE_ENDPOINT_URL + dataset.get(position).getImagePath();
+
+        Picasso.with(context).load(imagePath).placeholder(R.drawable.nature_people).into(holder.shopImage);
+
 
         final int positionfinal = position;
 
@@ -73,11 +86,8 @@ public class ShopsListAdapter extends RecyclerView.Adapter<ShopsListAdapter.View
                 Log.d("log","position= " + String.valueOf(position) + " : " + String.valueOf(dataset.size()));
                 context.startActivity(intent);
 
-
                 //Messy Code - To be refactored in future
-
                 ApplicationState.getInstance().setCurrentShop(dataset.get(position));
-
             }
 
         });
@@ -146,17 +156,20 @@ public class ShopsListAdapter extends RecyclerView.Adapter<ShopsListAdapter.View
         TextView shopName,shopRadius;
         ImageView editButton,deleteButton;
         LinearLayout shopListItem;
+        @Bind(R.id.shopImage)ImageView shopImage;
+
+
 
         public ViewHolder(View itemView) {
             super(itemView);
+
+            ButterKnife.bind(this,itemView);
 
             shopListItem = (LinearLayout) itemView.findViewById(R.id.shopListItem);
             shopName = (TextView) itemView.findViewById(R.id.shopName);
             shopRadius = (TextView) itemView.findViewById(R.id.radiusOfService);
             editButton = (ImageView) itemView.findViewById(R.id.editIcon);
-
             deleteButton = (ImageView) itemView.findViewById(R.id.deleteIcon);
-
         }
     }
 
