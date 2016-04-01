@@ -505,7 +505,6 @@ public class EditShop extends AppCompatActivity implements LocationListener {
         resultView.setImageDrawable(null);
 
         isImageChanged = true;
-
     }
 
 
@@ -525,7 +524,7 @@ public class EditShop extends AppCompatActivity implements LocationListener {
 
         Log.d("applog", "Cache Dir Path : " + getCacheDir().getPath());
 
-        resultView.setImageDrawable(null);
+        //resultView.setImageDrawable(null);
         //Crop.pickImage(this);
 
         showFileChooser();
@@ -597,7 +596,9 @@ public class EditShop extends AppCompatActivity implements LocationListener {
             //imageUri = filePath;
 
             if (filePath != null) {
+
                 startCropActivity(result.getData());
+
             }
 
         }
@@ -607,7 +608,9 @@ public class EditShop extends AppCompatActivity implements LocationListener {
 
 
 
-    // upload image
+
+
+    // upload image after being picked up
 
 
     Image image = null;
@@ -649,6 +652,7 @@ public class EditShop extends AppCompatActivity implements LocationListener {
 
 
         File file = new File(getCacheDir().getPath() + "/" + "SampleCropImage.jpeg");
+
 
         // Marker
 
@@ -723,6 +727,5 @@ public class EditShop extends AppCompatActivity implements LocationListener {
             }
         });
     }
-
 
 }

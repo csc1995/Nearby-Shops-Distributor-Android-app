@@ -108,8 +108,6 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
         Log.d("applog",String.valueOf(metrics.widthPixels/250));
 
 
-
-
         if (metrics.widthPixels >= 600 && (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT))
         {
             // in case of larger width of tables set the column count to 3
@@ -219,7 +217,7 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
 
 
     String categoryhash = "--";
-    boolean isFirstCategory = true;
+    boolean isRootCategory = true;
     StringBuilder stringBuilder = new StringBuilder();
 
 
@@ -234,14 +232,15 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
 
         currentCategory.setParentCategory(temp);
 
-
         stringBuilder.append(categoryhash);
 
-        if(isFirstCategory == true) {
-            categoryLabel.setVisibility(View.VISIBLE);
-            categoryLabel.setText(stringBuilder.toString() + " " + currentCategory.getCategoryName());
-            isFirstCategory = false;
+        if(isRootCategory == true) {
 
+            categoryLabel.setVisibility(View.VISIBLE);
+
+            categoryLabel.setText(stringBuilder.toString() + " " + currentCategory.getCategoryName());
+
+            isRootCategory = false;
 
 
         }else
@@ -250,8 +249,6 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
 
         }
 
-
-
         makeRequest();
     }
 
@@ -259,7 +256,7 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
 
     @Override
     public void onBackPressed() {
-        //super.onBackPressed();
+
 
         if(currentCategory!=null)
         {
