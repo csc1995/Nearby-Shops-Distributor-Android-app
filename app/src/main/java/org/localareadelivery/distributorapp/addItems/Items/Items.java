@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -25,9 +26,19 @@ import org.localareadelivery.distributorapp.DividerItemDecoration;
 import org.localareadelivery.distributorapp.Model.Item;
 import org.localareadelivery.distributorapp.Model.ItemCategory;
 import org.localareadelivery.distributorapp.R;
+import org.localareadelivery.distributorapp.ServiceContract.ItemService;
 import org.localareadelivery.distributorapp.VolleySingleton;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Items extends AppCompatActivity {
 
@@ -35,18 +46,31 @@ public class Items extends AppCompatActivity {
     ArrayList<Item> dataset = new ArrayList<>();
 
     public static final String ITEM_CATEGORY_INTENT_KEY = "itemCategoryIntentKey";
+    public static final String ADD_ITEM_INTENT_KEY = "addItemIntentKey";
+
 
     RecyclerView itemsList;
     ItemsAdapter itemsAdapter;
 
-    TextView itemCategoryName;
+    @Bind(R.id.categoryName) TextView itemCategoryName;
 
     ItemCategory itemCategory;
+
+
+    @Bind(R.id.fab) FloatingActionButton fab;
+
+
+    GridLayoutManager gridLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_items);
+
+        ButterKnife.bind(this);
+
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -62,77 +86,78 @@ public class Items extends AppCompatActivity {
 
 
         if(itemCategory!=null) {
+
             itemsAdapter = new ItemsAdapter(dataset, this, this, itemCategory);
+
         }
 
         itemsList.setAdapter(itemsAdapter);
-        itemsList.setLayoutManager(new GridLayoutManager(this,1));
+
+
+        gridLayoutManager = new GridLayoutManager(this,1);
+
+        itemsList.setLayoutManager(gridLayoutManager);
         itemsList.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL_LIST));
-
-
-        itemCategoryName = (TextView) findViewById(R.id.categoryName);
 
         if(itemCategory!=null) {
             itemCategoryName.setText("// " + itemCategory.getCategoryName());
         }
+
+
+
+        // for setting the span count dynamically according to the screen width
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+
+        gridLayoutManager.setSpanCount(metrics.widthPixels/350);
     }
 
 
-    public void makeRequest()
+
+    @OnClick(R.id.fab)
+    void fabClick()
     {
-        String url = getServiceURL() + "/api/Item?ItemCategoryID=" + String.valueOf(itemCategory.getItemCategoryID());
+        Intent addItemIntent = new Intent(this,AddItem.class);
 
-        Log.d("response",url);
+        addItemIntent.putExtra(ADD_ITEM_INTENT_KEY,itemCategory);
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+        startActivity(addItemIntent);
+    }
+
+
+
+    public void makeRetrofitRequest()
+    {
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(getServiceURL())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        ItemService itemService = retrofit.create(ItemService.class);
+
+        Call<List<Item>> items = itemService.getItems(itemCategory.getItemCategoryID());
+
+        items.enqueue(new Callback<List<Item>>() {
+
             @Override
-            public void onResponse(String response) {
+            public void onResponse(Call<List<Item>> call, retrofit2.Response<List<Item>> response) {
 
-                Log.d("response",response);
 
-                parseJSON(response);
+                if(response.body()!=null) {
 
-                itemsAdapter.notifyDataSetChanged();
+                    dataset.addAll(response.body());
+                    itemsAdapter.notifyDataSetChanged();
+                }
+
 
             }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
 
-                Log.d("response",error.toString());
+            @Override
+            public void onFailure(Call<List<Item>> call, Throwable t) {
+
             }
         });
-
-        VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
-
-    }
-
-    public void parseJSON(String jsonString)
-    {
-        try {
-
-            JSONArray jsonArray = new JSONArray(jsonString);
-
-            for(int i = 0;i<jsonArray.length();i++)
-            {
-                JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-                Item item = new Item();
-
-                item.setItemID(jsonObject.getInt("itemID"));
-                item.setItemDescription(jsonObject.getString("itemDescription"));
-                item.setBrandName(jsonObject.getString("brandName"));
-                item.setItemName(jsonObject.getString("itemName"));
-                dataset.add(item);
-
-            }
-
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-
     }
 
 
@@ -149,7 +174,7 @@ public class Items extends AppCompatActivity {
     public void notifyDelete()
     {
         dataset.clear();
-        makeRequest();
+        makeRetrofitRequest();
     }
 
     @Override
@@ -157,7 +182,16 @@ public class Items extends AppCompatActivity {
         super.onResume();
 
         dataset.clear();
-        makeRequest();
+        makeRetrofitRequest();
+
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        ButterKnife.unbind(this);
 
     }
 }

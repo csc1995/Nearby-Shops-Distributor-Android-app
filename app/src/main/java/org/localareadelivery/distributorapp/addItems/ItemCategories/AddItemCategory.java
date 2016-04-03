@@ -50,11 +50,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class AddItemCategory extends AppCompatActivity{
 
 
-    EditText itemCategoryName,itemCategoryDescription;
+    @Bind(R.id.itemCategoryName) EditText itemCategoryName;
+    @Bind(R.id.itemCategoryDescription) EditText itemCategoryDescription;
+    @Bind(R.id.addItemCategory) Button addItemCategory;
 
-    Button addItemCategory;
-
-    TextView result;
+    @Bind(R.id.result) TextView result;
 
     String imagePath = "";
 
@@ -83,23 +83,13 @@ public class AddItemCategory extends AppCompatActivity{
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
-        itemCategoryName = (EditText) findViewById(R.id.itemCategoryName);
-        itemCategoryDescription = (EditText) findViewById(R.id.itemCategoryDescription);
-        addItemCategory = (Button) findViewById(R.id.addItemCategory);
-
-        result = (TextView) findViewById(R.id.result);
-
         parentCategory = getIntent().getParcelableExtra(ADD_ITEM_CATEGORY_INTENT_KEY);
-
-
 
         if(savedInstanceState==null) {
             // delete previous file in the cache - This will prevent accidently uploading the previous image
             File file = new File(getCacheDir().getPath() + "/" + "SampleCropImage.jpeg");
 
             showMessageSnackBar("File delete Status : " + String.valueOf(file.delete()));
-
         }
     }
 

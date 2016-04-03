@@ -237,28 +237,41 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder>{
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        TextView itemName,itemDescription,itemBrandName;
+        @Bind(R.id.itemName) TextView itemName;
+        @Bind(R.id.itemDescription) TextView itemDescription;
+        @Bind(R.id.brandName) TextView itemBrandName;
 
         @Bind(R.id.deleteIcon) ImageView deleteIcon;
         @Bind(R.id.deleteText) TextView deleteText;
         @Bind(R.id.editIcon) ImageView editIcon;
-        @Bind(R.id.editText) ImageView editText;
+        @Bind(R.id.editText) TextView editText;
 
-        @Bind(R.id.itemsListItem) LinearLayout itemsListItem;
+        @Bind(R.id.itemListItem) LinearLayout itemsListItem;
 
         @Bind(R.id.itemImage) ImageView itemImage;
 
 
         public ViewHolder(View itemView) {
-            super(itemView);
 
-            itemName = (TextView) itemView.findViewById(R.id.itemName);
-            itemDescription = (TextView) itemView.findViewById(R.id.itemDescription);
-            itemBrandName = (TextView) itemView.findViewById(R.id.brandName);
+            super(itemView);
 
             ButterKnife.bind(this,itemView);
 
+            //itemName = (TextView) itemView.findViewById(R.id.itemName);
+            //itemDescription = (TextView) itemView.findViewById(R.id.itemDescription);
+            //itemBrandName = (TextView) itemView.findViewById(R.id.brandName);
+
+            //deleteIcon = (ImageView) itemView.findViewById(R.id.deleteIcon);
+            //deleteText = (TextView) itemView.findViewById(R.id.deleteText);
+
+            //editIcon = (ImageView) itemView.findViewById(R.id.editIcon);
+            //editText = (TextView) itemView.findViewById(R.id.editText);
+
+
+
+
         }
+
     }
 
 

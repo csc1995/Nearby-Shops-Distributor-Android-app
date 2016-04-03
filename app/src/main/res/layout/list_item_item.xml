@@ -10,7 +10,7 @@
     android:layout_margin="5dp">
 
 <LinearLayout
-    android:id="@+id/itemCategoryListItem"
+    android:id="@+id/itemListItem"
     android:padding="5dp"
     android:orientation="vertical"
     android:layout_width="match_parent"

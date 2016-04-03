@@ -64,14 +64,14 @@ public class EditItem extends AppCompatActivity{
 
     boolean isImageChanged = false;
 
-    EditText itemID;
-    EditText itemName;
-    EditText itemBrandName;
-    EditText itemDescription;
+    @Bind(R.id.itemID) EditText itemID;
+    @Bind(R.id.itemName) EditText itemName;
+    @Bind(R.id.itemBrandName) EditText itemBrandName;
+    @Bind(R.id.itemDescription) EditText itemDescription;
 
-    Button buttonUpdateItem;
+    @Bind(R.id.saveButton) Button buttonUpdateItem;
 
-    TextView result;
+    @Bind(R.id.result) TextView result;
 
 
     public static final String ITEM_CATEGORY_INTENT_KEY = "itemCategoryIntentKey";
@@ -80,6 +80,7 @@ public class EditItem extends AppCompatActivity{
     Item itemForEdit;
     ItemCategory itemCategory;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,7 +88,7 @@ public class EditItem extends AppCompatActivity{
 
         ButterKnife.bind(this);
 
-        itemForEdit = getIntent().getParcelableExtra(ITEM_CATEGORY_INTENT_KEY);
+        itemForEdit = getIntent().getParcelableExtra(ITEM_INTENT_KEY);
         itemCategory = getIntent().getParcelableExtra(ITEM_CATEGORY_INTENT_KEY);
 
 
@@ -105,15 +106,6 @@ public class EditItem extends AppCompatActivity{
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        itemID = (EditText) findViewById(R.id.itemID);
-        itemName = (EditText) findViewById(R.id.itemName);
-        itemBrandName = (EditText) findViewById(R.id.itemBrandName);
-        itemDescription = (EditText) findViewById(R.id.itemDescription);
-
-        buttonUpdateItem = (Button) findViewById(R.id.updateItemButton);
-
-        result = (TextView) findViewById(R.id.result);
 
     }
 
@@ -134,9 +126,7 @@ public class EditItem extends AppCompatActivity{
             itemName.setText(itemForEdit.getItemName());
             itemBrandName.setText(itemForEdit.getBrandName());
             itemDescription.setText(itemForEdit.getItemDescription());
-
         }
-
     }
 
 
@@ -205,8 +195,8 @@ public class EditItem extends AppCompatActivity{
 
 
 
-    @OnClick(R.id.updateItemCategory)
-    public void UpdateItemCategory()
+    @OnClick(R.id.saveButton)
+    public void UpdateItem()
     {
 
         if(isImageChanged)
