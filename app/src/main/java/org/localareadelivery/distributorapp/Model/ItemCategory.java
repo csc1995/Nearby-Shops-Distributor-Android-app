@@ -22,6 +22,8 @@ public class ItemCategory implements Parcelable{
 	int parentCategoryID;
 	boolean isLeafNode;
 
+	String imagePath;
+
 
 
 	// variables for utility functions
@@ -33,8 +35,13 @@ public class ItemCategory implements Parcelable{
 
 
 
+	public String getImagePath() {
+		return imagePath;
+	}
 
-
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
+	}
 
 	public int getParentCategoryID() {
 		return parentCategoryID;
@@ -64,36 +71,6 @@ public class ItemCategory implements Parcelable{
 	
 	
 	//Getters and Setters
-
-	protected ItemCategory(Parcel in) {
-		itemCategoryID = in.readInt();
-		categoryName = in.readString();
-		categoryDescription = in.readString();
-	}
-
-	@Override
-	public void writeToParcel(Parcel dest, int flags) {
-		dest.writeInt(itemCategoryID);
-		dest.writeString(categoryName);
-		dest.writeString(categoryDescription);
-	}
-
-	@Override
-	public int describeContents() {
-		return 0;
-	}
-
-	public static final Creator<ItemCategory> CREATOR = new Creator<ItemCategory>() {
-		@Override
-		public ItemCategory createFromParcel(Parcel in) {
-			return new ItemCategory(in);
-		}
-
-		@Override
-		public ItemCategory[] newArray(int size) {
-			return new ItemCategory[size];
-		}
-	};
 
 	public String getCategoryName() {
 		return categoryName;
@@ -127,4 +104,48 @@ public class ItemCategory implements Parcelable{
 	public void setParentCategory(ItemCategory parentCategory) {
 		this.parentCategory = parentCategory;
 	}
+
+
+
+
+	// parcelable Implementation
+
+	protected ItemCategory(Parcel in) {
+		itemCategoryID = in.readInt();
+		categoryName = in.readString();
+		categoryDescription = in.readString();
+		parentCategoryID = in.readInt();
+		isLeafNode = in.readByte() != 0;
+		imagePath = in.readString();
+		parentCategory = in.readParcelable(ItemCategory.class.getClassLoader());
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeInt(itemCategoryID);
+		dest.writeString(categoryName);
+		dest.writeString(categoryDescription);
+		dest.writeInt(parentCategoryID);
+		dest.writeByte((byte) (isLeafNode ? 1 : 0));
+		dest.writeString(imagePath);
+		dest.writeParcelable(parentCategory, flags);
+	}
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	public static final Creator<ItemCategory> CREATOR = new Creator<ItemCategory>() {
+		@Override
+		public ItemCategory createFromParcel(Parcel in) {
+			return new ItemCategory(in);
+		}
+
+		@Override
+		public ItemCategory[] newArray(int size) {
+			return new ItemCategory[size];
+		}
+	};
+
 }

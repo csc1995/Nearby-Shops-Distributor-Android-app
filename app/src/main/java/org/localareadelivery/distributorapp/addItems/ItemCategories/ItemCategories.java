@@ -28,16 +28,22 @@ import org.localareadelivery.distributorapp.ApplicationState.ApplicationState;
 import org.localareadelivery.distributorapp.Model.ItemCategory;
 import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.R;
+import org.localareadelivery.distributorapp.ServiceContract.ItemCategoryService;
 import org.localareadelivery.distributorapp.VolleySingleton;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ItemCategories extends AppCompatActivity implements  ItemCategoriesAdapter.requestSubCategory{
 
-    ArrayList<ItemCategory> dataset = new ArrayList<>();
+    List<ItemCategory> dataset = new ArrayList<>();
     RecyclerView itemCategoriesList;
     ItemCategoriesAdapter listAdapter;
 
@@ -71,15 +77,18 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                Intent addCategoryIntent = new Intent(ItemCategories.this,AddItemCategory.class);
 
-                startActivity(new Intent(ItemCategories.this,AddItemCategory.class));
+                addCategoryIntent.putExtra(AddItemCategory.ADD_ITEM_CATEGORY_INTENT_KEY,currentCategory);
+
+                startActivity(addCategoryIntent);
                 //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                   //      .setAction("Action", null).show();
-
             }
         });
 
@@ -114,23 +123,23 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
             //layoutManager.setSpanCount(3);
         }
 
-
     }
 
 
 
 
-    int parentID = 1; // the ID of root category is always supposed to be 1
+    int currentCategoryID = 1; // the ID of root category is always supposed to be 1
     ItemCategory currentCategory = null;
 
     public void makeRequest()
     {
 
-        String url = getServiceURL() + "/api/ItemCategory" + "?ParentID=" + parentID;
+        String url = getServiceURL() + "/api/ItemCategory" + "?ParentID=" + currentCategoryID;
 
         Log.d("response",url);
 
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+
             @Override
             public void onResponse(String response) {
 
@@ -153,6 +162,51 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
     }
 
 
+    public void makeRequestRetrofit()
+    {
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(getServiceURL())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+
+        ItemCategoryService itemCategoryService = retrofit.create(ItemCategoryService.class);
+
+
+        Call<List<ItemCategory>> itemCategoryCall = itemCategoryService.getItemCategories(currentCategory.getItemCategoryID());
+
+
+        itemCategoryCall.enqueue(new Callback<List<ItemCategory>>() {
+
+
+            @Override
+            public void onResponse(Call<List<ItemCategory>> call, retrofit2.Response<List<ItemCategory>> response) {
+
+
+
+                dataset.clear();
+
+                if(response.body()!=null) {
+
+                    dataset.addAll(response.body());
+                }
+
+                listAdapter.notifyDataSetChanged();
+
+            }
+
+            @Override
+            public void onFailure(Call<List<ItemCategory>> call, Throwable t) {
+
+            }
+        });
+
+
+
+
+    }
+
 
 
     public void parseJSON(String jsonString)
@@ -170,9 +224,6 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
                 itemCategory.setCategoryDescription(jsonObject.getString("categoryDescription"));
                 itemCategory.setIsLeafNode(jsonObject.getBoolean("isLeafNode"));
                 itemCategory.setParentCategoryID(jsonObject.getInt("parentCategoryID"));
-
-
-
 
                 if (dataset != null) {
 
@@ -200,7 +251,7 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
     void notifyDelete()
     {
         dataset.clear();
-        makeRequest();
+        makeRequestRetrofit();
 
     }
 
@@ -211,7 +262,7 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
         shop = ApplicationState.getInstance().getCurrentShop();
 
         dataset.clear();
-        makeRequest();
+        makeRequestRetrofit();
     }
 
 
@@ -220,36 +271,88 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
     boolean isRootCategory = true;
     StringBuilder stringBuilder = new StringBuilder();
 
+    ArrayList<String> categoryTree = new ArrayList<>();
+
+
+    String categoryTreeString = "";
+
+
+
 
     @Override
     public void notifyRequestSubCategory(ItemCategory itemCategory) {
-
-        parentID = itemCategory.getItemCategoryID();
 
         ItemCategory temp = currentCategory;
 
         currentCategory = itemCategory;
 
+        currentCategoryID = itemCategory.getItemCategoryID();
+
         currentCategory.setParentCategory(temp);
+
 
         stringBuilder.append(categoryhash);
 
+
+        categoryTree.add(new String(currentCategory.getCategoryName()));
+
+        categoryLabel.setVisibility(View.VISIBLE);
+
+
+        String hash = "--";
+
         if(isRootCategory == true) {
 
-            categoryLabel.setVisibility(View.VISIBLE);
 
-            categoryLabel.setText(stringBuilder.toString() + " " + currentCategory.getCategoryName());
+            // categoryLabel.setVisibility(View.VISIBLE);
+
+            //categoryTreeString = stringBuilder.toString() + " " + currentCategory.getCategoryName();
+
+            categoryTreeString = currentCategory.getCategoryName();
+
+            categoryLabel.setText(hash + " " + categoryTreeString);
+
+
 
             isRootCategory = false;
 
 
         }else
         {
-            categoryLabel.setText(categoryLabel.getText() + "\n" + stringBuilder.toString() + " " + currentCategory.getCategoryName());
+
+            categoryTreeString = "";
+
+            boolean isFirst = true;
+
+
+
+            for(String cat : categoryTree)
+            {
+                if(isFirst)
+                {
+                    categoryTreeString = categoryTreeString + hash + " " + cat;
+
+                    isFirst = false;
+
+                    hash = hash + "--";
+
+                }else
+                {
+                    categoryTreeString = categoryTreeString + "\n" + hash + " " + cat;
+
+                    hash = hash + "--";
+                }
+
+            }
+
+
+            //categoryLabel.setText(categoryLabel.getText() + "\n" + stringBuilder.toString() + " " + currentCategory.getCategoryName());
+
+            categoryLabel.setText(categoryTreeString);
 
         }
 
-        makeRequest();
+        makeRequestRetrofit();
     }
 
 
@@ -257,29 +360,80 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
     @Override
     public void onBackPressed() {
 
+        String hash = "--";
 
         if(currentCategory!=null)
         {
+
+
+            if(categoryTree.size()>0) {
+
+                categoryTree.remove(categoryTree.size() - 1);
+            }
+
+            if(categoryTree.size()== 0)
+            {
+                categoryLabel.setVisibility(View.GONE);
+
+                hash = "--";
+
+            }
+
+
+
+            categoryTreeString = "";
+
+
+
+            boolean isFirst = true;
+
+            for(String cat : categoryTree)
+            {
+
+                if(isFirst)
+                {
+                    categoryTreeString = categoryTreeString + hash + " " + cat;
+
+                    isFirst = false;
+
+                    hash = hash + "--";
+
+                }else
+                {
+                    categoryTreeString = hash + categoryTreeString + "\n" + hash + " " + cat;
+
+                    hash = hash + "--";
+                }
+            }
+
+            //categoryLabel.setText(categoryLabel.getText() + "\n" + stringBuilder.toString() + " " + currentCategory.getCategoryName());
+
+
+            categoryLabel.setText(categoryTreeString);
+
 
             if(currentCategory.getParentCategory()!=null) {
 
                 currentCategory = currentCategory.getParentCategory();
 
-                parentID = currentCategory.getItemCategoryID();
+                currentCategoryID = currentCategory.getItemCategoryID();
 
-            }else
+            }
+            else
             {
-                parentID = currentCategory.getParentCategoryID();
+                currentCategoryID = currentCategory.getParentCategoryID();
             }
 
-            makeRequest();
+
+            makeRequestRetrofit();
             //moveTaskToBack(true);
         }
 
-        if(parentID == -1)
+        if(currentCategoryID == -1)
         {
             super.onBackPressed();
         }
+
     }
 
 
@@ -289,4 +443,6 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
 
         ButterKnife.unbind(this);
     }
+
+
 }

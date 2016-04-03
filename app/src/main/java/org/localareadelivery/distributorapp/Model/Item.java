@@ -14,6 +14,9 @@ public class Item implements Parcelable{
 	
 	//technically it is the name of the manufacturer
 	String brandName;
+
+
+	int itemCategoryID;
 	
 	
 	//List<OrderItem> orderItems;
@@ -27,6 +30,72 @@ public class Item implements Parcelable{
 
 
 	ItemCategory itemCategory;
+
+
+
+
+
+	// parcelable interface implementation
+
+	/*
+
+	 Parcelable Interface Implementation
+
+	 */
+
+
+
+	protected Item(Parcel in) {
+		itemID = in.readInt();
+		itemName = in.readString();
+		itemDescription = in.readString();
+		itemImageURL = in.readString();
+		brandName = in.readString();
+		itemCategoryID = in.readInt();
+		itemCategory = in.readParcelable(ItemCategory.class.getClassLoader());
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeInt(itemID);
+		dest.writeString(itemName);
+		dest.writeString(itemDescription);
+		dest.writeString(itemImageURL);
+		dest.writeString(brandName);
+		dest.writeInt(itemCategoryID);
+		dest.writeParcelable(itemCategory, flags);
+	}
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	public static final Creator<Item> CREATOR = new Creator<Item>() {
+		@Override
+		public Item createFromParcel(Parcel in) {
+			return new Item(in);
+		}
+
+		@Override
+		public Item[] newArray(int size) {
+			return new Item[size];
+		}
+	};
+
+
+
+
+
+
+
+
+
+	/*
+
+	// Getter and Setter Methods
+
+	 */
 
 
 
@@ -108,49 +177,12 @@ public class Item implements Parcelable{
 		this.itemName = itemName;
 	}
 
-
-
-
-
-	// parcelable interface implementation
-
-	protected Item(Parcel in) {
-		itemID = in.readInt();
-		itemName = in.readString();
-		itemDescription = in.readString();
-		itemImageURL = in.readString();
-		brandName = in.readString();
-		itemCategory = in.readParcelable(ItemCategory.class.getClassLoader());
+	public int getItemCategoryID() {
+		return itemCategoryID;
 	}
 
-	@Override
-	public void writeToParcel(Parcel dest, int flags) {
-		dest.writeInt(itemID);
-		dest.writeString(itemName);
-		dest.writeString(itemDescription);
-		dest.writeString(itemImageURL);
-		dest.writeString(brandName);
-		dest.writeParcelable(itemCategory, flags);
+	public void setItemCategoryID(int itemCategoryID) {
+		this.itemCategoryID = itemCategoryID;
 	}
-
-	@Override
-	public int describeContents() {
-		return 0;
-	}
-
-	public static final Creator<Item> CREATOR = new Creator<Item>() {
-		@Override
-		public Item createFromParcel(Parcel in) {
-			return new Item(in);
-		}
-
-		@Override
-		public Item[] newArray(int size) {
-			return new Item[size];
-		}
-	};
-
-
-
 
 }

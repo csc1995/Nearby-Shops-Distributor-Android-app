@@ -23,6 +23,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.localareadelivery.distributorapp.DividerItemDecoration;
 import org.localareadelivery.distributorapp.Model.Item;
+import org.localareadelivery.distributorapp.Model.ItemCategory;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.VolleySingleton;
 
@@ -33,14 +34,14 @@ public class Items extends AppCompatActivity {
 
     ArrayList<Item> dataset = new ArrayList<>();
 
-    public static final String ITEM_CATEGORY_ID_KEY = "itemCategoryIDKey";
-    public static final String ITEM_CATEGORY_NAME_KEY="itemCategoryNameKey";
     public static final String ITEM_CATEGORY_INTENT_KEY = "itemCategoryIntentKey";
 
     RecyclerView itemsList;
     ItemsAdapter itemsAdapter;
 
     TextView itemCategoryName;
+
+    ItemCategory itemCategory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,26 +54,33 @@ public class Items extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
+        itemCategory = getIntent().getParcelableExtra(ITEM_CATEGORY_INTENT_KEY);
+
+
         // setup recycler View
         itemsList = (RecyclerView) findViewById(R.id.recyclerViewItems);
-        itemsAdapter = new ItemsAdapter(dataset,this,this,getIntent().getIntExtra(ITEM_CATEGORY_ID_KEY,0));
+
+
+        if(itemCategory!=null) {
+            itemsAdapter = new ItemsAdapter(dataset, this, this, itemCategory);
+        }
+
         itemsList.setAdapter(itemsAdapter);
         itemsList.setLayoutManager(new GridLayoutManager(this,1));
         itemsList.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL_LIST));
 
 
         itemCategoryName = (TextView) findViewById(R.id.categoryName);
-        itemCategoryName.setText("// " + getIntent().getStringExtra(ITEM_CATEGORY_NAME_KEY));
 
-        //makeRequest();
-
-
+        if(itemCategory!=null) {
+            itemCategoryName.setText("// " + itemCategory.getCategoryName());
+        }
     }
 
 
     public void makeRequest()
     {
-        String url = getServiceURL() + "/api/Item?ItemCategoryID=" + String.valueOf(getIntent().getIntExtra(ITEM_CATEGORY_ID_KEY,0));
+        String url = getServiceURL() + "/api/Item?ItemCategoryID=" + String.valueOf(itemCategory.getItemCategoryID());
 
         Log.d("response",url);
 
@@ -128,7 +136,6 @@ public class Items extends AppCompatActivity {
     }
 
 
-
     public String  getServiceURL()
     {
         SharedPreferences sharedPref = this.getSharedPreferences(getString(R.string.preference_file_name), this.MODE_PRIVATE);
@@ -153,10 +160,4 @@ public class Items extends AppCompatActivity {
         makeRequest();
 
     }
-
-
-
-
-
-
 }

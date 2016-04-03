@@ -23,123 +23,37 @@ import org.localareadelivery.distributorapp.Model.Item;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.VolleySingleton;
 
-public class AddItem extends AppCompatActivity implements View.OnClickListener {
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
+public class AddItem extends AppCompatActivity {
 
 
     public static final String ITEM_CATEGORY_ID_KEY = "itemCategoryIDKey";
 
-    EditText itemName,brandName,itemDescription;
-    Button addItemButton;
-    TextView result;
+    @Bind(R.id.itemName) EditText itemName;
+    @Bind(R.id.brandName) EditText brandName;
+    @Bind(R.id.itemDescription) EditText itemDescription;
+
+    @Bind(R.id.addItemButton) Button addItemButton;
+
+    @Bind(R.id.result) TextView result;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_add_item);
+        ButterKnife.bind(this);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        itemName = (EditText) findViewById(R.id.itemName);
-        brandName = (EditText) findViewById(R.id.brandName);
-        itemDescription = (EditText) findViewById(R.id.itemDescription);
-
-        addItemButton = (Button) findViewById(R.id.addItemButton);
-        addItemButton.setOnClickListener(this);
-        result = (TextView) findViewById(R.id.result);
-
-
     }
 
 
-    public void makeRequest()
-    {
-        String url = getServiceURL() + "/api/Item?categoryID=" + String.valueOf(getIntent().getIntExtra(ITEM_CATEGORY_ID_KEY,0));
-
-        Log.d("response",url);
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-
-                Log.d("response",response);
-
-                parseJSON(response);
-
-  //              itemsAdapter.notifyDataSetChanged();
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-                Log.d("response",error.toString());
-            }
-        }){
-
-            @Override
-            public String getBodyContentType() {
-
-                super.getBodyContentType();
-
-                return "application/json";
-            }
-
-            @Override
-            public byte[] getBody() throws AuthFailureError {
-
-                super.getBody();
-
-                JSONObject jsonObject = new JSONObject();
-
-                try {
-
-                    jsonObject.put("itemName",itemName.getText().toString());
-                    jsonObject.put("itemDescription",itemDescription.getText().toString());
-                    jsonObject.put("brandName",brandName.getText().toString());
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-
-                return jsonObject.toString().getBytes();
-            }
-        };;
-
-        VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
-
-
-    }
-
-    public void parseJSON(String jsonString)
-    {
-        try {
-
-            JSONObject jsonObject = new JSONObject(jsonString);
-
-            Item item = new Item();
-            item.setItemName(jsonObject.getString("itemName"));
-            item.setItemID(jsonObject.getInt("itemID"));
-            item.setItemDescription(jsonObject.getString("itemDescription"));
-            item.setBrandName(jsonObject.getString("brandName"));
-
-
-            result.setText("Result : " + "\n"
-                    + item.getItemID() + "\n"
-                    + item.getItemName() + "\n"
-                    + item.getBrandName() + "\n"
-                    + item.getItemDescription());
-
-
-        } catch (JSONException e1) {
-
-            e1.printStackTrace();
-        }
-
-
-    }
 
 
 
@@ -155,16 +69,23 @@ public class AddItem extends AppCompatActivity implements View.OnClickListener {
     }
 
 
-    @Override
-    public void onClick(View v) {
 
-        switch (v.getId())
-        {
-            case R.id.addItemButton:
+    @OnClick(R.id.addItemButton)
+    void addItem()
+    {
 
-                makeRequest();
-
-                break;
-        }
     }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        ButterKnife.unbind(this);
+    }
+
+
+
+
+
 }

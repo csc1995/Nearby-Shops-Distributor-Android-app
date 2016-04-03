@@ -10,24 +10,16 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.localareadelivery.distributorapp.ApplicationState.ApplicationState;
 import org.localareadelivery.distributorapp.Model.Item;
 import org.localareadelivery.distributorapp.Model.ItemCategory;
 import org.localareadelivery.distributorapp.Model.ShopItem;
 import org.localareadelivery.distributorapp.R;
-import org.localareadelivery.distributorapp.ServiceContract.ShopItemService;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by sumeet on 20/12/15.
@@ -59,7 +51,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder>{
     public ItemsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
        // Usual view holder initialization code
-        View v = LayoutInflater.from(context).inflate(R.layout.list_item_items_list_addstock,parent,false);
+        View v = LayoutInflater.from(context).inflate(R.layout.list_item_addstock_item_,parent,false);
 
         return new ViewHolder(v);
     }

@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:text="Detach"/>
         <Button
-            android:id="@+id/deleteButton"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Delete"/>
@@ -73,14 +73,17 @@
             android:layout_height="wrap_content">
 
             <ImageView
+                android:background="#66000000"
+                android:id="@+id/categoryImage"
                 android:scaleType="centerCrop"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="150dp"
-                android:src="@drawable/carrots"/>
+                android:src="@drawable/nature_people"/>
 
 
 
             <TextView
+                android:background="#77000000"
                 android:layout_marginLeft="5dp"
                 android:textColor="@color/white"
                 android:layout_marginTop="5dp"
@@ -91,6 +94,7 @@
                 android:text="Category Name"/>
 
             <TextView
+                android:background="#77000000"
                 android:layout_marginLeft="5dp"
                 android:textColor="@color/white"
                 android:id="@+id/categoryDescription"
@@ -102,51 +106,7 @@
 
         </RelativeLayout>
 
-        <LinearLayout
-            android:visibility="gone"
-            android:layout_marginTop="20dp"
 
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <Button
-                android:padding="8dp"
-
-                android:id="@+id/editButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Edit"/>
-
-            <Button
-                android:id="@+id/deleteButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Delete"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:visibility="gone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-
-            <Button
-                android:id="@+id/detachButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Detach"/>
-
-
-            <Button
-                android:id="@+id/changeCategoryButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Change parent"/>
-
-
-        </LinearLayout>
 
 
         <LinearLayout
@@ -180,6 +140,7 @@
                 android:src="@drawable/ic_edit_black_48px"/>
 
             <TextView
+                android:id="@+id/textviewEdit"
                 android:layout_marginRight="5dp"
                 android:layout_gravity="center_vertical"
                 android:text="Edit"
@@ -206,6 +167,7 @@
                 android:src="@drawable/ic_delete_black_48px"/>
 
             <TextView
+                android:id="@+id/deleteText"
                 android:layout_marginRight="5dp"
                 android:layout_gravity="center_vertical"
                 android:text="Delete"
@@ -217,12 +179,14 @@
 
         <LinearLayout
 
+            android:visibility="gone"
             android:background="#88000000"
             android:layout_width="match_parent"
             android:layout_height="1dp"/>
 
 
         <LinearLayout
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal">

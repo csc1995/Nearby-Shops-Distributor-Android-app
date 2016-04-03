@@ -45,7 +45,7 @@ public class ItemCategoriesAdapter extends RecyclerView.Adapter<ItemCategoriesAd
     @Override
     public ItemCategoriesAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_item_category_addstock,parent,false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_addstock_item_category,parent,false);
 
         return new ViewHolder(v);
     }

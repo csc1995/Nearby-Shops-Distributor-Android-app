@@ -5,10 +5,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -16,6 +18,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.squareup.picasso.Picasso;
 
 
 import org.localareadelivery.distributorapp.addItems.Items.Items;
@@ -24,6 +27,10 @@ import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.VolleySingleton;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * Created by sumeet on 19/12/15.
@@ -33,13 +40,14 @@ import java.util.ArrayList;
 public class ItemCategoriesAdapter extends RecyclerView.Adapter<ItemCategoriesAdapter.ViewHolder>{
 
 
-    ArrayList<ItemCategory> dataset;
+    List<ItemCategory> dataset;
 
     Context context;
     ItemCategories itemCategories;
 
+    final String IMAGE_ENDPOINT_URL = "/api/Images";
 
-    public ItemCategoriesAdapter(ArrayList<ItemCategory> dataset, Context context,ItemCategories itemCategories) {
+    public ItemCategoriesAdapter(List<ItemCategory> dataset, Context context, ItemCategories itemCategories) {
 
         this.dataset = dataset;
         this.context = context;
@@ -66,31 +74,56 @@ public class ItemCategoriesAdapter extends RecyclerView.Adapter<ItemCategoriesAd
         holder.categoryName.setText(dataset.get(position).getCategoryName());
         holder.categoryDescription.setText(dataset.get(position).getCategoryDescription());
 
+
+        String imagePath = getServiceURL() + IMAGE_ENDPOINT_URL + dataset.get(position).getImagePath();
+
+        Picasso.with(context).load(imagePath).placeholder(R.drawable.nature_people).into(holder.categoryImage);
+
+        Log.d("applog",imagePath);
+
+
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-
-
 
         }
 
+        final int positionInner = position;
 
-        holder.editButton.setOnClickListener(new View.OnClickListener() {
+        holder.editIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 Intent intent = new Intent(context,EditItemCategory.class);
-                intent.putExtra(EditItemCategory.ITEM_CATEGORY_ID_KEY,dataset.get(position).getItemCategoryID());
 
+                intent.putExtra(EditItemCategory.ITEM_CATEGORY_INTENT_KEY,dataset.get(positionInner));
 
                 context.startActivity(intent);
+
             }
         });
 
-        holder.deleteButton.setOnClickListener(new View.OnClickListener() {
+
+        holder.textViewEdit.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(context,EditItemCategory.class);
+
+                intent.putExtra(EditItemCategory.ITEM_CATEGORY_INTENT_KEY,dataset.get(positionInner));
+
+                context.startActivity(intent);
+
+            }
+
+        });
+
+
+        holder.deleteIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
 
-                String url = getServiceURL() + "/api/ItemCategory/" + dataset.get(position).getItemCategoryID();
+                String url = getServiceURL() + "/api/ItemCategory/" + dataset.get(positionInner).getItemCategoryID();
 
                 StringRequest request = new StringRequest(Request.Method.DELETE, url, new Response.Listener<String>() {
                     @Override
@@ -110,24 +143,25 @@ public class ItemCategoriesAdapter extends RecyclerView.Adapter<ItemCategoriesAd
             }
         });
 
+
         holder.itemCategoryListItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
 
-                if (dataset.get(position).getIsLeafNode()) {
+                if (dataset.get(positionInner).getIsLeafNode()) {
 
                     Intent intent = new Intent(context, Items.class);
 
-                    intent.putExtra(Items.ITEM_CATEGORY_ID_KEY, dataset.get(position).getItemCategoryID());
-                    intent.putExtra(Items.ITEM_CATEGORY_NAME_KEY, dataset.get(position).getCategoryName());
+                    intent.putExtra(Items.ITEM_CATEGORY_INTENT_KEY,dataset.get(position));
 
                     context.startActivity(intent);
 
                 }
                 else
                 {
-                        itemCategories.notifyRequestSubCategory(dataset.get(position));
+
+                    itemCategories.notifyRequestSubCategory(dataset.get(positionInner));
                 }
 
             }
@@ -146,13 +180,27 @@ public class ItemCategoriesAdapter extends RecyclerView.Adapter<ItemCategoriesAd
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        private Button editButton,detachButton,deleteButton;
+        private Button editButton;
+
+        Button detachButton;
+
+        Button deleteButton;
+
         private TextView categoryName,categoryDescription;
         private LinearLayout itemCategoryListItem;
+        @Bind(R.id.categoryImage) ImageView categoryImage;
+
+        @Bind(R.id.deleteIcon) ImageView deleteIcon;
+        @Bind(R.id.editIcon) ImageView editIcon;
+        @Bind(R.id.textviewEdit) TextView textViewEdit;
+
 
         public ViewHolder(View itemView) {
             super(itemView);
 
+            ButterKnife.bind(this,itemView);
+
+            categoryImage = (ImageView) itemView.findViewById(R.id.categoryImage);
             categoryName = (TextView) itemView.findViewById(R.id.categoryName);
             categoryDescription = (TextView) itemView.findViewById(R.id.categoryDescription);
             editButton = (Button) itemView.findViewById(R.id.editButton);
@@ -162,7 +210,6 @@ public class ItemCategoriesAdapter extends RecyclerView.Adapter<ItemCategoriesAd
             itemCategoryListItem = (LinearLayout) itemView.findViewById(R.id.itemCategoryListItem);
         }
     }
-
 
 
     public void notifyDelete()
@@ -181,15 +228,12 @@ public class ItemCategoriesAdapter extends RecyclerView.Adapter<ItemCategoriesAd
         return service_url;
     }
 
-
-
-
-
     public interface requestSubCategory
     {
         // method for notifying the list object to request sub category
         public void notifyRequestSubCategory(ItemCategory itemCategory);
-
     }
+
+
 
 }

@@ -67,10 +67,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class AddShop extends AppCompatActivity implements LocationListener {
 
 
-
-
-    private static final int REQUEST_CODE_READ_EXTERNAL_STORAGE = 56;
-
     @Bind(R.id.shopName)
     EditText shopName;
 
@@ -138,13 +134,11 @@ public class AddShop extends AppCompatActivity implements LocationListener {
 
 
 
-    void showMessageSnackBar(String message) {
-
-        Snackbar.make(coordinatorLayout, message, Snackbar.LENGTH_SHORT).show();
-    }
 
 
     void makeRequest(Shop shop) {
+
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(getServiceURL())
                 .addConverterFactory(GsonConverterFactory.create())
@@ -233,113 +227,6 @@ public class AddShop extends AppCompatActivity implements LocationListener {
 
 
 
-    Image image = null;
-
-    @OnClick(R.id.addShopButton)
-    void uploadPickedImage() {
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getServiceURL())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        ImageService imageService = retrofit.create(ImageService.class);
-
-
-        Log.d("applog", "onClickUploadImage");
-
-
-        // code for checking the Read External Storage Permission and granting it.
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-
-
-            /// / TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-
-
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                    REQUEST_CODE_READ_EXTERNAL_STORAGE);
-
-            return;
-
-        }
-
-
-        File file = new File(getCacheDir().getPath() + "/" + "SampleCropImage.jpeg");
-
-        // Marker
-
-        RequestBody requestBodyBinary = null;
-
-        InputStream in = null;
-
-        try {
-            in = new FileInputStream(file);
-
-            byte[] buf;
-            buf = new byte[in.available()];
-            while (in.read(buf) != -1) ;
-
-            requestBodyBinary = RequestBody
-
-                    .create(MediaType.parse("application/octet-stream"), buf);
-
-            //Bitmap.createScaledBitmap()
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        Call<Image> imageCall = imageService.uploadImage(requestBodyBinary);
-
-        imageCall.enqueue(new Callback<Image>() {
-            @Override
-            public void onResponse(Call<Image> call, Response<Image> response) {
-
-                image = response.body();
-
-                Log.d("applog", "inside retrofit call !" + String.valueOf(response.code()));
-                Log.d("applog", "image Path : " + image.getPath());
-
-
-                //// TODO: 31/3/16
-                // check whether load image call is required. or Not
-
-                loadImage(image.getPath());
-
-                imagePath = image.getPath();
-
-                if (response.code() != 201) {
-                    showMessageSnackBar("Unable to upload Image. Try changing the image by in the Edit Screen !");
-
-                    result.setText("Unable to upload Image. Try changing the image by in the Edit Screen !");
-
-                }
-
-                addShop();
-            }
-
-            @Override
-            public void onFailure(Call<Image> call, Throwable t) {
-
-                Log.d("applog", "inside Error: " + t.getMessage());
-
-                showMessageSnackBar("Unable to upload Image. Try changing the image by in the Edit Screen !");
-
-                result.setText("Unable to upload Image. Try changing the image by in the Edit Screen !");
-
-                addShop();
-
-            }
-        });
-    }
 
 
 
@@ -550,6 +437,16 @@ public class AddShop extends AppCompatActivity implements LocationListener {
 
 
 
+    // Utility Methods
+
+
+    void showMessageSnackBar(String message) {
+
+        Snackbar.make(coordinatorLayout, message, Snackbar.LENGTH_SHORT).show();
+
+    }
+
+
 
 
 
@@ -656,6 +553,129 @@ public class AddShop extends AppCompatActivity implements LocationListener {
 
         }
     }
+
+
+
+    /*
+
+    // Code for Uploading Image
+
+
+     */
+
+
+
+    // Upload the image after picked up
+    private static final int REQUEST_CODE_READ_EXTERNAL_STORAGE = 56;
+
+    Image image = null;
+
+    @OnClick(R.id.addShopButton)
+    void uploadPickedImage() {
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(getServiceURL())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        ImageService imageService = retrofit.create(ImageService.class);
+
+
+        Log.d("applog", "onClickUploadImage");
+
+
+        // code for checking the Read External Storage Permission and granting it.
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+
+            /// / TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    REQUEST_CODE_READ_EXTERNAL_STORAGE);
+
+            return;
+
+        }
+
+
+        File file = new File(getCacheDir().getPath() + "/" + "SampleCropImage.jpeg");
+
+        // Marker
+
+        RequestBody requestBodyBinary = null;
+
+        InputStream in = null;
+
+        try {
+            in = new FileInputStream(file);
+
+            byte[] buf;
+            buf = new byte[in.available()];
+            while (in.read(buf) != -1) ;
+
+            requestBodyBinary = RequestBody
+
+                    .create(MediaType.parse("application/octet-stream"), buf);
+
+            //Bitmap.createScaledBitmap()
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Call<Image> imageCall = imageService.uploadImage(requestBodyBinary);
+
+        imageCall.enqueue(new Callback<Image>() {
+            @Override
+            public void onResponse(Call<Image> call, Response<Image> response) {
+
+                image = response.body();
+
+                Log.d("applog", "inside retrofit call !" + String.valueOf(response.code()));
+                Log.d("applog", "image Path : " + image.getPath());
+
+
+                //// TODO: 31/3/16
+                // check whether load image call is required. or Not
+
+                loadImage(image.getPath());
+
+                imagePath = image.getPath();
+
+                if (response.code() != 201) {
+                    showMessageSnackBar("Unable to upload Image. Try changing the image by in the Edit Screen !");
+
+                    result.setText("Unable to upload Image. Try changing the image by in the Edit Screen !");
+
+                }
+
+                addShop();
+            }
+
+            @Override
+            public void onFailure(Call<Image> call, Throwable t) {
+
+                Log.d("applog", "inside Error: " + t.getMessage());
+
+                showMessageSnackBar("Unable to upload Image. Try changing the image by in the Edit Screen !");
+
+                result.setText("Unable to upload Image. Try changing the image by in the Edit Screen !");
+
+                addShop();
+
+            }
+        });
+    }
+
 
 
 }
