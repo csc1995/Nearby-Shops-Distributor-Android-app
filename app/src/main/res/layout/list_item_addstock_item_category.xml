@@ -25,32 +25,41 @@
                 android:id="@+id/categoryImage"
                 android:scaleType="centerCrop"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:src="@drawable/nature_people"/>
+                android:layout_height="200dp"
+                android:src="@drawable/veggies"/>
 
 
 
             <TextView
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
                 android:background="#77000000"
-                android:layout_marginLeft="5dp"
                 android:textColor="@color/white"
-                android:layout_marginTop="5dp"
                 android:id="@+id/categoryName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="30sp"
-                android:text="Category Name"/>
+                android:text="Category Name"
+                android:layout_marginRight="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_alignBottom="@+id/categoryImage"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
 
             <TextView
+                android:paddingRight="5dp"
+                android:paddingLeft="5dp"
                 android:background="#77000000"
-                android:layout_marginLeft="5dp"
                 android:textColor="@color/white"
                 android:id="@+id/categoryDescription"
-                android:layout_marginTop="55dp"
-                android:layout_marginBottom="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Category Description"/>
+                android:text="Category Description"
+                android:layout_marginBottom="15dp"
+                android:layout_above="@+id/categoryName"
+                android:layout_alignRight="@+id/categoryName"
+                android:layout_alignEnd="@+id/categoryName" />
 
         </RelativeLayout>
 
