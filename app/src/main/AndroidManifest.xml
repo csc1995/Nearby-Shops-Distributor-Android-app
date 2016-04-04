@@ -49,6 +49,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.localareadelivery.distributorapp.ShopHome.ShopHome" />
         </activity>
+
         <activity
             android:name=".addStock.ItemCategories"
             android:label="@string/title_activity_item_categories"
@@ -58,6 +59,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.localareadelivery.distributorapp.ShopHome.ShopHome" />
         </activity>
+
         <activity
             android:name=".addStock.Items"
             android:label="@string/title_activity_items_add_stock"
@@ -67,6 +69,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.localareadelivery.distributorapp.ShopHome.ShopHome" />
         </activity>
+
+
+
         <activity
             android:name=".addItems.ItemCategories.AddItemCategory"
             android:label="@string/title_activity_add_item_category"
@@ -76,6 +81,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".addItems.ItemCategories.ItemCategories" />
         </activity>
+
         <activity
             android:name=".addItems.ItemCategories.EditItemCategory"
             android:label="@string/title_activity_edit_item_category"
@@ -85,6 +91,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".addItems.ItemCategories.ItemCategories" />
         </activity>
+
         <activity
             android:name=".addItems.Items.Items"
             android:label="@string/title_activity_items"

@@ -7,19 +7,32 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
+import org.localareadelivery.distributorapp.ApplicationState.ApplicationState;
 import org.localareadelivery.distributorapp.Model.Item;
 import org.localareadelivery.distributorapp.Model.ItemCategory;
 import org.localareadelivery.distributorapp.Model.ShopItem;
 import org.localareadelivery.distributorapp.R;
+import org.localareadelivery.distributorapp.ServiceContract.ShopItemService;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by sumeet on 20/12/15.
@@ -28,20 +41,27 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder>{
 
     ArrayList<Item> itemDataset = null;
     Context context;
+
     Items itemsActivity = null;
     //int itemCategoryID = 0;
     ItemCategory itemCategory;
 
 
-    Map<Integer,ShopItem> shopItemDataset = null;
+    Map<Integer,ShopItem> shopItemDataset = new HashMap<>();
+
+    final String IMAGE_ENDPOINT_URL = "/api/Images";
 
 
-    public ItemsAdapter(ArrayList<Item> dataset, Context context, Items itemsActivity, ItemCategory itemCategory) {
+    public ItemsAdapter(ArrayList<Item> dataset, Context context, Items itemsActivity, ItemCategory itemCategory,
+                        Map<Integer,ShopItem> shopItemDataset) {
+
         this.itemDataset = dataset;
         this.context = context;
         this.itemsActivity = itemsActivity;
         this.itemCategory = itemCategory;
         //makeShopItemRequest();
+        this.shopItemDataset = shopItemDataset;
+
 
     }
 
@@ -62,6 +82,34 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder>{
         holder.itemName.setText(itemDataset.get(position).getItemName());
         holder.itemBrandName.setText(itemDataset.get(position).getBrandName());
         holder.itemDescription.setText(itemDataset.get(position).getItemDescription());
+
+
+        if(shopItemDataset.containsKey(itemDataset.get(position).getItemID()))
+        {
+
+            holder.itemPrice.setText(
+                    String.valueOf(
+                            shopItemDataset.get(itemDataset.get(position).getItemID()).getItemPrice()
+                    )
+            );
+
+            holder.availableItems.setText(
+                    String.valueOf(
+                            shopItemDataset.get(itemDataset.get(position).getItemID()).getAvailableItemQuantity()
+                    )
+
+            );
+
+        }
+
+
+
+
+
+
+        String imagePath = getServiceURL() + IMAGE_ENDPOINT_URL + itemDataset.get(position).getItemImageURL();
+
+        Picasso.with(context).load(imagePath).placeholder(R.drawable.nature_people).into(holder.itemImage);
 
         holder.itemsListItem.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,7 +143,13 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder>{
         @Bind(R.id.itemDescription) TextView itemDescription;
         @Bind(R.id.brandName) TextView itemBrandName;
 
-        @Bind(R.id.itemsListItem)LinearLayout itemsListItem;
+        @Bind(R.id.itemListItem)LinearLayout itemsListItem;
+
+        @Bind(R.id.itemImage)
+        ImageView itemImage;
+
+        @Bind(R.id.availableItems) TextView availableItems;
+        @Bind(R.id.itemPrice) TextView itemPrice;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -122,5 +176,8 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder>{
             itemsActivity.notifyDelete();
         }
     }
+
+
+
 
 }

@@ -22,6 +22,9 @@ public interface ItemService
 {
 
     @GET("/api/Item")
+    Call<List<Item>> getItems(@Query("ItemCategoryID")int itemCategoryID,@Query("ShopID")int shopID);
+
+    @GET("/api/Item")
     Call<List<Item>> getItems(@Query("ItemCategoryID")int itemCategoryID);
 
     @GET("/api/Item/{id}")

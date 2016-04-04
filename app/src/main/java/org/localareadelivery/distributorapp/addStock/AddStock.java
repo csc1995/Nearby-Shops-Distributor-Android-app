@@ -94,7 +94,7 @@ public class AddStock extends AppCompatActivity {
 
 
 
-        makePOSTRequest(shopItem);
+        makePUTRequest(shopItem);
 
 
     }
@@ -107,7 +107,7 @@ public class AddStock extends AppCompatActivity {
 
     boolean requestStatus;
 
-    public boolean makePOSTRequest(final ShopItem shopDetails)
+    public boolean makePUTRequest(final ShopItem shopDetails)
     {
 
         Retrofit retrofit = new Retrofit.Builder()

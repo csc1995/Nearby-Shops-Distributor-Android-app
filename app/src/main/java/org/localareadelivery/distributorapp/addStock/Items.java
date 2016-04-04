@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -19,20 +20,33 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.localareadelivery.distributorapp.ApplicationState.ApplicationState;
-import org.localareadelivery.distributorapp.DividerItemDecoration;
 import org.localareadelivery.distributorapp.Model.Item;
 import org.localareadelivery.distributorapp.Model.ItemCategory;
 import org.localareadelivery.distributorapp.Model.Shop;
+import org.localareadelivery.distributorapp.Model.ShopItem;
 import org.localareadelivery.distributorapp.R;
+import org.localareadelivery.distributorapp.ServiceContract.ItemService;
+import org.localareadelivery.distributorapp.ServiceContract.ShopItemService;
 import org.localareadelivery.distributorapp.VolleySingleton;
+import org.localareadelivery.distributorapp.addStock.DiscardedCode.ItemCategories;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Items extends AppCompatActivity {
 
 
 
+    public static final String ITEM_CATEGORY_INTENT_KEY = "itemCategoryIntentKey";
+    public static final String ADD_ITEM_INTENT_KEY = "addItemIntentKey";
 
 
     ArrayList<Item> dataset = new ArrayList<>();
@@ -48,7 +62,7 @@ public class Items extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_items);
+        setContentView(R.layout.activity_addstock_items);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -59,22 +73,29 @@ public class Items extends AppCompatActivity {
 
         // setup recycler View
         itemsList = (RecyclerView) findViewById(R.id.recyclerViewItems);
-        //itemsAdapter = new ItemsAdapter(dataset,this,this,getIntent().getIntExtra(ITEM_CATEGORY_ID_KEY,0));
 
         itemCategory = (ItemCategory) getIntent().getParcelableExtra(ItemCategories.ITEM_CATEGORY_INTENT_KEY);
-        itemsAdapter = new ItemsAdapter(dataset,this,this,itemCategory);
+        itemsAdapter = new ItemsAdapter(dataset,this,this,itemCategory,shopItemDataset);
 
         Log.d("applog","CategoryID : " + String.valueOf(itemCategory.getItemCategoryID()));
 
         itemsList.setAdapter(itemsAdapter);
-        itemsList.setLayoutManager(new GridLayoutManager(this,1));
+
+        GridLayoutManager layoutManager = new GridLayoutManager(this,1);
+        itemsList.setLayoutManager(layoutManager);
+
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+
+        layoutManager.setSpanCount(metrics.widthPixels/350);
+
         //itemsList.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL_LIST));
 
         itemCategoryName = (TextView) findViewById(R.id.categoryName);
         itemCategoryName.setText("// " + itemCategory.getCategoryName());
-
-
     }
+
+
 
 
     public void makeRequest()
@@ -143,6 +164,44 @@ public class Items extends AppCompatActivity {
 
 
 
+
+    void makeRetrofitRequest()
+    {
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(getServiceURL())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+
+        ItemService itemService = retrofit.create(ItemService.class);
+
+
+        Call<List<Item>> items = itemService.getItems(itemCategory.getItemCategoryID(),
+                ApplicationState.getInstance().getCurrentShop().getShopID());
+
+        items.enqueue(new Callback<List<Item>>() {
+
+            @Override
+            public void onResponse(Call<List<Item>> call, retrofit2.Response<List<Item>> response) {
+
+                if(response.body()!=null) {
+                    dataset.addAll(response.body());
+
+                    itemsAdapter.notifyDataSetChanged();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<List<Item>> call, Throwable t) {
+
+            }
+        });
+    }
+
+
+
     public String  getServiceURL()
     {
         SharedPreferences sharedPref = this.getSharedPreferences(getString(R.string.preference_file_name), this.MODE_PRIVATE);
@@ -156,7 +215,8 @@ public class Items extends AppCompatActivity {
     public void notifyDelete()
     {
         dataset.clear();
-        makeRequest();
+        makeRetrofitRequest();
+        makeShopItemRequest();
     }
 
     @Override
@@ -164,11 +224,62 @@ public class Items extends AppCompatActivity {
         super.onResume();
 
         dataset.clear();
-        makeRequest();
-
-
-
+        makeRetrofitRequest();
+        makeShopItemRequest();
 
     }
+
+
+
+
+    Map<Integer,ShopItem> shopItemDataset = new HashMap<>();
+
+    void makeShopItemRequest()
+    {
+
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(getServiceURL())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+
+        ShopItemService shopItemService = retrofit.create(ShopItemService.class);
+
+        Call<List<ShopItem>> shopItemsCall =  shopItemService.getShopItems(
+                ApplicationState.getInstance().getCurrentShop().getShopID(),
+                0,itemCategory.getItemCategoryID());
+
+
+        shopItemsCall.enqueue(new Callback<List<ShopItem>>() {
+            @Override
+            public void onResponse(Call<List<ShopItem>> call, retrofit2.Response<List<ShopItem>> response) {
+
+
+                if(response.body()!=null) {
+
+                    List<ShopItem> shopItemList = response.body();
+
+                    if(shopItemList!=null)
+                    {
+                        for(ShopItem shopItem: shopItemList)
+                        {
+                            shopItemDataset.put(shopItem.getItemID(),shopItem);
+                            itemsAdapter.notifyDataSetChanged();
+                        }
+
+                    }
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<List<ShopItem>> call, Throwable t) {
+
+            }
+        });
+    }
+
 
 }

@@ -24,6 +24,9 @@ import retrofit2.http.Query;
 public interface ItemCategoryService {
 
     @GET("/api/ItemCategory")
+    Call<List<ItemCategory>> getItemCategories(@Query("ParentID")int parentID,@Query("ShopID")int shopID);
+
+    @GET("/api/ItemCategory")
     Call<List<ItemCategory>> getItemCategories(@Query("ParentID")int parentID);
 
     @GET("/api/ItemCategory/{id}")
