@@ -60,8 +60,10 @@ public class ItemCategoriesAdapter extends RecyclerView.Adapter<ItemCategoriesAd
         return new ViewHolder(v);
     }
 
+
+
     @Override
-    public void onBindViewHolder(ItemCategoriesAdapter.ViewHolder holder, final int position) {
+    public void onBindViewHolder(ItemCategoriesAdapter.ViewHolder holder, int position) {
 
         holder.categoryName.setText(dataset.get(position).getCategoryName());
         holder.categoryDescription.setText(dataset.get(position).getCategoryDescription());
@@ -74,37 +76,24 @@ public class ItemCategoriesAdapter extends RecyclerView.Adapter<ItemCategoriesAd
         Log.d("applog",imagePath);
 
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        //if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
-        }
+        //}
 
-        final int positionInner = position;
-
-
-        holder.itemCategoryListItem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        //final int positionInner = position;
 
 
-                if (dataset.get(positionInner).getIsLeafNode()) {
+//        holder.itemCategoryListItem.setOnClickListener(new View.OnClickListener() {
+  //          @Override
+    //        public void onClick(View v) {
 
-                    Intent intent = new Intent(context, Items.class);
 
-                    intent.putExtra(Items.ITEM_CATEGORY_INTENT_KEY,dataset.get(position));
 
-                    context.startActivity(intent);
-
-                }
-                else
-                {
-
-                    itemCategories.notifyRequestSubCategory(dataset.get(positionInner));
-                }
-
-            }
-        });
+      //      }
+        //});
 
     }
+
 
 
     @Override
@@ -115,7 +104,7 @@ public class ItemCategoriesAdapter extends RecyclerView.Adapter<ItemCategoriesAd
 
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private Button editButton;
 
@@ -126,12 +115,9 @@ public class ItemCategoriesAdapter extends RecyclerView.Adapter<ItemCategoriesAd
         private TextView categoryName,categoryDescription;
         private LinearLayout itemCategoryListItem;
         @Bind(R.id.categoryImage) ImageView categoryImage;
-
         @Bind(R.id.deleteIcon) ImageView deleteIcon;
         @Bind(R.id.editIcon) ImageView editIcon;
         @Bind(R.id.textviewEdit) TextView textViewEdit;
-
-
 
 
         public ViewHolder(View itemView) {
@@ -147,6 +133,36 @@ public class ItemCategoriesAdapter extends RecyclerView.Adapter<ItemCategoriesAd
             deleteButton = (Button) itemView.findViewById(R.id.deleteButton);
 
             itemCategoryListItem = (LinearLayout) itemView.findViewById(R.id.itemCategoryListItem);
+
+
+            itemView.setOnClickListener(this);
+        }
+
+
+        @Override
+        public void onClick(View v) {
+
+
+            if(dataset== null || dataset.size()== 0)
+            {
+                return;
+            }
+
+            // Following code is error prone : Index Out of bounds exception:
+            if (dataset.get(getLayoutPosition()).getIsLeafNode()) {
+
+                Intent intent = new Intent(context, Items.class);
+
+                intent.putExtra(Items.ITEM_CATEGORY_INTENT_KEY,dataset.get(getLayoutPosition()));
+
+                context.startActivity(intent);
+
+            }
+            else
+            {
+
+                itemCategories.notifyRequestSubCategory(dataset.get(getLayoutPosition()));
+            }
         }
     }
 

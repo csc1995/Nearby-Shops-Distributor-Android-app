@@ -60,6 +60,19 @@
     </android.support.design.widget.TextInputLayout>
 
 
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+
+            android:id="@+id/itemUnit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Item Unit :\n Example- Kg, Packet, Tonne"/>
+
+    </android.support.design.widget.TextInputLayout>
+
 
     <Button
         android:layout_gravity="left"

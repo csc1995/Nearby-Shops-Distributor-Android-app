@@ -149,6 +149,16 @@ public class ItemCategoriesAdapter extends RecyclerView.Adapter<ItemCategoriesAd
             public void onClick(View v) {
 
 
+                if (dataset == null) {
+
+                    return;
+                }
+
+                if(dataset.size()==0)
+                {
+                    return;
+                }
+
                 if (dataset.get(positionInner).getIsLeafNode()) {
 
                     Intent intent = new Intent(context, Items.class);

@@ -7,9 +7,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -19,6 +21,7 @@ import org.localareadelivery.distributorapp.Model.ItemCategory;
 import org.localareadelivery.distributorapp.Model.ShopItem;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.ServiceContract.ShopItemService;
+import org.localareadelivery.distributorapp.addItems.Items.EditItem;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
@@ -28,6 +31,7 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -102,31 +106,9 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder>{
 
         }
 
-
-
-
-
-
         String imagePath = getServiceURL() + IMAGE_ENDPOINT_URL + itemDataset.get(position).getItemImageURL();
 
         Picasso.with(context).load(imagePath).placeholder(R.drawable.nature_people).into(holder.itemImage);
-
-        holder.itemsListItem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-                Intent intent = new Intent(context,AddStock.class);
-
-                intent.putExtra(AddStock.ITEM_INTENT_KEY,itemDataset.get(position));
-
-                context.startActivity(intent);
-
-
-
-            }
-        });
-
 
     }
 
@@ -145,6 +127,10 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder>{
 
         @Bind(R.id.itemListItem)LinearLayout itemsListItem;
 
+        @Bind(R.id.itemPriceReduce) ImageView itemPriceReduce;
+        @Bind(R.id.itemPriceIncrease) ImageView itemPriceIncrease;
+        @Bind(R.id.itemPriceInput) EditText itemPriceInput;
+
         @Bind(R.id.itemImage)
         ImageView itemImage;
 
@@ -155,6 +141,71 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder>{
             super(itemView);
 
             ButterKnife.bind(this,itemView);
+
+        }
+
+
+        @OnClick(R.id.itemListItem)
+        public void listItemClick()
+        {
+
+            if(itemDataset==null)
+            {
+                return;
+            }
+
+            if(itemDataset.size()==0)
+            {
+                return;
+            }
+
+            Intent intent = new Intent(context,AddStock.class);
+
+            intent.putExtra(AddStock.ITEM_INTENT_KEY,itemDataset.get(getLayoutPosition()));
+
+            context.startActivity(intent);
+
+
+        }
+
+
+        @OnClick(R.id.itemPriceIncrease)
+        public void setItemPriceIncrease(View view)
+        {
+
+              //Toast.makeText(context,"Position: " + getLayoutPosition() ,Toast.LENGTH_SHORT).show();
+
+              int price = 0;
+
+
+            if(itemPriceInput.getText().toString() != "") {
+
+                price = Integer.parseInt(itemPriceInput.getText().toString()) + 1;
+
+                itemPriceInput.setText(String.valueOf(price));
+            }
+
+        }
+
+
+
+        @OnClick(R.id.itemPriceReduce)
+        public void setItemPriceReduce(View view)
+        {
+
+            //Toast.makeText(context,"Position: " + getLayoutPosition() ,Toast.LENGTH_SHORT).show();
+
+            int price = 0;
+
+            try {
+                price = Integer.parseInt(itemPriceInput.getText().toString()) - 1;
+
+                itemPriceInput.setText(String.valueOf(price));
+            }
+            catch (Exception ex)
+            {
+                ex.printStackTrace();
+            }
 
         }
     }
@@ -176,8 +227,4 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder>{
             itemsActivity.notifyDelete();
         }
     }
-
-
-
-
 }

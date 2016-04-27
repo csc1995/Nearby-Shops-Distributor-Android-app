@@ -7,8 +7,10 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import org.localareadelivery.distributorapp.ApplicationState.ApplicationState;
@@ -36,12 +38,16 @@ import retrofit2.http.HTTP;
 public class AddStock extends AppCompatActivity {
 
 
+    // check whether the activity is running or not
+    boolean isActivityRunning = false;
+
     final static String ITEM_INTENT_KEY = "itemIntentKey";
 
     Item item = null;
 
-    @Bind(R.id.availableItems) TextView availableItems;
-    @Bind(R.id.itemPrice) TextView itemPrice;
+    @Bind(R.id.availableItems) EditText availableItems;
+    @Bind(R.id.itemPrice) EditText itemPrice;
+    @Bind(R.id.itemUnit) EditText itemUnit;
     @Bind(R.id.results) TextView results;
     @Bind(R.id.itemName) TextView itemName;
 
@@ -89,19 +95,14 @@ public class AddStock extends AppCompatActivity {
         shopItem.setItemID(item.getItemID());
         shopItem.setShopID(ApplicationState.getInstance().getCurrentShop().getShopID());
 
+        //TODO remove this comment after api update
+        //shopItem.setQuantityUnit(itemUnit.getText().toString());
+
         shopItem.setAvailableItemQuantity(Integer.parseInt(availableItems.getText().toString()));
         shopItem.setItemPrice(Double.parseDouble(itemPrice.getText().toString()));
 
-
-
         makePUTRequest(shopItem);
-
-
     }
-
-
-
-
 
 
 
@@ -126,9 +127,21 @@ public class AddStock extends AppCompatActivity {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
 
+
+                // return if the activity is not running. Because if it runs it will throw the null pointer exception.
+                if(isActivityRunning==false)
+                {
+                    Log.d("applog", "activity not runnng: saved from null pointer.");
+
+                    return;
+                }
+
+
                 if(response.code()==200)
                 {
                     // posted and created successfully
+
+
 
                     requestStatus = true;
 
@@ -204,11 +217,27 @@ public class AddStock extends AppCompatActivity {
 
     public void updateResult(ShopItem shopItem)
     {
+
+
+        // check for null pointer exception
+        if(shopItem==null)
+        {
+            return;
+        }
+
         String resultText = "Result : " + "\n"
                 + "\n" + "Shop ID : " + shopItem.getShopID()
                 + "\n" + "Item ID : " + shopItem.getItemID()
                 + "\n" + "Available Quantity : "  + shopItem.getAvailableItemQuantity()
-                + "\n" + "Item Price : " + shopItem.getItemPrice();
+                + "\n" + "Item Price : " + shopItem.getItemPrice()
+                + "\n" + "Item Unit : " + shopItem.getQuantityUnit();
+
+
+        // check whether the activity is visible and running
+        if((availableItems== null)||(itemPrice== null)||(results==null))
+        {
+            return;
+        }
 
 
         availableItems.setText(String.valueOf(shopItem.getAvailableItemQuantity()));
@@ -222,22 +251,16 @@ public class AddStock extends AppCompatActivity {
 
     public void snackbarMessage(String message)
     {
+
         Snackbar.make(coordinatorLayout,message, Snackbar.LENGTH_LONG)
               .setAction("Action", null).show();
     }
-
-
-
-
-
-
 
 
     public String  getServiceURL()
     {
         SharedPreferences sharedPref = this.getSharedPreferences(getString(R.string.preference_file_name), this.MODE_PRIVATE);
         String service_url = sharedPref.getString(getString(R.string.preference_service_url_key),"default");
-
         return service_url;
     }
 
@@ -251,4 +274,23 @@ public class AddStock extends AppCompatActivity {
         ButterKnife.unbind(this);
 
     }
+
+
+
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        isActivityRunning = false;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        isActivityRunning = true;
+    }
+
 }

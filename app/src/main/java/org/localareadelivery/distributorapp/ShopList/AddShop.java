@@ -451,6 +451,10 @@ public class AddShop extends AppCompatActivity implements LocationListener {
 
 
     // code for changing / picking image and saving it in the cache folder
+/*
+    Inputs: Activity Reference and Request Code:
+ */
+
 
 
     @OnClick(R.id.removePicture)
@@ -556,10 +560,13 @@ public class AddShop extends AppCompatActivity implements LocationListener {
 
 
 
+
     /*
 
     // Code for Uploading Image
 
+       // Takes the file in the cache directory and upload it to the server
+       // Retrives the image path from the response. and call the post Shop method.
 
      */
 

@@ -69,13 +69,14 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addstock_item_categories);
 
+
+
         ButterKnife.bind(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-
 
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -148,6 +149,7 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
     }
 
 
+
     public void makeRequestRetrofit()
     {
 
@@ -160,35 +162,43 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
         ItemCategoryService itemCategoryService = retrofit.create(ItemCategoryService.class);
 
 
-        Call<List<ItemCategory>> itemCategoryCall = itemCategoryService.getItemCategories(currentCategory.getItemCategoryID(),ApplicationState.getInstance().getCurrentShop().getShopID());
 
 
-        itemCategoryCall.enqueue(new Callback<List<ItemCategory>>() {
+        if(ApplicationState.getInstance().getCurrentShop()==null) {
+
+            return;
+        }
+
+        // Null Pointer Exception :
+
+            Call<List<ItemCategory>> itemCategoryCall = itemCategoryService.getItemCategories(
+                                                    currentCategory.getItemCategoryID(),
+                                                    ApplicationState.getInstance().getCurrentShop().getShopID());
 
 
-            @Override
-            public void onResponse(Call<List<ItemCategory>> call, retrofit2.Response<List<ItemCategory>> response) {
+            itemCategoryCall.enqueue(new Callback<List<ItemCategory>>() {
 
 
+                @Override
+                public void onResponse(Call<List<ItemCategory>> call, retrofit2.Response<List<ItemCategory>> response) {
 
-                dataset.clear();
 
-                if(response.body()!=null) {
+                    dataset.clear();
 
-                    dataset.addAll(response.body());
+                    if (response.body() != null) {
+
+                        dataset.addAll(response.body());
+                    }
+
+                    listAdapter.notifyDataSetChanged();
+
                 }
 
-                listAdapter.notifyDataSetChanged();
+                @Override
+                public void onFailure(Call<List<ItemCategory>> call, Throwable t) {
 
-            }
-
-            @Override
-            public void onFailure(Call<List<ItemCategory>> call, Throwable t) {
-
-            }
-        });
-
-
+                }
+            });
 
 
     }
@@ -247,6 +257,8 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
 
         shop = ApplicationState.getInstance().getCurrentShop();
 
+        // TODO
+        // null pointer exception : Error Prone
         dataset.clear();
         makeRequestRetrofit();
     }

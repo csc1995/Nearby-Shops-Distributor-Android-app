@@ -20,95 +20,122 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin">
 
+    
+    
+    
 
-    <TextView
-        android:layout_gravity="center_horizontal"
-        android:gravity="right"
-        android:padding="20dp"
-        android:textSize="25sp"
-        android:id="@+id/addRemoveItemsButton"
-        android:background="@color/grey800"
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:text="Add Items"/>
-
-    <TextView
-        android:layout_gravity="center_horizontal"
-        android:gravity="right"
-        android:padding="20dp"
-        android:textSize="25sp"
-        android:id="@+id/addStockButton"
-        android:layout_marginTop="10dp"
-        android:background="@color/cyan900"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:text="Add Stock"/>
-
-
-
-    <TextView
-        android:layout_gravity="center_horizontal"
-        android:padding="20dp"
-        android:textSize="25sp"
-        android:gravity="right"
-        android:id="@+id/ordersButton"
-        android:layout_marginTop="10dp"
-        android:background="@color/cyan900"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:text="Orders" />
-
-
-    <android.support.v7.widget.CardView
-        app:cardElevation="4dp"
-        android:layout_marginTop="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="@dimen/menu_item_height">
 
 
         <TextView
-            android:background="@color/cyan900"
-            android:gravity="right"
-            android:layout_gravity="center_horizontal"
+
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="bottom|right"
             android:padding="20dp"
-            android:textSize="25sp"
-
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:textSize="@dimen/menu_item_textsize"
+            android:id="@+id/addRemoveItemsButton"
+            android:background="#bbD84315"
             android:textColor="@color/white"
-            android:text="Statistics" />
+            android:text="Add Items"/>
 
-    </android.support.v7.widget.CardView>
+        <TextView
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:gravity="bottom|right"
+            android:padding="20dp"
+            android:textSize="@dimen/menu_item_textsize"
+            android:id="@+id/addStockButton"
+            android:background="@color/darkGreen"
+            android:textColor="@color/white"
+            android:text="Add Stock"/>
+
+    </LinearLayout>
+
+
+
+
 
     <LinearLayout
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="@dimen/menu_item_height">
+
+
+        <TextView
+
+            android:layout_weight="1"
+            android:layout_gravity="center_horizontal"
+            android:padding="20dp"
+            android:textSize="@dimen/menu_item_textsize"
+            android:gravity="bottom|right"
+            android:id="@+id/ordersButton"
+
+            android:background="#aa006064"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:textColor="@color/white"
+            android:text="Orders" />
+
+
+        <!--
+
+        <android.support.v7.widget.CardView
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1"
+            app:cardElevation="0dp"
+
+            android:layout_width="0dp"
+            android:layout_height="match_parent"/>
+
+    -->
+
+            <TextView
+                android:layout_marginLeft="5dp"
+                android:background="@color/orangeDark"
+                android:gravity="bottom|right"
+                android:layout_gravity="center_horizontal"
+                android:padding="20dp"
+                android:textSize="@dimen/menu_item_textsize"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:textColor="@color/white"
+                android:text="Statistics" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:background="#aa2E7D32"
+        android:orientation="horizontal"
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/menu_item_height">
+
 
         <ImageView
-            android:paddingLeft="20dp"
-            android:paddingRight="10dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:background="@color/cyan900"
+            android:padding="20dp"
             android:src="@drawable/ic_account_balance_white_24px"
-            android:layout_width="90dp"
+            android:layout_width="130dp"
             android:layout_height="match_parent" />
 
-    <TextView
-        android:gravity="left"
-        android:padding="20dp"
-        android:background="@color/cyan900"
-        android:textSize="25sp"
-        android:textColor="@color/white"
-        android:layout_weight="1"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:text="Billig Options"/>
+        <TextView
+            android:padding="20dp"
+            android:gravity="bottom|right"
+
+            android:textSize="@dimen/menu_item_textsize"
+            android:textColor="@color/white"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="Billing"/>
 
     </LinearLayout>
 

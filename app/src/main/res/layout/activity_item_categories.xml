@@ -25,6 +25,7 @@
 
 
         <TextView
+            app:layout_scrollFlags = "scroll|exitUntilCollapsed"
             android:visibility="gone"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardElevation="4dp"
+    app:cardElevation="2dp"
     android:layout_margin="5dp">
 
     <LinearLayout
@@ -25,7 +25,7 @@
                 android:id="@+id/categoryImage"
                 android:scaleType="centerCrop"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="170dp"
                 android:src="@drawable/veggies"/>
 
 

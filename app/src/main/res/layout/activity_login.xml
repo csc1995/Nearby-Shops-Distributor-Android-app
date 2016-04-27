@@ -22,68 +22,10 @@
 
 
 
-        <TextView
-            android:visibility="gone"
-            app:layout_scrollFlags="scroll|enterAlwaysCollapsed"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginBottom="10dp"
-            android:background="@color/colorPrimaryDark"
-            android:layout_gravity="left"
-            android:gravity="left"
-            android:paddingRight="10dp"
-            android:paddingLeft="10dp"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp"
-            android:text="Change \nService Discovery Provider"
-            android:textSize="@dimen/appbar_label_size"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <LinearLayout
-            android:visibility="gone"
-            app:layout_scrollFlags="scroll|enterAlways"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-        <TextView
-            android:layout_marginLeft="20dp"
-            android:background="@color/colorPrimaryDark"
-            android:layout_gravity="left"
-            android:paddingRight="10dp"
-            android:paddingLeft="10dp"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp"
-            android:text="Create Service"
-            android:textSize="@dimen/appbar_label_size"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-            <LinearLayout
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"/>
-
-        <TextView
-            android:layout_marginRight="20dp"
-            android:background="@color/colorPrimaryDark"
-            android:layout_gravity="left"
-            android:paddingRight="10dp"
-            android:paddingLeft="10dp"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp"
-            android:text="Submit Service"
-            android:textSize="@dimen/appbar_label_size"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        </LinearLayout>
 
 
         <android.support.design.widget.TextInputLayout
-            android:paddingTop="20dp"
+            android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
@@ -110,6 +52,7 @@
 
 
         <TextView
+            android:gravity="center"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:background="@color/colorPrimaryDark"
@@ -118,10 +61,11 @@
             android:paddingLeft="20dp"
             android:paddingBottom="10dp"
             android:paddingTop="10dp"
+
             android:text="Discover Services"
             android:textSize="@dimen/appbar_label_size"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="match_parent" />
 
             <LinearLayout
                 android:layout_weight="1"
@@ -137,7 +81,7 @@
             android:paddingLeft="20dp"
             android:paddingBottom="10dp"
             android:paddingTop="10dp"
-            android:text="Paste"
+            android:text="Paste\nService URL"
             android:textSize="@dimen/appbar_label_size"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

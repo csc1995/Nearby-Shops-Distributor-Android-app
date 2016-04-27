@@ -5,12 +5,16 @@ xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:app="http://schemas.android.com/apk/res-auto"
 android:layout_width="match_parent"
 android:layout_height="wrap_content"
-app:cardElevation="4dp"
+app:cardElevation="2dp"
 android:layout_margin="5dp">
 
 <LinearLayout
     android:id="@+id/itemListItem"
     android:padding="5dp"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp"
+    android:paddingTop="5dp"
+
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -24,7 +28,7 @@ android:layout_margin="5dp">
             android:id="@+id/itemImage"
             android:scaleType="centerCrop"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="150dp"
             android:src="@drawable/nature_people"/>
 
 
@@ -63,12 +67,36 @@ android:layout_margin="5dp">
             android:layout_height="wrap_content"
             android:text="Item Brand Name"/>
 
+
+        <TextView
+            android:background="#77000000"
+            android:layout_marginLeft="5dp"
+            android:textColor="@color/white"
+
+            android:layout_marginTop="125dp"
+            android:layout_marginBottom="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Price : "/>
+
+        <TextView
+            android:background="#77000000"
+            android:layout_marginLeft="65dp"
+            android:textColor="@color/white"
+            android:id="@+id/itemPrice"
+            android:layout_marginTop="125dp"
+            android:layout_marginBottom="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Price : "/>
+
     </RelativeLayout>
 
 
 
 
     <LinearLayout
+
         android:layout_marginTop="5dp"
         android:background="#88000000"
         android:layout_width="match_parent"
@@ -76,11 +104,84 @@ android:layout_margin="5dp">
 
 
     <LinearLayout
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal">
 
+        <TextView
+            android:visibility="gone"
+            android:textSize="20sp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:layout_gravity="center_vertical"
+            android:text="Price : "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
+
+        <TextView
+            android:visibility="gone"
+            android:textSize="20sp"
+
+            android:layout_marginRight="5dp"
+            android:layout_gravity="center_vertical"
+            android:text="54"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_marginTop="5dp"
+            android:textColorHint="#88000000"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+
+            <EditText
+                android:hint="Item Available"
+                android:textColorHint="@color/cyan900"
+                android:inputType="number"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:minWidth="130dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+
+        </android.support.design.widget.TextInputLayout>
+
+
+        <LinearLayout
+
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:background="#88000000"
+            android:layout_width="1dp"
+            android:layout_height="25dp"/>
+
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+
+            <EditText
+                android:hint="Item Price"
+                android:id="@+id/itemPriceInput"
+
+                android:inputType="number"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+
+
+                android:minWidth="100dp"
+                android:maxWidth="100dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+
+        </android.support.design.widget.TextInputLayout>
 
 
 
@@ -93,37 +194,31 @@ android:layout_margin="5dp">
 
 
 
-        <LinearLayout
-
+        <ImageView
+            android:visibility="gone"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:id="@+id/itemPriceReduce"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="5dp"
-
-            android:background="#88000000"
-            android:layout_width="1dp"
-            android:layout_height="25dp"/>
+            android:background="@color/grey800"
+            android:src="@drawable/ic_remove_white_24px"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            />
 
 
 
         <ImageView
-
-            android:id="@+id/editIcon"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:paddingRight="5dp"
-            android:paddingLeft="10dp"
-
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_details_black_48px"/>
-
-        <TextView
-            android:id="@+id/editText"
+            android:visibility="gone"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:layout_marginRight="5dp"
+            android:id="@+id/itemPriceIncrease"
             android:layout_gravity="center_vertical"
-            android:text="Detail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
+            android:background="@color/grey800"
+            android:src="@drawable/ic_add_white_24px"
+            android:layout_width="40dp"
+            android:layout_height="40dp" />
 
 
         <LinearLayout
@@ -137,6 +232,7 @@ android:layout_margin="5dp">
 
 
         <ImageView
+
             android:visibility="gone"
             android:id="@+id/deleteIcon"
             android:paddingTop="10dp"
@@ -160,6 +256,7 @@ android:layout_margin="5dp">
 
 
     <LinearLayout
+        android:visibility="gone"
         android:background="#88000000"
         android:layout_width="match_parent"
         android:layout_height="1dp"/>
@@ -168,46 +265,14 @@ android:layout_margin="5dp">
 
 
     <LinearLayout
-        android:gravity="center_horizontal"
+        android:gravity="right"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal">
 
-
-
         <TextView
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-
-            android:paddingLeft="10dp"
-
-            android:layout_gravity="center_vertical"
-            android:text=" Item Price : "
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-
-        <TextView
-            android:id="@+id/itemPrice"
-            android:layout_marginRight="5dp"
-            android:layout_gravity="center_vertical"
-            android:text="54"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <LinearLayout
-
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="5dp"
-
-            android:background="#88000000"
-            android:layout_width="1dp"
-            android:layout_height="25dp"/>
-
-
-
-
-        <TextView
+            android:visibility="gone"
+            android:textSize="20sp"
             android:paddingLeft="10dp"
 
             android:layout_gravity="center_vertical"
@@ -217,6 +282,8 @@ android:layout_margin="5dp">
 
 
         <TextView
+            android:visibility="gone"
+            android:textSize="20sp"
             android:id="@+id/availableItems"
             android:layout_marginRight="5dp"
             android:layout_gravity="center_vertical"
@@ -225,7 +292,54 @@ android:layout_margin="5dp">
             android:layout_height="wrap_content" />
 
 
+        <LinearLayout
+            android:visibility="gone"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="5dp"
 
+            android:background="#88000000"
+            android:layout_width="1dp"
+            android:layout_height="25dp"/>
+
+        <ImageView
+            android:id="@+id/editIcon"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingRight="5dp"
+            android:paddingLeft="10dp"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_details_black_48px"/>
+
+        <TextView
+
+            android:id="@+id/editText"
+            android:layout_marginRight="5dp"
+            android:layout_gravity="center_vertical"
+            android:text="Detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+        <LinearLayout
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="5dp"
+
+            android:background="#88000000"
+            android:layout_width="1dp"
+            android:layout_height="25dp"/>
+
+
+        <ImageView
+            android:id="@+id/moreOptions"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingRight="5dp"
+            android:paddingLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_more_vert_black_24dp"/>
 
     </LinearLayout>
 
