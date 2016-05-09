@@ -9,25 +9,14 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.View;
 import android.widget.TextView;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.localareadelivery.distributorapp.DividerItemDecoration;
 import org.localareadelivery.distributorapp.Model.Item;
 import org.localareadelivery.distributorapp.Model.ItemCategory;
 import org.localareadelivery.distributorapp.R;
-import org.localareadelivery.distributorapp.ServiceContract.ItemService;
-import org.localareadelivery.distributorapp.VolleySingleton;
+import org.localareadelivery.distributorapp.ServiceContractRetrofit.ItemService;
 
 import java.util.ArrayList;
 import java.util.List;

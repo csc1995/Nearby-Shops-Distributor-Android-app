@@ -1,22 +1,17 @@
 package org.localareadelivery.distributorapp.ShopList;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.DocumentsContract;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
@@ -24,15 +19,11 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.MotionEvent;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.soundcloud.android.crop.Crop;
 import com.squareup.picasso.Picasso;
 import com.yalantis.ucrop.UCrop;
 import com.yalantis.ucrop.UCropActivity;
@@ -40,23 +31,17 @@ import com.yalantis.ucrop.UCropActivity;
 import org.localareadelivery.distributorapp.Model.Image;
 import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.R;
-import org.localareadelivery.distributorapp.ServiceContract.ImageService;
-import org.localareadelivery.distributorapp.ServiceContract.ShopService;
+import org.localareadelivery.distributorapp.ServiceContractRetrofit.ImageService;
+import org.localareadelivery.distributorapp.ServiceContractRetrofit.ShopService;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import okhttp3.Headers;
 import okhttp3.MediaType;
-import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -124,7 +109,7 @@ public class AddShop extends AppCompatActivity implements LocationListener {
 
             // delete previous file in the cache - This will prevent accidently uploading the previous image
             File file = new File(getCacheDir().getPath() + "/" + "SampleCropImage.jpeg");
-            showMessageSnackBar("File delete Status : " + String.valueOf(file.delete()));
+            //showMessageSnackBar("File delete Status : " + String.valueOf(file.delete()));
 
 
         }
@@ -451,9 +436,11 @@ public class AddShop extends AppCompatActivity implements LocationListener {
 
 
     // code for changing / picking image and saving it in the cache folder
-/*
+    /*
+
     Inputs: Activity Reference and Request Code:
- */
+
+    */
 
 
 
@@ -505,15 +492,18 @@ public class AddShop extends AppCompatActivity implements LocationListener {
 
         UCrop.Options options = new UCrop.Options();
         options.setCompressionFormat(Bitmap.CompressFormat.JPEG);
-        options.setCompressionQuality(100);
+        //options.setCompressionQuality(70);
+        //options.setMaxBitmapSize(300);
+
 
         options.setToolbarColor(getResources().getColor(R.color.cyan900));
-        options.setAllowedGestures(UCropActivity.SCALE, UCropActivity.SCALE, UCropActivity.SCALE);
+        options.setAllowedGestures(UCropActivity.SCALE, UCropActivity.ALL, UCropActivity.SCALE);
 
 
         // this function takes the file from the source URI and saves in into the destination URI location.
         UCrop.of(sourceUri, mDestinationUri)
                 .withOptions(options)
+                .withMaxResultSize(400,300)
                 .start(this);
 
         //.withMaxResultSize(500, 400)

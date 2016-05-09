@@ -1,7 +1,6 @@
-package org.localareadelivery.distributorapp.ServiceContract;
+package org.localareadelivery.distributorapp.ServiceContractRetrofit;
 
 import org.localareadelivery.distributorapp.Model.ItemCategory;
-import org.localareadelivery.distributorapp.Model.Shop;
 
 import java.util.List;
 

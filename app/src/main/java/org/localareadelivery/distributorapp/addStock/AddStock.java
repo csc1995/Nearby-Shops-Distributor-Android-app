@@ -3,12 +3,10 @@ package org.localareadelivery.distributorapp.addStock;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -18,8 +16,7 @@ import org.localareadelivery.distributorapp.Model.Item;
 import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.Model.ShopItem;
 import org.localareadelivery.distributorapp.R;
-import org.localareadelivery.distributorapp.ServiceContract.ShopItemService;
-import org.localareadelivery.distributorapp.ServiceContract.ShopService;
+import org.localareadelivery.distributorapp.ServiceContractRetrofit.ShopItemService;
 
 import java.util.List;
 
@@ -27,13 +24,11 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.ResponseBody;
-import okhttp3.internal.http.StatusLine;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.HTTP;
 
 public class AddStock extends AppCompatActivity {
 
@@ -94,6 +89,7 @@ public class AddStock extends AppCompatActivity {
 
         shopItem.setItemID(item.getItemID());
         shopItem.setShopID(ApplicationState.getInstance().getCurrentShop().getShopID());
+
 
         //TODO remove this comment after api update
         //shopItem.setQuantityUnit(itemUnit.getText().toString());

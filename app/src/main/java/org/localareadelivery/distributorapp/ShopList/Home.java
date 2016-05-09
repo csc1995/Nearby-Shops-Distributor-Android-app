@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -23,10 +24,9 @@ import com.android.volley.toolbox.StringRequest;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.localareadelivery.distributorapp.DividerItemDecoration;
 import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.R;
-import org.localareadelivery.distributorapp.ServiceContract.ShopService;
+import org.localareadelivery.distributorapp.ServiceContractRetrofit.ShopService;
 import org.localareadelivery.distributorapp.VolleySingleton;
 
 import java.util.ArrayList;
@@ -124,10 +124,22 @@ public class Home extends AppCompatActivity {
 
     public void makeRetrofitRequest()
     {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getServiceURL())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+
+
+        Retrofit retrofit = null;
+
+        try{
+            retrofit = new Retrofit.Builder()
+                    .baseUrl(getServiceURL())
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+        }catch(IllegalArgumentException ex)
+        {
+            Toast.makeText(this,ex.toString(),Toast.LENGTH_SHORT).show();
+
+            return;
+        }
 
         ShopService shopService = retrofit.create(ShopService.class);
 

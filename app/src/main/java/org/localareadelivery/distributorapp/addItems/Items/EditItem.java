@@ -14,33 +14,22 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 import com.squareup.picasso.Picasso;
 import com.yalantis.ucrop.UCrop;
 import com.yalantis.ucrop.UCropActivity;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.localareadelivery.distributorapp.Model.Image;
 import org.localareadelivery.distributorapp.Model.Item;
 import org.localareadelivery.distributorapp.Model.ItemCategory;
 import org.localareadelivery.distributorapp.R;
-import org.localareadelivery.distributorapp.ServiceContract.ImageService;
-import org.localareadelivery.distributorapp.ServiceContract.ItemCategoryService;
-import org.localareadelivery.distributorapp.ServiceContract.ItemService;
-import org.localareadelivery.distributorapp.VolleySingleton;
+import org.localareadelivery.distributorapp.ServiceContractRetrofit.ImageService;
+import org.localareadelivery.distributorapp.ServiceContractRetrofit.ItemService;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -311,15 +300,16 @@ public class EditItem extends AppCompatActivity{
 
         UCrop.Options options = new UCrop.Options();
         options.setCompressionFormat(Bitmap.CompressFormat.JPEG);
-        options.setCompressionQuality(100);
+//        options.setCompressionQuality(100);
 
         options.setToolbarColor(getResources().getColor(R.color.cyan900));
-        options.setAllowedGestures(UCropActivity.SCALE, UCropActivity.SCALE, UCropActivity.SCALE);
+        options.setAllowedGestures(UCropActivity.SCALE, UCropActivity.ALL, UCropActivity.SCALE);
 
 
         // this function takes the file from the source URI and saves in into the destination URI location.
         UCrop.of(sourceUri, mDestinationUri)
                 .withOptions(options)
+                .withMaxResultSize(400,300)
                 .start(this);
 
         //.withMaxResultSize(500, 400)

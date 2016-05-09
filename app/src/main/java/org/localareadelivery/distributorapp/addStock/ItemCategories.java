@@ -1,6 +1,5 @@
 package org.localareadelivery.distributorapp.addStock;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -26,9 +25,8 @@ import org.localareadelivery.distributorapp.ApplicationState.ApplicationState;
 import org.localareadelivery.distributorapp.Model.ItemCategory;
 import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.R;
-import org.localareadelivery.distributorapp.ServiceContract.ItemCategoryService;
+import org.localareadelivery.distributorapp.ServiceContractRetrofit.ItemCategoryService;
 import org.localareadelivery.distributorapp.VolleySingleton;
-import org.localareadelivery.distributorapp.addItems.ItemCategories.AddItemCategory;
 
 import java.util.ArrayList;
 import java.util.List;

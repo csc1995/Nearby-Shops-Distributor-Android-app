@@ -1,5 +1,7 @@
 package org.localareadelivery.distributorapp.ApplicationState;
 
+import android.util.Log;
+
 import org.localareadelivery.distributorapp.Model.Shop;
 
 /**
@@ -34,10 +36,16 @@ public class ApplicationState {
 
 
     public Shop getCurrentShop() {
+
+        Log.i("applog",String.valueOf(currentShop.getShopID()));
+
         return currentShop;
     }
 
     public void setCurrentShop(Shop currentShop) {
+
+        Log.i("applog",String.valueOf(currentShop.getShopID()));
+
         this.currentShop = currentShop;
     }
 

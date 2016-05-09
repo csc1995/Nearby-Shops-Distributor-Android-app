@@ -3,57 +3,47 @@ package org.localareadelivery.distributorapp.ShopList;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.SearchEvent;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 import com.yalantis.ucrop.UCrop;
-import com.yalantis.ucrop.UCropActivity;
 
+import org.localareadelivery.distributorapp.UtilityMethods.ImageCropUtility;
+import org.localareadelivery.distributorapp.UtilityMethods.RetrofitUtilityMethods;
+import org.localareadelivery.distributorapp.UtilityMethods.UtilityGeneral;
 import org.localareadelivery.distributorapp.Model.Image;
 import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.R;
-import org.localareadelivery.distributorapp.ServiceContract.ImageService;
-import org.localareadelivery.distributorapp.ServiceContract.ShopService;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
-public class EditShop extends AppCompatActivity implements LocationListener {
+
+public class EditShop extends AppCompatActivity implements LocationListener, Callback<Image>{
 
 
     public static final String INTENT_EXTRA_SHOP_KEY = "intentExtraShopKey";
@@ -61,10 +51,13 @@ public class EditShop extends AppCompatActivity implements LocationListener {
 
     @Bind(R.id.shopID)
     EditText shopID;
+
     @Bind(R.id.shopName)
     EditText shopName;
+
     @Bind(R.id.radiusOfService)
     EditText radiusOfService;
+
     @Bind(R.id.latitude)
     EditText latitude;
 
@@ -73,11 +66,13 @@ public class EditShop extends AppCompatActivity implements LocationListener {
 
     @Bind(R.id.deliveryCharges)
     EditText deliveryCharge;
+
     @Bind(R.id.distributorID)
     EditText distributorID;
 
     @Bind(R.id.addShopButton)
     Button addShopButton;
+
     @Bind(R.id.result)
     TextView result;
 
@@ -88,13 +83,25 @@ public class EditShop extends AppCompatActivity implements LocationListener {
     Shop shop = null;
 
 
+    // flag for knowing whether the image is changed or not
+    boolean isImageChanged = false;
+    boolean isImageRemoved = false;
+
+    String imagePath = "";
+
+
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_edit_shop);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -105,8 +112,6 @@ public class EditShop extends AppCompatActivity implements LocationListener {
 
             shop = getIntent().getExtras().getParcelable(INTENT_EXTRA_SHOP_KEY);
         }
-
-
 
 
         if(shop !=null) {
@@ -132,7 +137,9 @@ public class EditShop extends AppCompatActivity implements LocationListener {
 
         if(shop != null)
         {
-            Picasso.with(this).load(getServiceURL() + IMAGES_END_POINT_URL + imagePath).into(resultView);
+            Picasso.with(this)
+                    .load(UtilityGeneral.getServiceURL(this) + IMAGES_END_POINT_URL + imagePath)
+                    .into(resultView);
         }
 
     }
@@ -146,7 +153,7 @@ public class EditShop extends AppCompatActivity implements LocationListener {
     void bindDataToEditText(Shop shop) {
 
         if (shop != null) {
-            shop.setDistributorID(getDistributorID());
+            shop.setDistributorID(UtilityGeneral.getDistributorID(this));
 
             Log.d("applog", shop.toString());
             shopID.setText(String.valueOf(shop.getShopID()));
@@ -161,56 +168,21 @@ public class EditShop extends AppCompatActivity implements LocationListener {
     }
 
 
-    void getDataFromEditText() {
+    void getDataFromEditText(Shop shopForUpdate) {
 
-        if(shop!=null) {
+        if(shopForUpdate !=null) {
 
-            shop.setShopName(shopName.getText().toString());
-            shop.setShopID(Integer.parseInt(shopID.getText().toString()));
-            shop.setRadiusOfService(Double.parseDouble(radiusOfService.getText().toString()));
-            shop.setLatitude(Double.parseDouble(latitude.getText().toString()));
-            shop.setLongitude(Double.parseDouble(longitude.getText().toString()));
+            shopForUpdate.setShopName(shopName.getText().toString());
+            shopForUpdate.setShopID(Integer.parseInt(shopID.getText().toString()));
+            shopForUpdate.setRadiusOfService(Double.parseDouble(radiusOfService.getText().toString()));
+            shopForUpdate.setLatitude(Double.parseDouble(latitude.getText().toString()));
+            shopForUpdate.setLongitude(Double.parseDouble(longitude.getText().toString()));
 
-            shop.setDeliveryCharges(Double.parseDouble(deliveryCharge.getText().toString()));
+            shopForUpdate.setDeliveryCharges(Double.parseDouble(deliveryCharge.getText().toString()));
         }
     }
 
 
-    void makePUTRequest() {
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getServiceURL())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        ShopService shopService = retrofit.create(ShopService.class);
-
-        // store the recently updated data to the shop object
-
-        getDataFromEditText();
-
-        Call<ResponseBody> shopCall = shopService.updateShop(shop, shop.getShopID());
-
-        shopCall.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-
-                response.body();
-
-                ResponseBody responseBody = response.body();
-
-                Log.d("applog", String.valueOf(response.isSuccessful()) + response.toString());
-
-                displayResult();
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-
-            }
-        });
-
-    }
 
 
     @OnClick(R.id.addShopButton)
@@ -219,80 +191,63 @@ public class EditShop extends AppCompatActivity implements LocationListener {
 
         if(isImageChanged)
         {
-            uploadPickedImage();
+
+            if (shop !=null) {
+
+
+                if(isImageRemoved)
+                {
+                    shop.setImagePath("");
+                    getDataFromEditText(shop);
+                    RetrofitUtilityMethods
+                            .UpdateShopPUTRequest(
+                                    this,
+                                    shop,
+                                    new UpdateShopCallback());
+
+
+                }else
+                {
+
+                    // delete previous image from the server
+
+                    RetrofitUtilityMethods.deleteImage(
+                            shop.getImagePath(),
+                            this,
+                            new DeleteImageCallback());
+
+
+
+                    // Upload the image stored in the cache directory
+                    ImageCropUtility.uploadPickedImage(
+                            UtilityGeneral.getServiceURL(this),
+                            this,
+                            REQUEST_CODE_READ_EXTERNAL_STORAGE,
+                            this
+                    );
+
+                }
+            }
 
 
             // resetting the flag in order to ensure that future updates do not upload the same image again to the server
             isImageChanged = false;
+            isImageRemoved = false;
         }
 
         else
         {
-            makePUTRequest();
+            getDataFromEditText(shop);
+            RetrofitUtilityMethods
+                    .UpdateShopPUTRequest(
+                            this,
+                            shop,
+                            new UpdateShopCallback()
+                    );
         }
-
     }
 
 
-
-    void displayResult() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getServiceURL())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        ShopService shopService = retrofit.create(ShopService.class);
-
-        Call<Shop> shopCall = shopService.getShop(shop.getShopID());
-
-        shopCall.enqueue(new Callback<Shop>() {
-
-            @Override
-            public void onResponse(Call<Shop> call, Response<Shop> response) {
-
-
-                EditShop.this.result.setText(response.body().toString());
-
-            }
-
-            @Override
-            public void onFailure(Call<Shop> call, Throwable t) {
-
-            }
-        });
-
-        /*
-        String resultMessage = "ID: " + shop.getShopID()
-                + "\nSHOP NAME : " + shop.getShopName()
-                + "\nRADIUS OF SERVICE : " + shop.getRadiusOfService()
-                + "\nLATITUDE : " + shop.getLatitude()
-                + "\nLONGITUDE : " + shop.getLongitude()
-                + "\nAVERAGE RATING : " + shop.getAverageRating()
-                + "\nDELIVERY CHARGES : " + shop.getDeliveryCharges()
-                + "\nDISTRIBUTOR ID : " + shop.getDistributorID();
-        */
-    }
-
-
-    public int getDistributorID() {
-        // Get a handle to shared preference
-        SharedPreferences sharedPref;
-        sharedPref = this.getSharedPreferences(getString(R.string.preference_file_name), this.MODE_PRIVATE);
-
-        // read from shared preference
-        int distributorID = sharedPref.getInt(getString(R.string.preference_distributor_id_key), 0);
-
-        return distributorID;
-    }
-
-
-    public String getServiceURL() {
-        SharedPreferences sharedPref = this.getSharedPreferences(getString(R.string.preference_file_name), this.MODE_PRIVATE);
-
-        String service_url = sharedPref.getString(getString(R.string.preference_service_url_key), "default");
-
-        return service_url;
-    }
 
 
     @Override
@@ -382,7 +337,11 @@ public class EditShop extends AppCompatActivity implements LocationListener {
             
             case REQUEST_CODE_READ_EXTERNAL_STORAGE:
 
-                uploadPickedImage();
+                ImageCropUtility.uploadPickedImage(
+                        UtilityGeneral.getServiceURL(this),
+                        this,
+                        REQUEST_CODE_READ_EXTERNAL_STORAGE,
+                        this);
 
                 break;
         }
@@ -394,7 +353,8 @@ public class EditShop extends AppCompatActivity implements LocationListener {
         super.onStop();
 
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission
                 (this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
         {
@@ -471,6 +431,28 @@ public class EditShop extends AppCompatActivity implements LocationListener {
 
 
 
+    class DeleteImageCallback implements Callback<ResponseBody>{
+
+        @Override
+        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+            Log.i("applog",String.valueOf(response.code()));
+
+            if (response.isSuccessful())
+            {
+                Toast.makeText(EditShop.this,"Image Removed !",Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        @Override
+        public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+        }
+    }
+
+
+
+
 
 
     // Utility Methods
@@ -488,30 +470,44 @@ public class EditShop extends AppCompatActivity implements LocationListener {
 
     // code for changing / picking image and saving it in the cache folder
 
-    boolean isImageChanged = false;
-
-    String imagePath = "";
 
     @OnClick(R.id.removePicture)
-    void removeImage()
-    {
-
+    void removeImage() {
         File file = new File(getCacheDir().getPath() + "/" + "SampleCropImage.jpeg");
-        showMessageSnackBar("File delete Status : " + String.valueOf(file.delete()));
+        file.delete();
+
+        //showMessageSnackBar("File delete Status : " + String.valueOf(file.delete()));
+
+        String shopImage = "";
+
+        if (shop != null) {
+            shopImage = shop.getImagePath();
+        }
+
+        Log.i("applog", shopImage);
+
+
+
+            RetrofitUtilityMethods
+                    .deleteImage(
+                            shopImage,
+                            this,
+                            new DeleteImageCallback()
+                    );
 
 
         imagePath = null;
 
         resultView.setImageDrawable(null);
 
+
+        // Set flags
         isImageChanged = true;
+        isImageRemoved = true;
     }
 
 
 
-
-    private static final String SAMPLE_CROPPED_IMAGE_NAME = "SampleCropImage.jpeg";
-    private Uri mDestinationUri;
 
     @Bind(R.id.textChangePicture)
     TextView changePicture;
@@ -520,46 +516,7 @@ public class EditShop extends AppCompatActivity implements LocationListener {
     @OnClick(R.id.textChangePicture)
     void pickShopImage() {
 
-        mDestinationUri = Uri.fromFile(new File(getCacheDir(), SAMPLE_CROPPED_IMAGE_NAME));
-
-        Log.d("applog", "Cache Dir Path : " + getCacheDir().getPath());
-
-        //resultView.setImageDrawable(null);
-        //Crop.pickImage(this);
-
-        showFileChooser();
-    }
-
-
-
-    private int PICK_IMAGE_REQUEST = 21;
-
-    private void showFileChooser() {
-
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
-    }
-
-
-    public void startCropActivity(Uri sourceUri) {
-
-        UCrop.Options options = new UCrop.Options();
-        options.setCompressionFormat(Bitmap.CompressFormat.JPEG);
-        options.setCompressionQuality(100);
-
-        options.setToolbarColor(getResources().getColor(R.color.cyan900));
-        options.setAllowedGestures(UCropActivity.SCALE, UCropActivity.SCALE, UCropActivity.SCALE);
-
-
-        // this function takes the file from the source URI and saves in into the destination URI location.
-        UCrop.of(sourceUri, mDestinationUri)
-                .withOptions(options)
-                .start(this);
-
-        //.withMaxResultSize(500, 400)
-        //.withAspectRatio(16, 9)
+        ImageCropUtility.showFileChooser(this);
     }
 
 
@@ -572,21 +529,7 @@ public class EditShop extends AppCompatActivity implements LocationListener {
         super.onActivityResult(requestCode, resultCode, result);
 
 
-        if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
-
-            resultView.setImageURI(UCrop.getOutput(result));
-
-            isImageChanged = true;
-
-
-        } else if (resultCode == UCrop.RESULT_ERROR) {
-
-            final Throwable cropError = UCrop.getError(result);
-
-        }
-
-
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
+        if (requestCode == ImageCropUtility.PICK_IMAGE_REQUEST && resultCode == RESULT_OK
                 && result != null
                 && result.getData() != null) {
 
@@ -597,137 +540,130 @@ public class EditShop extends AppCompatActivity implements LocationListener {
 
             if (filePath != null) {
 
-                startCropActivity(result.getData());
+                ImageCropUtility.startCropActivity(result.getData(),this);
 
             }
 
-        }
+        } // PICK_IMAGE_REQUEST
+
+
+        if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
+
+            resultView.setImageURI(UCrop.getOutput(result));
+
+            isImageChanged = true;
+
+        } else if (resultCode == UCrop.RESULT_ERROR) {
+
+            final Throwable cropError = UCrop.getError(result);
+
+        } //REQUEST_CROP
+
     }
 
 
 
+    /*
+
+    - Clear Cache - To make sure that previous images are not in the cache
+
+    :: Add Routine
+
+    isImageAdded
+        If No - Simply POST the resource and let the image URL field be blank
+        If YES - Upload the Image to the server - Get the Image URL and then POST the resource to the Server
+
+
+    :: Edit Routine
+    isImageChanged
+        If No - Do nothing for image URL simply update the attributes and make PUT request on the server
+        If Yes
+                - Removed (Simply update the image Url Attribute to blank and proceed with PUT resource)
+                - NotRemoved (Upload the image get the image URL and the do the PUT Resource)
+                    - Delete Previous Image From the Server
+
+    */
 
 
 
 
-    // upload image after being picked up
-
-
-    Image image = null;
-
-
-    void uploadPickedImage() {
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getServiceURL())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        ImageService imageService = retrofit.create(ImageService.class);
-
-        Log.d("applog", "onClickUploadImage");
-
-
-        // code for checking the Read External Storage Permission and granting it.
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-
-
-            /// / TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-
-
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                    REQUEST_CODE_READ_EXTERNAL_STORAGE);
-
-            return;
-
-        }
-
-
-        File file = new File(getCacheDir().getPath() + "/" + "SampleCropImage.jpeg");
-
-
-        // Marker
-
-        RequestBody requestBodyBinary = null;
-
-        InputStream in = null;
-
-        try {
-            in = new FileInputStream(file);
-
-            byte[] buf;
-            buf = new byte[in.available()];
-            while (in.read(buf) != -1) ;
-
-            requestBodyBinary = RequestBody
-
-                    .create(MediaType.parse("application/octet-stream"), buf);
-
-            //Bitmap.createScaledBitmap()
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        final Call<Image> imageCall = imageService.uploadImage(requestBodyBinary);
-
-        imageCall.enqueue(new Callback<Image>() {
-            @Override
-            public void onResponse(Call<Image> call, Response<Image> response) {
-
-                image = response.body();
-
-                Log.d("applog", "inside retrofit call !" + String.valueOf(response.code()));
-                Log.d("applog", "image Path : " + image.getPath());
-
-
-                //// TODO: 31/3/16
-                // check whether load image call is required. or Not
-
-                loadImage(image.getPath());
-
-                imagePath = image.getPath();
 
 
 
-                if (response.code() != 201) {
-                    showMessageSnackBar("Unable to upload Image. Try changing the image by in the Edit Screen !");
-
-                    result.setText("Unable to upload Image. Try changing the image by in the Edit Screen !");
-
-                }
-
-                shop.setImagePath(imagePath);
-
-                makePUTRequest();
-            }
-
-            @Override
-            public void onFailure(Call<Image> call, Throwable t) {
-
-                Log.d("applog", "inside Error: " + t.getMessage());
-
-                showMessageSnackBar("Unable to upload Image. Try changing the image by in the Edit Screen !");
-
-                result.setText("Unable to upload Image. Try changing the image by in the Edit Screen !");
 
 
-                shop.setImagePath(imagePath);
 
-                makePUTRequest();
+    // Image Upload Callback
+    @Override
+    public void onResponse(Call<Image> call, Response<Image> response) {
 
-            }
-        });
+        Image image = null;
+
+        image = response.body();
+
+        Log.d("applog", "inside retrofit call !" + String.valueOf(response.code()));
+        Log.d("applog", "image Path : " + image.getPath());
+
+
+        //// TODO: 31/3/16
+        // check whether load image call is required. or Not
+
+        //loadImage(image.getPath());
+
+        shop.setImagePath(image.getPath());
+
+        getDataFromEditText(shop);
+        RetrofitUtilityMethods
+                .UpdateShopPUTRequest(
+                        this,
+                        shop,
+                        new UpdateShopCallback()
+                );
+
     }
 
+    @Override
+    public void onFailure(Call<Image> call, Throwable t) {
+
+        Log.d("applog", "inside Error: " + t.getMessage());
+
+
+        shop.setImagePath("");
+
+        Toast.makeText(this,"Unable to Upload Image. Try Later ! ",Toast.LENGTH_SHORT).show();
+
+        getDataFromEditText(shop);
+        RetrofitUtilityMethods
+                .UpdateShopPUTRequest(
+                        this,
+                        shop,
+                        new UpdateShopCallback()
+                );
+
+    }
+
+
+    class UpdateShopCallback implements Callback<ResponseBody>{
+
+        @Override
+        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+            if (response.code() == 200) {
+
+                Toast.makeText(EditShop.this, "Shop Update Successful !", Toast.LENGTH_SHORT).show();
+
+            }
+
+            Log.d("applog", String.valueOf(response.isSuccessful()) + response.toString());
+        }
+
+        @Override
+        public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            Toast.makeText(EditShop.this, "Unable to update Shop !", Toast.LENGTH_SHORT).show();
+
+        }
+    }
 
 
 

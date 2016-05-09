@@ -3,7 +3,6 @@ package org.localareadelivery.distributorapp.addItems.ItemCategories;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -28,7 +27,7 @@ import org.localareadelivery.distributorapp.ApplicationState.ApplicationState;
 import org.localareadelivery.distributorapp.Model.ItemCategory;
 import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.R;
-import org.localareadelivery.distributorapp.ServiceContract.ItemCategoryService;
+import org.localareadelivery.distributorapp.ServiceContractRetrofit.ItemCategoryService;
 import org.localareadelivery.distributorapp.VolleySingleton;
 
 import java.util.ArrayList;
@@ -126,10 +125,10 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
     }
 
 
-
-
     int currentCategoryID = 1; // the ID of root category is always supposed to be 1
     ItemCategory currentCategory = null;
+
+
 
     public void makeRequest()
     {

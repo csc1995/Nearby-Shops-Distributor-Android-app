@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -18,7 +17,7 @@ import com.squareup.picasso.Picasso;
 import org.localareadelivery.distributorapp.ApplicationState.ApplicationState;
 import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.R;
-import org.localareadelivery.distributorapp.ServiceContract.ShopService;
+import org.localareadelivery.distributorapp.ServiceContractRetrofit.ShopService;
 import org.localareadelivery.distributorapp.ShopHome.ShopHome;
 
 import java.util.ArrayList;
@@ -73,6 +72,7 @@ public class ShopsListAdapter extends RecyclerView.Adapter<ShopsListAdapter.View
 
 
         final int positionfinal = position;
+
 
         holder.shopListItem.setOnClickListener(new View.OnClickListener() {
 
