@@ -28,8 +28,8 @@ import org.localareadelivery.distributorapp.Model.Image;
 import org.localareadelivery.distributorapp.Model.Item;
 import org.localareadelivery.distributorapp.Model.ItemCategory;
 import org.localareadelivery.distributorapp.R;
-import org.localareadelivery.distributorapp.RetrofitServiceContract.ImageService;
-import org.localareadelivery.distributorapp.RetrofitServiceContract.ItemService;
+import org.localareadelivery.distributorapp.RetrofitRESTContract.ImageService;
+import org.localareadelivery.distributorapp.RetrofitRESTContract.ItemService;
 
 import java.io.File;
 import java.io.FileInputStream;

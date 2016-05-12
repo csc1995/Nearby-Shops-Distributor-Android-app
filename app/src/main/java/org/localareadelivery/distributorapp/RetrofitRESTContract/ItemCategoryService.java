@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.RetrofitServiceContract;
+package org.localareadelivery.distributorapp.RetrofitRESTContract;
 
 import org.localareadelivery.distributorapp.Model.ItemCategory;
 

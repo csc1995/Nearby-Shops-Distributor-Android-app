@@ -25,8 +25,9 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 import com.yalantis.ucrop.UCrop;
 
+import org.localareadelivery.distributorapp.RetrofitRESTCalls.ImageCalls;
+import org.localareadelivery.distributorapp.RetrofitRESTCalls.ShopCalls;
 import org.localareadelivery.distributorapp.UtilityMethods.ImageCropUtility;
-import org.localareadelivery.distributorapp.UtilityMethods.RetrofitUtilityMethods;
 import org.localareadelivery.distributorapp.UtilityMethods.UtilityGeneral;
 import org.localareadelivery.distributorapp.Model.Image;
 import org.localareadelivery.distributorapp.Model.Shop;
@@ -195,7 +196,7 @@ public class EditShop extends AppCompatActivity implements LocationListener, Cal
             if (shop !=null) {
 
                 // delete previous Image from the Server
-                RetrofitUtilityMethods
+                ImageCalls.getInstance()
                         .deleteImage(
                                 shop.getImagePath(),
                                 this,
@@ -211,9 +212,8 @@ public class EditShop extends AppCompatActivity implements LocationListener, Cal
                     shop.setImagePath("");
                     getDataFromEditText(shop);
 
-                    RetrofitUtilityMethods
-                            .UpdateShopPUTRequest(
-                                    this,
+                    ShopCalls.getInstance()
+                            .putShopRequest(
                                     shop,
                                     new UpdateShopCallback());
 
@@ -221,8 +221,10 @@ public class EditShop extends AppCompatActivity implements LocationListener, Cal
                 {
 
                     // Upload the image stored in the cache directory
-                    ImageCropUtility.uploadPickedImage(
-                            UtilityGeneral.getServiceURL(this),
+                    //ImageCropUtility
+
+                    ImageCalls.getInstance()
+                            .uploadPickedImage(
                             this,
                             REQUEST_CODE_READ_EXTERNAL_STORAGE,
                             this
@@ -241,9 +243,8 @@ public class EditShop extends AppCompatActivity implements LocationListener, Cal
         else
         {
             getDataFromEditText(shop);
-            RetrofitUtilityMethods
-                    .UpdateShopPUTRequest(
-                            this,
+            ShopCalls.getInstance()
+                    .putShopRequest(
                             shop,
                             new UpdateShopCallback()
                     );
@@ -340,8 +341,8 @@ public class EditShop extends AppCompatActivity implements LocationListener, Cal
             
             case REQUEST_CODE_READ_EXTERNAL_STORAGE:
 
-                ImageCropUtility.uploadPickedImage(
-                        UtilityGeneral.getServiceURL(this),
+                ImageCalls.getInstance()
+                        .uploadPickedImage(
                         this,
                         REQUEST_CODE_READ_EXTERNAL_STORAGE,
                         this);
@@ -579,9 +580,8 @@ public class EditShop extends AppCompatActivity implements LocationListener, Cal
         shop.setImagePath(image.getPath());
 
         getDataFromEditText(shop);
-        RetrofitUtilityMethods
-                .UpdateShopPUTRequest(
-                        this,
+        ShopCalls.getInstance()
+                .putShopRequest(
                         shop,
                         new UpdateShopCallback()
                 );
@@ -599,9 +599,8 @@ public class EditShop extends AppCompatActivity implements LocationListener, Cal
         Toast.makeText(this,"Unable to Upload Image. Try Later ! ",Toast.LENGTH_SHORT).show();
 
         getDataFromEditText(shop);
-        RetrofitUtilityMethods
-                .UpdateShopPUTRequest(
-                        this,
+        ShopCalls.getInstance()
+                .putShopRequest(
                         shop,
                         new UpdateShopCallback()
                 );

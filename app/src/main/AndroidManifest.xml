@@ -9,6 +9,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
 
     <application
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -148,7 +149,7 @@
         </activity>
         <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
 
-        <activity android:name=".EntryPoint"
+        <activity android:name=".Intro"
             android:theme="@style/Theme.Intro">
         </activity>
 

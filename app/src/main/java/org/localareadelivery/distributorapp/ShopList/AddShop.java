@@ -31,8 +31,8 @@ import com.yalantis.ucrop.UCropActivity;
 import org.localareadelivery.distributorapp.Model.Image;
 import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.R;
-import org.localareadelivery.distributorapp.RetrofitServiceContract.ImageService;
-import org.localareadelivery.distributorapp.RetrofitServiceContract.ShopService;
+import org.localareadelivery.distributorapp.RetrofitRESTContract.ImageService;
+import org.localareadelivery.distributorapp.RetrofitRESTContract.ShopService;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -131,7 +131,7 @@ public class AddShop extends AppCompatActivity implements LocationListener {
 
         ShopService shopService = retrofit.create(ShopService.class);
 
-        Call<Shop> shopCall = shopService.insertShop(shop);
+        Call<Shop> shopCall = shopService.postShop(shop);
 
 
         shopCall.enqueue(new Callback<Shop>() {

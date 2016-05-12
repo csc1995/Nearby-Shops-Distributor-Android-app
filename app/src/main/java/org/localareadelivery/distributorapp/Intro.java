@@ -7,7 +7,7 @@ import android.os.Bundle;
 import com.heinrichreimersoftware.materialintro.app.IntroActivity;
 import com.heinrichreimersoftware.materialintro.slide.SimpleSlide;
 
-public class EntryPoint extends IntroActivity{
+public class Intro extends IntroActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

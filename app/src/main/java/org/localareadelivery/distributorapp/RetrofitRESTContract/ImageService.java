@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.RetrofitServiceContract;
+package org.localareadelivery.distributorapp.RetrofitRESTContract;
 
 import org.localareadelivery.distributorapp.Model.Image;
 
@@ -21,7 +21,6 @@ public interface ImageService {
 
     @POST("/api/Images")
     Call<Image> uploadImage(@Body RequestBody image);
-
 
     @Multipart
     @POST("/api/Images")

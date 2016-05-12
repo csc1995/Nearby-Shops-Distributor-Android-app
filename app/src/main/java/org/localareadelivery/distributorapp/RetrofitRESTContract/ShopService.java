@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.RetrofitServiceContract;
+package org.localareadelivery.distributorapp.RetrofitRESTContract;
 
 import org.localareadelivery.distributorapp.Model.Shop;
 
@@ -26,10 +26,10 @@ public interface ShopService {
     Call<Shop> getShop(@Path("id")int id);
 
     @POST("/api/Shop")
-    Call<Shop> insertShop(@Body Shop shop);
+    Call<Shop> postShop(@Body Shop shop);
 
     @PUT("/api/Shop/{id}")
-    Call<ResponseBody> updateShop(@Body Shop shop, @Path("id") int id);
+    Call<ResponseBody> putShop(@Body Shop shop, @Path("id") int id);
 
     @DELETE("/api/Shop/{id}")
     Call<ResponseBody> deleteShop(@Path("id") int id);

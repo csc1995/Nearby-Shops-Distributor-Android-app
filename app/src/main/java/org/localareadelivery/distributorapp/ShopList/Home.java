@@ -26,7 +26,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.R;
-import org.localareadelivery.distributorapp.RetrofitServiceContract.ShopService;
+import org.localareadelivery.distributorapp.RetrofitRESTContract.ShopService;
 import org.localareadelivery.distributorapp.VolleySingleton;
 
 import java.util.ArrayList;

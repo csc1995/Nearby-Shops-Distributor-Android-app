@@ -16,7 +16,7 @@ import org.localareadelivery.distributorapp.Model.Item;
 import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.Model.ShopItem;
 import org.localareadelivery.distributorapp.R;
-import org.localareadelivery.distributorapp.RetrofitServiceContract.ShopItemService;
+import org.localareadelivery.distributorapp.RetrofitRESTContract.ShopItemService;
 
 import java.util.List;
 
