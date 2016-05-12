@@ -15,7 +15,7 @@ import com.yalantis.ucrop.UCropActivity;
 
 import org.localareadelivery.distributorapp.Model.Image;
 import org.localareadelivery.distributorapp.R;
-import org.localareadelivery.distributorapp.ServiceContractRetrofit.ImageService;
+import org.localareadelivery.distributorapp.RetrofitServiceContract.ImageService;
 
 import java.io.File;
 import java.io.FileInputStream;

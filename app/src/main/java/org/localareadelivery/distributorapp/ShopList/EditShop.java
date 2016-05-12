@@ -87,7 +87,7 @@ public class EditShop extends AppCompatActivity implements LocationListener, Cal
     boolean isImageChanged = false;
     boolean isImageRemoved = false;
 
-    String imagePath = "";
+    //String imagePath = "";
 
 
 
@@ -194,29 +194,31 @@ public class EditShop extends AppCompatActivity implements LocationListener, Cal
 
             if (shop !=null) {
 
+                // delete previous Image from the Server
+                RetrofitUtilityMethods
+                        .deleteImage(
+                                shop.getImagePath(),
+                                this,
+                                new DeleteImageCallback()
+                        );
+
+
 
                 if(isImageRemoved)
                 {
+
+
                     shop.setImagePath("");
                     getDataFromEditText(shop);
+
                     RetrofitUtilityMethods
                             .UpdateShopPUTRequest(
                                     this,
                                     shop,
                                     new UpdateShopCallback());
 
-
                 }else
                 {
-
-                    // delete previous image from the server
-
-                    RetrofitUtilityMethods.deleteImage(
-                            shop.getImagePath(),
-                            this,
-                            new DeleteImageCallback());
-
-
 
                     // Upload the image stored in the cache directory
                     ImageCropUtility.uploadPickedImage(
@@ -233,6 +235,7 @@ public class EditShop extends AppCompatActivity implements LocationListener, Cal
             // resetting the flag in order to ensure that future updates do not upload the same image again to the server
             isImageChanged = false;
             isImageRemoved = false;
+
         }
 
         else
@@ -266,7 +269,7 @@ public class EditShop extends AppCompatActivity implements LocationListener, Cal
     LocationManager mlocationManager;
 
     @OnClick(R.id.getCurrentLocationButton)
-    public void requestPermission() {
+    public void getCurrentLocation() {
 
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -470,36 +473,12 @@ public class EditShop extends AppCompatActivity implements LocationListener, Cal
 
     // code for changing / picking image and saving it in the cache folder
 
-
     @OnClick(R.id.removePicture)
     void removeImage() {
         File file = new File(getCacheDir().getPath() + "/" + "SampleCropImage.jpeg");
         file.delete();
 
-        //showMessageSnackBar("File delete Status : " + String.valueOf(file.delete()));
-
-        String shopImage = "";
-
-        if (shop != null) {
-            shopImage = shop.getImagePath();
-        }
-
-        Log.i("applog", shopImage);
-
-
-
-            RetrofitUtilityMethods
-                    .deleteImage(
-                            shopImage,
-                            this,
-                            new DeleteImageCallback()
-                    );
-
-
-        imagePath = null;
-
         resultView.setImageDrawable(null);
-
 
         // Set flags
         isImageChanged = true;
@@ -552,6 +531,7 @@ public class EditShop extends AppCompatActivity implements LocationListener, Cal
             resultView.setImageURI(UCrop.getOutput(result));
 
             isImageChanged = true;
+            isImageRemoved = false;
 
         } else if (resultCode == UCrop.RESULT_ERROR) {
 
@@ -570,27 +550,19 @@ public class EditShop extends AppCompatActivity implements LocationListener, Cal
     :: Add Routine
 
     isImageAdded
-        If No - Simply POST the resource and let the image URL field be blank
+        If NO - Simply POST the resource and let the image URL field be blank
         If YES - Upload the Image to the server - Get the Image URL and then POST the resource to the Server
 
 
     :: Edit Routine
-    isImageChanged
+    isImageChanged (At time of Uploading)
         If No - Do nothing for image URL simply update the attributes and make PUT request on the server
         If Yes
                 - Removed (Simply update the image Url Attribute to blank and proceed with PUT resource)
+                    - Delete Previous Image From the Server
                 - NotRemoved (Upload the image get the image URL and the do the PUT Resource)
                     - Delete Previous Image From the Server
-
     */
-
-
-
-
-
-
-
-
 
 
     // Image Upload Callback
@@ -603,12 +575,6 @@ public class EditShop extends AppCompatActivity implements LocationListener, Cal
 
         Log.d("applog", "inside retrofit call !" + String.valueOf(response.code()));
         Log.d("applog", "image Path : " + image.getPath());
-
-
-        //// TODO: 31/3/16
-        // check whether load image call is required. or Not
-
-        //loadImage(image.getPath());
 
         shop.setImagePath(image.getPath());
 
@@ -664,10 +630,5 @@ public class EditShop extends AppCompatActivity implements LocationListener, Cal
 
         }
     }
-
-
-
-
-
 
 }

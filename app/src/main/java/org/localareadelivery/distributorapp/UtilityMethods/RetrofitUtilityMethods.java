@@ -3,8 +3,8 @@ package org.localareadelivery.distributorapp.UtilityMethods;
 import android.content.Context;
 
 import org.localareadelivery.distributorapp.Model.Shop;
-import org.localareadelivery.distributorapp.ServiceContractRetrofit.ImageService;
-import org.localareadelivery.distributorapp.ServiceContractRetrofit.ShopService;
+import org.localareadelivery.distributorapp.RetrofitServiceContract.ImageService;
+import org.localareadelivery.distributorapp.RetrofitServiceContract.ShopService;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -16,6 +16,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by sumeet on 5/5/16.
  */
 public class RetrofitUtilityMethods {
+
 
 
 

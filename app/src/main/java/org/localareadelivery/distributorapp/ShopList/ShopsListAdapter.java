@@ -17,7 +17,7 @@ import com.squareup.picasso.Picasso;
 import org.localareadelivery.distributorapp.ApplicationState.ApplicationState;
 import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.R;
-import org.localareadelivery.distributorapp.ServiceContractRetrofit.ShopService;
+import org.localareadelivery.distributorapp.RetrofitServiceContract.ShopService;
 import org.localareadelivery.distributorapp.ShopHome.ShopHome;
 
 import java.util.ArrayList;

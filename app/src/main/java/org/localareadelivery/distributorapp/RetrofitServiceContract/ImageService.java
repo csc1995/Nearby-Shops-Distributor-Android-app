@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.ServiceContractRetrofit;
+package org.localareadelivery.distributorapp.RetrofitServiceContract;
 
 import org.localareadelivery.distributorapp.Model.Image;
 

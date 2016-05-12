@@ -16,7 +16,7 @@ import org.localareadelivery.distributorapp.DividerItemDecoration;
 import org.localareadelivery.distributorapp.Model.Item;
 import org.localareadelivery.distributorapp.Model.ItemCategory;
 import org.localareadelivery.distributorapp.R;
-import org.localareadelivery.distributorapp.ServiceContractRetrofit.ItemService;
+import org.localareadelivery.distributorapp.RetrofitServiceContract.ItemService;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -17,17 +17,18 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.localareadelivery.distributorapp.ApplicationState.ApplicationState;
 import org.localareadelivery.distributorapp.Model.ItemCategory;
 import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.R;
-import org.localareadelivery.distributorapp.ServiceContractRetrofit.ItemCategoryService;
+import org.localareadelivery.distributorapp.RetrofitServiceContract.ItemCategoryService;
 import org.localareadelivery.distributorapp.VolleySingleton;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +40,10 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ItemCategories extends AppCompatActivity implements  ItemCategoriesAdapter.requestSubCategory{
+
+    int currentCategoryID = 1; // the ID of root category is always supposed to be 1
+    ItemCategory currentCategory = null;
+
 
     List<ItemCategory> dataset = new ArrayList<>();
     RecyclerView itemCategoriesList;
@@ -113,13 +118,10 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
 
 
 
-    int currentCategoryID = 1; // the ID of root category is always supposed to be 1
-    ItemCategory currentCategory = null;
-
     public void makeRequest()
     {
 
-        String url = getServiceURL() + "/api/ItemCategory" + "?ParentID=" + currentCategoryID;
+        String url = getServiceURL() + "/api/ItemCategory" + "?ParentID=" + currentCategoryID + "&ShopID=" + ApplicationState.getInstance().getCurrentShop().getShopID();
 
         Log.d("response",url);
 
@@ -169,9 +171,14 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
 
         // Null Pointer Exception :
 
-            Call<List<ItemCategory>> itemCategoryCall = itemCategoryService.getItemCategories(
-                                                    currentCategory.getItemCategoryID(),
-                                                    ApplicationState.getInstance().getCurrentShop().getShopID());
+            Log.d("applog","ParentID= " + String.valueOf(currentCategory.getItemCategoryID()) + " ShopID = " + String.valueOf(ApplicationState.getInstance().getCurrentShop().getShopID()));
+
+            Call<List<ItemCategory>> itemCategoryCall = itemCategoryService
+                    .getItemCategories(
+                            currentCategory.getItemCategoryID(),
+                            ApplicationState.getInstance().getCurrentShop().getShopID()
+                    );
+
 
 
             itemCategoryCall.enqueue(new Callback<List<ItemCategory>>() {
@@ -186,6 +193,8 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
                     if (response.body() != null) {
 
                         dataset.addAll(response.body());
+
+                        Log.d("applog","response.body()" + String.valueOf(response.body().size()) + " Dataset: " + String.valueOf(dataset.size()));
                     }
 
                     listAdapter.notifyDataSetChanged();
@@ -207,6 +216,16 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
     {
         try {
 
+
+            Gson gson = new GsonBuilder().create();
+
+            Type listType = new TypeToken<List<ItemCategory>>() {}.getType();
+            List<ItemCategory> parsedItems = gson.fromJson(jsonString,listType);
+
+            dataset.clear();
+            dataset.addAll(parsedItems);
+
+            /*
             JSONArray array = new JSONArray(jsonString);
 
             for(int i=0;i<array.length();i++) {
@@ -227,7 +246,9 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
                 }
             }
 
-        } catch (JSONException e) {
+            */
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -245,7 +266,8 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
     void notifyDelete()
     {
         dataset.clear();
-        makeRequestRetrofit();
+        //makeRequestRetrofit();
+        makeRequest();
 
     }
 
@@ -258,7 +280,8 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
         // TODO
         // null pointer exception : Error Prone
         dataset.clear();
-        makeRequestRetrofit();
+        //makeRequestRetrofit();
+        makeRequest();
     }
 
 
@@ -348,7 +371,8 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
 
         }
 
-        makeRequestRetrofit();
+        //makeRequestRetrofit();
+        makeRequest();
     }
 
 
@@ -421,7 +445,8 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
             }
 
 
-            makeRequestRetrofit();
+            //makeRequestRetrofit();
+            makeRequest();
             //moveTaskToBack(true);
         }
 
