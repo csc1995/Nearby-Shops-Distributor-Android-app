@@ -25,8 +25,8 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 import com.yalantis.ucrop.UCrop;
 
-import org.localareadelivery.distributorapp.RetrofitRESTCalls.ImageCalls;
-import org.localareadelivery.distributorapp.RetrofitRESTCalls.ShopCalls;
+import org.localareadelivery.distributorapp.DAOs.ShopDAO;
+import org.localareadelivery.distributorapp.UtilityMethods.ImageCalls;
 import org.localareadelivery.distributorapp.UtilityMethods.ImageCropUtility;
 import org.localareadelivery.distributorapp.UtilityMethods.UtilityGeneral;
 import org.localareadelivery.distributorapp.Model.Image;
@@ -46,6 +46,8 @@ import retrofit2.Response;
 
 public class EditShop extends AppCompatActivity implements LocationListener, Callback<Image>{
 
+    // check whether the activity is running or not
+    boolean isActivityRunning = false;
 
     public static final String INTENT_EXTRA_SHOP_KEY = "intentExtraShopKey";
     private static final int REQUEST_CODE_READ_EXTERNAL_STORAGE = 2938;
@@ -171,6 +173,15 @@ public class EditShop extends AppCompatActivity implements LocationListener, Cal
 
     void getDataFromEditText(Shop shopForUpdate) {
 
+        if(!isActivityRunning)
+        {
+            // if activity is not currently running then return
+
+            Toast.makeText(this,"Data binding failed ! Shop not updated. Try again !",Toast.LENGTH_SHORT)
+                    .show();
+            return;
+        }
+
         if(shopForUpdate !=null) {
 
             shopForUpdate.setShopName(shopName.getText().toString());
@@ -199,7 +210,6 @@ public class EditShop extends AppCompatActivity implements LocationListener, Cal
                 ImageCalls.getInstance()
                         .deleteImage(
                                 shop.getImagePath(),
-                                this,
                                 new DeleteImageCallback()
                         );
 
@@ -210,12 +220,16 @@ public class EditShop extends AppCompatActivity implements LocationListener, Cal
 
 
                     shop.setImagePath("");
+
+
                     getDataFromEditText(shop);
 
-                    ShopCalls.getInstance()
-                            .putShopRequest(
+                    ShopDAO.getInstance()
+                            .updateShop(
                                     shop,
-                                    new UpdateShopCallback());
+                                    new updateShopCallback()
+                            );
+
 
                 }else
                 {
@@ -243,10 +257,11 @@ public class EditShop extends AppCompatActivity implements LocationListener, Cal
         else
         {
             getDataFromEditText(shop);
-            ShopCalls.getInstance()
-                    .putShopRequest(
+
+            ShopDAO.getInstance()
+                    .updateShop(
                             shop,
-                            new UpdateShopCallback()
+                            new updateShopCallback()
                     );
         }
     }
@@ -341,11 +356,16 @@ public class EditShop extends AppCompatActivity implements LocationListener, Cal
             
             case REQUEST_CODE_READ_EXTERNAL_STORAGE:
 
+                /*
                 ImageCalls.getInstance()
                         .uploadPickedImage(
                         this,
                         REQUEST_CODE_READ_EXTERNAL_STORAGE,
                         this);
+
+                        */
+
+                updateShop();
 
                 break;
         }
@@ -554,6 +574,9 @@ public class EditShop extends AppCompatActivity implements LocationListener, Cal
         If NO - Simply POST the resource and let the image URL field be blank
         If YES - Upload the Image to the server - Get the Image URL and then POST the resource to the Server
 
+        ::ImageRemovedAfterAdded
+           - Reset the isImageAdded flag to NO.
+
 
     :: Edit Routine
     isImageChanged (At time of Uploading)
@@ -580,11 +603,13 @@ public class EditShop extends AppCompatActivity implements LocationListener, Cal
         shop.setImagePath(image.getPath());
 
         getDataFromEditText(shop);
-        ShopCalls.getInstance()
-                .putShopRequest(
+
+        ShopDAO.getInstance()
+                .updateShop(
                         shop,
-                        new UpdateShopCallback()
+                        new updateShopCallback()
                 );
+
 
     }
 
@@ -598,36 +623,59 @@ public class EditShop extends AppCompatActivity implements LocationListener, Cal
 
         Toast.makeText(this,"Unable to Upload Image. Try Later ! ",Toast.LENGTH_SHORT).show();
 
+
         getDataFromEditText(shop);
-        ShopCalls.getInstance()
-                .putShopRequest(
+
+        ShopDAO.getInstance()
+                .updateShop(
                         shop,
-                        new UpdateShopCallback()
+                        new updateShopCallback()
                 );
 
     }
 
 
-    class UpdateShopCallback implements Callback<ResponseBody>{
+
+    class updateShopCallback implements ShopDAO.UpdateShopCallback{
 
         @Override
-        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+        public void updateShopCallback(boolean isOffline, boolean isSuccessful, int httpStatusCode) {
 
-            if (response.code() == 200) {
+            if(isOffline) {
 
-                Toast.makeText(EditShop.this, "Shop Update Successful !", Toast.LENGTH_SHORT).show();
+                if (!isSuccessful){
+                    Toast.makeText(EditShop.this,"Application offline ! No Network !",Toast.LENGTH_SHORT).show();
+                }
 
+            }else
+            {
+                if (isSuccessful && httpStatusCode == 200) {
+
+                    Toast.makeText(EditShop.this, "Shop Update Successful !", Toast.LENGTH_SHORT).show();
+
+                }else
+                {
+                    Toast.makeText(EditShop.this, "Unable to update Shop. Try Again !", Toast.LENGTH_SHORT).show();
+
+                }
             }
 
-            Log.d("applog", String.valueOf(response.isSuccessful()) + response.toString());
-        }
-
-        @Override
-        public void onFailure(Call<ResponseBody> call, Throwable t) {
-
-            Toast.makeText(EditShop.this, "Unable to update Shop !", Toast.LENGTH_SHORT).show();
 
         }
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        isActivityRunning = true;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        isActivityRunning = false;
+    }
 }

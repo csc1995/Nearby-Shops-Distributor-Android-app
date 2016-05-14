@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.DataAccessObjects;
+package org.localareadelivery.distributorapp.DAOs;
 
 /**
  * Created by sumeet on 12/5/16.

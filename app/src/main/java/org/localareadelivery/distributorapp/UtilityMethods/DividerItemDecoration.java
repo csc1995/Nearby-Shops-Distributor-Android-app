@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp;
+package org.localareadelivery.distributorapp.UtilityMethods;
 
 import android.content.Context;
 import android.content.res.TypedArray;

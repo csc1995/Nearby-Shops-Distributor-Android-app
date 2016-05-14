@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.RetrofitRESTCalls;
+package org.localareadelivery.distributorapp.UtilityMethods;
 
 import android.Manifest;
 import android.content.Context;
@@ -10,7 +10,6 @@ import android.util.Log;
 import org.localareadelivery.distributorapp.Model.Image;
 import org.localareadelivery.distributorapp.MyApplication;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ImageService;
-import org.localareadelivery.distributorapp.UtilityMethods.UtilityGeneral;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -58,15 +57,15 @@ public class ImageCalls {
 
 
 
-    public void deleteImage(String imageFileServerPath, Context context, Callback<ResponseBody> deleteImageCallback)
+    public void deleteImage(String imageID, Callback<ResponseBody> deleteImageCallback)
     {
 
-        if (imageFileServerPath.length() > 2) {
+        if (imageID.length() > 2) {
 
-            imageFileServerPath = imageFileServerPath.substring(1);
+            imageID = imageID.substring(1);
         }
 
-        Call<ResponseBody> response = imageService.deleteImage(imageFileServerPath);
+        Call<ResponseBody> response = imageService.deleteImage(imageID);
 
         response.enqueue(deleteImageCallback);
 
@@ -136,5 +135,7 @@ public class ImageCalls {
 
         imageCall.enqueue(imageCallback);
     }
+
+
 
 }

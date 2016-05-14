@@ -3,6 +3,7 @@ package org.localareadelivery.distributorapp.ApplicationState;
 import android.util.Log;
 
 import org.localareadelivery.distributorapp.Model.Shop;
+import org.localareadelivery.distributorapp.MyApplication;
 
 /**
  * Created by sumeet on 15/3/16.
@@ -12,6 +13,8 @@ public class ApplicationState {
     static ApplicationState instance = null;
 
     Shop currentShop = null;
+
+    MyApplication myApplication;
 
 
     private ApplicationState() {
@@ -49,4 +52,12 @@ public class ApplicationState {
         this.currentShop = currentShop;
     }
 
+
+    public MyApplication getMyApplication() {
+        return myApplication;
+    }
+
+    public void setMyApplication(MyApplication myApplication) {
+        this.myApplication = myApplication;
+    }
 }

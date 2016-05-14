@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 import com.yalantis.ucrop.UCrop;
@@ -33,6 +34,8 @@ import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ImageService;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ShopService;
+import org.localareadelivery.distributorapp.UtilityMethods.ImageCalls;
+import org.localareadelivery.distributorapp.UtilityMethods.ImageCropUtility;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -49,8 +52,10 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class AddShop extends AppCompatActivity implements LocationListener {
+public class AddShop extends AppCompatActivity implements LocationListener, Callback<Image> {
 
+
+    boolean isImageAdded = false;
 
     @Bind(R.id.shopName)
     EditText shopName;
@@ -176,9 +181,9 @@ public class AddShop extends AppCompatActivity implements LocationListener {
     }
 
 
-    String imagePath = "";
 
-    void addShop() {
+
+    void addShop(String imagePath) {
 
         //uploadPickedImage();
 
@@ -334,7 +339,8 @@ public class AddShop extends AppCompatActivity implements LocationListener {
 
             case REQUEST_CODE_READ_EXTERNAL_STORAGE:
 
-                uploadPickedImage();
+
+                addShopButton();
 
                 break;
         }
@@ -449,18 +455,19 @@ public class AddShop extends AppCompatActivity implements LocationListener {
     {
 
         File file = new File(getCacheDir().getPath() + "/" + "SampleCropImage.jpeg");
-        showMessageSnackBar("File delete Status : " + String.valueOf(file.delete()));
+        file.delete();
 
-
-        imagePath = "";
         resultView.setImageDrawable(null);
+
+        // reset the flag to reflect the status of image addition
+        isImageAdded = false;
     }
 
 
 
 
-    private static final String SAMPLE_CROPPED_IMAGE_NAME = "SampleCropImage.jpeg";
-    private Uri mDestinationUri;
+    //private static final String SAMPLE_CROPPED_IMAGE_NAME = "SampleCropImage.jpeg";
+    //private Uri mDestinationUri;
 
     @Bind(R.id.textChangePicture)
     TextView changePicture;
@@ -468,49 +475,13 @@ public class AddShop extends AppCompatActivity implements LocationListener {
 
     @OnClick(R.id.textChangePicture)
     void pickShopImage() {
-        mDestinationUri = Uri.fromFile(new File(getCacheDir(), SAMPLE_CROPPED_IMAGE_NAME));
 
         Log.d("applog", "Cache Dir Path : " + getCacheDir().getPath());
 
         resultView.setImageDrawable(null);
-        //Crop.pickImage(this);
 
-        showFileChooser();
+        ImageCropUtility.showFileChooser(this);
     }
-
-    private int PICK_IMAGE_REQUEST = 21;
-
-    private void showFileChooser() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
-    }
-
-
-    public void startCropActivity(Uri sourceUri) {
-
-        UCrop.Options options = new UCrop.Options();
-        options.setCompressionFormat(Bitmap.CompressFormat.JPEG);
-        //options.setCompressionQuality(70);
-        //options.setMaxBitmapSize(300);
-
-
-        options.setToolbarColor(getResources().getColor(R.color.cyan900));
-        options.setAllowedGestures(UCropActivity.SCALE, UCropActivity.ALL, UCropActivity.SCALE);
-
-
-        // this function takes the file from the source URI and saves in into the destination URI location.
-        UCrop.of(sourceUri, mDestinationUri)
-                .withOptions(options)
-                .withMaxResultSize(400,300)
-                .start(this);
-
-        //.withMaxResultSize(500, 400)
-        //.withAspectRatio(16, 9)
-    }
-
-
 
 
 
@@ -520,19 +491,7 @@ public class AddShop extends AppCompatActivity implements LocationListener {
         super.onActivityResult(requestCode, resultCode, result);
 
 
-        if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
-
-            resultView.setImageURI(UCrop.getOutput(result));
-
-
-        } else if (resultCode == UCrop.RESULT_ERROR) {
-
-            final Throwable cropError = UCrop.getError(result);
-
-        }
-
-
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
+        if (requestCode == ImageCropUtility.PICK_IMAGE_REQUEST && resultCode == RESULT_OK
                 && result != null
                 && result.getData() != null) {
 
@@ -542,10 +501,27 @@ public class AddShop extends AppCompatActivity implements LocationListener {
             //imageUri = filePath;
 
             if (filePath != null) {
-                startCropActivity(result.getData());
+                //startCropActivity(result.getData());
+
+                ImageCropUtility.startCropActivity(result.getData(),this);
             }
 
         }
+
+
+
+        if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
+
+            resultView.setImageURI(UCrop.getOutput(result));
+
+            isImageAdded = true;
+
+
+        } else if (resultCode == UCrop.RESULT_ERROR) {
+
+            final Throwable cropError = UCrop.getError(result);
+
+        }// Request Crop
     }
 
 
@@ -565,9 +541,36 @@ public class AddShop extends AppCompatActivity implements LocationListener {
     // Upload the image after picked up
     private static final int REQUEST_CODE_READ_EXTERNAL_STORAGE = 56;
 
-    Image image = null;
+
+
+
+
+
 
     @OnClick(R.id.addShopButton)
+    void addShopButton(){
+
+        if(isImageAdded)
+        {
+            // Upload the image followed the shop data update
+            ImageCalls.getInstance().uploadPickedImage(
+                    this,
+                    REQUEST_CODE_READ_EXTERNAL_STORAGE,
+                    this
+            );
+        }
+        else
+        {
+            // do not upload the image to the server and make a direct update to the server for shop data.
+            addShop(null);
+
+        }
+
+    }
+
+
+    /* Marked for delete
+
     void uploadPickedImage() {
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -635,44 +638,79 @@ public class AddShop extends AppCompatActivity implements LocationListener {
             @Override
             public void onResponse(Call<Image> call, Response<Image> response) {
 
-                image = response.body();
 
-                Log.d("applog", "inside retrofit call !" + String.valueOf(response.code()));
-                Log.d("applog", "image Path : " + image.getPath());
-
-
-                //// TODO: 31/3/16
-                // check whether load image call is required. or Not
-
-                loadImage(image.getPath());
-
-                imagePath = image.getPath();
-
-                if (response.code() != 201) {
-                    showMessageSnackBar("Unable to upload Image. Try changing the image by in the Edit Screen !");
-
-                    result.setText("Unable to upload Image. Try changing the image by in the Edit Screen !");
-
-                }
-
-                addShop();
             }
 
             @Override
             public void onFailure(Call<Image> call, Throwable t) {
 
-                Log.d("applog", "inside Error: " + t.getMessage());
 
-                showMessageSnackBar("Unable to upload Image. Try changing the image by in the Edit Screen !");
-
-                result.setText("Unable to upload Image. Try changing the image by in the Edit Screen !");
-
-                addShop();
 
             }
         });
     }
 
+    */
+
+
+
+
+    @Override
+    public void onResponse(Call<Image> call, Response<Image> response) {
+
+        Image image = null;
+
+        image = response.body();
+
+        Log.d("applog", "inside retrofit call !" + String.valueOf(response.code()));
+        Log.d("applog", "image Path : " + image.getPath());
+
+
+        //// TODO: 31/3/16
+        // check whether load image call is required. or Not
+
+        loadImage(image.getPath());
+
+
+
+        if (response.code() != 201) {
+
+            result.setText("Unable to upload Image. Try changing the image by in the Edit Screen !");
+
+        }
+
+        addShop(image.getPath());
+
+    }
+
+    @Override
+    public void onFailure(Call<Image> call, Throwable t) {
+
+        Log.d("applog", "inside Error: " + t.getMessage());
+
+        Toast.makeText(this,"Unable to Upload Image. Try Later ! ",Toast.LENGTH_SHORT).show();
+
+        result.setText("Unable to upload Image. Try changing the image by in the Edit Screen !");
+
+        addShop(null);
+    }
+
+
+
+    
+    /*
+    - Clear Cache - To make sure that previous images are not in the cache
+
+    :: Add Routine
+
+    isImageAdded
+    If NO - Simply POST the resource and let the image URL field be blank
+    If YES - Upload the Image to the server - Get the Image URL and then POST the resource to the Server
+
+    ::ImageRemovedAfterAdded
+    - Reset the isImageAdded flag to NO.
+
+    */
 
 
 }

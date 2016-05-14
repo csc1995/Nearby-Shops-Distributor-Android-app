@@ -25,7 +25,6 @@ public class DistributorLogin extends AppCompatActivity implements View.OnClickL
     @Bind(R.id.distributorIDEdittext)
     EditText distributorIDEditText;
 
-
     @Bind(R.id.loginButton)
     Button loginButton;
 
@@ -66,6 +65,7 @@ public class DistributorLogin extends AppCompatActivity implements View.OnClickL
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
+                saveServiceURL(s.toString());
             }
 
             @Override

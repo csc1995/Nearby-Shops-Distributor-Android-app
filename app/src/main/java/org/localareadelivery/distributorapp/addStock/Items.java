@@ -41,6 +41,7 @@ import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+
 public class Items extends AppCompatActivity {
 
 
@@ -215,7 +216,8 @@ public class Items extends AppCompatActivity {
     public void notifyDelete()
     {
         dataset.clear();
-        makeRetrofitRequest();
+        //makeRetrofitRequest();
+        makeRequest();
         makeShopItemRequest();
     }
 
@@ -224,7 +226,8 @@ public class Items extends AppCompatActivity {
         super.onResume();
 
         dataset.clear();
-        makeRetrofitRequest();
+        //makeRetrofitRequest();
+        makeRequest();
         makeShopItemRequest();
 
     }
@@ -282,4 +285,8 @@ public class Items extends AppCompatActivity {
     }
 
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
 }
