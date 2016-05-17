@@ -29,6 +29,8 @@ import com.squareup.picasso.Picasso;
 import com.yalantis.ucrop.UCrop;
 import com.yalantis.ucrop.UCropActivity;
 
+import org.localareadelivery.distributorapp.DAOs.ShopDAO;
+import org.localareadelivery.distributorapp.DaggerComponentBuilder;
 import org.localareadelivery.distributorapp.Model.Image;
 import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.R;
@@ -36,10 +38,13 @@ import org.localareadelivery.distributorapp.RetrofitRESTContract.ImageService;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ShopService;
 import org.localareadelivery.distributorapp.UtilityMethods.ImageCalls;
 import org.localareadelivery.distributorapp.UtilityMethods.ImageCropUtility;
+import org.localareadelivery.distributorapp.UtilityMethods.UtilityGeneral;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -52,10 +57,13 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class AddShop extends AppCompatActivity implements LocationListener, Callback<Image> {
+public class AddShop extends AppCompatActivity implements LocationListener, Callback<Image>, ShopDAO.CreateShopCallback{
 
 
     boolean isImageAdded = false;
+
+    @Inject ShopDAO shopDAO;
+
 
     @Bind(R.id.shopName)
     EditText shopName;
@@ -98,6 +106,11 @@ public class AddShop extends AppCompatActivity implements LocationListener, Call
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // Use dependency injection
+        DaggerComponentBuilder.getInstance()
+                .getDaoComponent()
+                .Inject(this);
+
 
         setContentView(R.layout.activity_add_shop);
         ButterKnife.bind(this);
@@ -106,67 +119,11 @@ public class AddShop extends AppCompatActivity implements LocationListener, Call
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
-        distributorID.setText(String.valueOf(getDistributorID()));
-
-
-        if(savedInstanceState==null) {
-
-            // delete previous file in the cache - This will prevent accidently uploading the previous image
-            File file = new File(getCacheDir().getPath() + "/" + "SampleCropImage.jpeg");
-            //showMessageSnackBar("File delete Status : " + String.valueOf(file.delete()));
-
-
-        }
+        distributorID.setText(String.valueOf(UtilityGeneral.getDistributorID(this)));
 
     }
 
 
-
-
-
-
-    void makeRequest(Shop shop) {
-
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getServiceURL())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        ShopService shopService = retrofit.create(ShopService.class);
-
-        Call<Shop> shopCall = shopService.postShop(shop);
-
-
-        shopCall.enqueue(new Callback<Shop>() {
-
-            @Override
-            public void onResponse(Call<Shop> call, Response<Shop> response) {
-
-                Shop shopResponse = response.body();
-
-                if (response.code() == 201) {
-
-                    showMessageSnackBar("Shop added Successfully !");
-
-                } else {
-
-                    showMessageSnackBar("Error: Unable to add shop !");
-                }
-
-                displayResult(shopResponse);
-
-                // // TODO: 30/3/16
-                // Show snack bar in order to display successful or failure of the image upload
-            }
-
-            @Override
-            public void onFailure(Call<Shop> call, Throwable t) {
-
-            }
-        });
-    }
 
 
     void displayResult(Shop shop) {
@@ -188,7 +145,7 @@ public class AddShop extends AppCompatActivity implements LocationListener, Call
         //uploadPickedImage();
 
         Shop shop = new Shop();
-        shop.setDistributorID(getDistributorID());
+        shop.setDistributorID(UtilityGeneral.getDistributorID(this));
         shop.setShopName(shopName.getText().toString());
         shop.setImagePath(imagePath);
 
@@ -202,7 +159,7 @@ public class AddShop extends AppCompatActivity implements LocationListener, Call
 
         }
 
-        makeRequest(shop);
+        shopDAO.createShop(shop,this);
     }
 
 
@@ -211,37 +168,10 @@ public class AddShop extends AppCompatActivity implements LocationListener, Call
 
     void loadImage(String imagePath) {
 
-        Picasso.with(this).load(getServiceURL() + IMAGES_END_POINT_URL + imagePath).into(resultView);
+        Picasso.with(this).load(UtilityGeneral.getServiceURL(this) + IMAGES_END_POINT_URL + imagePath).into(resultView);
     }
 
 
-
-
-
-
-
-
-
-
-    public int getDistributorID() {
-        // Get a handle to shared preference
-        SharedPreferences sharedPref;
-        sharedPref = this.getSharedPreferences(getString(R.string.preference_file_name), this.MODE_PRIVATE);
-
-        // read from shared preference
-        int distributorID = sharedPref.getInt(getString(R.string.preference_distributor_id_key), 0);
-
-        return distributorID;
-    }
-
-
-    public String getServiceURL() {
-        SharedPreferences sharedPref = this.getSharedPreferences(getString(R.string.preference_file_name), this.MODE_PRIVATE);
-
-        String service_url = sharedPref.getString(getString(R.string.preference_service_url_key), "default");
-
-        return service_url;
-    }
 
     @Override
     protected void onDestroy() {
@@ -268,7 +198,7 @@ public class AddShop extends AppCompatActivity implements LocationListener, Call
 
 
     @OnClick(R.id.getCurrentLocationButton)
-    public void requestPermission() {
+    public void requestLocation() {
 
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -697,7 +627,56 @@ public class AddShop extends AppCompatActivity implements LocationListener, Call
 
 
 
-    
+
+    @Override
+    public void createShopCallback(boolean isOffline, boolean isSuccessful, int httpStatusCode, Shop shop) {
+
+        if (!isOffline) {
+
+            // application online
+
+            if(isSuccessful)
+            {
+                // successful response
+
+                if (httpStatusCode == 201) {
+
+                    showMessageSnackBar("Shop added Successfully !");
+
+                } else {
+
+                    showMessageSnackBar("Error: Unable to add shop !");
+                }
+
+                displayResult(shop);
+
+                // // TODO: 30/3/16
+                // Show snack bar in order to display successful or failure of the image upload
+
+
+            }
+            else
+            {
+                // failure response
+                showMessageSnackBar("Error: Unable to add shop !");
+            }
+
+        }
+        else
+        {
+            // application offline
+
+            Toast.makeText(this,"Application is offline! Unable to add Shop",Toast.LENGTH_SHORT)
+                    .show();
+        }
+
+
+    }
+
+
+
+
+
     /*
     - Clear Cache - To make sure that previous images are not in the cache
 

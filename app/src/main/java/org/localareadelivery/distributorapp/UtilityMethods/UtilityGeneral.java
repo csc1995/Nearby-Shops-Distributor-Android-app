@@ -42,6 +42,13 @@ public class UtilityGeneral {
     }
 
 
+    public static String getImageEndpointURL(Context context)
+    {
+        return UtilityGeneral.getServiceURL(context) + "/api/Images";
+    }
+
+
+
     /*
 
 
@@ -70,6 +77,32 @@ public class UtilityGeneral {
 
         return distributorID;
     }
+
+     */
+
+
+    /*
+
+    public int getDistributorID() {
+        // Get a handle to shared preference
+        SharedPreferences sharedPref;
+        sharedPref = this.getSharedPreferences(getString(R.string.preference_file_name), this.MODE_PRIVATE);
+
+        // read from shared preference
+        int distributorID = sharedPref.getInt(getString(R.string.preference_distributor_id_key), 0);
+
+        return distributorID;
+    }
+
+
+    public String getServiceURL() {
+        SharedPreferences sharedPref = this.getSharedPreferences(getString(R.string.preference_file_name), this.MODE_PRIVATE);
+
+        String service_url = sharedPref.getString(getString(R.string.preference_service_url_key), "default");
+
+        return service_url;
+    }
+
 
      */
 

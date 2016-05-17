@@ -1,14 +1,8 @@
-package org.localareadelivery.distributorapp.RetrofitRESTCalls;
+package org.localareadelivery.distributorapp.RetrofitRESTInterfaces;
 
-import android.app.IntentService;
-import android.content.Context;
-import android.content.Intent;
-
-import org.localareadelivery.distributorapp.ApplicationState.ApplicationState;
 import org.localareadelivery.distributorapp.DAOs.ShopDAO;
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
 import org.localareadelivery.distributorapp.Model.Shop;
-import org.localareadelivery.distributorapp.MyApplication;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ShopService;
 
 import java.util.List;
@@ -24,9 +18,9 @@ import retrofit2.Retrofit;
 /**
  * Created by sumeet on 12/5/16.
  */
-public class ShopCalls implements ShopDAO.ShopRESTContract{
+public class ShopRESTInterface implements ShopDAO.ShopRESTContract{
 
-    static ShopCalls shopCalls;
+    static ShopRESTInterface shopRESTInterface;
 
 
     ShopService shopService;
@@ -34,7 +28,7 @@ public class ShopCalls implements ShopDAO.ShopRESTContract{
     @Inject Retrofit retrofit;
 
 
-    private ShopCalls() {
+    private ShopRESTInterface() {
 
 
         //ApplicationState.getInstance()
@@ -51,17 +45,17 @@ public class ShopCalls implements ShopDAO.ShopRESTContract{
     }
 
 
-    public static ShopCalls getInstance()
+    public static ShopRESTInterface getInstance()
     {
 
-        if(shopCalls == null)
+        if(shopRESTInterface == null)
         {
-            shopCalls = new ShopCalls();
+            shopRESTInterface = new ShopRESTInterface();
         }
 
 
 
-        return shopCalls;
+        return shopRESTInterface;
     }
 
 
@@ -120,14 +114,43 @@ public class ShopCalls implements ShopDAO.ShopRESTContract{
 
     }
 
+
+
+
     @Override
-    public void postShop(Shop shop, ShopDAO.CreateShopCallback callback) {
+    public void postShop(Shop shop, final ShopDAO.CreateShopCallback callback) {
 
 
+        final Shop shopResult = null;
 
         Call<Shop> shopCall = shopService.postShop(shop);
 
-        shopCall.enqueue(null);
+        shopCall.enqueue(new Callback<Shop>() {
+
+            @Override
+            public void onResponse(Call<Shop> call, Response<Shop> response) {
+
+
+                if(response.body()!=null) {
+
+                    callback.createShopCallback(false, true, response.code(), response.body());
+                }
+                else
+                {
+                    callback.createShopCallback(false, true, response.code(), null);
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<Shop> call, Throwable t) {
+
+
+                callback.createShopCallback(false,false, -1, null);
+
+            }
+        });
 
     }
 

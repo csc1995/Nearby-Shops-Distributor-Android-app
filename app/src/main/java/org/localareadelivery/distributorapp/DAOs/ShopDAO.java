@@ -1,21 +1,22 @@
 package org.localareadelivery.distributorapp.DAOs;
 
-import org.localareadelivery.distributorapp.ApplicationState.ApplicationState;
+import android.support.annotation.NonNull;
+
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
 import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.MyApplication;
-import org.localareadelivery.distributorapp.RetrofitRESTCalls.ShopCalls;
 import org.localareadelivery.distributorapp.UtilityMethods.UtilityGeneral;
-import org.localareadelivery.distributorapp.VolleyRESTCalls.VolleyShopCalls;
 
+import java.lang.annotation.Annotation;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.inject.Inject;
 
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import retrofit2.http.QueryMap;
 
 
 /**
@@ -25,7 +26,7 @@ public class ShopDAO {
 
     static ShopDAO shopDAO;
 
-    @Inject ShopRESTContract shopRESTContract;
+    @Inject ShopRESTContract shopRESTInterface;
 
     //CRUD - Create, Read, Update, Delete
     //S/IRUD - Save/Insert, Read, Update, Delete
@@ -55,7 +56,7 @@ public class ShopDAO {
 
     private ShopDAO() {
 
-        //shopRESTContract = ShopCalls.getInstance();
+        //shopRESTContract = ShopRESTInterface.getInstance();
         //shopRESTContract= VolleyShopCalls.getInstance();
 
         //ApplicationState.getInstance()
@@ -79,13 +80,36 @@ public class ShopDAO {
 
 
 
+    public void createShop(Shop shop,CreateShopCallback createShopCallback) {
+
+        if (UtilityGeneral.isNetworkAvailable(MyApplication.getAppContext())) {
+
+            // Network Available !
+
+            shopRESTInterface.postShop(shop,createShopCallback);
+
+
+        } else
+        {
+
+            // No network Available !
+
+            createShopCallback.createShopCallback(true,false,-1,null);
+
+
+
+        }
+    }
+
+
+
     public void updateShop(Shop shop,UpdateShopCallback updateShopCallback) {
 
         if (UtilityGeneral.isNetworkAvailable(MyApplication.getAppContext()))
         {
             // make a rest HTTP call and deliver the results
 
-            shopRESTContract.putShop(shop,updateShopCallback);
+            shopRESTInterface.putShop(shop,updateShopCallback);
         }
         else
         {
@@ -95,9 +119,22 @@ public class ShopDAO {
         }
 
 
+
     }// CreateShopEnds
 
 
+    public void deleteShop(int shopID,DeleteShopCallback callback)
+    {
+        if(UtilityGeneral.isNetworkAvailable(MyApplication.getAppContext()))
+        {
+            shopRESTInterface.deleteShop(shopID,callback);
+
+        }else
+        {
+            callback.deleteShopCallback(true,false,-1);
+
+        }
+    }// delete Shop Ends
 
 
 
@@ -108,7 +145,7 @@ public class ShopDAO {
         {
             // make a rest HTTP call and deliver the results
 
-            shopRESTContract.getShops(distributorID,readShopCallback);
+            shopRESTInterface.getShops(distributorID,readShopCallback);
         }
         else
         {
@@ -120,22 +157,6 @@ public class ShopDAO {
 
     }
 
-
-
-
-
-    public void deleteShop(int shopID,DeleteShopCallback callback)
-    {
-        if(UtilityGeneral.isNetworkAvailable(MyApplication.getAppContext()))
-        {
-            shopRESTContract.deleteShop(shopID,callback);
-
-        }else
-        {
-            callback.deleteShopCallback(true,false,-1);
-
-        }
-    }
 
 
 
@@ -184,6 +205,5 @@ public class ShopDAO {
         public void putShop(Shop shop, UpdateShopCallback callback);
 
     }
-
 
 }

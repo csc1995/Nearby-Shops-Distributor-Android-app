@@ -38,12 +38,25 @@ public class ImageCropUtility{
 
     public static void showFileChooser(AppCompatActivity context) {
 
+
+        // An example of how the clear the cache in the activities
+        /*
+        if(savedInstanceState==null) {
+
+            // delete previous file in the cache - This will prevent accidently uploading the previous image
+            File file = new File(getCacheDir().getPath() + "/" + "SampleCropImage.jpeg");
+
+        }
+        */
+
         clearCache(context);
 
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         context.startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+
+
 
     }
 
@@ -78,6 +91,7 @@ public class ImageCropUtility{
     {
         File file = new File(context.getCacheDir().getPath() + "/" + "SampleCropImage.jpeg");
         file.delete();
+
     }
 
 }

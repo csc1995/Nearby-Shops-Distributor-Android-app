@@ -21,6 +21,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.squareup.picasso.Picasso;
 
 
+import org.localareadelivery.distributorapp.UtilityMethods.UtilityGeneral;
 import org.localareadelivery.distributorapp.addItems.Items.Items;
 import org.localareadelivery.distributorapp.Model.ItemCategory;
 import org.localareadelivery.distributorapp.R;
@@ -31,6 +32,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by sumeet on 19/12/15.
@@ -47,11 +49,11 @@ public class ItemCategoriesAdapter extends RecyclerView.Adapter<ItemCategoriesAd
 
     final String IMAGE_ENDPOINT_URL = "/api/Images";
 
-    public ItemCategoriesAdapter(List<ItemCategory> dataset, Context context, ItemCategories itemCategories) {
+    public ItemCategoriesAdapter(List<ItemCategory> dataset, Context context, ItemCategories activity) {
 
         this.dataset = dataset;
         this.context = context;
-        this.itemCategories = itemCategories;
+        this.itemCategories = activity;
 
         if(this.dataset == null)
         {
@@ -68,6 +70,7 @@ public class ItemCategoriesAdapter extends RecyclerView.Adapter<ItemCategoriesAd
         return new ViewHolder(v);
     }
 
+
     @Override
     public void onBindViewHolder(ItemCategoriesAdapter.ViewHolder holder, final int position) {
 
@@ -75,107 +78,12 @@ public class ItemCategoriesAdapter extends RecyclerView.Adapter<ItemCategoriesAd
         holder.categoryDescription.setText(dataset.get(position).getCategoryDescription());
 
 
-        String imagePath = getServiceURL() + IMAGE_ENDPOINT_URL + dataset.get(position).getImagePath();
+        String imagePath = UtilityGeneral.getImageEndpointURL(context)
+                + dataset.get(position).getImagePath();
 
         Picasso.with(context).load(imagePath).placeholder(R.drawable.nature_people).into(holder.categoryImage);
 
         Log.d("applog",imagePath);
-
-
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-
-        }
-
-        final int positionInner = position;
-
-        holder.editIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent intent = new Intent(context,EditItemCategory.class);
-
-                intent.putExtra(EditItemCategory.ITEM_CATEGORY_INTENT_KEY,dataset.get(positionInner));
-
-                context.startActivity(intent);
-
-            }
-        });
-
-
-        holder.textViewEdit.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-
-                Intent intent = new Intent(context,EditItemCategory.class);
-
-                intent.putExtra(EditItemCategory.ITEM_CATEGORY_INTENT_KEY,dataset.get(positionInner));
-
-                context.startActivity(intent);
-
-            }
-
-        });
-
-
-        holder.deleteIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-                String url = getServiceURL() + "/api/ItemCategory/" + dataset.get(positionInner).getItemCategoryID();
-
-                StringRequest request = new StringRequest(Request.Method.DELETE, url, new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-
-                        notifyDelete();
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                    }
-                });
-
-                VolleySingleton.getInstance(context).addToRequestQueue(request);
-
-            }
-        });
-
-
-        holder.itemCategoryListItem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-                if (dataset == null) {
-
-                    return;
-                }
-
-                if(dataset.size()==0)
-                {
-                    return;
-                }
-
-                if (dataset.get(positionInner).getIsLeafNode()) {
-
-                    Intent intent = new Intent(context, Items.class);
-
-                    intent.putExtra(Items.ITEM_CATEGORY_INTENT_KEY,dataset.get(position));
-
-                    context.startActivity(intent);
-
-                }
-                else
-                {
-
-                    itemCategories.notifyRequestSubCategory(dataset.get(positionInner));
-                }
-
-            }
-        });
 
     }
 
@@ -197,12 +105,13 @@ public class ItemCategoriesAdapter extends RecyclerView.Adapter<ItemCategoriesAd
         Button deleteButton;
 
         private TextView categoryName,categoryDescription;
-        private LinearLayout itemCategoryListItem;
+        @Bind(R.id.itemCategoryListItem) LinearLayout itemCategoryListItem;
         @Bind(R.id.categoryImage) ImageView categoryImage;
 
         @Bind(R.id.deleteIcon) ImageView deleteIcon;
         @Bind(R.id.editIcon) ImageView editIcon;
         @Bind(R.id.textviewEdit) TextView textViewEdit;
+
 
 
         public ViewHolder(View itemView) {
@@ -219,6 +128,77 @@ public class ItemCategoriesAdapter extends RecyclerView.Adapter<ItemCategoriesAd
 
             itemCategoryListItem = (LinearLayout) itemView.findViewById(R.id.itemCategoryListItem);
         }
+
+
+
+        @OnClick(R.id.itemCategoryListItem)
+        public void itemCategoryListItemClick()
+        {
+
+            if (dataset == null) {
+
+                return;
+            }
+
+            if(dataset.size()==0)
+            {
+                return;
+            }
+
+            if (dataset.get(getLayoutPosition()).getIsLeafNode()) {
+
+                Intent intent = new Intent(context, Items.class);
+
+                intent.putExtra(Items.ITEM_CATEGORY_INTENT_KEY,dataset.get(getLayoutPosition()));
+
+                context.startActivity(intent);
+
+            }
+            else
+            {
+
+                itemCategories.notifyRequestSubCategory(dataset.get(getLayoutPosition()));
+            }
+
+
+        }
+
+
+
+        @OnClick(R.id.deleteIcon)
+        public void deleteIconClick()
+        {
+
+
+            String url = UtilityGeneral.getServiceURL(context) + "/api/ItemCategory/" + dataset.get(getLayoutPosition()).getItemCategoryID();
+
+            StringRequest request = new StringRequest(Request.Method.DELETE, url, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+
+                    notifyDelete();
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                }
+            });
+
+            VolleySingleton.getInstance(context).addToRequestQueue(request);
+
+        }
+
+
+        @OnClick({R.id.editIcon,R.id.textviewEdit})
+        public void editIcon()
+        {
+            Intent intent = new Intent(context,EditItemCategory.class);
+            intent.putExtra(EditItemCategory.ITEM_CATEGORY_INTENT_KEY,dataset.get(getLayoutPosition()));
+            context.startActivity(intent);
+
+        }
+
     }
 
 
@@ -228,15 +208,6 @@ public class ItemCategoriesAdapter extends RecyclerView.Adapter<ItemCategoriesAd
 
     }
 
-
-    public String  getServiceURL()
-    {
-        SharedPreferences sharedPref = context.getSharedPreferences(context.getString(R.string.preference_file_name), context.MODE_PRIVATE);
-
-        String service_url = sharedPref.getString(context.getString(R.string.preference_service_url_key),"default");
-
-        return service_url;
-    }
 
     public interface requestSubCategory
     {

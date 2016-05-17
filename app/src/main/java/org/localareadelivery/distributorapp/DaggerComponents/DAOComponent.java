@@ -1,6 +1,7 @@
 package org.localareadelivery.distributorapp.DaggerComponents;
 
 import org.localareadelivery.distributorapp.DaggerModules.DAOProvider;
+import org.localareadelivery.distributorapp.ShopList.AddShop;
 import org.localareadelivery.distributorapp.ShopList.Home;
 
 import javax.inject.Singleton;
@@ -17,5 +18,7 @@ import dagger.Component;
 public interface DAOComponent {
 
     void Inject(Home home);
+
+    void Inject(AddShop addShop);
 
 }

@@ -54,6 +54,7 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
     @Bind(R.id.categoryIndicatorLabel)
     TextView categoryLabel;
 
+    @Bind(R.id.fab) FloatingActionButton fab;
 
 
     public ItemCategories() {
@@ -81,13 +82,7 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
             @Override
             public void onClick(View view) {
 
-                Intent addCategoryIntent = new Intent(ItemCategories.this,AddItemCategory.class);
 
-                addCategoryIntent.putExtra(AddItemCategory.ADD_ITEM_CATEGORY_INTENT_KEY,currentCategory);
-
-                startActivity(addCategoryIntent);
-                //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                  //      .setAction("Action", null).show();
             }
         });
 
@@ -116,7 +111,9 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
         Log.d("applog",String.valueOf(metrics.widthPixels/250));
 
 
-        if (metrics.widthPixels >= 600 && (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT))
+        if (metrics.widthPixels >= 600 && (
+                getResources().getConfiguration().orientation
+                        == Configuration.ORIENTATION_PORTRAIT))
         {
             // in case of larger width of tables set the column count to 3
             //layoutManager.setSpanCount(3);
@@ -127,6 +124,18 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
 
     int currentCategoryID = 1; // the ID of root category is always supposed to be 1
     ItemCategory currentCategory = null;
+
+
+    public void fabClick()
+    {
+        Intent addCategoryIntent = new Intent(ItemCategories.this,AddItemCategory.class);
+
+        addCategoryIntent.putExtra(AddItemCategory.ADD_ITEM_CATEGORY_INTENT_KEY,currentCategory);
+
+        startActivity(addCategoryIntent);
+        //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+        //      .setAction("Action", null).show();
+    }
 
 
 
@@ -262,6 +271,7 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
 
         dataset.clear();
         makeRequestRetrofit();
+        listAdapter.notifyDataSetChanged();
     }
 
 

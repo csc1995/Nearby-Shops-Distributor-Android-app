@@ -1,7 +1,7 @@
 package org.localareadelivery.distributorapp.DaggerModules;
 
 import org.localareadelivery.distributorapp.DAOs.ShopDAO;
-import org.localareadelivery.distributorapp.RetrofitRESTCalls.ShopCalls;
+import org.localareadelivery.distributorapp.RetrofitRESTInterfaces.ShopRESTInterface;
 
 import javax.inject.Singleton;
 
@@ -21,7 +21,7 @@ public class RestInterfaceModule {
     ShopDAO.ShopRESTContract providesShopRESTInterface()
     {
 
-        return ShopCalls.getInstance();
+        return ShopRESTInterface.getInstance();
     }
 
 
