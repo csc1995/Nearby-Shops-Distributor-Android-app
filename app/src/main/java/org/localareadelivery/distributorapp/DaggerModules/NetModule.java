@@ -24,15 +24,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by sumeet on 14/5/16.
  */
 
-
-
         /*
         retrofit = new Retrofit.Builder()
                 .baseUrl(UtilityGeneral.getServiceURL(context))
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         */
-
 
 @Module
 public class NetModule {
@@ -74,8 +71,10 @@ public class NetModule {
 
         OkHttpClient client = new OkHttpClient()
                 .newBuilder()
-                .cache(cache)
                 .build();
+
+        // cache is commented out ... you can add cache by putting it back in the builder options
+        //.cache(cache)
 
         return client;
     }

@@ -106,8 +106,6 @@ public class ItemCategory implements Parcelable{
 	}
 
 
-
-
 	// parcelable Implementation
 
 	protected ItemCategory(Parcel in) {

@@ -62,6 +62,9 @@ public class AddShop extends AppCompatActivity implements LocationListener, Call
 
     boolean isImageAdded = false;
 
+    // Upload the image after picked up
+    private static final int REQUEST_CODE_READ_EXTERNAL_STORAGE = 56;
+
     @Inject ShopDAO shopDAO;
 
 
@@ -130,8 +133,8 @@ public class AddShop extends AppCompatActivity implements LocationListener, Call
 
         String resultString = "ID : " + shop.getShopID()
                 + "\n : " + shop.getShopName()
-                + "\n : " + String.valueOf(shop.getLatitude())
-                + "\n : " + String.valueOf(shop.getLongitude())
+                + "\n : " + String.valueOf(shop.getLatCenter())
+                + "\n : " + String.valueOf(shop.getLonCenter())
                 + "\n : " + shop.getImagePath();
 
         result.setText(resultString);
@@ -151,9 +154,9 @@ public class AddShop extends AppCompatActivity implements LocationListener, Call
 
         try {
 
-            shop.setLatitude(Double.parseDouble(latitude.getText().toString()));
-            shop.setLongitude(Double.parseDouble(longitude.getText().toString()));
-            shop.setRadiusOfService(Double.parseDouble(radiusOfService.getText().toString()));
+            shop.setLatCenter(Double.parseDouble(latitude.getText().toString()));
+            shop.setLonCenter(Double.parseDouble(longitude.getText().toString()));
+            shop.setDeliveryRange(Double.parseDouble(radiusOfService.getText().toString()));
 
         } catch (Exception ex) {
 
@@ -468,15 +471,6 @@ public class AddShop extends AppCompatActivity implements LocationListener, Call
 
 
 
-    // Upload the image after picked up
-    private static final int REQUEST_CODE_READ_EXTERNAL_STORAGE = 56;
-
-
-
-
-
-
-
     @OnClick(R.id.addShopButton)
     void addShopButton(){
 
@@ -497,90 +491,6 @@ public class AddShop extends AppCompatActivity implements LocationListener, Call
         }
 
     }
-
-
-    /* Marked for delete
-
-    void uploadPickedImage() {
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getServiceURL())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        ImageService imageService = retrofit.create(ImageService.class);
-
-
-        Log.d("applog", "onClickUploadImage");
-
-
-        // code for checking the Read External Storage Permission and granting it.
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-
-
-            /// / TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-
-
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                    REQUEST_CODE_READ_EXTERNAL_STORAGE);
-
-            return;
-
-        }
-
-
-        File file = new File(getCacheDir().getPath() + "/" + "SampleCropImage.jpeg");
-
-        // Marker
-
-        RequestBody requestBodyBinary = null;
-
-        InputStream in = null;
-
-        try {
-            in = new FileInputStream(file);
-
-            byte[] buf;
-            buf = new byte[in.available()];
-            while (in.read(buf) != -1) ;
-
-            requestBodyBinary = RequestBody
-
-                    .create(MediaType.parse("application/octet-stream"), buf);
-
-            //Bitmap.createScaledBitmap()
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        Call<Image> imageCall = imageService.uploadImage(requestBodyBinary);
-
-        imageCall.enqueue(new Callback<Image>() {
-            @Override
-            public void onResponse(Call<Image> call, Response<Image> response) {
-
-
-            }
-
-            @Override
-            public void onFailure(Call<Image> call, Throwable t) {
-
-
-
-            }
-        });
-    }
-
-    */
 
 
 
@@ -672,8 +582,6 @@ public class AddShop extends AppCompatActivity implements LocationListener, Call
 
 
     }
-
-
 
 
 

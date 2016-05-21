@@ -199,7 +199,7 @@ public class ItemCategoriesAdapter extends RecyclerView.Adapter<ItemCategoriesAd
 
         }
 
-    }
+    }// ViewHolder Class declaration ends
 
 
     public void notifyDelete()

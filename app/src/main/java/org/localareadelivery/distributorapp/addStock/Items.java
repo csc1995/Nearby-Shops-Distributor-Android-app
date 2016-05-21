@@ -287,6 +287,8 @@ public class Items extends AppCompatActivity {
 
     @Override
     protected void onPause() {
+
         super.onPause();
+
     }
 }

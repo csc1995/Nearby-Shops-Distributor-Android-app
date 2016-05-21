@@ -69,7 +69,7 @@ public class ShopsListAdapter extends RecyclerView.Adapter<ShopsListAdapter.View
     public void onBindViewHolder(final ShopsListAdapter.ViewHolder holder, final int position) {
 
         holder.shopName.setText(dataset.get(position).getShopName());
-        holder.shopRadius.setText(String.valueOf("Delivery Range : " + dataset.get(position).getRadiusOfService()) + "Km");
+        holder.shopRadius.setText(String.valueOf("Delivery Range : " + dataset.get(position).getDeliveryRange()) + "Km");
 
         String imagePath = UtilityGeneral.getServiceURL(context) + IMAGE_ENDPOINT_URL + dataset.get(position).getImagePath();
 

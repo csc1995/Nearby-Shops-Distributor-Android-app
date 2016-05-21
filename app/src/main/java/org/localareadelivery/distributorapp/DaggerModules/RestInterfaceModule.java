@@ -1,7 +1,10 @@
 package org.localareadelivery.distributorapp.DaggerModules;
 
+import org.localareadelivery.distributorapp.DataRouters.ItemCategoryDataRouter;
 import org.localareadelivery.distributorapp.DAOs.ShopDAO;
-import org.localareadelivery.distributorapp.RetrofitRESTInterfaces.ShopRESTInterface;
+import org.localareadelivery.distributorapp.Model.ItemCategory;
+import org.localareadelivery.distributorapp.RetrofitDataProviders.ShopRESTInterface;
+import org.localareadelivery.distributorapp.StandardInterfaces.DataRouter;
 
 import javax.inject.Singleton;
 
@@ -20,9 +23,15 @@ public class RestInterfaceModule {
     @Singleton
     ShopDAO.ShopRESTContract providesShopRESTInterface()
     {
-
         return ShopRESTInterface.getInstance();
     }
 
+
+    @Provides
+    @Singleton
+    DataRouter<ItemCategory> providesItemCategoryDataRouter()
+    {
+        return new ItemCategoryDataRouter();
+    }
 
 }

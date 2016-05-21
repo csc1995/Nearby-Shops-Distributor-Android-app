@@ -2,9 +2,9 @@ package org.localareadelivery.distributorapp.DAOs;
 
 import org.localareadelivery.distributorapp.Model.ItemCategory;
 import org.localareadelivery.distributorapp.MyApplication;
-import org.localareadelivery.distributorapp.StandardInterfaces.DAO;
+import org.localareadelivery.distributorapp.StandardInterfaces.Depricated.DAO;
 import org.localareadelivery.distributorapp.StandardInterfaces.DataSubscriber;
-import org.localareadelivery.distributorapp.StandardInterfaces.RESTInterface;
+import org.localareadelivery.distributorapp.StandardInterfaces.Depricated.RESTInterface;
 import org.localareadelivery.distributorapp.UtilityMethods.UtilityGeneral;
 
 import java.util.Map;
@@ -30,7 +30,7 @@ public class ItemCategoryDAO implements DAO<ItemCategory> {
 
 
     @Override
-    public void create(ItemCategory itemCategory, DataSubscriber.CreateCallback<ItemCategory> createCallback) {
+    public void create(ItemCategory itemCategory, DataSubscriber<ItemCategory> createCallback) {
 
         if(UtilityGeneral.isNetworkAvailable(MyApplication.getAppContext()))
         {
@@ -49,7 +49,7 @@ public class ItemCategoryDAO implements DAO<ItemCategory> {
     }
 
     @Override
-    public void update(ItemCategory itemCategory, DataSubscriber.UpdateCallback updateCallback) {
+    public void update(ItemCategory itemCategory, DataSubscriber updateCallback) {
 
         if(UtilityGeneral.isNetworkAvailable(MyApplication.getAppContext()))
         {
@@ -67,7 +67,7 @@ public class ItemCategoryDAO implements DAO<ItemCategory> {
     }
 
     @Override
-    public void delete(int ID, DataSubscriber.DeleteCallback deleteCallback) {
+    public void delete(int ID, DataSubscriber deleteCallback) {
 
         if(UtilityGeneral.isNetworkAvailable(MyApplication.getAppContext()))
         {
@@ -84,7 +84,7 @@ public class ItemCategoryDAO implements DAO<ItemCategory> {
     }
 
     @Override
-    public void read(int ID, DataSubscriber.ReadCallback<ItemCategory> readCallback) {
+    public void read(int ID, DataSubscriber<ItemCategory> readCallback) {
 
         if(UtilityGeneral.isNetworkAvailable(MyApplication.getAppContext()))
         {
@@ -98,7 +98,7 @@ public class ItemCategoryDAO implements DAO<ItemCategory> {
     }
 
     @Override
-    public void readMany(Map<String, String> queryParams, DataSubscriber.ReadManyCallback readManyCallback) {
+    public void readMany(Map<String, String> queryParams, DataSubscriber readManyCallback) {
 
     }
 

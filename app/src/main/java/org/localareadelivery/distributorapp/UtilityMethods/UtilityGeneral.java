@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import org.localareadelivery.distributorapp.MyApplication;
 import org.localareadelivery.distributorapp.R;
 
 /**
@@ -25,6 +26,9 @@ public class UtilityGeneral {
 
 
     public static String getServiceURL(Context context) {
+
+        context = MyApplication.getAppContext();
+
         SharedPreferences sharedPref = context.getSharedPreferences(context.getString(R.string.preference_file_name), context.MODE_PRIVATE);
         String service_url = sharedPref.getString(context.getString(R.string.preference_service_url_key), "default");
 
@@ -82,7 +86,6 @@ public class UtilityGeneral {
 
 
     /*
-
     public int getDistributorID() {
         // Get a handle to shared preference
         SharedPreferences sharedPref;
@@ -102,8 +105,6 @@ public class UtilityGeneral {
 
         return service_url;
     }
-
-
      */
 
 }

@@ -2,9 +2,12 @@ package org.localareadelivery.distributorapp;
 
 import org.localareadelivery.distributorapp.ApplicationState.ApplicationState;
 import org.localareadelivery.distributorapp.DaggerComponents.DAOComponent;
+
 import org.localareadelivery.distributorapp.DaggerComponents.DaggerDAOComponent;
+import org.localareadelivery.distributorapp.DaggerComponents.DaggerDataComponent;
 import org.localareadelivery.distributorapp.DaggerComponents.DaggerNetComponent;
 import org.localareadelivery.distributorapp.DaggerComponents.DaggerRESTComponent;
+import org.localareadelivery.distributorapp.DaggerComponents.DataComponent;
 import org.localareadelivery.distributorapp.DaggerComponents.NetComponent;
 import org.localareadelivery.distributorapp.DaggerComponents.RESTComponent;
 import org.localareadelivery.distributorapp.DaggerModules.AppModule;
@@ -22,6 +25,8 @@ public class DaggerComponentBuilder {
     private NetComponent mNetComponent;
     private RESTComponent restComponent;
     private DAOComponent daoComponent;
+
+    private DataComponent dataComponent;
 
 
     private DaggerComponentBuilder() {
@@ -80,6 +85,18 @@ public class DaggerComponentBuilder {
         }
 
         return daoComponent;
+    }
+
+
+    public DataComponent getDataComponent()
+    {
+        if(dataComponent == null)
+        {
+            dataComponent = DaggerDataComponent.create();
+
+        }
+
+        return dataComponent;
     }
 
 }

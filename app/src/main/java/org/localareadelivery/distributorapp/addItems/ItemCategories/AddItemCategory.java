@@ -26,9 +26,13 @@ import com.yalantis.ucrop.UCropActivity;
 
 import org.localareadelivery.distributorapp.Model.Image;
 import org.localareadelivery.distributorapp.Model.ItemCategory;
+import org.localareadelivery.distributorapp.MyApplication;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ImageService;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ItemCategoryService;
+import org.localareadelivery.distributorapp.UtilityMethods.ImageCalls;
+import org.localareadelivery.distributorapp.UtilityMethods.ImageCropUtility;
+import org.localareadelivery.distributorapp.UtilityMethods.UtilityGeneral;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -41,12 +45,22 @@ import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 
 
-public class AddItemCategory extends AppCompatActivity{
+public class AddItemCategory extends AppCompatActivity implements Callback<Image> {
+
+    @Bind(R.id.coordinatorLayout) CoordinatorLayout coordinatorLayout;
+    @Bind(R.id.uploadImage) ImageView resultView;
+
+    // Upload the image after picked up
+    private static final int REQUEST_CODE_READ_EXTERNAL_STORAGE = 56;
+    Image image = null;
+    boolean isImageAdded = false;
+    private int PICK_IMAGE_REQUEST = 21;
 
 
     @Bind(R.id.itemCategoryName) EditText itemCategoryName;
@@ -54,8 +68,6 @@ public class AddItemCategory extends AppCompatActivity{
     @Bind(R.id.addItemCategory) Button addItemCategory;
 
     @Bind(R.id.result) TextView result;
-
-    String imagePath = "";
 
     final String IMAGES_END_POINT_URL = "/api/Images";
 
@@ -67,6 +79,8 @@ public class AddItemCategory extends AppCompatActivity{
 
     @Bind(R.id.isLeafNode) CheckBox isLeafNode;
 
+
+    ItemCategory itemCategory = new ItemCategory();
 
 
     @Override
@@ -95,11 +109,9 @@ public class AddItemCategory extends AppCompatActivity{
 
     void loadImage(String imagePath) {
 
-        Picasso.with(this).load(getServiceURL() + IMAGES_END_POINT_URL + imagePath).into(resultView);
+        Picasso.with(this).load(UtilityGeneral.getServiceURL(null) + IMAGES_END_POINT_URL + imagePath).into(resultView);
     }
 
-
-    ItemCategory itemCategory = new ItemCategory();
 
     void getDatafromEditText()
     {
@@ -112,14 +124,11 @@ public class AddItemCategory extends AppCompatActivity{
     }
 
 
-
-
-
     void makeRetrofitRequest()
     {
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getServiceURL())
+                .baseUrl(UtilityGeneral.getServiceURL(MyApplication.getAppContext()))
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -153,33 +162,18 @@ public class AddItemCategory extends AppCompatActivity{
 
     void displayResult(ItemCategory itemCategory)
     {
-
-        result.setText("Result : " + "\n"
-                + itemCategory.getItemCategoryID() + "\n"
-                + itemCategory.getCategoryName() + "\n"
-                + itemCategory.getCategoryDescription() + "\n"
-                + itemCategory.getImagePath() + "\n"
-                + itemCategory.getParentCategoryID() + "\n");
+        if(itemCategory!=null)
+        {
+            result.setText("Result : " + "\n"
+                    + itemCategory.getItemCategoryID() + "\n"
+                    + itemCategory.getCategoryName() + "\n"
+                    + itemCategory.getCategoryDescription() + "\n"
+                    + itemCategory.getImagePath() + "\n"
+                    + itemCategory.getParentCategoryID() + "\n");
+        }
     }
 
 
-
-    public String  getServiceURL()
-    {
-        SharedPreferences sharedPref = this.getSharedPreferences(getString(R.string.preference_file_name), this.MODE_PRIVATE);
-
-        String service_url = sharedPref.getString(getString(R.string.preference_service_url_key),"default");
-
-        return service_url;
-    }
-
-
-
-    @OnClick(R.id.addItemCategory)
-    public void addItemCategory()
-    {
-        uploadPickedImage();
-    }
 
 
 
@@ -202,9 +196,6 @@ public class AddItemCategory extends AppCompatActivity{
 
 
 
-    @Bind(R.id.coordinatorLayout) CoordinatorLayout coordinatorLayout;
-
-    @Bind(R.id.uploadImage) ImageView resultView;
 
     void showMessageSnackBar(String message) {
 
@@ -231,11 +222,10 @@ public class AddItemCategory extends AppCompatActivity{
     {
 
         File file = new File(getCacheDir().getPath() + "/" + "SampleCropImage.jpeg");
-        showMessageSnackBar("File delete Status : " + String.valueOf(file.delete()));
+        file.delete();
 
-
-        imagePath = "";
         resultView.setImageDrawable(null);
+        isImageAdded = false;
     }
 
 
@@ -250,47 +240,11 @@ public class AddItemCategory extends AppCompatActivity{
 
     @OnClick(R.id.textChangePicture)
     void pickShopImage() {
-        mDestinationUri = Uri.fromFile(new File(getCacheDir(), SAMPLE_CROPPED_IMAGE_NAME));
-
-        Log.d("applog", "Cache Dir Path : " + getCacheDir().getPath());
 
         resultView.setImageDrawable(null);
-        //Crop.pickImage(this);
 
-        showFileChooser();
+        ImageCropUtility.showFileChooser(this);
     }
-
-    private int PICK_IMAGE_REQUEST = 21;
-
-    private void showFileChooser() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
-    }
-
-
-    public void startCropActivity(Uri sourceUri) {
-
-        UCrop.Options options = new UCrop.Options();
-        options.setCompressionFormat(Bitmap.CompressFormat.JPEG);
-        //options.setCompressionQuality(100);
-
-        options.setToolbarColor(getResources().getColor(R.color.cyan900));
-        options.setAllowedGestures(UCropActivity.SCALE, UCropActivity.ALL, UCropActivity.SCALE);
-
-
-        // this function takes the file from the source URI and saves in into the destination URI location.
-        UCrop.of(sourceUri, mDestinationUri)
-                .withOptions(options)
-                .withMaxResultSize(400,300)
-                .start(this);
-
-        //.withMaxResultSize(500, 400)
-        //.withAspectRatio(16, 9)
-    }
-
-
 
 
 
@@ -300,9 +254,24 @@ public class AddItemCategory extends AppCompatActivity{
         super.onActivityResult(requestCode, resultCode, result);
 
 
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
+                && result != null
+                && result.getData() != null) {
+
+            Uri filePath = result.getData();
+
+            if (filePath != null) {
+                ImageCropUtility.startCropActivity(result.getData(),this);
+            }
+
+        }
+
+
         if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
 
             resultView.setImageURI(UCrop.getOutput(result));
+
+            isImageAdded = true;
 
 
         } else if (resultCode == UCrop.RESULT_ERROR) {
@@ -312,24 +281,7 @@ public class AddItemCategory extends AppCompatActivity{
         }
 
 
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
-                && result != null
-                && result.getData() != null) {
-
-
-            Uri filePath = result.getData();
-
-            //imageUri = filePath;
-
-            if (filePath != null) {
-                startCropActivity(result.getData());
-            }
-
-        }
     }
-
-
-
 
 
     /*
@@ -340,122 +292,33 @@ public class AddItemCategory extends AppCompatActivity{
 
 
 
-    // Upload the image after picked up
-    private static final int REQUEST_CODE_READ_EXTERNAL_STORAGE = 56;
+    @OnClick(R.id.addItemCategory)
+    public void addItemCategory()
+    {
 
-    Image image = null;
+        if(isImageAdded)
+        {
 
+            ImageCalls.getInstance()
+                    .uploadPickedImage(
+                            this,
+                            REQUEST_CODE_READ_EXTERNAL_STORAGE,
+                            this
+                    );
 
-    void uploadPickedImage() {
+        }
+        else
+        {
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getServiceURL())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        ImageService imageService = retrofit.create(ImageService.class);
-
-
-        Log.d("applog", "onClickUploadImage");
-
-
-        // code for checking the Read External Storage Permission and granting it.
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-
-
-            /// / TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-
-
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                    REQUEST_CODE_READ_EXTERNAL_STORAGE);
-
-            return;
+            itemCategory.setImagePath(null);
+            makeRetrofitRequest();
 
         }
 
 
-        File file = new File(getCacheDir().getPath() + "/" + "SampleCropImage.jpeg");
 
-        // Marker
-
-        RequestBody requestBodyBinary = null;
-
-        InputStream in = null;
-
-        try {
-            in = new FileInputStream(file);
-
-            byte[] buf;
-            buf = new byte[in.available()];
-            while (in.read(buf) != -1) ;
-
-            requestBodyBinary = RequestBody
-
-                    .create(MediaType.parse("application/octet-stream"), buf);
-
-            //Bitmap.createScaledBitmap()
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        Call<Image> imageCall = imageService.uploadImage(requestBodyBinary);
-
-        imageCall.enqueue(new Callback<Image>() {
-            @Override
-            public void onResponse(Call<Image> call, retrofit2.Response<Image> response) {
-
-                image = response.body();
-
-                Log.d("applog", "inside retrofit call !" + String.valueOf(response.code()));
-                Log.d("applog", "image Path : " + image.getPath());
-
-
-                //// TODO: 31/3/16
-                // check whether load image call is required. or Not
-
-                loadImage(image.getPath());
-
-                imagePath = image.getPath();
-
-                if (response.code() != 201) {
-                    showMessageSnackBar("Unable to upload Image. Try changing the image by in the Edit Screen !");
-
-                    result.setText("Unable to upload Image. Try changing the image by in the Edit Screen !");
-                }
-
-
-
-                itemCategory.setImagePath(imagePath);
-
-                makeRetrofitRequest();
-
-            }
-
-            @Override
-            public void onFailure(Call<Image> call, Throwable t) {
-
-                Log.d("applog", "inside Error: " + t.getMessage());
-
-                showMessageSnackBar("Unable to upload Image. Try changing the image by in the Edit Screen !");
-
-                result.setText("Unable to upload Image. Try changing the image by in the Edit Screen !");
-
-                itemCategory.setImagePath(imagePath);
-
-                makeRetrofitRequest();
-
-            }
-        });
     }
+
 
 
     @Override
@@ -466,11 +329,38 @@ public class AddItemCategory extends AppCompatActivity{
 
             case REQUEST_CODE_READ_EXTERNAL_STORAGE:
 
-                uploadPickedImage();
+                addItemCategory();
 
                 break;
         }
     }
+
+
+    @Override
+    public void onResponse(Call<Image> call, Response<Image> response) {
+
+        // image upload successful
+
+        if(response.code()==201)
+        {
+            itemCategory.setImagePath(response.body().getPath());
+
+        }else
+        {
+            itemCategory.setImagePath(null);
+        }
+
+        makeRetrofitRequest();
+    }
+
+
+    @Override
+    public void onFailure(Call<Image> call, Throwable t) {
+
+        itemCategory.setImagePath(null);
+        makeRetrofitRequest();
+    }
+
 
 
 }

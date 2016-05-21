@@ -56,8 +56,6 @@ public class ImageCropUtility{
         intent.setAction(Intent.ACTION_GET_CONTENT);
         context.startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
 
-
-
     }
 
 
@@ -91,7 +89,6 @@ public class ImageCropUtility{
     {
         File file = new File(context.getCacheDir().getPath() + "/" + "SampleCropImage.jpeg");
         file.delete();
-
     }
 
 }

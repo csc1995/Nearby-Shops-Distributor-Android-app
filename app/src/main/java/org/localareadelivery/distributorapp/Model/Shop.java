@@ -11,22 +11,24 @@ public class Shop implements Parcelable{
 	
 
 	int shopID;
-
-	Distributor distributor;
 	
 	String shopName;
-	
+
+	// New Paramaters
+
+	// the radius of the circle considering shop location as its center.
 	//This is the distance upto which shop can deliver its items
-	double radiusOfService;
-	
-	// the average of all the ratings given by the end users
-	// the average rating is updated whenever a user rates a shop
-	double averageRating;
-	
+	double deliveryRange;
+
 	// latitude and longitude for storing the location of the shop
-	double latitude;
-	double longitude;
-	
+	double latCenter;
+	double lonCenter;
+
+	double latMax;
+	double lonMax;
+	double latMin;
+	double lonMin;
+
 	// delivery charger per order 
 	double deliveryCharges;
 
@@ -35,63 +37,8 @@ public class Shop implements Parcelable{
 	String imagePath;
 
 
+	// Getter and Setter Methods
 
-	public String getImagePath() {
-		return imagePath;
-	}
-
-	public void setImagePath(String imagePath) {
-		this.imagePath = imagePath;
-	}
-
-	public int getDistributorID() {
-		return distributorID;
-	}
-
-	public void setDistributorID(int distributorID) {
-		this.distributorID = distributorID;
-	}
-
-
-	public double getRadiusOfService() {
-		return radiusOfService;
-	}
-
-	public void setRadiusOfService(double radiusOfService) {
-		this.radiusOfService = radiusOfService;
-	}
-
-	public double getAverageRating() {
-		return averageRating;
-	}
-
-	public void setAverageRating(double averageRating) {
-		this.averageRating = averageRating;
-	}
-
-	public double getDeliveryCharges() {
-		return deliveryCharges;
-	}
-
-	public void setDeliveryCharges(double deliveryCharges) {
-		this.deliveryCharges = deliveryCharges;
-	}
-
-	public double getLatitude() {
-		return latitude;
-	}
-
-	public void setLatitude(double latitude) {
-		this.latitude = latitude;
-	}
-
-	public double getLongitude() {
-		return longitude;
-	}
-
-	public void setLongitude(double longitude) {
-		this.longitude = longitude;
-	}
 
 	public int getShopID() {
 		return shopID;
@@ -109,27 +56,84 @@ public class Shop implements Parcelable{
 		this.shopName = shopName;
 	}
 
-	public Distributor getDistributor() {
-		return distributor;
+	public double getDeliveryRange() {
+		return deliveryRange;
 	}
 
-	public void setDistributor(Distributor distributor) {
-		this.distributor = distributor;
+	public void setDeliveryRange(double deliveryRange) {
+		this.deliveryRange = deliveryRange;
 	}
 
+	public double getLatCenter() {
+		return latCenter;
+	}
 
-	public Shop(Distributor distributor, String shopName, int radiusOfService, int averageRating, double latitude,
-				double longitude, int deliveryCharges) {
+	public void setLatCenter(double latCenter) {
+		this.latCenter = latCenter;
+	}
 
+	public double getLonCenter() {
+		return lonCenter;
+	}
 
-		super();
+	public void setLonCenter(double lonCenter) {
+		this.lonCenter = lonCenter;
+	}
 
-		this.shopName = shopName;
-		this.radiusOfService = radiusOfService;
-		this.averageRating = averageRating;
-		this.latitude = latitude;
-		this.longitude = longitude;
+	public double getLatMax() {
+		return latMax;
+	}
+
+	public void setLatMax(double latMax) {
+		this.latMax = latMax;
+	}
+
+	public double getLonMax() {
+		return lonMax;
+	}
+
+	public void setLonMax(double lonMax) {
+		this.lonMax = lonMax;
+	}
+
+	public double getLatMin() {
+		return latMin;
+	}
+
+	public void setLatMin(double latMin) {
+		this.latMin = latMin;
+	}
+
+	public double getLonMin() {
+		return lonMin;
+	}
+
+	public void setLonMin(double lonMin) {
+		this.lonMin = lonMin;
+	}
+
+	public double getDeliveryCharges() {
+		return deliveryCharges;
+	}
+
+	public void setDeliveryCharges(double deliveryCharges) {
 		this.deliveryCharges = deliveryCharges;
+	}
+
+	public int getDistributorID() {
+		return distributorID;
+	}
+
+	public void setDistributorID(int distributorID) {
+		this.distributorID = distributorID;
+	}
+
+	public String getImagePath() {
+		return imagePath;
+	}
+
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
 	}
 
 	public Shop() {
@@ -144,10 +148,13 @@ public class Shop implements Parcelable{
 
 		String resultMessage = "ID: " + this.getShopID()
 				+ "\n\nShop Name : " + this.getShopName()
-				+ "\n\nRadius Of Service : " + this.getRadiusOfService()
-				+ "\n\nLatitude : " + this.getLatitude()
-				+ "\n\nLongitude : " + this.getLongitude()
-				+ "\n\nAverage Rating : " + this.getAverageRating()
+				+ "\n\nDelivery Range : " + this.getDeliveryRange()
+				+ "\n\nLat Center: " + this.getLatCenter()
+				+ "\n\nLon Center : " + this.getLonCenter()
+				+ "\n\nLon Max : " + this.getLonMax()
+				+ "\n\nLat Max : " + this.getLatMin()
+				+ "\n\nLon Min : " + this.getLonMax()
+				+ "\n\nLat Min : " + this.getLatMin()
 				+ "\n\nDelivery Charges : " + this.getDeliveryCharges()
 				+ "\n\nDistributor ID : " + this.getDistributorID()
 				+ "\n\nImage Path : " + this.getImagePath();
@@ -158,8 +165,6 @@ public class Shop implements Parcelable{
 
 
 
-
-
 	// Autogenerated parcelable implementation
 
 
@@ -167,10 +172,13 @@ public class Shop implements Parcelable{
 	protected Shop(Parcel in) {
 		shopID = in.readInt();
 		shopName = in.readString();
-		radiusOfService = in.readDouble();
-		averageRating = in.readDouble();
-		latitude = in.readDouble();
-		longitude = in.readDouble();
+		deliveryRange = in.readDouble();
+		latCenter = in.readDouble();
+		lonCenter = in.readDouble();
+		latMax = in.readDouble();
+		lonMax = in.readDouble();
+		latMin = in.readDouble();
+		lonMin = in.readDouble();
 		deliveryCharges = in.readDouble();
 		distributorID = in.readInt();
 		imagePath = in.readString();
@@ -180,10 +188,13 @@ public class Shop implements Parcelable{
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeInt(shopID);
 		dest.writeString(shopName);
-		dest.writeDouble(radiusOfService);
-		dest.writeDouble(averageRating);
-		dest.writeDouble(latitude);
-		dest.writeDouble(longitude);
+		dest.writeDouble(deliveryRange);
+		dest.writeDouble(latCenter);
+		dest.writeDouble(lonCenter);
+		dest.writeDouble(latMax);
+		dest.writeDouble(lonMax);
+		dest.writeDouble(latMin);
+		dest.writeDouble(lonMin);
 		dest.writeDouble(deliveryCharges);
 		dest.writeInt(distributorID);
 		dest.writeString(imagePath);
@@ -205,7 +216,5 @@ public class Shop implements Parcelable{
 			return new Shop[size];
 		}
 	};
-
-
 
 }

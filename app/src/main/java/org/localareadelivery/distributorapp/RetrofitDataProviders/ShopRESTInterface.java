@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.RetrofitRESTInterfaces;
+package org.localareadelivery.distributorapp.RetrofitDataProviders;
 
 import org.localareadelivery.distributorapp.DAOs.ShopDAO;
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
@@ -52,8 +52,6 @@ public class ShopRESTInterface implements ShopDAO.ShopRESTContract{
         {
             shopRESTInterface = new ShopRESTInterface();
         }
-
-
 
         return shopRESTInterface;
     }

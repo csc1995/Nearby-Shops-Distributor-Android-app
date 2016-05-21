@@ -12,43 +12,34 @@ public interface DataProvider<T> {
 
     public void read(
             int ID,
-            DataSubscriber.ReadCallback<T> callback
+            DataSubscriber<T> Subscriber
     );
 
 
     public void readMany(
-
             Map<String,String> stringParams,
             Map<String,Integer> intParams,
             Map<String,Boolean> booleanParams,
-            DataSubscriber.ReadManyCallback<T> callback
+            DataSubscriber<T> Subscriber
     );
 
     public void delete(
             int ID,
-            DataSubscriber.DeleteCallback callback
+            DataSubscriber Subscriber
     );
 
     public void insert(
             T t,
-            DataSubscriber.CreateCallback<T> callback
+            DataSubscriber<T> Subscriber
     );
 
     public void update(
             T t,
-            DataSubscriber.UpdateCallback callback
+            DataSubscriber Subscriber
     );
 
-
-
-    public void subscribeRead(DataSubscriber.ReadCallback<T> callback);
-
-    public void subscribeReadMany(DataSubscriber.ReadManyCallback<T> callback);
-
-    public void subscribeDelete(DataSubscriber.DeleteCallback callback);
-
-    public void subscribeInsert(DataSubscriber.CreateCallback<T> callback);
-
-    public void subscribeUpdate(DataSubscriber.UpdateCallback callback);
+    public void subscribe(
+            DataSubscriber<T> Subscriber
+    );
 
 }

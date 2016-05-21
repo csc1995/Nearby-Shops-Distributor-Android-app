@@ -161,9 +161,9 @@ public class EditShop extends AppCompatActivity implements LocationListener, Cal
             Log.d("applog", shop.toString());
             shopID.setText(String.valueOf(shop.getShopID()));
             shopName.setText(shop.getShopName());
-            radiusOfService.setText(String.valueOf(shop.getRadiusOfService()));
-            latitude.setText(String.valueOf(shop.getLatitude()));
-            longitude.setText(String.valueOf(shop.getLongitude()));
+            radiusOfService.setText(String.valueOf(shop.getDeliveryRange()));
+            latitude.setText(String.valueOf(shop.getLatCenter()));
+            longitude.setText(String.valueOf(shop.getLonCenter()));
             deliveryCharge.setText(String.valueOf(shop.getDeliveryCharges()));
             distributorID.setText(String.valueOf(shop.getDistributorID()));
 
@@ -186,9 +186,9 @@ public class EditShop extends AppCompatActivity implements LocationListener, Cal
 
             shopForUpdate.setShopName(shopName.getText().toString());
             shopForUpdate.setShopID(Integer.parseInt(shopID.getText().toString()));
-            shopForUpdate.setRadiusOfService(Double.parseDouble(radiusOfService.getText().toString()));
-            shopForUpdate.setLatitude(Double.parseDouble(latitude.getText().toString()));
-            shopForUpdate.setLongitude(Double.parseDouble(longitude.getText().toString()));
+            shopForUpdate.setDeliveryRange(Double.parseDouble(radiusOfService.getText().toString()));
+            shopForUpdate.setLatCenter(Double.parseDouble(latitude.getText().toString()));
+            shopForUpdate.setLonCenter(Double.parseDouble(longitude.getText().toString()));
 
             shopForUpdate.setDeliveryCharges(Double.parseDouble(deliveryCharge.getText().toString()));
         }

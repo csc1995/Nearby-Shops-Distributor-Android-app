@@ -1,7 +1,6 @@
 package org.localareadelivery.distributorapp.addItems.ItemCategories;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -24,23 +23,32 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.localareadelivery.distributorapp.ApplicationState.ApplicationState;
+import org.localareadelivery.distributorapp.DaggerComponentBuilder;
+import org.localareadelivery.distributorapp.DataRouters.ItemCategoryDataRouter;
 import org.localareadelivery.distributorapp.Model.ItemCategory;
 import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ItemCategoryService;
+import org.localareadelivery.distributorapp.StandardInterfaces.DataSubscriber;
+import org.localareadelivery.distributorapp.UtilityMethods.UtilityGeneral;
 import org.localareadelivery.distributorapp.VolleySingleton;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class ItemCategories extends AppCompatActivity implements  ItemCategoriesAdapter.requestSubCategory{
+public class ItemCategories extends AppCompatActivity
+        implements  ItemCategoriesAdapter.requestSubCategory, DataSubscriber<ItemCategory>
+{
 
     List<ItemCategory> dataset = new ArrayList<>();
     RecyclerView itemCategoriesList;
@@ -49,6 +57,9 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
     GridLayoutManager layoutManager;
 
     Shop shop = null;
+
+    @Inject
+    ItemCategoryDataRouter dataRouter;
 
 
     @Bind(R.id.categoryIndicatorLabel)
@@ -60,9 +71,16 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
     public ItemCategories() {
         super();
 
+        // Inject the dependencies using Dependency Injection
+        DaggerComponentBuilder.getInstance()
+                .getDataComponent()
+                .Inject(this);
+
         currentCategory = new ItemCategory();
         currentCategory.setItemCategoryID(1);
         currentCategory.setParentCategoryID(-1);
+
+
     }
 
     @Override
@@ -75,16 +93,7 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
-
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-
-            }
-        });
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -126,6 +135,7 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
     ItemCategory currentCategory = null;
 
 
+    @OnClick(R.id.fab)
     public void fabClick()
     {
         Intent addCategoryIntent = new Intent(ItemCategories.this,AddItemCategory.class);
@@ -142,7 +152,7 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
     public void makeRequest()
     {
 
-        String url = getServiceURL() + "/api/ItemCategory" + "?ParentID=" + currentCategoryID;
+        String url = UtilityGeneral.getServiceURL(this) + "/api/ItemCategory" + "?ParentID=" + currentCategoryID;
 
         Log.d("response",url);
 
@@ -170,11 +180,12 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
     }
 
 
+
     public void makeRequestRetrofit()
     {
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getServiceURL())
+                .baseUrl(UtilityGeneral.getServiceURL(this))
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -247,19 +258,11 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
     }
 
 
-    public String  getServiceURL()
-    {
-        SharedPreferences sharedPref = this.getSharedPreferences(getString(R.string.preference_file_name), this.MODE_PRIVATE);
-        String service_url = sharedPref.getString(getString(R.string.preference_service_url_key),"default");
-
-        return service_url;
-    }
-
-
     void notifyDelete()
     {
         dataset.clear();
-        makeRequestRetrofit();
+        //makeRequestRetrofit();
+        makeRequestDataProvider();
 
     }
 
@@ -270,7 +273,8 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
         shop = ApplicationState.getInstance().getCurrentShop();
 
         dataset.clear();
-        makeRequestRetrofit();
+        //makeRequestRetrofit();
+        makeRequestDataProvider();
         listAdapter.notifyDataSetChanged();
     }
 
@@ -361,7 +365,8 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
 
         }
 
-        makeRequestRetrofit();
+        //makeRequestRetrofit();
+        makeRequestDataProvider();
     }
 
 
@@ -434,7 +439,10 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
             }
 
 
-            makeRequestRetrofit();
+            //makeRequestRetrofit();
+
+            makeRequestDataProvider();
+
             //moveTaskToBack(true);
         }
 
@@ -446,6 +454,8 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
     }
 
 
+
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -454,4 +464,57 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
     }
 
 
+
+    void makeRequestDataProvider()
+    {
+
+        dataRouter.getDataProvider()
+                .readMany(currentCategory.getItemCategoryID(),0,this);
+
+    }
+
+
+    @Override
+    public void createCallback(boolean isOffline,
+                               boolean isSuccessful,
+                               int httpStatusCode,
+                               ItemCategory itemCategory) {
+
+    }
+
+    @Override
+    public void readCallback(boolean isOffline, boolean isSuccessful, int httpStatusCode, ItemCategory itemCategory) {
+
+
+
+    }
+
+    @Override
+    public void readManyCallback(
+            boolean isOffline,
+            boolean isSuccessful,
+            int httpStatusCode,
+            List<ItemCategory> list) {
+
+
+        dataset.clear();
+
+        if(list !=null) {
+
+            dataset.addAll(list);
+        }
+
+        listAdapter.notifyDataSetChanged();
+
+    }
+
+    @Override
+    public void updateCallback(boolean isOffline, boolean isSuccessful, int httpStatusCode) {
+
+    }
+
+    @Override
+    public void deleteShopCallback(boolean isOffline, boolean isSuccessful, int httpStatusCode) {
+
+    }
 }

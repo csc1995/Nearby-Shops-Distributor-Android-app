@@ -2,7 +2,8 @@ package org.localareadelivery.distributorapp.DaggerComponents;
 
 import org.localareadelivery.distributorapp.DaggerModules.AppModule;
 import org.localareadelivery.distributorapp.DaggerModules.NetModule;
-import org.localareadelivery.distributorapp.RetrofitRESTInterfaces.ShopRESTInterface;
+import org.localareadelivery.distributorapp.RetrofitDataProviders.ItemCategoryRetrofitProvider;
+import org.localareadelivery.distributorapp.RetrofitDataProviders.ShopRESTInterface;
 
 import javax.inject.Singleton;
 
@@ -19,4 +20,6 @@ public interface NetComponent {
     void inject(ShopRESTInterface shopRESTInterface);
     // void inject(MyFragment fragment);
     // void inject(MyService service);
+
+    void inject(ItemCategoryRetrofitProvider provider);
 }
