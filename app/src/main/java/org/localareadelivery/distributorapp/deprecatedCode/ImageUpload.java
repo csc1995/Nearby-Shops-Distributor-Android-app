@@ -9,8 +9,6 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.widget.Toast;
 
-import com.soundcloud.android.crop.Crop;
-
 import java.io.File;
 
 import okhttp3.MediaType;

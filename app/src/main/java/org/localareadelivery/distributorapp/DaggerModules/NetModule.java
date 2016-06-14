@@ -3,13 +3,15 @@ package org.localareadelivery.distributorapp.DaggerModules;
 import android.app.Application;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
-import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import org.localareadelivery.distributorapp.MyApplication;
-import org.localareadelivery.distributorapp.UtilityMethods.UtilityGeneral;
+import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderService;
+import org.localareadelivery.distributorapp.RetrofitRESTContract.VehicleSelfService;
+import org.localareadelivery.distributorapp.Utility.UtilityGeneral;
 
 import javax.inject.Singleton;
 
@@ -49,6 +51,7 @@ public class NetModule {
         return PreferenceManager.getDefaultSharedPreferences(application);
     }
 
+    /*
     @Provides
     @Singleton
     Cache provideOkHttpCache(Application application) {
@@ -56,6 +59,8 @@ public class NetModule {
         Cache cache = new Cache(application.getCacheDir(), cacheSize);
         return cache;
     }
+
+    */
 
     @Provides
     @Singleton
@@ -67,11 +72,13 @@ public class NetModule {
 
     @Provides
     @Singleton
-    OkHttpClient provideOkHttpClient(Cache cache) {
+    OkHttpClient provideOkHttpClient() {
 
         OkHttpClient client = new OkHttpClient()
                 .newBuilder()
                 .build();
+
+        // Cache cache
 
         // cache is commented out ... you can add cache by putting it back in the builder options
         //.cache(cache)
@@ -79,16 +86,42 @@ public class NetModule {
         return client;
     }
 
+
+    //    @Singleton
+
     @Provides
-    @Singleton
     Retrofit provideRetrofit(Gson gson, OkHttpClient okHttpClient) {
 
         Retrofit retrofit = new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .baseUrl(UtilityGeneral.getServiceURL(MyApplication.getAppContext()))
-                .client(okHttpClient)
                 .build();
+
+        //        .client(okHttpClient)
+
+        Log.d("applog","Retrofit : " + UtilityGeneral.getServiceURL(MyApplication.getAppContext()));
+
 
         return retrofit;
     }
+
+
+    @Provides
+    OrderService provideOrderService(Retrofit retrofit)
+    {
+        OrderService service = retrofit.create(OrderService.class);
+
+        return service;
+    }
+
+
+    @Provides
+    VehicleSelfService provideVehicleService(Retrofit retrofit)
+    {
+        VehicleSelfService service = retrofit.create(VehicleSelfService.class);
+
+        return service;
+    }
+
+
 }

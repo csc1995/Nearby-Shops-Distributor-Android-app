@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.localareadelivery.distributorapp">
 
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -23,15 +23,12 @@
         <activity
             android:name=".DistributorLogin"
             android:label="@string/title_activity_login"
-
             android:theme="@style/AppTheme.NoActionBar">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".ShopHome.ShopHome"
@@ -51,7 +48,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.localareadelivery.distributorapp.ShopHome.ShopHome" />
         </activity>
-
         <activity
             android:name=".addStock.ItemCategories"
             android:label="@string/title_activity_item_categories"
@@ -61,7 +57,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.localareadelivery.distributorapp.ShopHome.ShopHome" />
         </activity>
-
         <activity
             android:name=".addStock.Items"
             android:label="@string/title_activity_items_add_stock"
@@ -71,9 +66,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.localareadelivery.distributorapp.ShopHome.ShopHome" />
         </activity>
-
-
-
         <activity
             android:name=".addItems.ItemCategories.AddItemCategory"
             android:label="@string/title_activity_add_item_category"
@@ -83,7 +75,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".addItems.ItemCategories.ItemCategories" />
         </activity>
-
         <activity
             android:name=".addItems.ItemCategories.EditItemCategory"
             android:label="@string/title_activity_edit_item_category"
@@ -93,7 +84,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".addItems.ItemCategories.ItemCategories" />
         </activity>
-
         <activity
             android:name=".addItems.Items.Items"
             android:label="@string/title_activity_items"
@@ -148,16 +138,64 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.localareadelivery.distributorapp.addStock.Items" />
         </activity>
-        <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
 
-        <activity android:name=".Intro"
-            android:theme="@style/Theme.Intro">
-        </activity>
-
+        <activity
+            android:name=".Intro"
+            android:theme="@style/Theme.Intro" />
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".OrdersHome.OrdersHome"
+            android:label="@string/title_activity_orders_home"
+            android:parentActivityName=".ShopHome.ShopHome"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.localareadelivery.distributorapp.ShopHome.ShopHome" />
+        </activity>
+        <activity
+            android:name=".OrdersHomeDelivery.HomeDelivery"
+            android:label="@string/title_activity_home_delivery"
+            android:parentActivityName=".OrdersHome.OrdersHome"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.localareadelivery.distributorapp.OrdersHome.OrdersHome" />
+        </activity>
+
+        <activity
+            android:name=".DeliveryVehicleSelf.DeliveryVehicleActivity"
+            android:label="Delivery Vehicles"
+            android:parentActivityName=".OrdersHome.OrdersHome"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.localareadelivery.distributorapp.OrdersHome.OrdersHome" />
+        </activity>
+
+
+        <activity
+            android:name=".DeliveryVehicleSelf.AddVehicleSelfActivity"
+            android:label="Delivery Vehicles"
+            android:parentActivityName=".DeliveryVehicleSelf.DeliveryVehicleActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.localareadelivery.distributorapp.DeliveryVehicleSelf.DeliveryVehicleActivity" />
+        </activity>
+
+
+        <activity
+            android:name=".DeliveryVehicleSelf.EditAddressActivity"
+            android:label="Delivery Vehicles"
+            android:parentActivityName=".DeliveryVehicleSelf.DeliveryVehicleActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.localareadelivery.distributorapp.DeliveryVehicleSelf.DeliveryVehicleActivity" />
+        </activity>
 
 
     </application>

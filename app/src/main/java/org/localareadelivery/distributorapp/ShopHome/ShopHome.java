@@ -5,16 +5,21 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import org.localareadelivery.distributorapp.OrdersHome.OrdersHome;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.addItems.ItemCategories.ItemCategories;
+
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class ShopHome extends AppCompatActivity implements View.OnClickListener {
 
     public static final String SHOP_ID_INTENT_KEY = "shop_id_key";
 
-    TextView addRemoveItemsButton,addEditStockButton,ordersButton,statisticsButton;
+    RelativeLayout addRemoveItemsButton,addEditStockButton;
 
 
 
@@ -22,6 +27,9 @@ public class ShopHome extends AppCompatActivity implements View.OnClickListener 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shop_home);
+        ButterKnife.bind(this);
+
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -31,15 +39,23 @@ public class ShopHome extends AppCompatActivity implements View.OnClickListener 
         //Toast.makeText(this,String.valueOf(getIntent().getIntExtra(SHOP_ID_INTENT_KEY,0)),Toast.LENGTH_SHORT).show();
 
 
-        addRemoveItemsButton = (TextView) findViewById(R.id.addRemoveItemsButton);
+        addRemoveItemsButton = (RelativeLayout) findViewById(R.id.option_add_items);
         addRemoveItemsButton.setOnClickListener(this);
 
-        addEditStockButton = (TextView) findViewById(R.id.addStockButton);
+        addEditStockButton = (RelativeLayout) findViewById(R.id.option_add_stock);
         addEditStockButton.setOnClickListener(this);
 
 
 
     }
+
+
+    @OnClick(R.id.option_orders)
+    void ordersClick()
+    {
+        startActivity(new Intent(this, OrdersHome.class));
+    }
+
 
 
     @Override
@@ -48,7 +64,7 @@ public class ShopHome extends AppCompatActivity implements View.OnClickListener 
         switch(v.getId())
         {
 
-            case R.id.addRemoveItemsButton:
+            case R.id.option_add_items:
 
                 startActivity(new Intent(this, ItemCategories.class));
 
@@ -56,7 +72,7 @@ public class ShopHome extends AppCompatActivity implements View.OnClickListener 
 
                 break;
 
-            case R.id.addStockButton:
+            case R.id.option_add_stock:
 
                 startActivity(new Intent(this, org.localareadelivery.distributorapp.addStock.ItemCategories.class));
 
@@ -66,6 +82,16 @@ public class ShopHome extends AppCompatActivity implements View.OnClickListener 
                 break;
         }
 
+
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+
+        ButterKnife.unbind(this);
 
     }
 }

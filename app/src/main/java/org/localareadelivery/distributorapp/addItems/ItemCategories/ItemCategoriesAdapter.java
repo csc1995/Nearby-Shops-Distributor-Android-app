@@ -2,8 +2,6 @@ package org.localareadelivery.distributorapp.addItems.ItemCategories;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,11 +19,11 @@ import com.android.volley.toolbox.StringRequest;
 import com.squareup.picasso.Picasso;
 
 
-import org.localareadelivery.distributorapp.UtilityMethods.UtilityGeneral;
+import org.localareadelivery.distributorapp.Utility.UtilityGeneral;
 import org.localareadelivery.distributorapp.addItems.Items.Items;
 import org.localareadelivery.distributorapp.Model.ItemCategory;
 import org.localareadelivery.distributorapp.R;
-import org.localareadelivery.distributorapp.VolleySingleton;
+import org.localareadelivery.distributorapp.Utility.VolleySingleton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -122,9 +120,6 @@ public class ItemCategoriesAdapter extends RecyclerView.Adapter<ItemCategoriesAd
             categoryImage = (ImageView) itemView.findViewById(R.id.categoryImage);
             categoryName = (TextView) itemView.findViewById(R.id.categoryName);
             categoryDescription = (TextView) itemView.findViewById(R.id.categoryDescription);
-            editButton = (Button) itemView.findViewById(R.id.editButton);
-            detachButton = (Button) itemView.findViewById(R.id.detachButton);
-            deleteButton = (Button) itemView.findViewById(R.id.deleteButton);
 
             itemCategoryListItem = (LinearLayout) itemView.findViewById(R.id.itemCategoryListItem);
         }

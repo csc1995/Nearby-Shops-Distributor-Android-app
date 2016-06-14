@@ -18,13 +18,10 @@ public class ItemCategory implements Parcelable{
 	
 	//List<Item> items = new ArrayList<Item>();
 
-
 	int parentCategoryID;
 	boolean isLeafNode;
 
 	String imagePath;
-
-
 
 	// variables for utility functions
 

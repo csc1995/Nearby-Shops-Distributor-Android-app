@@ -1,22 +1,13 @@
 package org.localareadelivery.distributorapp.DAOs;
 
-import android.support.annotation.NonNull;
-
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
 import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.MyApplication;
-import org.localareadelivery.distributorapp.UtilityMethods.UtilityGeneral;
+import org.localareadelivery.distributorapp.Utility.UtilityGeneral;
 
-import java.lang.annotation.Annotation;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import javax.inject.Inject;
-
-import retrofit2.http.QueryMap;
 
 
 /**
@@ -141,11 +132,18 @@ public class ShopDAO {
 
     public void readShops(int distributorID,ReadShopCallback readShopCallback)
     {
+
+
+        shopRESTInterface.getShops(distributorID,readShopCallback);
+
+
+        /*
+
         if (UtilityGeneral.isNetworkAvailable(MyApplication.getAppContext()))
         {
             // make a rest HTTP call and deliver the results
 
-            shopRESTInterface.getShops(distributorID,readShopCallback);
+
         }
         else
         {
@@ -154,6 +152,8 @@ public class ShopDAO {
             readShopCallback.readShopsCallback(true,false,-1,null);
 
         }
+
+        */
 
     }
 

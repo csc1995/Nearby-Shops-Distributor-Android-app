@@ -93,9 +93,6 @@ public class ItemCategoriesAdapter extends RecyclerView.Adapter<ItemCategoriesAd
 
             categoryName = (TextView) itemView.findViewById(R.id.categoryName);
             categoryDescription = (TextView) itemView.findViewById(R.id.categoryDescription);
-            editButton = (Button) itemView.findViewById(R.id.editButton);
-            detachButton = (Button) itemView.findViewById(R.id.detachButton);
-            deleteButton = (Button) itemView.findViewById(R.id.deleteButton);
 
             itemCategoryListItem = (LinearLayout) itemView.findViewById(R.id.itemCategoryListItem);
         }

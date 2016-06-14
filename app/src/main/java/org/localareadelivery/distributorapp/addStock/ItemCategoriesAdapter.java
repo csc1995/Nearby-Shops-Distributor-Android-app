@@ -115,9 +115,9 @@ public class ItemCategoriesAdapter extends RecyclerView.Adapter<ItemCategoriesAd
         private TextView categoryName,categoryDescription;
         private LinearLayout itemCategoryListItem;
         @Bind(R.id.categoryImage) ImageView categoryImage;
-        @Bind(R.id.deleteIcon) ImageView deleteIcon;
-        @Bind(R.id.editIcon) ImageView editIcon;
-        @Bind(R.id.textviewEdit) TextView textViewEdit;
+        //@Bind(R.id.deleteIcon) ImageView deleteIcon;
+        //@Bind(R.id.editIcon) ImageView editIcon;
+        //@Bind(R.id.textviewEdit) TextView textViewEdit;
 
 
         public ViewHolder(View itemView) {
@@ -128,9 +128,6 @@ public class ItemCategoriesAdapter extends RecyclerView.Adapter<ItemCategoriesAd
             categoryImage = (ImageView) itemView.findViewById(R.id.categoryImage);
             categoryName = (TextView) itemView.findViewById(R.id.categoryName);
             categoryDescription = (TextView) itemView.findViewById(R.id.categoryDescription);
-            editButton = (Button) itemView.findViewById(R.id.editButton);
-            detachButton = (Button) itemView.findViewById(R.id.detachButton);
-            deleteButton = (Button) itemView.findViewById(R.id.deleteButton);
 
             itemCategoryListItem = (LinearLayout) itemView.findViewById(R.id.itemCategoryListItem);
 

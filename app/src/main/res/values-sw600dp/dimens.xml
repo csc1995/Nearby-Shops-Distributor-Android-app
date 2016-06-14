@@ -8,6 +8,9 @@
     <dimen name="appbar_label_size">15sp</dimen>
     <dimen name="image_view_height">350dp</dimen>
     <dimen name="menu_item_height">200dp</dimen>
-    <dimen name="menu_item_textsize">30sp</dimen>
+    <dimen name="menu_item_textsize">25sp</dimen>
+
+    <dimen name="menu_item_width">200dp</dimen>
+    <dimen name="menu_item_text_size">25sp</dimen>
 
 </resources>

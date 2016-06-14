@@ -21,5 +21,8 @@
 
 
     <string name="google_app_id">419317660589</string>
+    <string name="title_activity_orders_home">Orders Home</string>
+    <string name="title_activity_home_delivery">Orders : Home Delivery</string>
+    <string name="section_format">Hello World from section: %1$d</string>
 
 </resources>

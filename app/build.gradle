@@ -46,25 +46,24 @@ dependencies {
 
 
     // for implementing pull to refresh
+    // android support Libraries
     compile 'com.android.support:support-v4:23.4.0'
-
-
+    compile 'com.android.support:recyclerview-v7:23.4.0'
+    compile 'com.android.support:cardview-v7:23.4.0'
+    compile 'com.android.support:appcompat-v7:23.4.0'
+    compile 'com.android.support:design:23.4.0'
 
     compile 'com.heinrichreimersoftware:material-intro:1.2.1'
 
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
 
-    compile 'com.android.support:recyclerview-v7:23.4.0'
-
-    compile 'com.android.support:appcompat-v7:23.4.0'
-    compile 'com.android.support:design:23.4.0'
 
     compile 'com.mcxiaoke.volley:library:1.0.19'
 
     compile 'com.jakewharton:butterknife:7.0.1'
 
-    compile 'com.android.support:cardview-v7:23.4.0'
+
 
 
     // libraries for retrofit configuration
@@ -77,8 +76,6 @@ dependencies {
 
 
     // retrofit support
-
-    compile 'com.soundcloud.android:android-crop:1.0.1@aar'
 
     compile 'com.squareup.picasso:picasso:2.5.2'
 

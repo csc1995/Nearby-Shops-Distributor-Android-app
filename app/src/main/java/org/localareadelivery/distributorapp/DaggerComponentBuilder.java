@@ -1,18 +1,16 @@
 package org.localareadelivery.distributorapp;
 
 import org.localareadelivery.distributorapp.ApplicationState.ApplicationState;
-import org.localareadelivery.distributorapp.DaggerComponents.DAOComponent;
-
-import org.localareadelivery.distributorapp.DaggerComponents.DaggerDAOComponent;
-import org.localareadelivery.distributorapp.DaggerComponents.DaggerDataComponent;
 import org.localareadelivery.distributorapp.DaggerComponents.DaggerNetComponent;
-import org.localareadelivery.distributorapp.DaggerComponents.DaggerRESTComponent;
-import org.localareadelivery.distributorapp.DaggerComponents.DataComponent;
 import org.localareadelivery.distributorapp.DaggerComponents.NetComponent;
-import org.localareadelivery.distributorapp.DaggerComponents.RESTComponent;
+import org.localareadelivery.distributorapp.DaggerDepricated.DAOComponent;
+import org.localareadelivery.distributorapp.DaggerDepricated.DaggerDAOComponent;
+import org.localareadelivery.distributorapp.DaggerDepricated.DaggerDataComponent;
+import org.localareadelivery.distributorapp.DaggerDepricated.DaggerRESTComponent;
+import org.localareadelivery.distributorapp.DaggerDepricated.DataComponent;
+import org.localareadelivery.distributorapp.DaggerDepricated.RESTComponent;
 import org.localareadelivery.distributorapp.DaggerModules.AppModule;
 import org.localareadelivery.distributorapp.DaggerModules.NetModule;
-import org.localareadelivery.distributorapp.UtilityMethods.UtilityGeneral;
 
 /**
  * Created by sumeet on 14/5/16.

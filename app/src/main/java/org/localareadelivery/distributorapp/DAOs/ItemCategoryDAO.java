@@ -2,10 +2,10 @@ package org.localareadelivery.distributorapp.DAOs;
 
 import org.localareadelivery.distributorapp.Model.ItemCategory;
 import org.localareadelivery.distributorapp.MyApplication;
-import org.localareadelivery.distributorapp.StandardInterfaces.Depricated.DAO;
-import org.localareadelivery.distributorapp.StandardInterfaces.DataSubscriber;
-import org.localareadelivery.distributorapp.StandardInterfaces.Depricated.RESTInterface;
-import org.localareadelivery.distributorapp.UtilityMethods.UtilityGeneral;
+import org.localareadelivery.distributorapp.deprecatedCode.Depricated.DAO;
+import org.localareadelivery.distributorapp.StandardInterfacesGeneric.DataSubscriber;
+import org.localareadelivery.distributorapp.deprecatedCode.Depricated.RESTInterface;
+import org.localareadelivery.distributorapp.Utility.UtilityGeneral;
 
 import java.util.Map;
 

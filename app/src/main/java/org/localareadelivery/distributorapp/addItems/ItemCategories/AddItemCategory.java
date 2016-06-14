@@ -1,19 +1,13 @@
 package org.localareadelivery.distributorapp.addItems.ItemCategories;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -22,27 +16,21 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.yalantis.ucrop.UCrop;
-import com.yalantis.ucrop.UCropActivity;
 
 import org.localareadelivery.distributorapp.Model.Image;
 import org.localareadelivery.distributorapp.Model.ItemCategory;
 import org.localareadelivery.distributorapp.MyApplication;
 import org.localareadelivery.distributorapp.R;
-import org.localareadelivery.distributorapp.RetrofitRESTContract.ImageService;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ItemCategoryService;
-import org.localareadelivery.distributorapp.UtilityMethods.ImageCalls;
-import org.localareadelivery.distributorapp.UtilityMethods.ImageCropUtility;
-import org.localareadelivery.distributorapp.UtilityMethods.UtilityGeneral;
+import org.localareadelivery.distributorapp.Utility.ImageCalls;
+import org.localareadelivery.distributorapp.Utility.ImageCropUtility;
+import org.localareadelivery.distributorapp.Utility.UtilityGeneral;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

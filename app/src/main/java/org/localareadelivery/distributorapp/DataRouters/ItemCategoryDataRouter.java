@@ -1,16 +1,13 @@
 package org.localareadelivery.distributorapp.DataRouters;
 
-import android.provider.ContactsContract;
-
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
-import org.localareadelivery.distributorapp.DaggerModules.DataModule;
+import org.localareadelivery.distributorapp.DaggerDepricated.DataModule;
 import org.localareadelivery.distributorapp.Model.ItemCategory;
 import org.localareadelivery.distributorapp.MyApplication;
-import org.localareadelivery.distributorapp.StandardInterfaces.DataProvider;
 import org.localareadelivery.distributorapp.StandardInterfaces.DataProviderItemCategory;
-import org.localareadelivery.distributorapp.StandardInterfaces.DataRouter;
-import org.localareadelivery.distributorapp.StandardInterfaces.DataSubscriber;
-import org.localareadelivery.distributorapp.UtilityMethods.UtilityGeneral;
+import org.localareadelivery.distributorapp.StandardInterfacesGeneric.DataRouter;
+import org.localareadelivery.distributorapp.StandardInterfacesGeneric.DataSubscriber;
+import org.localareadelivery.distributorapp.Utility.UtilityGeneral;
 
 import javax.inject.Inject;
 import javax.inject.Named;

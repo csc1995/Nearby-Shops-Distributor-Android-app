@@ -3,10 +3,8 @@ package org.localareadelivery.distributorapp.ShopList;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -27,35 +25,26 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 import com.yalantis.ucrop.UCrop;
-import com.yalantis.ucrop.UCropActivity;
 
 import org.localareadelivery.distributorapp.DAOs.ShopDAO;
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
 import org.localareadelivery.distributorapp.Model.Image;
 import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.R;
-import org.localareadelivery.distributorapp.RetrofitRESTContract.ImageService;
-import org.localareadelivery.distributorapp.RetrofitRESTContract.ShopService;
-import org.localareadelivery.distributorapp.UtilityMethods.ImageCalls;
-import org.localareadelivery.distributorapp.UtilityMethods.ImageCropUtility;
-import org.localareadelivery.distributorapp.UtilityMethods.UtilityGeneral;
+import org.localareadelivery.distributorapp.Utility.ImageCalls;
+import org.localareadelivery.distributorapp.Utility.ImageCropUtility;
+import org.localareadelivery.distributorapp.Utility.UtilityGeneral;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 
 import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class AddShop extends AppCompatActivity implements LocationListener, Callback<Image>, ShopDAO.CreateShopCallback{
 

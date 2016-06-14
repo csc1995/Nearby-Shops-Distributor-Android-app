@@ -29,9 +29,9 @@ import org.localareadelivery.distributorapp.Model.ItemCategory;
 import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ItemCategoryService;
-import org.localareadelivery.distributorapp.StandardInterfaces.DataSubscriber;
-import org.localareadelivery.distributorapp.UtilityMethods.UtilityGeneral;
-import org.localareadelivery.distributorapp.VolleySingleton;
+import org.localareadelivery.distributorapp.StandardInterfacesGeneric.DataSubscriber;
+import org.localareadelivery.distributorapp.Utility.UtilityGeneral;
+import org.localareadelivery.distributorapp.Utility.VolleySingleton;
 
 import java.util.ArrayList;
 import java.util.List;

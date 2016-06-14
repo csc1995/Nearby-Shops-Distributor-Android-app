@@ -1,8 +1,8 @@
 package org.localareadelivery.distributorapp.StandardInterfaces;
 
 import org.localareadelivery.distributorapp.Model.ItemCategory;
-
-import java.util.Map;
+import org.localareadelivery.distributorapp.StandardInterfacesGeneric.DataProvider;
+import org.localareadelivery.distributorapp.StandardInterfacesGeneric.DataSubscriber;
 
 /**
  * Created by sumeet on 19/5/16.

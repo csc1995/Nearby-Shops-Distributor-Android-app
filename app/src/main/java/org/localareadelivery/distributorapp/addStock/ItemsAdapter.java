@@ -86,12 +86,18 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder>{
                     )
             );
 
+
+            /*
             holder.availableItems.setText(
                     String.valueOf(
                             shopItemDataset.get(itemDataset.get(position).getItemID()).getAvailableItemQuantity()
                     )
 
-            );
+                    );
+
+                    */
+
+
 
         }
 
@@ -116,14 +122,14 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder>{
 
         @Bind(R.id.itemListItem)LinearLayout itemsListItem;
 
-        @Bind(R.id.itemPriceReduce) ImageView itemPriceReduce;
-        @Bind(R.id.itemPriceIncrease) ImageView itemPriceIncrease;
-        @Bind(R.id.itemPriceInput) EditText itemPriceInput;
+        //@Bind(R.id.itemPriceReduce) ImageView itemPriceReduce;
+        //@Bind(R.id.itemPriceIncrease) ImageView itemPriceIncrease;
+        //@Bind(R.id.itemPriceInput) EditText itemPriceInput;
 
         @Bind(R.id.itemImage)
         ImageView itemImage;
 
-        @Bind(R.id.availableItems) TextView availableItems;
+        //@Bind(R.id.availableItems) TextView availableItems;
         @Bind(R.id.itemPrice) TextView itemPrice;
 
         public ViewHolder(View itemView) {
@@ -158,45 +164,6 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder>{
         }
 
 
-        @OnClick(R.id.itemPriceIncrease)
-        public void setItemPriceIncrease(View view)
-        {
-
-              //Toast.makeText(context,"Position: " + getLayoutPosition() ,Toast.LENGTH_SHORT).show();
-
-              int price = 0;
-
-
-            if(itemPriceInput.getText().toString() != "") {
-
-                price = Integer.parseInt(itemPriceInput.getText().toString()) + 1;
-
-                itemPriceInput.setText(String.valueOf(price));
-            }
-
-        }
-
-
-
-        @OnClick(R.id.itemPriceReduce)
-        public void setItemPriceReduce(View view)
-        {
-
-            //Toast.makeText(context,"Position: " + getLayoutPosition() ,Toast.LENGTH_SHORT).show();
-
-            int price = 0;
-
-            try {
-                price = Integer.parseInt(itemPriceInput.getText().toString()) - 1;
-
-                itemPriceInput.setText(String.valueOf(price));
-            }
-            catch (Exception ex)
-            {
-                ex.printStackTrace();
-            }
-
-        }
     }
 
 

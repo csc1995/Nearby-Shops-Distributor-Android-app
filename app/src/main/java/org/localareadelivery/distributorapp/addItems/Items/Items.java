@@ -12,7 +12,7 @@ import android.util.DisplayMetrics;
 import android.widget.TextView;
 
 
-import org.localareadelivery.distributorapp.UtilityMethods.DividerItemDecoration;
+import org.localareadelivery.distributorapp.Utility.DividerItemDecoration;
 import org.localareadelivery.distributorapp.Model.Item;
 import org.localareadelivery.distributorapp.Model.ItemCategory;
 import org.localareadelivery.distributorapp.R;

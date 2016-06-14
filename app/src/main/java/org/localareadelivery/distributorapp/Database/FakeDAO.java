@@ -3,9 +3,8 @@ package org.localareadelivery.distributorapp.Database;
 import android.util.Log;
 
 import org.localareadelivery.distributorapp.Model.ItemCategory;
-import org.localareadelivery.distributorapp.StandardInterfaces.DataProvider;
 import org.localareadelivery.distributorapp.StandardInterfaces.DataProviderItemCategory;
-import org.localareadelivery.distributorapp.StandardInterfaces.DataSubscriber;
+import org.localareadelivery.distributorapp.StandardInterfacesGeneric.DataSubscriber;
 
 import java.util.List;
 import java.util.Map;

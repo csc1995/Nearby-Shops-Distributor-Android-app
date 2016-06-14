@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import org.localareadelivery.distributorapp.ShopList.Home;
+import org.localareadelivery.distributorapp.Utility.UtilityGeneral;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -65,13 +66,13 @@ public class DistributorLogin extends AppCompatActivity implements View.OnClickL
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                saveServiceURL(s.toString());
+                UtilityGeneral.saveServiceURL(s.toString());
             }
 
             @Override
             public void afterTextChanged(Editable s) {
 
-                saveServiceURL(s.toString());
+                UtilityGeneral.saveServiceURL(s.toString());
 
             }
         });
@@ -91,7 +92,8 @@ public class DistributorLogin extends AppCompatActivity implements View.OnClickL
             public void afterTextChanged(Editable s) {
 
                 if(!s.toString().equals(new String(""))) {
-                    saveDistributorID(Integer.parseInt(s.toString()));
+
+                    UtilityGeneral.saveDistributorID(Integer.parseInt(s.toString()));
                 }
             }
         });
@@ -99,21 +101,6 @@ public class DistributorLogin extends AppCompatActivity implements View.OnClickL
     }
 
 
-
-    public void saveServiceURL(String service_url)
-    {
-
-        // get a handle to shared Preference
-        SharedPreferences sharedPref;
-
-        sharedPref = this.getSharedPreferences(getString(R.string.preference_file_name), this.MODE_PRIVATE);
-
-
-        // write to the shared preference
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString(getString(R.string.preference_service_url_key),service_url);
-        editor.commit();
-    }
 
 
     public String  getServiceURL()
@@ -128,19 +115,6 @@ public class DistributorLogin extends AppCompatActivity implements View.OnClickL
         return service_url;
     }
 
-
-    public void saveDistributorID(int distributorID)
-    {
-        // Get a handle to shared preference
-        SharedPreferences sharedPref;
-        sharedPref = this.getSharedPreferences(getString(R.string.preference_file_name), this.MODE_PRIVATE);
-
-        // write to the shared preference
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putInt(getString(R.string.preference_distributor_id_key),distributorID);
-        editor.commit();
-
-    }
 
     public int getDistributorID()
     {

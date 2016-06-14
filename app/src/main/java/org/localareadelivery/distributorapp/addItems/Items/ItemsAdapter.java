@@ -25,7 +25,7 @@ import org.localareadelivery.distributorapp.Model.ItemCategory;
 import org.localareadelivery.distributorapp.Model.ShopItem;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ShopItemService;
-import org.localareadelivery.distributorapp.VolleySingleton;
+import org.localareadelivery.distributorapp.Utility.VolleySingleton;
 
 import java.util.ArrayList;
 import java.util.HashMap;

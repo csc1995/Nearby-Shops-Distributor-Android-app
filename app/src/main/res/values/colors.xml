@@ -38,6 +38,9 @@
     <color name="cyan900">#006064</color>
 
 
+    <color name="phonographyBlue">#006373</color>
+
+
     <integer-array name="gplus_colors">
         <item>@color/gplus_color_1</item>
         <item>@color/gplus_color_2</item>

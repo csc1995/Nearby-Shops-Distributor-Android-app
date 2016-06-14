@@ -18,10 +18,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.localareadelivery.distributorapp.ApplicationState.ApplicationState;
-import org.localareadelivery.distributorapp.UtilityMethods.DividerItemDecoration;
+import org.localareadelivery.distributorapp.Utility.DividerItemDecoration;
 import org.localareadelivery.distributorapp.Model.ItemCategory;
 import org.localareadelivery.distributorapp.R;
-import org.localareadelivery.distributorapp.VolleySingleton;
+import org.localareadelivery.distributorapp.Utility.VolleySingleton;
 
 import java.util.ArrayList;
 

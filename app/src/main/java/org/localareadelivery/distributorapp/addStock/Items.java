@@ -27,7 +27,7 @@ import org.localareadelivery.distributorapp.Model.ShopItem;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ItemService;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ShopItemService;
-import org.localareadelivery.distributorapp.VolleySingleton;
+import org.localareadelivery.distributorapp.Utility.VolleySingleton;
 import org.localareadelivery.distributorapp.addStock.DiscardedCode.ItemCategories;
 
 
