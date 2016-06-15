@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import org.localareadelivery.distributorapp.ModelStats.DeliveryVehicleSelf;
+import org.localareadelivery.distributorapp.VehicleDriverDashboard.*;
 
 /**
  * Created by sumeet on 15/6/16.
@@ -18,6 +19,8 @@ public class PagerAdapter extends FragmentPagerAdapter {
 
 
     PendingAcceptFragment pendingAcceptFragment;
+    PendingHandoverFragment pendingHandOverFragment;
+    PaymentsPendingFragment paymentsPendingFragment;
 
 
     public PagerAdapter(FragmentManager fm, DeliveryVehicleSelf deliveryVehicleSelf) {
@@ -46,6 +49,22 @@ public class PagerAdapter extends FragmentPagerAdapter {
 
             return pendingAcceptFragment;
         }
+        else if(position == 1)
+        {
+            pendingHandOverFragment = PendingHandoverFragment.newInstance();
+
+            pendingHandOverFragment.setDeliveryVehicleSelf(deliveryVehicle);
+
+            return  pendingHandOverFragment;
+
+        }else if (position == 2)
+        {
+            paymentsPendingFragment = PaymentsPendingFragment.newInstance();
+
+            paymentsPendingFragment.setDeliveryVehicleSelf(deliveryVehicle);
+
+            return paymentsPendingFragment;
+        }
 
 
         return PlaceholderFragment.newInstance(vehicleID);
@@ -61,11 +80,14 @@ public class PagerAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position) {
             case 0:
-                return "SECTION 1";
+                return "Pending Accept";
             case 1:
-                return "SECTION 2";
+                return "Pending Handover";
             case 2:
-                return "SECTION 3";
+                return "Payments Pending";
+            case 3:
+                return "User approval Pending";
+
         }
         return null;
     }

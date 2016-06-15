@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.VehicleDriverDashboard;
+package org.localareadelivery.distributorapp.VehicleDashboard;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,7 +9,6 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.localareadelivery.distributorapp.ApplicationState.ApplicationState;
@@ -39,7 +38,7 @@ import retrofit2.Response;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class PaymentsPendingFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, Callback<List<Order>>,AdapterPaymentsPending.NotificationReciever {
+public class PendingHandoverFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, Callback<List<Order>>,AdapterPendingHandover.NotificationReciever {
 
 
     @Inject
@@ -47,7 +46,7 @@ public class PaymentsPendingFragment extends Fragment implements SwipeRefreshLay
 
     RecyclerView recyclerView;
 
-    AdapterPaymentsPending adapter;
+    AdapterPendingHandover adapter;
 
     public List<Order> dataset = new ArrayList<>();
 
@@ -61,10 +60,8 @@ public class PaymentsPendingFragment extends Fragment implements SwipeRefreshLay
 
     DeliveryVehicleSelf deliveryVehicleSelf;
 
-    TextView ordersTotal;
 
-
-    public PaymentsPendingFragment() {
+    public PendingHandoverFragment() {
 
         DaggerComponentBuilder.getInstance()
                 .getNetComponent()
@@ -76,8 +73,8 @@ public class PaymentsPendingFragment extends Fragment implements SwipeRefreshLay
      * Returns a new instance of this fragment for the given section
      * number.
      */
-    public static PaymentsPendingFragment newInstance() {
-        PaymentsPendingFragment fragment = new PaymentsPendingFragment();
+    public static PendingHandoverFragment newInstance() {
+        PendingHandoverFragment fragment = new PendingHandoverFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -86,21 +83,16 @@ public class PaymentsPendingFragment extends Fragment implements SwipeRefreshLay
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_home_delivery_payments_pending_driver_dashboard, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_home_delivery_pending_handover_vd, container, false);
 
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
-        swipeContainer = (SwipeRefreshLayout)rootView.findViewById(R.id.swipeContainer);
-
-        ordersTotal = (TextView) rootView.findViewById(R.id.ordersTotal);
-
-
 
         setupRecyclerView();
 
+        swipeContainer = (SwipeRefreshLayout)rootView.findViewById(R.id.swipeContainer);
+
         setupSwipeContainer();
-
-
 
 
 
@@ -128,10 +120,11 @@ public class PaymentsPendingFragment extends Fragment implements SwipeRefreshLay
 
     }
 
+
     void setupRecyclerView()
     {
 
-        adapter = new AdapterPaymentsPending(dataset,getActivity(),this);
+        adapter = new AdapterPendingHandover(dataset,getActivity(),this);
 
         recyclerView.setAdapter(adapter);
 
@@ -192,8 +185,8 @@ public class PaymentsPendingFragment extends Fragment implements SwipeRefreshLay
         Shop currentShop = ApplicationState.getInstance().getCurrentShop();
 
             Call<List<Order>> call = orderService.getOrders(0, currentShop.getShopID(),false,
-                                            OrderStatusHomeDelivery.HANDED_TO_END_USER,
-                                            0,deliveryVehicleSelf.getID(),false,null,true,true);
+                                            OrderStatusHomeDelivery.HANDOVER_ACCEPTED,
+                                            0,deliveryVehicleSelf.getID(),null,null,true,true);
 
 
             call.enqueue(this);
@@ -228,7 +221,6 @@ public class PaymentsPendingFragment extends Fragment implements SwipeRefreshLay
             dataset.clear();
             dataset.addAll(response.body());
             adapter.notifyDataSetChanged();
-            updateTotal();
 
             if(notificationReceiver !=null)
             {
@@ -239,7 +231,6 @@ public class PaymentsPendingFragment extends Fragment implements SwipeRefreshLay
         {
             dataset.clear();
             adapter.notifyDataSetChanged();
-            updateTotal();
 
 
             if(notificationReceiver !=null)
@@ -252,32 +243,6 @@ public class PaymentsPendingFragment extends Fragment implements SwipeRefreshLay
         swipeContainer.setRefreshing(false);
 
     }
-
-
-    void updateTotal()
-    {
-
-        int total = 0;
-
-        if(dataset!=null)
-        {
-            for(Order order : dataset)
-            {
-                total = total + (order.getOrderStats().getItemTotal()+ order.getDeliveryCharges());
-            }
-
-
-            ordersTotal.setText("All Orders Total : "  + total + "\nPay " + total + " to the Shop Owner.");
-
-        }else
-        {
-            ordersTotal.setVisibility(View.GONE);
-        }
-
-    }
-
-
-
 
     @Override
     public void onFailure(Call<List<Order>> call, Throwable t) {
@@ -290,7 +255,8 @@ public class PaymentsPendingFragment extends Fragment implements SwipeRefreshLay
     public void notifyCancelHandover(Order order) {
 
 
-        order.setStatusHomeDelivery(OrderStatusHomeDelivery.HANDED_TO_END_USER);
+        order.setStatusHomeDelivery(OrderStatusHomeDelivery.ORDER_PACKED);
+        order.setDeliveryVehicleSelfID(0);
 
         Call<ResponseBody> call = orderService.putOrder(order.getOrderID(),order);
 
@@ -300,7 +266,7 @@ public class PaymentsPendingFragment extends Fragment implements SwipeRefreshLay
 
                 if(response.code()==200)
                 {
-                    showToastMessage("Successful !");
+                    showToastMessage("Handover cancelled !");
 
                     makeNetworkCall();
                 }

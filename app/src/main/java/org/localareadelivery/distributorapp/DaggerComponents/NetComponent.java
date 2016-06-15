@@ -58,4 +58,8 @@ public interface NetComponent {
     void Inject(PendingHandoverFragment pendingHandoverFragment);
 
     void Inject(PaymentsPendingFragment paymentsPendingFragment);
+
+    void Inject(org.localareadelivery.distributorapp.VehicleDashboard.PendingHandoverFragment pendingHandoverFragment);
+
+    void Inject(org.localareadelivery.distributorapp.VehicleDashboard.PaymentsPendingFragment paymentsPendingFragment);
 }

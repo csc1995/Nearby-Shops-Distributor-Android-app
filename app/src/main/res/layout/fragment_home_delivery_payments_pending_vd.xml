@@ -16,25 +16,37 @@
     -->
 
 
-
     <TextView
-        android:textSize="20dp"
+        android:visibility="gone"
+        android:textSize="15dp"
         android:padding="10dp"
         android:textColor="@color/white"
         android:background="@color/blueGrey800"
         android:layout_marginRight="10dp"
         android:layout_alignParentTop="true"
-        android:text="All Orders Total : 1097\nPay 1097 to the Shop Owner."
+        android:text="All Orders Total : 1097\nCollect 1097 from Delivery Guy."
         android:id="@+id/ordersTotal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-
+    <TextView
+        android:visibility="gone"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/ordersTotal"
+        android:textSize="15dp"
+        android:padding="10dp"
+        android:textColor="@color/white"
+        android:background="@color/orangeDark"
+        android:layout_marginRight="10dp"
+        android:text="Received 1097 from Delivery Guy."
+        android:id="@+id/receivedTotal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:layout_marginTop="5dp"
-        android:layout_below="@id/ordersTotal"
+        android:layout_below="@id/receivedTotal"
         android:id="@+id/swipeContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -46,6 +58,5 @@
             android:layout_height="match_parent"/>
 
     </android.support.v4.widget.SwipeRefreshLayout>
-
 
 </RelativeLayout>
