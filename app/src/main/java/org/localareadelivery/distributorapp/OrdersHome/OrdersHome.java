@@ -23,7 +23,6 @@ public class OrdersHome extends AppCompatActivity {
     RelativeLayout orderDeliveryVehicles;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +47,7 @@ public class OrdersHome extends AppCompatActivity {
     void deliveryVehiclesClick(View view)
     {
         Intent intent = new Intent(this, DeliveryVehicleActivity.class);
+        intent.putExtra(DeliveryVehicleActivity.INTENT_REQUEST_CODE_KEY,DeliveryVehicleActivity.INTENT_CODE_DASHBOARD);
         startActivity(intent);
     }
 

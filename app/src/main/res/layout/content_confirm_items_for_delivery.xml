@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:layout_marginTop="?attr/actionBarSize"
+    tools:context="org.localareadelivery.distributorapp.OrdersHomeDelivery.ConfirmItemsForDelivery"
+    tools:showIn="@layout/activity_confirm_items_for_delivery">
+
+    <TextView
+        android:id="@+id/selectDeliveryVehicle"
+        android:gravity="center"
+        android:padding="10dp"
+        android:background="@color/cyan900"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:text="Select Delivery Vehicle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+    <RelativeLayout
+        android:visibility="gone"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/selectDeliveryVehicle"
+        android:id="@+id/selectedVehicle"
+        android:layout_marginBottom="10dp"
+        android:background="#22000000"
+        android:padding="10dp"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content">
+
+
+        <TextView
+            android:id="@+id/highliter"
+            android:padding="5dp"
+            android:textColor="@color/white"
+            android:background="@color/gplus_color_1"
+            android:text="Selected Vehicle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_below="@id/highliter"
+            android:layout_marginTop="10dp"
+            android:id="@+id/vehicleID"
+            android:padding="5dp"
+            android:textSize="25dp"
+            android:text="Vehicle ID : "
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:id="@+id/border"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_below="@id/vehicleID"
+            android:background="#88000000"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
+
+
+
+
+        <TextView
+            android:layout_below="@id/border"
+            android:id="@+id/vehicleName"
+            android:padding="5dp"
+            android:textSize="20dp"
+            android:text="Vehicle Name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+
+
+
+    <TextView
+        android:id= "@+id/handoverToDeliveryVehicle"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:padding="10dp"
+        android:background="@color/cyan900"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:text="Handover to Delivery Vehicle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+</RelativeLayout>

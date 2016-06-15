@@ -34,7 +34,6 @@ public class DataModule {
     }
 
     @Provides
-    @Singleton
     DataSubscriber<ItemCategory> providesDBDataSubscriber()
     {
         return FakeDAO.getInstance();
@@ -42,7 +41,6 @@ public class DataModule {
 
 
     @Provides
-    @Singleton
     @Named(DataModule.DB_DATA_PROVIDER)
     DataProviderItemCategory providesDBDataProvider()
     {

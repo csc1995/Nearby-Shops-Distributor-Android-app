@@ -3,6 +3,7 @@ package org.localareadelivery.distributorapp.OrdersHomeDelivery;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 
 /**
  * Created by sumeet on 13/6/16.
@@ -12,13 +13,14 @@ import android.support.v4.app.FragmentPagerAdapter;
  * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
  * one of the sections/tabs/pages.
  */
-public class PagerAdapter extends FragmentPagerAdapter {
+public class PagerAdapter extends FragmentStatePagerAdapter implements PlacedOrdersFragment.NotificationReceiver,ConfirmedOrdersFragment.NotificationReceiver ,PackedOrdersFragment.NotificationReceiver,PendingAcceptFragment.NotificationReceiver{
 
 
 
     PlacedOrdersFragment placedOrdersFragment;
     ConfirmedOrdersFragment confirmedOrdersFragment;
     PackedOrdersFragment packedOrdersFragment;
+    PendingAcceptFragment pendingAcceptFragment;
 
 
     public PagerAdapter(FragmentManager fm) {
@@ -34,6 +36,8 @@ public class PagerAdapter extends FragmentPagerAdapter {
 
             placedOrdersFragment = PlacedOrdersFragment.newInstance();
 
+            placedOrdersFragment.setNotificationReceiver(this);
+
             return placedOrdersFragment;
 
         }
@@ -43,13 +47,26 @@ public class PagerAdapter extends FragmentPagerAdapter {
         {
             confirmedOrdersFragment = ConfirmedOrdersFragment.newInstance();
 
+            confirmedOrdersFragment.setNotifyPagerAdapter(this);
+
             return confirmedOrdersFragment;
         }
         else if(position == 2)
         {
             packedOrdersFragment = PackedOrdersFragment.newInstance();
 
+            packedOrdersFragment.setNotificationReceiver(this);
+
             return  packedOrdersFragment;
+
+        }
+        else if(position == 3)
+        {
+            pendingAcceptFragment = PendingAcceptFragment.newInstance();
+
+            pendingAcceptFragment.setNotificationReceiver(this);
+
+            return pendingAcceptFragment;
         }
 
 
@@ -59,19 +76,154 @@ public class PagerAdapter extends FragmentPagerAdapter {
     @Override
     public int getCount() {
         // Show 3 total pages.
-        return 3;
+        return 4;
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
         switch (position) {
             case 0:
-                return "Placed (5)";
+
+                int placedOrdersTotal = 0 ;
+
+                if(placedOrdersFragment!=null)
+                {
+                    if(placedOrdersFragment.dataset!=null)
+                    {
+                        placedOrdersTotal = placedOrdersFragment.dataset.size();
+                    }
+                }
+
+                return "Placed (" + String.valueOf(placedOrdersTotal) + ")";
+
             case 1:
-                return "Confirmed (2)";
+
+                int confirmedOrdersTotal = 0 ;
+
+                if(confirmedOrdersFragment!=null)
+                {
+                    if(confirmedOrdersFragment.dataset!=null)
+                    {
+                        confirmedOrdersTotal = confirmedOrdersFragment.dataset.size();
+                    }
+                }
+
+                return "Confirmed (" +  String.valueOf(confirmedOrdersTotal) + ")";
+
+
             case 2:
-                return "Packed (4)";
+
+
+                int packedOrdersTotal = 0 ;
+
+                if(packedOrdersFragment!=null)
+                {
+                    if(packedOrdersFragment.dataset!=null)
+                    {
+                        packedOrdersTotal = packedOrdersFragment.dataset.size();
+                    }
+                }
+
+
+                return "Packed (" + packedOrdersTotal + ")";
+
+
+
+            case 3:
+
+
+                int pendingAcceptOrdersTotal = 0 ;
+
+                if(pendingAcceptFragment!=null)
+                {
+                    if(pendingAcceptFragment.dataset!=null)
+                    {
+                        pendingAcceptOrdersTotal = pendingAcceptFragment.dataset.size();
+
+                    }
+                }
+
+
+                return "Pending Accept (" + pendingAcceptOrdersTotal + ")";
+
         }
         return null;
     }
+
+
+
+
+    @Override
+    public void placedOrdersChanged() {
+
+        if(confirmedOrdersFragment!=null)
+        {
+            confirmedOrdersFragment.onResume();
+        }
+
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public void notifyConfirmedOrdersChanged() {
+
+        if(packedOrdersFragment!=null)
+        {
+            packedOrdersFragment.onResume();
+        }
+
+        notifyDataSetChanged();
+    }
+
+
+
+    boolean flag = true;
+
+
+    @Override
+    public void notifyPackedOrdersChanged() {
+
+
+        if (flag) {
+
+            flag = false;
+
+            if (pendingAcceptFragment != null) {
+                pendingAcceptFragment.onResume();
+            }
+
+        } else
+        {
+            flag = true;
+        }
+
+
+        notifyDataSetChanged();
+
+    }
+
+    @Override
+    public void notifyPendingAcceptChanged() {
+
+        notifyDataSetChanged();
+
+        if(flag){
+
+            flag = false;
+
+
+            if(packedOrdersFragment!=null)
+            {
+                packedOrdersFragment.onResume();
+            }
+
+
+        }else
+        {
+            flag = true;
+        }
+
+
+    }
 }
+

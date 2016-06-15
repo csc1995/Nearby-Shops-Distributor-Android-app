@@ -24,5 +24,7 @@
     <string name="title_activity_orders_home">Orders Home</string>
     <string name="title_activity_home_delivery">Orders : Home Delivery</string>
     <string name="section_format">Hello World from section: %1$d</string>
+    <string name="title_activity_confirm_items_for_delivery">ConfirmItemsForDelivery</string>
+    <string name="title_activity_vehicle_dashboard">VehicleDashboard</string>
 
 </resources>

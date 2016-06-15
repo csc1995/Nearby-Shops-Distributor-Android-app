@@ -1,11 +1,10 @@
-package org.localareadelivery.distributorapp.OrdersHomeDelivery;
+package org.localareadelivery.distributorapp.VehicleDashboard;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.localareadelivery.distributorapp.Model.Order;
@@ -13,9 +12,7 @@ import org.localareadelivery.distributorapp.ModelStats.DeliveryAddress;
 import org.localareadelivery.distributorapp.ModelStats.OrderStats;
 import org.localareadelivery.distributorapp.R;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -24,38 +21,34 @@ import butterknife.OnClick;
 /**
  * Created by sumeet on 13/6/16.
  */
-public class AdapterPackedOrders extends RecyclerView.Adapter<AdapterPackedOrders.ViewHolder>{
+public class AdapterPendingAccept extends RecyclerView.Adapter<AdapterPendingAccept.ViewHolder>{
 
 
     List<Order> dataset = null;
-
-    Map<Integer,Order> selectedOrders = new HashMap<>();
 
     Context context;
 
     NotificationReciever notifications;
 
 
-    public AdapterPackedOrders(List<Order> dataset, Context context, NotificationReciever notifications) {
+    public AdapterPendingAccept(List<Order> dataset, Context context, NotificationReciever notifications) {
         this.dataset = dataset;
         this.context = context;
         this.notifications = notifications;
 
-
-        selectedOrders.clear();
     }
 
     @Override
-    public AdapterPackedOrders.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public AdapterPendingAccept.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_item_order_packed,parent,false);
+                .inflate(R.layout.list_item_order_pending_accept_vd,parent,false);
 
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(AdapterPackedOrders.ViewHolder holder, int position) {
+    public void onBindViewHolder(AdapterPendingAccept.ViewHolder holder, int position) {
 
         if(dataset!=null)
         {
@@ -84,14 +77,6 @@ public class AdapterPackedOrders extends RecyclerView.Adapter<AdapterPackedOrder
             //holder.currentStatus.setText();
 
 
-            if(selectedOrders.containsKey(order.getOrderID()))
-            {
-                holder.listItemOrdersPacked.setBackgroundResource(R.color.itemAvailable);
-            }else
-            {
-                holder.listItemOrdersPacked.setBackgroundResource(R.color.listItemGrey);
-            }
-
         }
     }
 
@@ -103,9 +88,6 @@ public class AdapterPackedOrders extends RecyclerView.Adapter<AdapterPackedOrder
 
     class ViewHolder extends RecyclerView.ViewHolder{
 
-
-        @Bind(R.id.list_item_order_packed)
-        RelativeLayout listItemOrdersPacked;
 
         @Bind(R.id.order_id)
         TextView orderID;
@@ -132,6 +114,9 @@ public class AdapterPackedOrders extends RecyclerView.Adapter<AdapterPackedOrder
         @Bind(R.id.currentStatus)
         TextView currentStatus;
 
+        @Bind(R.id.cancelHandoverButton)
+        TextView cancelHandoverButton;
+
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -142,48 +127,22 @@ public class AdapterPackedOrders extends RecyclerView.Adapter<AdapterPackedOrder
         }
 
 
-        @OnClick(R.id.list_item_order_packed)
-        void onListItemClick(View view) {
-
-            Order selected = dataset.get(getLayoutPosition());
-
-            if (selectedOrders.containsKey(selected.getOrderID()))
-            {
-                selectedOrders.remove(selected.getOrderID());
-            }
-            else
-            {
-                selectedOrders.put(selected.getOrderID(),selected);
-            }
-
-            //notifyDataSetChanged();
-
-            notifyItemChanged(getLayoutPosition());
-        }
-
-
+        @OnClick(R.id.cancelHandoverButton)
         void onClickConfirmButton(View view)
         {
-            notifications.notifyConfirmOrder(dataset.get(getLayoutPosition()));
+            notifications.notifyCancelHandover(dataset.get(getLayoutPosition()));
         }
 
     }
 
 
-    public Map<Integer, Order> getSelectedOrders() {
-        return selectedOrders;
-    }
-
-    public void setSelectedOrders(Map<Integer, Order> selectedOrders) {
-        this.selectedOrders = selectedOrders;
-    }
 
 
 
 
     public interface NotificationReciever{
 
-        void notifyConfirmOrder(Order order);
+        void notifyCancelHandover(Order order);
 
     }
 

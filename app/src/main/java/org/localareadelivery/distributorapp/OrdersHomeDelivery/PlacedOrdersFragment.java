@@ -55,7 +55,7 @@ public class PlacedOrdersFragment extends Fragment implements AdapterPlacedOrder
 
 
 
-    NotifyPagerAdapter notifyPagerAdapter;
+    NotificationReceiver notificationReceiver;
 
 
     public PlacedOrdersFragment() {
@@ -202,7 +202,7 @@ public class PlacedOrdersFragment extends Fragment implements AdapterPlacedOrder
             Shop currentShop = ApplicationState.getInstance().getCurrentShop();
 
             Call<List<Order>> call = orderService.getOrders(0, currentShop.getShopID()  ,false,
-                    OrderStatusHomeDelivery.ORDER_PLACED,0,true,true);
+                    OrderStatusHomeDelivery.ORDER_PLACED,0,0,true,true);
 
             call.enqueue(this);
 
@@ -222,13 +222,6 @@ public class PlacedOrdersFragment extends Fragment implements AdapterPlacedOrder
 
 
 
-    public NotifyPagerAdapter getNotifyPagerAdapter() {
-        return notifyPagerAdapter;
-    }
-
-    public void setNotifyPagerAdapter(NotifyPagerAdapter notifyPagerAdapter) {
-        this.notifyPagerAdapter = notifyPagerAdapter;
-    }
 
 
 
@@ -241,15 +234,21 @@ public class PlacedOrdersFragment extends Fragment implements AdapterPlacedOrder
             dataset.addAll(response.body());
             adapter.notifyDataSetChanged();
 
-            if(notifyPagerAdapter!=null)
+            if(notificationReceiver!=null)
             {
-                notifyPagerAdapter.notifyNewCartsChanged();
+                notificationReceiver.placedOrdersChanged();
             }
 
         }else
         {
             dataset.clear();
             adapter.notifyDataSetChanged();
+
+
+            if(notificationReceiver!=null)
+            {
+                notificationReceiver.placedOrdersChanged();
+            }
         }
 
         swipeContainer.setRefreshing(false);
@@ -264,10 +263,20 @@ public class PlacedOrdersFragment extends Fragment implements AdapterPlacedOrder
     }
 
 
-    public interface NotifyPagerAdapter
+    interface NotificationReceiver
     {
-        void notifyNewCartsChanged();
+        void placedOrdersChanged();
     }
 
 
+
+
+
+    public NotificationReceiver getNotificationReceiver() {
+        return notificationReceiver;
+    }
+
+    public void setNotificationReceiver(NotificationReceiver notificationReceiver) {
+        this.notificationReceiver = notificationReceiver;
+    }
 }

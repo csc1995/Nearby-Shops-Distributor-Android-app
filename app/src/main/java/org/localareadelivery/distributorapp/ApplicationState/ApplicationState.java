@@ -2,8 +2,11 @@ package org.localareadelivery.distributorapp.ApplicationState;
 
 import android.util.Log;
 
+import org.localareadelivery.distributorapp.Model.Order;
 import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.MyApplication;
+
+import java.util.ArrayList;
 
 /**
  * Created by sumeet on 15/3/16.
@@ -15,6 +18,8 @@ public class ApplicationState {
     Shop currentShop = null;
 
     MyApplication myApplication;
+
+    ArrayList<Order> selectedOrdersForDelivery = new ArrayList<>();
 
 
     private ApplicationState() {
@@ -35,8 +40,13 @@ public class ApplicationState {
     }
 
 
+    public ArrayList<Order> getSelectedOrdersForDelivery() {
+        return selectedOrdersForDelivery;
+    }
 
-
+    public void setSelectedOrdersForDelivery(ArrayList<Order> selectedOrdersForDelivery) {
+        this.selectedOrdersForDelivery = selectedOrdersForDelivery;
+    }
 
     public Shop getCurrentShop() {
 

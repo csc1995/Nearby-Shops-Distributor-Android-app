@@ -2,6 +2,7 @@ package org.localareadelivery.distributorapp.DeliveryVehicleSelf;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -18,6 +19,7 @@ import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.ModelStats.DeliveryVehicleSelf;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.VehicleSelfService;
+import org.localareadelivery.distributorapp.VehicleDashboard.VehicleDashboard;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,13 +46,19 @@ public class DeliveryVehicleActivity extends AppCompatActivity implements SwipeR
 
     List<DeliveryVehicleSelf> dataset = new ArrayList<>();
 
+
     Shop shop = null;
 
-    public final static String SHOP_INTENT_KEY = "shop_cart_item";
-    public final static String CART_STATS_INTENT_KEY = "cart_stats";
+
+    public final static String INTENT_REQUEST_CODE_KEY = "request_code_key";
+
+    public final static int INTENT_CODE_SELECT_VEHICLE = 1;
+    public final static int INTENT_CODE_DASHBOARD = 2;
 
 
     TextView addNewAddress;
+
+    int requestCode;
 
 
     public DeliveryVehicleActivity() {
@@ -80,6 +88,7 @@ public class DeliveryVehicleActivity extends AppCompatActivity implements SwipeR
 
         addNewAddress.setOnClickListener(this);
 
+        requestCode = getIntent().getIntExtra(INTENT_REQUEST_CODE_KEY,0);
 
         setupSwipeContainer();
         setupRecyclerView();
@@ -233,10 +242,10 @@ public class DeliveryVehicleActivity extends AppCompatActivity implements SwipeR
     @Override
     public void notifyEdit(DeliveryVehicleSelf deliveryVehicleSelf) {
 
-
-        Intent intent = new Intent(this,EditAddressActivity.class);
+        Intent intent = new Intent(this, EditAddressActivity.class);
         intent.putExtra(EditAddressActivity.DELIVERY_VEHICLE_SELF_INTENT_KEY,deliveryVehicleSelf);
         startActivity(intent);
+
     }
 
     @Override
@@ -249,11 +258,28 @@ public class DeliveryVehicleActivity extends AppCompatActivity implements SwipeR
     @Override
     public void notifyListItemClick(DeliveryVehicleSelf deliveryVehicleSelf) {
 
+        requestCode = getIntent().getIntExtra(INTENT_REQUEST_CODE_KEY,0);
 
-        Intent output = new Intent();
-        output.putExtra("output",deliveryVehicleSelf);
-        setResult(2,output);
-        finish();
+        if(requestCode == INTENT_CODE_SELECT_VEHICLE)
+        {
+
+            Intent output = new Intent();
+            output.putExtra("output",deliveryVehicleSelf);
+            setResult(2,output);
+            finish();
+        }
+        else if(requestCode == INTENT_CODE_DASHBOARD)
+        {
+
+            Intent vehicleDashboardIntent = new Intent(this,VehicleDashboard.class);
+            vehicleDashboardIntent.putExtra(VehicleDashboard.DELIVERY_VEHICLE_INTENT_KEY,deliveryVehicleSelf);
+            startActivity(vehicleDashboardIntent);
+
+        }
+
+
+
+
     }
 
     @Override

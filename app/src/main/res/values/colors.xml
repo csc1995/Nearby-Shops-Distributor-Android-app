@@ -27,6 +27,7 @@
     <color name="itemAvailable">#00897B</color>
 
 
+    <color name="listItemGrey">#22000000</color>
 
     <color name="teal">#00796B</color>
     <color name="darkGreen">#2E7D32</color>

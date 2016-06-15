@@ -7,10 +7,12 @@ import org.localareadelivery.distributorapp.DataProvidersRetrofit.ShopRESTInterf
 import org.localareadelivery.distributorapp.DeliveryVehicleSelf.AddVehicleSelfActivity;
 import org.localareadelivery.distributorapp.DeliveryVehicleSelf.DeliveryVehicleActivity;
 import org.localareadelivery.distributorapp.DeliveryVehicleSelf.EditAddressActivity;
-import org.localareadelivery.distributorapp.OrdersHomeDelivery.AdapterPlacedOrders;
+import org.localareadelivery.distributorapp.OrdersHomeDelivery.ConfirmItemsForDelivery;
 import org.localareadelivery.distributorapp.OrdersHomeDelivery.ConfirmedOrdersFragment;
 import org.localareadelivery.distributorapp.OrdersHomeDelivery.PackedOrdersFragment;
+import org.localareadelivery.distributorapp.OrdersHomeDelivery.PendingAcceptFragment;
 import org.localareadelivery.distributorapp.OrdersHomeDelivery.PlacedOrdersFragment;
+import org.localareadelivery.distributorapp.VehicleDashboard.VehicleDashboard;
 
 import javax.inject.Singleton;
 
@@ -43,4 +45,9 @@ public interface NetComponent {
 
     void Inject(EditAddressActivity editAddressActivity);
 
+    void Inject(ConfirmItemsForDelivery confirmItemsForDelivery);
+
+    void Inject(PendingAcceptFragment pendingAcceptOrdersFragment);
+
+    void Inject(org.localareadelivery.distributorapp.VehicleDashboard.PendingAcceptFragment pendingAcceptFragment);
 }

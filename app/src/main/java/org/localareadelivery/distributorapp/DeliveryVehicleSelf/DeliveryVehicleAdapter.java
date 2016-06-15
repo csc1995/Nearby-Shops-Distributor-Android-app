@@ -109,7 +109,7 @@ public class DeliveryVehicleAdapter extends RecyclerView.Adapter<DeliveryVehicle
 
                     break;
 
-                case R.id.list_item_delivery_address:
+                case R.id.list_item_delivery_vehicle_self:
 
                     listItemClick();
 

@@ -55,7 +55,7 @@ public class ConfirmedOrdersFragment extends Fragment implements SwipeRefreshLay
 
 
 
-    NotifyPagerAdapter notifyPagerAdapter;
+    NotificationReceiver notifyPagerAdapter;
 
 
     public ConfirmedOrdersFragment() {
@@ -203,7 +203,7 @@ public class ConfirmedOrdersFragment extends Fragment implements SwipeRefreshLay
 
             Call<List<Order>> call = orderService.getOrders(0, currentShop.getShopID(),false,
                                             OrderStatusHomeDelivery.ORDER_CONFIRMED,
-                                            0,true,true);
+                                            0,0,true,true);
 
 
             call.enqueue(this);
@@ -222,17 +222,13 @@ public class ConfirmedOrdersFragment extends Fragment implements SwipeRefreshLay
     }
 
 
-
-
-    public NotifyPagerAdapter getNotifyPagerAdapter() {
+    public NotificationReceiver getNotifyPagerAdapter() {
         return notifyPagerAdapter;
     }
 
-    public void setNotifyPagerAdapter(NotifyPagerAdapter notifyPagerAdapter) {
+    public void setNotifyPagerAdapter(NotificationReceiver notifyPagerAdapter) {
         this.notifyPagerAdapter = notifyPagerAdapter;
     }
-
-
 
     @Override
     public void onResponse(Call<List<Order>> call, Response<List<Order>> response) {
@@ -245,13 +241,19 @@ public class ConfirmedOrdersFragment extends Fragment implements SwipeRefreshLay
 
             if(notifyPagerAdapter!=null)
             {
-                notifyPagerAdapter.notifyNewCartsChanged();
+                notifyPagerAdapter.notifyConfirmedOrdersChanged();
             }
 
         }else
         {
             dataset.clear();
             adapter.notifyDataSetChanged();
+
+
+            if(notifyPagerAdapter!=null)
+            {
+                notifyPagerAdapter.notifyConfirmedOrdersChanged();
+            }
         }
 
         swipeContainer.setRefreshing(false);
@@ -266,9 +268,9 @@ public class ConfirmedOrdersFragment extends Fragment implements SwipeRefreshLay
     }
 
 
-    public interface NotifyPagerAdapter
+    public interface NotificationReceiver
     {
-        void notifyNewCartsChanged();
+        void notifyConfirmedOrdersChanged();
     }
 
 

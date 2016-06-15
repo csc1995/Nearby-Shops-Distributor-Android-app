@@ -113,7 +113,6 @@ tools:showIn="@layout/activity_orders_home">
                     android:layout_height="match_parent" />
 
                 <TextView
-                    android:gravity="right"
                     android:padding="10dp"
                     android:id="@+id/text_cancel"
                     android:textSize="@dimen/menu_item_text_size"
@@ -174,7 +173,7 @@ tools:showIn="@layout/activity_orders_home">
                     android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
                     android:textColor="#ffffff"
-                    android:text="Home Delivery Vehicles"
+                    android:text="Home Delivery Vehicle Dashboard"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </RelativeLayout>
@@ -204,7 +203,7 @@ tools:showIn="@layout/activity_orders_home">
                     android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
                     android:textColor="#ffffff"
-                    android:text="Delivery Vehicle Dashboard"
+                    android:text="Vehicle Driver Dashboard"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </RelativeLayout>

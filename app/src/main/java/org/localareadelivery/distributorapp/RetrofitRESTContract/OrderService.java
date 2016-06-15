@@ -26,6 +26,7 @@ public interface OrderService {
                                 @Query("PickFromShop") Boolean pickFromShop,
                                 @Query("StatusHomeDelivery")int homeDeliveryStatus,
                                 @Query("StatusFromShopStatus")int pickFromShopStatus,
+                                @Query("VehicleSelfID")int vehicleSelfID,
                                 @Query("GetDeliveryAddress")boolean getDeliveryAddress,
                                 @Query("GetStats")boolean getStats);
 
@@ -34,5 +35,9 @@ public interface OrderService {
 
     @PUT("/api/Order/{OrderID}")
     Call<ResponseBody> putOrder(@Path("OrderID")int orderID,@Body Order order);
+
+
+    @PUT("/api/Order")
+    Call<ResponseBody> putOrderBulk(@Body List<Order> order);
 
 }

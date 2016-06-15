@@ -1,6 +1,5 @@
-package org.localareadelivery.distributorapp.OrdersHomeDelivery;
+package org.localareadelivery.distributorapp.VehicleDashboard;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -10,27 +9,22 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.localareadelivery.distributorapp.ApplicationState.ApplicationState;
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
-import org.localareadelivery.distributorapp.DeliveryVehicleSelf.DeliveryVehicleActivity;
 import org.localareadelivery.distributorapp.Model.Order;
 import org.localareadelivery.distributorapp.Model.Shop;
+import org.localareadelivery.distributorapp.ModelStats.DeliveryVehicleSelf;
 import org.localareadelivery.distributorapp.ModelStats.OrderStatusHomeDelivery;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -44,7 +38,7 @@ import retrofit2.Response;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class PackedOrdersFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, Callback<List<Order>>, AdapterPackedOrders.NotificationReciever{
+public class PendingAcceptFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, Callback<List<Order>>,AdapterPendingAccept.NotificationReciever {
 
 
     @Inject
@@ -52,7 +46,7 @@ public class PackedOrdersFragment extends Fragment implements SwipeRefreshLayout
 
     RecyclerView recyclerView;
 
-    AdapterPackedOrders adapter;
+    AdapterPendingAccept adapter;
 
     public List<Order> dataset = new ArrayList<>();
 
@@ -60,14 +54,14 @@ public class PackedOrdersFragment extends Fragment implements SwipeRefreshLayout
 
     SwipeRefreshLayout swipeContainer;
 
-    @Bind(R.id.confirmItems)
-    TextView confirmItems;
 
 
     NotificationReceiver notificationReceiver;
 
+    DeliveryVehicleSelf deliveryVehicleSelf;
 
-    public PackedOrdersFragment() {
+
+    public PendingAcceptFragment() {
 
         DaggerComponentBuilder.getInstance()
                 .getNetComponent()
@@ -79,8 +73,8 @@ public class PackedOrdersFragment extends Fragment implements SwipeRefreshLayout
      * Returns a new instance of this fragment for the given section
      * number.
      */
-    public static PackedOrdersFragment newInstance() {
-        PackedOrdersFragment fragment = new PackedOrdersFragment();
+    public static PendingAcceptFragment newInstance() {
+        PendingAcceptFragment fragment = new PendingAcceptFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -89,9 +83,7 @@ public class PackedOrdersFragment extends Fragment implements SwipeRefreshLayout
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_home_delivery_packed_orders, container, false);
-
-        ButterKnife.bind(this,rootView);
+        View rootView = inflater.inflate(R.layout.fragment_home_delivery_pending_accept_vd, container, false);
 
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
@@ -101,6 +93,14 @@ public class PackedOrdersFragment extends Fragment implements SwipeRefreshLayout
         swipeContainer = (SwipeRefreshLayout)rootView.findViewById(R.id.swipeContainer);
 
         setupSwipeContainer();
+
+
+
+        if(savedInstanceState!=null)
+        {
+            // restore instance state
+            deliveryVehicleSelf = savedInstanceState.getParcelable("savedVehicle");
+        }
 
 
         return rootView;
@@ -124,7 +124,7 @@ public class PackedOrdersFragment extends Fragment implements SwipeRefreshLayout
     void setupRecyclerView()
     {
 
-        adapter = new AdapterPackedOrders(dataset,getActivity(),this);
+        adapter = new AdapterPendingAccept(dataset,getActivity(),this);
 
         recyclerView.setAdapter(adapter);
 
@@ -138,32 +138,6 @@ public class PackedOrdersFragment extends Fragment implements SwipeRefreshLayout
 
     }
 
-
-    @OnClick(R.id.confirmItems)
-    void onClickConfirmItems()
-    {
-
-        Intent intent = new Intent(getActivity(), ConfirmItemsForDelivery.class);
-
-
-        ArrayList<Order> selected = new ArrayList<>();
-
-        for (Map.Entry<Integer, Order> entry : adapter.getSelectedOrders().entrySet())
-        {
-            System.out.println(entry.getKey() + "/" + entry.getValue());
-
-            selected.add(entry.getValue());
-
-        }
-
-        //intent.putExtra("selected",selected);
-
-        ApplicationState.getInstance().getSelectedOrdersForDelivery().clear();
-        ApplicationState.getInstance().getSelectedOrdersForDelivery().addAll(selected);
-
-
-        getActivity().startActivity(intent);
-    }
 
 
 
@@ -203,11 +177,16 @@ public class PackedOrdersFragment extends Fragment implements SwipeRefreshLayout
     void makeNetworkCall()
     {
 
-            Shop currentShop = ApplicationState.getInstance().getCurrentShop();
+        if(deliveryVehicleSelf==null)
+        {
+            return;
+        }
+
+        Shop currentShop = ApplicationState.getInstance().getCurrentShop();
 
             Call<List<Order>> call = orderService.getOrders(0, currentShop.getShopID(),false,
-                                            OrderStatusHomeDelivery.ORDER_PACKED,
-                                            0,0,true,true);
+                                            OrderStatusHomeDelivery.HANDED_TO_DELIVERY_VEHICLE,
+                                            0,deliveryVehicleSelf.getID(),true,true);
 
 
             call.enqueue(this);
@@ -243,9 +222,9 @@ public class PackedOrdersFragment extends Fragment implements SwipeRefreshLayout
             dataset.addAll(response.body());
             adapter.notifyDataSetChanged();
 
-            if(notificationReceiver!=null)
+            if(notificationReceiver !=null)
             {
-                notificationReceiver.notifyPackedOrdersChanged();
+                notificationReceiver.notifyPendingAcceptChanged();
             }
 
         }else
@@ -254,10 +233,11 @@ public class PackedOrdersFragment extends Fragment implements SwipeRefreshLayout
             adapter.notifyDataSetChanged();
 
 
-            if(notificationReceiver!=null)
+            if(notificationReceiver !=null)
             {
-                notificationReceiver.notifyPackedOrdersChanged();
+                notificationReceiver.notifyPendingAcceptChanged();
             }
+
         }
 
         swipeContainer.setRefreshing(false);
@@ -272,21 +252,56 @@ public class PackedOrdersFragment extends Fragment implements SwipeRefreshLayout
     }
 
     @Override
-    public void notifyConfirmOrder(Order order) {
+    public void notifyCancelHandover(Order order) {
 
+
+        order.setStatusHomeDelivery(OrderStatusHomeDelivery.ORDER_PACKED);
+        order.setDeliveryVehicleSelfID(0);
+
+        Call<ResponseBody> call = orderService.putOrder(order.getOrderID(),order);
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                if(response.code()==200)
+                {
+                    showToastMessage("Handover cancelled !");
+
+                    makeNetworkCall();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                showToastMessage("Network Request Failed. Try again !");
+
+            }
+        });
     }
 
 
+    public DeliveryVehicleSelf getDeliveryVehicleSelf() {
+        return deliveryVehicleSelf;
+    }
+
+    public void setDeliveryVehicleSelf(DeliveryVehicleSelf deliveryVehicleSelf) {
+        this.deliveryVehicleSelf = deliveryVehicleSelf;
+    }
+
     public interface NotificationReceiver
     {
-        void notifyPackedOrdersChanged();
+        void notifyPendingAcceptChanged();
     }
 
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
 
-        ButterKnife.unbind(this);
+        outState.putParcelable("savedVehicle",deliveryVehicleSelf);
+
     }
 }
