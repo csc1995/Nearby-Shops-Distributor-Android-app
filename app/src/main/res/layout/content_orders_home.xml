@@ -182,7 +182,7 @@ tools:showIn="@layout/activity_orders_home">
             <RelativeLayout
                 android:layout_marginLeft="5dp"
                 android:layout_weight="1"
-                android:id="@+id/order_vehicle_dashboard"
+                android:id="@+id/orderhome_vehicle_driver_dashboard"
                 android:background="@color/phonographyBlue"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/menu_item_width">

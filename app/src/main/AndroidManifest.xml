@@ -208,6 +208,19 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.localareadelivery.distributorapp.DeliveryVehicleSelf.DeliveryVehicleActivity" />
         </activity>
+
+
+        <activity
+            android:name=".VehicleDriverDashboard.VehicleDriverDashboard"
+            android:label="Vehicle Driver Dashboard"
+            android:parentActivityName=".DeliveryVehicleSelf.DeliveryVehicleActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.localareadelivery.distributorapp.DeliveryVehicleSelf.DeliveryVehicleActivity" />
+        </activity>
+
+
     </application>
 
 </manifest>

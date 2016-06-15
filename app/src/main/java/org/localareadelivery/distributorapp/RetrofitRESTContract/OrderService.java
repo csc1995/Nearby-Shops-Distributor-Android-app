@@ -25,8 +25,10 @@ public interface OrderService {
                                 @Query("ShopID")int shopID,
                                 @Query("PickFromShop") Boolean pickFromShop,
                                 @Query("StatusHomeDelivery")int homeDeliveryStatus,
-                                @Query("StatusFromShopStatus")int pickFromShopStatus,
+                                @Query("StatusPickFromShopStatus")int pickFromShopStatus,
                                 @Query("VehicleSelfID")int vehicleSelfID,
+                                @Query("PaymentsReceived") Boolean paymentsReceived,
+                                @Query("DeliveryReceived") Boolean deliveryReceived,
                                 @Query("GetDeliveryAddress")boolean getDeliveryAddress,
                                 @Query("GetStats")boolean getStats);
 

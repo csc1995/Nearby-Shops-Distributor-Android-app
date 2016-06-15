@@ -203,7 +203,7 @@ public class ConfirmedOrdersFragment extends Fragment implements SwipeRefreshLay
 
             Call<List<Order>> call = orderService.getOrders(0, currentShop.getShopID(),false,
                                             OrderStatusHomeDelivery.ORDER_CONFIRMED,
-                                            0,0,true,true);
+                                            0,0,null,null,true,true);
 
 
             call.enqueue(this);

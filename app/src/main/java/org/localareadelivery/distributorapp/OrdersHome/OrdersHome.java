@@ -52,6 +52,18 @@ public class OrdersHome extends AppCompatActivity {
     }
 
 
+    @OnClick(R.id.orderhome_vehicle_driver_dashboard)
+    void vehicleDriverDashboardClick(View view)
+    {
+        Intent intent = new Intent(this, DeliveryVehicleActivity.class);
+        intent.putExtra(DeliveryVehicleActivity.INTENT_REQUEST_CODE_KEY,DeliveryVehicleActivity.INTENT_CODE_VEHICLE_DRIVER_DASHBOARD);
+        startActivity(intent);
+    }
+
+
+
+
+
     @Override
     protected void onDestroy() {
         super.onDestroy();

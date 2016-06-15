@@ -13,6 +13,8 @@ import org.localareadelivery.distributorapp.OrdersHomeDelivery.PackedOrdersFragm
 import org.localareadelivery.distributorapp.OrdersHomeDelivery.PendingAcceptFragment;
 import org.localareadelivery.distributorapp.OrdersHomeDelivery.PlacedOrdersFragment;
 import org.localareadelivery.distributorapp.VehicleDashboard.VehicleDashboard;
+import org.localareadelivery.distributorapp.VehicleDriverDashboard.PaymentsPendingFragment;
+import org.localareadelivery.distributorapp.VehicleDriverDashboard.PendingHandoverFragment;
 
 import javax.inject.Singleton;
 
@@ -50,4 +52,10 @@ public interface NetComponent {
     void Inject(PendingAcceptFragment pendingAcceptOrdersFragment);
 
     void Inject(org.localareadelivery.distributorapp.VehicleDashboard.PendingAcceptFragment pendingAcceptFragment);
+
+    void Inject(org.localareadelivery.distributorapp.VehicleDriverDashboard.PendingAcceptFragment pendingAcceptFragment);
+
+    void Inject(PendingHandoverFragment pendingHandoverFragment);
+
+    void Inject(PaymentsPendingFragment paymentsPendingFragment);
 }

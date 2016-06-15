@@ -202,7 +202,7 @@ public class PlacedOrdersFragment extends Fragment implements AdapterPlacedOrder
             Shop currentShop = ApplicationState.getInstance().getCurrentShop();
 
             Call<List<Order>> call = orderService.getOrders(0, currentShop.getShopID()  ,false,
-                    OrderStatusHomeDelivery.ORDER_PLACED,0,0,true,true);
+                    OrderStatusHomeDelivery.ORDER_PLACED,0,0,null,null,true,true);
 
             call.enqueue(this);
 

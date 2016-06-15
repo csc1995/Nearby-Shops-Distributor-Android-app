@@ -170,7 +170,7 @@ public class PendingAcceptFragment extends Fragment implements SwipeRefreshLayou
 
             Call<List<Order>> call = orderService.getOrders(0, currentShop.getShopID(),false,
                                             OrderStatusHomeDelivery.HANDED_TO_DELIVERY_VEHICLE,
-                                            0,0,true,true);
+                                            0,0,null,null,true,true);
 
 
             call.enqueue(this);

@@ -20,6 +20,7 @@ import org.localareadelivery.distributorapp.ModelStats.DeliveryVehicleSelf;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.VehicleSelfService;
 import org.localareadelivery.distributorapp.VehicleDashboard.VehicleDashboard;
+import org.localareadelivery.distributorapp.VehicleDriverDashboard.VehicleDriverDashboard;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +55,7 @@ public class DeliveryVehicleActivity extends AppCompatActivity implements SwipeR
 
     public final static int INTENT_CODE_SELECT_VEHICLE = 1;
     public final static int INTENT_CODE_DASHBOARD = 2;
+    public final static int INTENT_CODE_VEHICLE_DRIVER_DASHBOARD = 3;
 
 
     TextView addNewAddress;
@@ -275,6 +277,12 @@ public class DeliveryVehicleActivity extends AppCompatActivity implements SwipeR
             vehicleDashboardIntent.putExtra(VehicleDashboard.DELIVERY_VEHICLE_INTENT_KEY,deliveryVehicleSelf);
             startActivity(vehicleDashboardIntent);
 
+        }else if(requestCode == INTENT_CODE_VEHICLE_DRIVER_DASHBOARD)
+        {
+
+            Intent vehicleDashboardIntent = new Intent(this,VehicleDriverDashboard.class);
+            vehicleDashboardIntent.putExtra(VehicleDriverDashboard.DELIVERY_VEHICLE_INTENT_KEY,deliveryVehicleSelf);
+            startActivity(vehicleDashboardIntent);
         }
 
 
