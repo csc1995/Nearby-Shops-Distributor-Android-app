@@ -18,7 +18,17 @@ public class PagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         // getItem is called to instantiate the fragment for the given page.
         // Return a FragmentOutOfStock_ (defined as a static inner class below).
-        return FragmentOutOfStock.newInstance();
+        if(position == 0)
+        {
+            return FragmentOutOfStock.newInstance();
+
+        }else if(position == 1)
+        {
+            return FragmentPriceNotSet.newInstance();
+        }
+
+
+        return  FragmentPriceNotSet.newInstance();
     }
 
     @Override

@@ -1,6 +1,8 @@
 package org.localareadelivery.distributorapp.Model;
 
 
+import java.sql.Timestamp;
+
 public class ShopItem{
 	
 	public static final String UNIT_KG = "Kg.";
@@ -16,27 +18,30 @@ public class ShopItem{
 
 
 	Shop shop;
-
 	Item item;
 
-	// Foreign Key only for JDBC
+
+
 	int shopID;
-	
-	// foreign Key for JDBC
 	int itemID;
-	
-	
 	int availableItemQuantity;
-	
 	double itemPrice;
-	
-		
+
+
+
+
+	// recently added variables
+	int extraDeliveryCharge;
+	Timestamp dateTimeAdded;
+	Timestamp lastUpdateDateTime;
+
+
 	// put this into item
 	// the units of quantity for item. For Example if you are buying vegetables 
-	String quantityUnit;
+	//String quantityUnit;
 
 	// consider that if you want to buy in the multiples of 500 grams. You would buy 500grams,1000grams, 1500grams, 2000grams
-	int quantityMultiple;
+	//int quantityMultiple;
 
 	
 	// in certain cases the shop might take extra delivery charge for the particular item 
@@ -53,6 +58,32 @@ public class ShopItem{
 	// the maximum quantity of this item that an end user can buy
 	//int maxQuantity;
 
+
+
+
+	public int getExtraDeliveryCharge() {
+		return extraDeliveryCharge;
+	}
+
+	public void setExtraDeliveryCharge(int extraDeliveryCharge) {
+		this.extraDeliveryCharge = extraDeliveryCharge;
+	}
+
+	public Timestamp getDateTimeAdded() {
+		return dateTimeAdded;
+	}
+
+	public void setDateTimeAdded(Timestamp dateTimeAdded) {
+		this.dateTimeAdded = dateTimeAdded;
+	}
+
+	public Timestamp getLastUpdateDateTime() {
+		return lastUpdateDateTime;
+	}
+
+	public void setLastUpdateDateTime(Timestamp lastUpdateDateTime) {
+		this.lastUpdateDateTime = lastUpdateDateTime;
+	}
 
 	public double getItemPrice() {
 		return itemPrice;
@@ -93,16 +124,6 @@ public class ShopItem{
 		this.availableItemQuantity = availableItemQuantity;
 	}
 
-	public String getQuantityUnit() {
-		return quantityUnit;
-	}
-
-
-	public void setQuantityUnit(String quantityUnit) {
-		this.quantityUnit = quantityUnit;
-	}
-
-
 	public Shop getShop() {
 		return shop;
 	}
@@ -119,11 +140,4 @@ public class ShopItem{
 		this.item = item;
 	}
 
-	public int getQuantityMultiple() {
-		return quantityMultiple;
-	}
-
-	public void setQuantityMultiple(int quantityMultiple) {
-		this.quantityMultiple = quantityMultiple;
-	}
 }

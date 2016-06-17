@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +15,7 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 
 import org.localareadelivery.distributorapp.Model.Item;
-import org.localareadelivery.distributorapp.Model.Order;
 import org.localareadelivery.distributorapp.Model.ShopItem;
-import org.localareadelivery.distributorapp.ModelStats.DeliveryAddress;
-import org.localareadelivery.distributorapp.ModelStats.OrderStats;
 import org.localareadelivery.distributorapp.MyApplication;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.Utility.UtilityGeneral;
@@ -33,7 +29,7 @@ import butterknife.OnClick;
 /**
  * Created by sumeet on 13/6/16.
  */
-public class AdapterOutOfStock extends RecyclerView.Adapter<AdapterOutOfStock.ViewHolder>{
+public class AdapterPriceNotSet extends RecyclerView.Adapter<AdapterPriceNotSet.ViewHolder>{
 
 
     List<ShopItem> dataset = null;
@@ -43,7 +39,7 @@ public class AdapterOutOfStock extends RecyclerView.Adapter<AdapterOutOfStock.Vi
     NotificationReceiver notificationReceiver;
 
 
-    public AdapterOutOfStock(List<ShopItem> dataset, Context context, NotificationReceiver notifications) {
+    public AdapterPriceNotSet(List<ShopItem> dataset, Context context, NotificationReceiver notifications) {
         this.dataset = dataset;
         this.context = context;
         this.notificationReceiver = notifications;
@@ -51,10 +47,10 @@ public class AdapterOutOfStock extends RecyclerView.Adapter<AdapterOutOfStock.Vi
     }
 
     @Override
-    public AdapterOutOfStock.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public AdapterPriceNotSet.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_item_stock_item,parent,false);
+                .inflate(R.layout.list_item_stock_item_price_not_set,parent,false);
 
         return new ViewHolder(view);
     }
@@ -63,7 +59,7 @@ public class AdapterOutOfStock extends RecyclerView.Adapter<AdapterOutOfStock.Vi
 
 
     @Override
-    public void onBindViewHolder(AdapterOutOfStock.ViewHolder holder, int position) {
+    public void onBindViewHolder(AdapterPriceNotSet.ViewHolder holder, int position) {
 
         if(dataset!=null)
         {
@@ -92,6 +88,7 @@ public class AdapterOutOfStock extends RecyclerView.Adapter<AdapterOutOfStock.Vi
             //holder.itemPrice.setText(String.format( "%.0f", shopItem.getItemPrice()));
             //holder.itemQuantity.setText(String.format( "%.0f", shopItem.getAvailableItemQuantity()));
 
+
             if(item!=null)
             {
                 holder.availableText.setText("Available : " + shopItem.getAvailableItemQuantity() + " " + item.getQuantityUnit());
@@ -102,7 +99,6 @@ public class AdapterOutOfStock extends RecyclerView.Adapter<AdapterOutOfStock.Vi
                 holder.availableText.setText("Available : " + shopItem.getAvailableItemQuantity() + " Items");
                 holder.priceText.setText("Price : " + shopItem.getItemPrice() + " per Item");
             }
-
 
         }
     }
@@ -164,12 +160,13 @@ public class AdapterOutOfStock extends RecyclerView.Adapter<AdapterOutOfStock.Vi
             itemQuantity.addTextChangedListener(new QuantityTextWatcher());
             itemPrice.addTextChangedListener(new PriceTextWatcher());
 
-
-
         }
 
 
-        class QuantityTextWatcher implements TextWatcher{
+
+        class QuantityTextWatcher implements TextWatcher {
+
+
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -198,6 +195,7 @@ public class AdapterOutOfStock extends RecyclerView.Adapter<AdapterOutOfStock.Vi
                         availableText.setText("Available : " + availableLocal + " Items");
                     }
 
+
                 }else
                 {
                     availableText.setText("Available : " + "0" + " Items");
@@ -219,6 +217,7 @@ public class AdapterOutOfStock extends RecyclerView.Adapter<AdapterOutOfStock.Vi
         @OnClick(R.id.reduceQuantity)
         void reduceQuantityClick(View view)
         {
+
             Item item = dataset.get(getLayoutPosition()).getItem();
 
             if(!itemQuantity.getText().toString().equals(""))
@@ -246,6 +245,7 @@ public class AdapterOutOfStock extends RecyclerView.Adapter<AdapterOutOfStock.Vi
 
 
 
+
             }else
             {
                 itemQuantity.setText(String.valueOf(0));
@@ -256,6 +256,7 @@ public class AdapterOutOfStock extends RecyclerView.Adapter<AdapterOutOfStock.Vi
         @OnClick(R.id.increaseQuantity)
         void increaseQuantityClick(View view)
         {
+
             Item item = dataset.get(getLayoutPosition()).getItem();
 
             if(!itemQuantity.getText().toString().equals(""))
@@ -265,7 +266,6 @@ public class AdapterOutOfStock extends RecyclerView.Adapter<AdapterOutOfStock.Vi
 
                 itemQuantity.setText(availableLocal);
 
-
                 if(item!=null)
                 {
                     availableText.setText("Available : " + availableLocal + " " + item.getQuantityUnit());
@@ -274,6 +274,8 @@ public class AdapterOutOfStock extends RecyclerView.Adapter<AdapterOutOfStock.Vi
                 {
                     availableText.setText("Available : " + availableLocal + " Items");
                 }
+
+
 
 
             }else
@@ -455,12 +457,17 @@ public class AdapterOutOfStock extends RecyclerView.Adapter<AdapterOutOfStock.Vi
 
 
 
+
+
+
         @OnClick(R.id.removeButton)
         void removeClick(View view)
         {
 
             notificationReceiver.notifyShopItemRemoved(dataset.get(getLayoutPosition()));
         }
+
+
 
     }
 

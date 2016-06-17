@@ -13,6 +13,7 @@ import org.localareadelivery.distributorapp.OrdersHomeDelivery.PackedOrdersFragm
 import org.localareadelivery.distributorapp.OrdersHomeDelivery.PendingAcceptFragment;
 import org.localareadelivery.distributorapp.OrdersHomeDelivery.PlacedOrdersFragment;
 import org.localareadelivery.distributorapp.QuickStockEditor.FragmentOutOfStock;
+import org.localareadelivery.distributorapp.QuickStockEditor.FragmentPriceNotSet;
 import org.localareadelivery.distributorapp.VehicleDriverDashboard.PaymentsPendingFragment;
 import org.localareadelivery.distributorapp.VehicleDriverDashboard.PendingHandoverFragment;
 
@@ -64,4 +65,6 @@ public interface NetComponent {
     void Inject(org.localareadelivery.distributorapp.VehicleInventory.PaymentsPendingFragment paymentsPendingFragment);
 
     void Inject(FragmentOutOfStock outOfStockFragment);
+
+    void Inject(FragmentPriceNotSet fragmentPriceNotSet);
 }

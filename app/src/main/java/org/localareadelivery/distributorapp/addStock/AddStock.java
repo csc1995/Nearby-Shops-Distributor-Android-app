@@ -225,8 +225,7 @@ public class AddStock extends AppCompatActivity {
                 + "\n" + "Shop ID : " + shopItem.getShopID()
                 + "\n" + "Item ID : " + shopItem.getItemID()
                 + "\n" + "Available Quantity : "  + shopItem.getAvailableItemQuantity()
-                + "\n" + "Item Price : " + shopItem.getItemPrice()
-                + "\n" + "Item Unit : " + shopItem.getQuantityUnit();
+                + "\n" + "Item Price : " + shopItem.getItemPrice();
 
 
         // check whether the activity is visible and running
