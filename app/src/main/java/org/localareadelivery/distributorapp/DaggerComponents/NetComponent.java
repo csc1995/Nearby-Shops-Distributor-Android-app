@@ -16,6 +16,7 @@ import org.localareadelivery.distributorapp.QuickStockEditor.FragmentOutOfStock;
 import org.localareadelivery.distributorapp.QuickStockEditor.FragmentPriceNotSet;
 import org.localareadelivery.distributorapp.VehicleDriverDashboard.PaymentsPendingFragment;
 import org.localareadelivery.distributorapp.VehicleDriverDashboard.PendingHandoverFragment;
+import org.localareadelivery.distributorapp.addItems.Items.AddItem;
 
 import javax.inject.Singleton;
 
@@ -67,4 +68,8 @@ public interface NetComponent {
     void Inject(FragmentOutOfStock outOfStockFragment);
 
     void Inject(FragmentPriceNotSet fragmentPriceNotSet);
+
+    void Inject(AddItem addItem);
+
+
 }

@@ -398,7 +398,7 @@ public class AddShop extends AppCompatActivity implements LocationListener, Call
     @OnClick(R.id.textChangePicture)
     void pickShopImage() {
 
-        Log.d("applog", "Cache Dir Path : " + getCacheDir().getPath());
+        //Log.d("applog", "Cache Dir Path : " + getCacheDir().getPath());
 
         resultView.setImageDrawable(null);
 

@@ -18,22 +18,33 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.squareup.picasso.Picasso;
 import com.yalantis.ucrop.UCrop;
 import com.yalantis.ucrop.UCropActivity;
 
 
+import org.localareadelivery.distributorapp.DaggerComponentBuilder;
 import org.localareadelivery.distributorapp.Model.Image;
 import org.localareadelivery.distributorapp.Model.Item;
 import org.localareadelivery.distributorapp.Model.ItemCategory;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ImageService;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ItemService;
+import org.localareadelivery.distributorapp.Utility.ImageCalls;
+import org.localareadelivery.distributorapp.Utility.ImageCropUtility;
+import org.localareadelivery.distributorapp.Utility.UtilityGeneral;
+import org.localareadelivery.distributorapp.deprecatedCode.ImageUpload;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -42,33 +53,47 @@ import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class AddItem extends AppCompatActivity {
+public class AddItem extends AppCompatActivity implements Callback<Image> {
 
+
+    @Inject
+    ItemService itemService;
+
+    boolean isImageAdded = false;
 
     public static final String ITEM_CATEGORY_ID_KEY = "itemCategoryIDKey";
 
-    @Bind(R.id.itemName) EditText itemName;
-    @Bind(R.id.itemDescription) EditText itemDescription;
-    @Bind(R.id.itemDescriptionLong) EditText itemDescriptionLong;
-    @Bind(R.id.quantityUnit) EditText quantityUnit;
+    @Bind(R.id.itemName)
+    EditText itemName;
+    @Bind(R.id.itemDescription)
+
+    EditText itemDescription;
+    @Bind(R.id.itemDescriptionLong)
+    EditText itemDescriptionLong;
+    @Bind(R.id.quantityUnit)
+    EditText quantityUnit;
+
+    @Bind(R.id.addItemButton)
+    Button addItemButton;
+
+    @Bind(R.id.result)
+    TextView result;
 
 
-    @Bind(R.id.addItemButton) Button addItemButton;
-
-    @Bind(R.id.result) TextView result;
-
-
-    String imagePath = "";
-
-    final String IMAGES_END_POINT_URL = "/api/Images";
 
     ItemCategory itemCategory;
 
-    Item itemForEdit = new Item();
 
+    public AddItem() {
+
+        DaggerComponentBuilder.getInstance()
+                .getNetComponent()
+                .Inject(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,13 +108,13 @@ public class AddItem extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-
         itemCategory = getIntent().getParcelableExtra(Items.ADD_ITEM_INTENT_KEY);
 
 
-        if(savedInstanceState==null) {
+        if (savedInstanceState == null) {
             // delete previous file in the cache - This will prevent accidently uploading the previous image
             File file = new File(getCacheDir().getPath() + "/" + "SampleCropImage.jpeg");
+            file.delete();
 
             //showMessageSnackBar("File delete Status : " + String.valueOf(file.delete()));
 
@@ -97,10 +122,15 @@ public class AddItem extends AppCompatActivity {
     }
 
 
+    void addNewItem(String imagePath) {
 
-    void getDatafromEditText()
-    {
-        if(itemForEdit!=null) {
+
+        Item itemForEdit = new Item();
+
+        itemForEdit.setItemImageURL(imagePath);
+
+
+        if (itemCategory != null) {
 
             itemForEdit.setItemCategoryID(itemCategory.getItemCategoryID());
         }
@@ -109,41 +139,45 @@ public class AddItem extends AppCompatActivity {
         itemForEdit.setItemName(itemName.getText().toString());
         itemForEdit.setQuantityUnit(quantityUnit.getText().toString());
         itemForEdit.setItemDescriptionLong(itemDescriptionLong.getText().toString());
-    }
 
 
+        // Make a network call
 
-    void makeRetrofitRequest()
-    {
-
+        /*
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getServiceURL())
+                .baseUrl(UtilityGeneral.getServiceURL(this))
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
 
-
-
         ItemService itemService = retrofit.create(ItemService.class);
 
-        getDatafromEditText();
+        */
 
         Call<Item> itemCall = itemService.insertItem(itemForEdit);
 
 
         itemCall.enqueue(new Callback<Item>() {
             @Override
-            public void onResponse(Call<Item> call, retrofit2.Response<Item> response) {
+            public void onResponse(Call<Item> call, Response<Item> response) {
 
 
-                Item responseItem = response.body();
+                if (response.code() == 201) {
+                    //showMessageSnackBar("Item added Successfully !");
+                    showToastMessage("Item added Successfully !");
+                }
 
-                displayResult(responseItem);
+                //Item responseItem = response.body();
+                //displayResult(responseItem);
 
             }
 
             @Override
             public void onFailure(Call<Item> call, Throwable t) {
+
+                //showMessageSnackBar("Network request failed !");
+
+                showToastMessage("Network request failed ! ");
 
             }
         });
@@ -151,6 +185,7 @@ public class AddItem extends AppCompatActivity {
     }
 
 
+    /*
     void displayResult(Item item)
     {
         result.setText("Result : " + "\n"
@@ -161,10 +196,12 @@ public class AddItem extends AppCompatActivity {
                     + item.getItemID());
     }
 
+    */
 
 
 
 
+    /*
     public String  getServiceURL()
     {
         SharedPreferences sharedPref = this.getSharedPreferences(getString(R.string.preference_file_name), this.MODE_PRIVATE);
@@ -174,12 +211,19 @@ public class AddItem extends AppCompatActivity {
         return service_url;
     }
 
+    */
 
 
     @OnClick(R.id.addItemButton)
-    void addItem()
-    {
-        uploadPickedImage();
+    void addItem() {
+
+        if (isImageAdded) {
+            ImageCalls.getInstance().uploadPickedImage(this, REQUEST_CODE_READ_EXTERNAL_STORAGE, this);
+
+        } else {
+            addNewItem(null);
+        }
+
     }
 
 
@@ -196,41 +240,16 @@ public class AddItem extends AppCompatActivity {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     /*
         Utility Methods
      */
 
 
+    @Bind(R.id.coordinatorLayout)
+    CoordinatorLayout coordinatorLayout;
 
-    @Bind(R.id.coordinatorLayout) CoordinatorLayout coordinatorLayout;
-
-    @Bind(R.id.uploadImage) ImageView resultView;
+    @Bind(R.id.uploadImage)
+    ImageView resultView;
 
     void showMessageSnackBar(String message) {
 
@@ -239,11 +258,13 @@ public class AddItem extends AppCompatActivity {
     }
 
 
-
     void loadImage(String imagePath) {
 
-        Picasso.with(this).load(getServiceURL() + IMAGES_END_POINT_URL + imagePath).into(resultView);
+        Picasso.with(this).load(UtilityGeneral.getImageEndpointURL(this) + imagePath).into(resultView);
+
+        //getServiceURL() + IMAGES_END_POINT_URL +
     }
+
 
 
 
@@ -257,22 +278,20 @@ public class AddItem extends AppCompatActivity {
 
 
     @OnClick(R.id.removePicture)
-    void removeImage()
-    {
+    void removeImage() {
 
         File file = new File(getCacheDir().getPath() + "/" + "SampleCropImage.jpeg");
-        showMessageSnackBar("File delete Status : " + String.valueOf(file.delete()));
+        file.delete();
 
-
-        imagePath = "";
         resultView.setImageDrawable(null);
+
+        // reset the flag to reflect the status of image addition
+        isImageAdded = false;
     }
 
 
-
-
-    private static final String SAMPLE_CROPPED_IMAGE_NAME = "SampleCropImage.jpeg";
-    private Uri mDestinationUri;
+    //private static final String SAMPLE_CROPPED_IMAGE_NAME = "SampleCropImage.jpeg";
+    //private Uri mDestinationUri;
 
     @Bind(R.id.textChangePicture)
     TextView changePicture;
@@ -280,24 +299,31 @@ public class AddItem extends AppCompatActivity {
 
     @OnClick(R.id.textChangePicture)
     void pickShopImage() {
-        mDestinationUri = Uri.fromFile(new File(getCacheDir(), SAMPLE_CROPPED_IMAGE_NAME));
 
-        Log.d("applog", "Cache Dir Path : " + getCacheDir().getPath());
+        //  mDestinationUri = Uri.fromFile(new File(getCacheDir(), SAMPLE_CROPPED_IMAGE_NAME));
+
+        //Log.d("applog", "Cache Dir Path : " + getCacheDir().getPath());
 
         resultView.setImageDrawable(null);
         //Crop.pickImage(this);
 
-        showFileChooser();
+        ImageCropUtility.showFileChooser(this);
+
+        //showFileChooser();
     }
 
-    private int PICK_IMAGE_REQUEST = 21;
+    //private int PICK_IMAGE_REQUEST = 21;
 
+    /*
     private void showFileChooser() {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
     }
+
+
+
 
 
     public void startCropActivity(Uri sourceUri) {
@@ -320,8 +346,7 @@ public class AddItem extends AppCompatActivity {
         //.withAspectRatio(16, 9)
     }
 
-
-
+    */
 
 
     @Override
@@ -330,19 +355,7 @@ public class AddItem extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, result);
 
 
-        if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
-
-            resultView.setImageURI(UCrop.getOutput(result));
-
-
-        } else if (resultCode == UCrop.RESULT_ERROR) {
-
-            final Throwable cropError = UCrop.getError(result);
-
-        }
-
-
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
+        if (requestCode == ImageCropUtility.PICK_IMAGE_REQUEST && resultCode == RESULT_OK
                 && result != null
                 && result.getData() != null) {
 
@@ -352,13 +365,27 @@ public class AddItem extends AppCompatActivity {
             //imageUri = filePath;
 
             if (filePath != null) {
-                startCropActivity(result.getData());
+
+                ImageCropUtility.startCropActivity(result.getData(), this);
+
+                //startCropActivity(result.getData());
             }
-
         }
+
+
+        if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
+
+            resultView.setImageURI(UCrop.getOutput(result));
+
+            isImageAdded = true;
+
+
+        } else if (resultCode == UCrop.RESULT_ERROR) {
+
+            final Throwable cropError = UCrop.getError(result);
+
+        }// request crop
     }
-
-
 
 
 
@@ -369,13 +396,14 @@ public class AddItem extends AppCompatActivity {
      */
 
 
-
     // Upload the image after picked up
     private static final int REQUEST_CODE_READ_EXTERNAL_STORAGE = 56;
 
     Image image = null;
 
 
+
+    /*
     void uploadPickedImage() {
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -454,7 +482,6 @@ public class AddItem extends AppCompatActivity {
 
                 loadImage(image.getPath());
 
-                imagePath = image.getPath();
 
                 if (response.code() != 201) {
                     showMessageSnackBar("Unable to upload Image. Try changing the image by in the Edit Screen !");
@@ -463,10 +490,6 @@ public class AddItem extends AppCompatActivity {
                 }
 
 
-
-                itemForEdit.setItemImageURL(imagePath);
-
-                makeRetrofitRequest();
 
             }
 
@@ -479,13 +502,12 @@ public class AddItem extends AppCompatActivity {
 
                 result.setText("Unable to upload Image. Try changing the image by in the Edit Screen !");
 
-                itemForEdit.setItemImageURL(imagePath);
-
-                makeRetrofitRequest();
-
             }
         });
     }
+
+
+    */
 
 
     @Override
@@ -496,10 +518,47 @@ public class AddItem extends AppCompatActivity {
 
             case REQUEST_CODE_READ_EXTERNAL_STORAGE:
 
-                uploadPickedImage();
+                //uploadPickedImage();
+
+                addItem();
 
                 break;
         }
+    }
+
+
+    @Override
+    public void onResponse(Call<Image> call, Response<Image> response) {
+
+        image = response.body();
+
+        loadImage(image.getPath());
+
+        if (image != null) {
+
+            addNewItem(image.getPath());
+
+        } else {
+
+            addNewItem(null);
+
+            showToastMessage("Image upload failed !");
+        }
+
+    }
+
+    @Override
+    public void onFailure(Call<Image> call, Throwable t) {
+
+
+        showToastMessage("Image upload failed !");
+
+        addNewItem(null);
+    }
+
+
+    void showToastMessage(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
 

@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import org.localareadelivery.distributorapp.MyApplication;
+import org.localareadelivery.distributorapp.RetrofitRESTContract.ItemService;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderService;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ShopItemService;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.VehicleSelfService;
@@ -134,5 +135,13 @@ public class NetModule {
         return service;
     }
 
+
+    @Provides
+    ItemService provideItemService(Retrofit retrofit)
+    {
+        ItemService service = retrofit.create(ItemService.class);
+
+        return service;
+    }
 
 }

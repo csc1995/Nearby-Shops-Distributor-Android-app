@@ -86,12 +86,6 @@ public class AddItemCategory extends AppCompatActivity implements Callback<Image
 
         parentCategory = getIntent().getParcelableExtra(ADD_ITEM_CATEGORY_INTENT_KEY);
 
-        if(savedInstanceState==null) {
-            // delete previous file in the cache - This will prevent accidently uploading the previous image
-            File file = new File(getCacheDir().getPath() + "/" + "SampleCropImage.jpeg");
-
-            //showMessageSnackBar("File delete Status : " + String.valueOf(file.delete()));
-        }
     }
 
 

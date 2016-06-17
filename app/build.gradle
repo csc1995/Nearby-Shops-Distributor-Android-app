@@ -106,4 +106,5 @@ dependencies {
     compile 'com.google.dagger:dagger:2.2'
     provided 'javax.annotation:jsr250-api:1.0'
 
+    compile 'com.google.android.gms:play-services-appindexing:8.1.0'
 }

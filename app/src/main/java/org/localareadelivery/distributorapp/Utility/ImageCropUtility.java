@@ -24,6 +24,18 @@ public class ImageCropUtility{
     public static void showFileChooser(AppCompatActivity context) {
 
 
+        /*
+
+
+        if(savedInstanceState==null) {
+            // delete previous file in the cache - This will prevent accidently uploading the previous image
+            File file = new File(getCacheDir().getPath() + "/" + "SampleCropImage.jpeg");
+            file.delete();
+        }
+
+         */
+
+
         // An example of how the clear the cache in the activities
         /*
         if(savedInstanceState==null) {

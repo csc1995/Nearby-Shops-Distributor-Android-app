@@ -174,7 +174,7 @@
         </activity>
         <activity
             android:name=".DeliveryVehicleSelf.AddVehicleSelfActivity"
-            android:label="Delivery Vehicles"
+            android:label="Add Delivery Vehicle"
             android:parentActivityName=".DeliveryVehicleSelf.DeliveryVehicleActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
@@ -183,7 +183,7 @@
         </activity>
         <activity
             android:name=".DeliveryVehicleSelf.EditAddressActivity"
-            android:label="Delivery Vehicles"
+            android:label="Edit Delivery Vehicle"
             android:parentActivityName=".DeliveryVehicleSelf.DeliveryVehicleActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
@@ -225,7 +225,11 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.localareadelivery.distributorapp.ShopHome.ShopHome" />
-        </activity>
+        </activity><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
+     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
     </application>
 
 </manifest>
