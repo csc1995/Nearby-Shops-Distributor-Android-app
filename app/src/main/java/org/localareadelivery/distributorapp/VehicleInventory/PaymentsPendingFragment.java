@@ -1,14 +1,17 @@
-package org.localareadelivery.distributorapp.VehicleDashboard;
+package org.localareadelivery.distributorapp.VehicleInventory;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.localareadelivery.distributorapp.ApplicationState.ApplicationState;
@@ -25,6 +28,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -38,7 +43,7 @@ import retrofit2.Response;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class PendingAcceptFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, Callback<List<Order>>,AdapterPendingAccept.NotificationReciever {
+public class PaymentsPendingFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, Callback<List<Order>>,AdapterPaymentsPending.NotificationReciever {
 
 
     @Inject
@@ -46,7 +51,7 @@ public class PendingAcceptFragment extends Fragment implements SwipeRefreshLayou
 
     RecyclerView recyclerView;
 
-    AdapterPendingAccept adapter;
+    AdapterPaymentsPending adapter;
 
     public List<Order> dataset = new ArrayList<>();
 
@@ -59,9 +64,12 @@ public class PendingAcceptFragment extends Fragment implements SwipeRefreshLayou
     NotificationReceiver notificationReceiver;
 
     DeliveryVehicleSelf deliveryVehicleSelf;
+    TextView ordersTotal;
+
+    TextView receivedTotal;
 
 
-    public PendingAcceptFragment() {
+    public PaymentsPendingFragment() {
 
         DaggerComponentBuilder.getInstance()
                 .getNetComponent()
@@ -73,8 +81,8 @@ public class PendingAcceptFragment extends Fragment implements SwipeRefreshLayou
      * Returns a new instance of this fragment for the given section
      * number.
      */
-    public static PendingAcceptFragment newInstance() {
-        PendingAcceptFragment fragment = new PendingAcceptFragment();
+    public static PaymentsPendingFragment newInstance() {
+        PaymentsPendingFragment fragment = new PaymentsPendingFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -83,8 +91,11 @@ public class PendingAcceptFragment extends Fragment implements SwipeRefreshLayou
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_home_delivery_pending_accept_vd, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_home_delivery_payments_pending_vd, container, false);
+        ButterKnife.bind(this,rootView);
 
+        ordersTotal = (TextView) rootView.findViewById(R.id.ordersTotal);
+        receivedTotal = (TextView) rootView.findViewById(R.id.receivedTotal);
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
 
@@ -124,7 +135,7 @@ public class PendingAcceptFragment extends Fragment implements SwipeRefreshLayou
     void setupRecyclerView()
     {
 
-        adapter = new AdapterPendingAccept(dataset,getActivity(),this);
+        adapter = new AdapterPaymentsPending(dataset,getActivity(),this);
 
         recyclerView.setAdapter(adapter);
 
@@ -185,8 +196,8 @@ public class PendingAcceptFragment extends Fragment implements SwipeRefreshLayou
         Shop currentShop = ApplicationState.getInstance().getCurrentShop();
 
             Call<List<Order>> call = orderService.getOrders(0, currentShop.getShopID(),false,
-                                            OrderStatusHomeDelivery.HANDED_TO_DELIVERY_VEHICLE,
-                                            0,deliveryVehicleSelf.getID(),null,null,true,true);
+                                            OrderStatusHomeDelivery.HANDED_TO_END_USER,
+                                            0,deliveryVehicleSelf.getID(),false,null,true,true);
 
 
             call.enqueue(this);
@@ -221,6 +232,7 @@ public class PendingAcceptFragment extends Fragment implements SwipeRefreshLayou
             dataset.clear();
             dataset.addAll(response.body());
             adapter.notifyDataSetChanged();
+            updateTotal();
 
             if(notificationReceiver !=null)
             {
@@ -231,6 +243,7 @@ public class PendingAcceptFragment extends Fragment implements SwipeRefreshLayou
         {
             dataset.clear();
             adapter.notifyDataSetChanged();
+            updateTotal();
 
 
             if(notificationReceiver !=null)
@@ -244,6 +257,123 @@ public class PendingAcceptFragment extends Fragment implements SwipeRefreshLayou
 
     }
 
+
+    int totalLabel;
+
+
+    void updateTotal()
+    {
+
+        int total = 0;
+
+        if(dataset!=null)
+        {
+            for(Order order : dataset)
+            {
+                total = total + (order.getOrderStats().getItemTotal()+ order.getDeliveryCharges());
+            }
+
+
+            ordersTotal.setText("All Orders Total : "  + total + "\nCollect " + total + " from Delivery guy.");
+            receivedTotal.setText("Received " + total + " from Delivery Guy.");
+
+        }
+
+        if(total == 0)
+        {
+            ordersTotal.setVisibility(View.GONE);
+            receivedTotal.setVisibility(View.GONE);
+
+        }else
+        {
+            ordersTotal.setVisibility(View.VISIBLE);
+            receivedTotal.setVisibility(View.VISIBLE);
+        }
+
+        totalLabel = total;
+    }
+
+
+
+
+    @OnClick(R.id.receivedTotal)
+    void receivedAllClick(View view)
+    {
+
+//        DialogFragment newFragment = new NotifyUserDialogFragment();
+  //      newFragment.show(getActivity().getSupportFragmentManager(), "notice");
+
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        builder.setTitle("Confirm Payment Received !")
+                .setMessage("Did you received " + String.valueOf(totalLabel) + " from Delivery Guy !")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        updatePaymentReceived();
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        showToastMessage("Update Cancelled !");
+                    }
+                })
+                .show();
+
+
+
+    }
+
+
+
+    void updatePaymentReceived()
+    {
+        for(Order order : dataset)
+        {
+            order.setPaymentReceived(true);
+        }
+
+        Call<ResponseBody> call = orderService.putOrderBulk(dataset);
+
+        call.enqueue(new Callback<ResponseBody>() {
+
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                if(response.code() == 200)
+                {
+                    showToastMessage("Successful !");
+
+                }else
+                {
+                    showToastMessage("Error while updating ! ");
+                }
+
+                makeNetworkCall();
+
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                showToastMessage("Network Request failed !");
+
+            }
+        });
+
+    }
+
+
+
+
+
+
+
     @Override
     public void onFailure(Call<List<Order>> call, Throwable t) {
 
@@ -254,9 +384,7 @@ public class PendingAcceptFragment extends Fragment implements SwipeRefreshLayou
     @Override
     public void notifyCancelHandover(Order order) {
 
-
-        order.setStatusHomeDelivery(OrderStatusHomeDelivery.ORDER_PACKED);
-        order.setDeliveryVehicleSelfID(0);
+        order.setPaymentReceived(true);
 
         Call<ResponseBody> call = orderService.putOrder(order.getOrderID(),order);
 
@@ -266,7 +394,7 @@ public class PendingAcceptFragment extends Fragment implements SwipeRefreshLayou
 
                 if(response.code()==200)
                 {
-                    showToastMessage("Handover cancelled !");
+                    showToastMessage("Update Successful !");
 
                     makeNetworkCall();
                 }
@@ -303,5 +431,14 @@ public class PendingAcceptFragment extends Fragment implements SwipeRefreshLayou
 
         outState.putParcelable("savedVehicle",deliveryVehicleSelf);
 
+    }
+
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        ButterKnife.unbind(this);
     }
 }

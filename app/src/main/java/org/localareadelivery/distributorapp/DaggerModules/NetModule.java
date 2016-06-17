@@ -10,6 +10,7 @@ import com.google.gson.GsonBuilder;
 
 import org.localareadelivery.distributorapp.MyApplication;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderService;
+import org.localareadelivery.distributorapp.RetrofitRESTContract.ShopItemService;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.VehicleSelfService;
 import org.localareadelivery.distributorapp.Utility.UtilityGeneral;
 
@@ -110,6 +111,16 @@ public class NetModule {
     OrderService provideOrderService(Retrofit retrofit)
     {
         OrderService service = retrofit.create(OrderService.class);
+
+        return service;
+    }
+
+
+
+    @Provides
+    ShopItemService provideShopItemService(Retrofit retrofit)
+    {
+        ShopItemService service = retrofit.create(ShopItemService.class);
 
         return service;
     }

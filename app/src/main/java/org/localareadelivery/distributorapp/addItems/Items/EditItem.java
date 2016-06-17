@@ -55,8 +55,9 @@ public class EditItem extends AppCompatActivity{
 
     @Bind(R.id.itemID) EditText itemID;
     @Bind(R.id.itemName) EditText itemName;
-    @Bind(R.id.itemBrandName) EditText itemBrandName;
     @Bind(R.id.itemDescription) EditText itemDescription;
+    @Bind(R.id.itemDescriptionLong) EditText itemDescriptionLong;
+    @Bind(R.id.quantityUnit) EditText quantityUnit;
 
     @Bind(R.id.saveButton) Button buttonUpdateItem;
 
@@ -113,8 +114,10 @@ public class EditItem extends AppCompatActivity{
 
             itemID.setText(String.valueOf(itemForEdit.getItemID()));
             itemName.setText(itemForEdit.getItemName());
-            itemBrandName.setText(itemForEdit.getBrandName());
             itemDescription.setText(itemForEdit.getItemDescription());
+
+            quantityUnit.setText(itemForEdit.getQuantityUnit());
+            itemDescriptionLong.setText(itemForEdit.getItemDescriptionLong());
         }
     }
 
@@ -125,8 +128,10 @@ public class EditItem extends AppCompatActivity{
         {
 
             itemForEdit.setItemName(itemName.getText().toString());
-            itemForEdit.setBrandName(itemBrandName.getText().toString());
             itemForEdit.setItemDescription(itemDescription.getText().toString());
+
+            itemForEdit.setItemDescriptionLong(itemDescriptionLong.getText().toString());
+            itemForEdit.setQuantityUnit(quantityUnit.getText().toString());
         }
 
     }

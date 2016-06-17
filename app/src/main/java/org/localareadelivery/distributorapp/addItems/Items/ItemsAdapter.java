@@ -81,7 +81,6 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder>{
 
 
         holder.itemName.setText(dataset.get(position).getItemName());
-        holder.itemBrandName.setText(dataset.get(position).getBrandName());
         holder.itemDescription.setText(dataset.get(position).getItemDescription());
 
         String imagePath = getServiceURL() + IMAGE_ENDPOINT_URL + dataset.get(position).getItemImageURL();

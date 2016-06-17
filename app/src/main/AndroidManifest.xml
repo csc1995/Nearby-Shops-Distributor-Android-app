@@ -200,7 +200,7 @@
                 android:value="org.localareadelivery.distributorapp.OrdersHomeDelivery.HomeDelivery" />
         </activity>
         <activity
-            android:name=".VehicleDashboard.VehicleDashboard"
+            android:name=".VehicleInventory.VehicleDashboard"
             android:label="@string/title_activity_vehicle_dashboard"
             android:parentActivityName=".DeliveryVehicleSelf.DeliveryVehicleActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -208,8 +208,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.localareadelivery.distributorapp.DeliveryVehicleSelf.DeliveryVehicleActivity" />
         </activity>
-
-
         <activity
             android:name=".VehicleDriverDashboard.VehicleDriverDashboard"
             android:label="Vehicle Driver Dashboard"
@@ -219,8 +217,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.localareadelivery.distributorapp.DeliveryVehicleSelf.DeliveryVehicleActivity" />
         </activity>
-
-
+        <activity
+            android:name=".QuickStockEditor.QuickStockEditor"
+            android:label="@string/title_activity_quick_stock_editor"
+            android:parentActivityName=".ShopHome.ShopHome"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.localareadelivery.distributorapp.ShopHome.ShopHome" />
+        </activity>
     </application>
 
 </manifest>

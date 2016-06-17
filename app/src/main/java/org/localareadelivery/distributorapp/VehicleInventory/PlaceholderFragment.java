@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.VehicleDashboard;
+package org.localareadelivery.distributorapp.VehicleInventory;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

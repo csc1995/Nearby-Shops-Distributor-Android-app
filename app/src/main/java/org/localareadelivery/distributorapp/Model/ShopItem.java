@@ -14,6 +14,11 @@ public class ShopItem{
 	}
 
 
+
+	Shop shop;
+
+	Item item;
+
 	// Foreign Key only for JDBC
 	int shopID;
 	
@@ -98,10 +103,25 @@ public class ShopItem{
 	}
 
 
+	public Shop getShop() {
+		return shop;
+	}
+
+	public void setShop(Shop shop) {
+		this.shop = shop;
+	}
+
+	public Item getItem() {
+		return item;
+	}
+
+	public void setItem(Item item) {
+		this.item = item;
+	}
+
 	public int getQuantityMultiple() {
 		return quantityMultiple;
 	}
-
 
 	public void setQuantityMultiple(int quantityMultiple) {
 		this.quantityMultiple = quantityMultiple;

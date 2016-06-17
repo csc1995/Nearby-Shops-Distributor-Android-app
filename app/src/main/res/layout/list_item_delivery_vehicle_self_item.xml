@@ -62,7 +62,7 @@
         <TextView
             android:id="@+id/editButton"
             android:padding="10dp"
-            android:textSize="20dp"
+            android:textSize="17dp"
             android:textColor="#ffffff"
             android:background="@color/teal"
             android:gravity="center"
@@ -76,7 +76,7 @@
             android:id="@+id/removeButton"
             android:layout_marginLeft="5dp"
             android:padding="10dp"
-            android:textSize="20dp"
+            android:textSize="17dp"
             android:textColor="#ffffff"
             android:background="@color/gplus_color_4"
             android:gravity="center"

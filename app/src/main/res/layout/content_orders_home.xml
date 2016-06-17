@@ -123,6 +123,15 @@ tools:showIn="@layout/activity_orders_home">
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </RelativeLayout>
+
+            <ImageView
+                android:tint="#ffffff"
+                android:padding="10dp"
+                android:layout_above="@+id/text_vehicle"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:id="@+id/imageView"
+                android:layout_weight="1" />
         </LinearLayout>
 
 
@@ -185,13 +194,6 @@ tools:showIn="@layout/activity_orders_home">
                 android:background="@color/phonographyBlue"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/menu_item_width">
-
-                <ImageView
-                    android:tint="#ffffff"
-                    android:padding="10dp"
-                    android:layout_above="@+id/text_vehicle"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
 
 
                 <TextView

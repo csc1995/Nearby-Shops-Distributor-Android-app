@@ -149,7 +149,6 @@ public class Items extends AppCompatActivity {
 
                 item.setItemID(jsonObject.getInt("itemID"));
                 item.setItemDescription(jsonObject.getString("itemDescription"));
-                item.setBrandName(jsonObject.getString("brandName"));
                 item.setItemName(jsonObject.getString("itemName"));
                 dataset.add(item);
 

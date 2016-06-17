@@ -2,7 +2,6 @@ package org.localareadelivery.distributorapp.DeliveryVehicleSelf;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -19,7 +18,7 @@ import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.ModelStats.DeliveryVehicleSelf;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.VehicleSelfService;
-import org.localareadelivery.distributorapp.VehicleDashboard.VehicleDashboard;
+import org.localareadelivery.distributorapp.VehicleInventory.VehicleDashboard;
 import org.localareadelivery.distributorapp.VehicleDriverDashboard.VehicleDriverDashboard;
 
 import java.util.ArrayList;

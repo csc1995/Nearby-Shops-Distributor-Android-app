@@ -73,7 +73,6 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder>{
     public void onBindViewHolder(final ItemsAdapter.ViewHolder holder, final int position) {
 
         holder.itemName.setText(itemDataset.get(position).getItemName());
-        holder.itemBrandName.setText(itemDataset.get(position).getBrandName());
         holder.itemDescription.setText(itemDataset.get(position).getItemDescription());
 
 

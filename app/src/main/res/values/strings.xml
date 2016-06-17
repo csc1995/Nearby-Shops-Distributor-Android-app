@@ -26,5 +26,6 @@
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="title_activity_confirm_items_for_delivery">ConfirmItemsForDelivery</string>
     <string name="title_activity_vehicle_dashboard">VehicleDashboard</string>
+    <string name="title_activity_quick_stock_editor">QuickStockEditor</string>
 
 </resources>

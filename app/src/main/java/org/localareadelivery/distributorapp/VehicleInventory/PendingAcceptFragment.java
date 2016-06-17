@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.VehicleDashboard;
+package org.localareadelivery.distributorapp.VehicleInventory;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -38,7 +38,7 @@ import retrofit2.Response;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class PendingHandoverFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, Callback<List<Order>>,AdapterPendingHandover.NotificationReciever {
+public class PendingAcceptFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, Callback<List<Order>>,AdapterPendingAccept.NotificationReciever {
 
 
     @Inject
@@ -46,7 +46,7 @@ public class PendingHandoverFragment extends Fragment implements SwipeRefreshLay
 
     RecyclerView recyclerView;
 
-    AdapterPendingHandover adapter;
+    AdapterPendingAccept adapter;
 
     public List<Order> dataset = new ArrayList<>();
 
@@ -61,7 +61,7 @@ public class PendingHandoverFragment extends Fragment implements SwipeRefreshLay
     DeliveryVehicleSelf deliveryVehicleSelf;
 
 
-    public PendingHandoverFragment() {
+    public PendingAcceptFragment() {
 
         DaggerComponentBuilder.getInstance()
                 .getNetComponent()
@@ -73,8 +73,8 @@ public class PendingHandoverFragment extends Fragment implements SwipeRefreshLay
      * Returns a new instance of this fragment for the given section
      * number.
      */
-    public static PendingHandoverFragment newInstance() {
-        PendingHandoverFragment fragment = new PendingHandoverFragment();
+    public static PendingAcceptFragment newInstance() {
+        PendingAcceptFragment fragment = new PendingAcceptFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -83,7 +83,7 @@ public class PendingHandoverFragment extends Fragment implements SwipeRefreshLay
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_home_delivery_pending_handover_vd, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_home_delivery_pending_accept_vd, container, false);
 
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
@@ -124,7 +124,7 @@ public class PendingHandoverFragment extends Fragment implements SwipeRefreshLay
     void setupRecyclerView()
     {
 
-        adapter = new AdapterPendingHandover(dataset,getActivity(),this);
+        adapter = new AdapterPendingAccept(dataset,getActivity(),this);
 
         recyclerView.setAdapter(adapter);
 
@@ -185,7 +185,7 @@ public class PendingHandoverFragment extends Fragment implements SwipeRefreshLay
         Shop currentShop = ApplicationState.getInstance().getCurrentShop();
 
             Call<List<Order>> call = orderService.getOrders(0, currentShop.getShopID(),false,
-                                            OrderStatusHomeDelivery.HANDOVER_ACCEPTED,
+                                            OrderStatusHomeDelivery.HANDED_TO_DELIVERY_VEHICLE,
                                             0,deliveryVehicleSelf.getID(),null,null,true,true);
 
 

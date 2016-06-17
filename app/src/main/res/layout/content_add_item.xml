@@ -98,10 +98,10 @@
         android:layout_height="wrap_content">
 
         <EditText
-            android:id="@+id/brandName"
+            android:id="@+id/quantityUnit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter Brand Name"/>
+            android:hint="Enter Item Unit. Example: Kg, Grams"/>
 
     </android.support.design.widget.TextInputLayout>
 
@@ -113,9 +113,24 @@
             android:id="@+id/itemDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter Item Description"/>
+            android:hint="Enter Item Description Short"/>
 
     </android.support.design.widget.TextInputLayout>
+
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/itemDescriptionLong"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Item Description Long"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+
 
 
     <Button

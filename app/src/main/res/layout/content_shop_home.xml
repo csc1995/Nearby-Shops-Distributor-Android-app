@@ -125,7 +125,7 @@
 
             <RelativeLayout
                 android:layout_marginLeft="5dp"
-                android:id="@+id/order_pick_from_shop"
+                android:id="@+id/shop_home_quick_stock_editor"
                 android:background="@color/gplus_color_2"
                 android:layout_weight="1"
                 android:layout_width="0dp"

@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.VehicleDashboard;
+package org.localareadelivery.distributorapp.VehicleInventory;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

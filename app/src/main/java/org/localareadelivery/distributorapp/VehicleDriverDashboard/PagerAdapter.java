@@ -5,7 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import org.localareadelivery.distributorapp.ModelStats.DeliveryVehicleSelf;
-import org.localareadelivery.distributorapp.VehicleDashboard.PlaceholderFragment;
+import org.localareadelivery.distributorapp.VehicleInventory.PlaceholderFragment;
 
 /**
  * Created by sumeet on 15/6/16.
@@ -37,7 +37,7 @@ public class PagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         // getItem is called to instantiate the fragment for the given page.
-        // Return a PlaceholderFragment (defined as a static inner class below).
+        // Return a FragmentOutOfStock_ (defined as a static inner class below).
 
 
 

@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.localareadelivery.distributorapp.OrdersHome.OrdersHome;
+import org.localareadelivery.distributorapp.QuickStockEditor.QuickStockEditor;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.addItems.ItemCategories.ItemCategories;
 
@@ -54,6 +55,13 @@ public class ShopHome extends AppCompatActivity implements View.OnClickListener 
     void ordersClick()
     {
         startActivity(new Intent(this, OrdersHome.class));
+    }
+
+
+    @OnClick(R.id.shop_home_quick_stock_editor)
+    void quickStockEditorClick(View view)
+    {
+        startActivity(new Intent(this, QuickStockEditor.class));
     }
 
 

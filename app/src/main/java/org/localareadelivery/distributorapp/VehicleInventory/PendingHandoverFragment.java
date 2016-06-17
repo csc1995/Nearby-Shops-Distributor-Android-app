@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.VehicleDashboard;
+package org.localareadelivery.distributorapp.VehicleInventory;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,7 +9,6 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.localareadelivery.distributorapp.ApplicationState.ApplicationState;
@@ -26,9 +25,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -42,7 +38,7 @@ import retrofit2.Response;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class PaymentsPendingFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, Callback<List<Order>>,AdapterPaymentsPending.NotificationReciever {
+public class PendingHandoverFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, Callback<List<Order>>,AdapterPendingHandover.NotificationReciever {
 
 
     @Inject
@@ -50,7 +46,7 @@ public class PaymentsPendingFragment extends Fragment implements SwipeRefreshLay
 
     RecyclerView recyclerView;
 
-    AdapterPaymentsPending adapter;
+    AdapterPendingHandover adapter;
 
     public List<Order> dataset = new ArrayList<>();
 
@@ -63,12 +59,9 @@ public class PaymentsPendingFragment extends Fragment implements SwipeRefreshLay
     NotificationReceiver notificationReceiver;
 
     DeliveryVehicleSelf deliveryVehicleSelf;
-    TextView ordersTotal;
-
-    TextView receivedTotal;
 
 
-    public PaymentsPendingFragment() {
+    public PendingHandoverFragment() {
 
         DaggerComponentBuilder.getInstance()
                 .getNetComponent()
@@ -80,8 +73,8 @@ public class PaymentsPendingFragment extends Fragment implements SwipeRefreshLay
      * Returns a new instance of this fragment for the given section
      * number.
      */
-    public static PaymentsPendingFragment newInstance() {
-        PaymentsPendingFragment fragment = new PaymentsPendingFragment();
+    public static PendingHandoverFragment newInstance() {
+        PendingHandoverFragment fragment = new PendingHandoverFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -90,11 +83,8 @@ public class PaymentsPendingFragment extends Fragment implements SwipeRefreshLay
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_home_delivery_payments_pending_vd, container, false);
-        ButterKnife.bind(this,rootView);
+        View rootView = inflater.inflate(R.layout.fragment_home_delivery_pending_handover_vd, container, false);
 
-        ordersTotal = (TextView) rootView.findViewById(R.id.ordersTotal);
-        receivedTotal = (TextView) rootView.findViewById(R.id.receivedTotal);
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
 
@@ -134,7 +124,7 @@ public class PaymentsPendingFragment extends Fragment implements SwipeRefreshLay
     void setupRecyclerView()
     {
 
-        adapter = new AdapterPaymentsPending(dataset,getActivity(),this);
+        adapter = new AdapterPendingHandover(dataset,getActivity(),this);
 
         recyclerView.setAdapter(adapter);
 
@@ -195,8 +185,8 @@ public class PaymentsPendingFragment extends Fragment implements SwipeRefreshLay
         Shop currentShop = ApplicationState.getInstance().getCurrentShop();
 
             Call<List<Order>> call = orderService.getOrders(0, currentShop.getShopID(),false,
-                                            OrderStatusHomeDelivery.HANDED_TO_END_USER,
-                                            0,deliveryVehicleSelf.getID(),false,null,true,true);
+                                            OrderStatusHomeDelivery.HANDOVER_ACCEPTED,
+                                            0,deliveryVehicleSelf.getID(),null,null,true,true);
 
 
             call.enqueue(this);
@@ -231,7 +221,6 @@ public class PaymentsPendingFragment extends Fragment implements SwipeRefreshLay
             dataset.clear();
             dataset.addAll(response.body());
             adapter.notifyDataSetChanged();
-            updateTotal();
 
             if(notificationReceiver !=null)
             {
@@ -242,7 +231,6 @@ public class PaymentsPendingFragment extends Fragment implements SwipeRefreshLay
         {
             dataset.clear();
             adapter.notifyDataSetChanged();
-            updateTotal();
 
 
             if(notificationReceiver !=null)
@@ -255,84 +243,6 @@ public class PaymentsPendingFragment extends Fragment implements SwipeRefreshLay
         swipeContainer.setRefreshing(false);
 
     }
-
-
-
-    void updateTotal()
-    {
-
-        int total = 0;
-
-        if(dataset!=null)
-        {
-            for(Order order : dataset)
-            {
-                total = total + (order.getOrderStats().getItemTotal()+ order.getDeliveryCharges());
-            }
-
-
-            ordersTotal.setText("All Orders Total : "  + total + "\nCollect " + total + " from Delivery guy.");
-            receivedTotal.setText("Received " + total + " from Delivery Guy.");
-
-        }
-
-        if(total == 0)
-        {
-            ordersTotal.setVisibility(View.GONE);
-            receivedTotal.setVisibility(View.GONE);
-
-        }else
-        {
-            ordersTotal.setVisibility(View.VISIBLE);
-            receivedTotal.setVisibility(View.VISIBLE);
-        }
-
-    }
-
-
-    @OnClick(R.id.receivedTotal)
-    void receivedAllClick(View view)
-    {
-
-        for(Order order : dataset)
-        {
-            order.setPaymentReceived(true);
-        }
-
-        Call<ResponseBody> call = orderService.putOrderBulk(dataset);
-
-        call.enqueue(new Callback<ResponseBody>() {
-
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-
-                if(response.code() == 200)
-                {
-                    showToastMessage("Successful !");
-
-                }else
-                {
-                    showToastMessage("Error while updating ! ");
-                }
-
-                makeNetworkCall();
-
-
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-
-                showToastMessage("Network Request failed !");
-
-            }
-        });
-
-
-    }
-
-
-
 
     @Override
     public void onFailure(Call<List<Order>> call, Throwable t) {
@@ -345,7 +255,8 @@ public class PaymentsPendingFragment extends Fragment implements SwipeRefreshLay
     public void notifyCancelHandover(Order order) {
 
 
-        order.setPaymentReceived(true);
+        order.setStatusHomeDelivery(OrderStatusHomeDelivery.ORDER_PACKED);
+        order.setDeliveryVehicleSelfID(0);
 
         Call<ResponseBody> call = orderService.putOrder(order.getOrderID(),order);
 
@@ -355,7 +266,7 @@ public class PaymentsPendingFragment extends Fragment implements SwipeRefreshLay
 
                 if(response.code()==200)
                 {
-                    showToastMessage("Update Successful !");
+                    showToastMessage("Handover cancelled !");
 
                     makeNetworkCall();
                 }
@@ -392,13 +303,5 @@ public class PaymentsPendingFragment extends Fragment implements SwipeRefreshLay
 
         outState.putParcelable("savedVehicle",deliveryVehicleSelf);
 
-    }
-
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-        ButterKnife.unbind(this);
     }
 }

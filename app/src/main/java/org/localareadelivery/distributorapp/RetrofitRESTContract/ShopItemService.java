@@ -19,7 +19,14 @@ import retrofit2.http.Query;
 public interface ShopItemService {
 
     @GET("/api/ShopItem")
-    Call<List<ShopItem>> getShopItems(@Query("ShopID")int ShopID, @Query("ItemID") int itemID, @Query("ItemCategoryID")int itemCategoryID);
+    Call<List<ShopItem>> getShopItems(@Query("ShopID")int ShopID, @Query("ItemID") int itemID,
+                                      @Query("ItemCategoryID")int itemCategoryID);
+
+
+    @GET("/api/ShopItem")
+    Call<List<ShopItem>> getShopItems(@Query("ShopID")int ShopID, @Query("ItemID") int itemID,
+                                      @Query("ItemCategoryID")int itemCategoryID,
+                                      @Query("IsOutOfStock") Boolean isOutOfStock,@Query("PriceEqualsZero")Boolean priceEqualsZero);
 
     @POST("/api/ShopItem")
     Call<ResponseBody> postShopItem(@Body ShopItem shopItem);

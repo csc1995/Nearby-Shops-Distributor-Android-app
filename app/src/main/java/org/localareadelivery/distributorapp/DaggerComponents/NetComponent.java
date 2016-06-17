@@ -12,7 +12,7 @@ import org.localareadelivery.distributorapp.OrdersHomeDelivery.ConfirmedOrdersFr
 import org.localareadelivery.distributorapp.OrdersHomeDelivery.PackedOrdersFragment;
 import org.localareadelivery.distributorapp.OrdersHomeDelivery.PendingAcceptFragment;
 import org.localareadelivery.distributorapp.OrdersHomeDelivery.PlacedOrdersFragment;
-import org.localareadelivery.distributorapp.VehicleDashboard.VehicleDashboard;
+import org.localareadelivery.distributorapp.QuickStockEditor.FragmentOutOfStock;
 import org.localareadelivery.distributorapp.VehicleDriverDashboard.PaymentsPendingFragment;
 import org.localareadelivery.distributorapp.VehicleDriverDashboard.PendingHandoverFragment;
 
@@ -51,7 +51,7 @@ public interface NetComponent {
 
     void Inject(PendingAcceptFragment pendingAcceptOrdersFragment);
 
-    void Inject(org.localareadelivery.distributorapp.VehicleDashboard.PendingAcceptFragment pendingAcceptFragment);
+    void Inject(org.localareadelivery.distributorapp.VehicleInventory.PendingAcceptFragment pendingAcceptFragment);
 
     void Inject(org.localareadelivery.distributorapp.VehicleDriverDashboard.PendingAcceptFragment pendingAcceptFragment);
 
@@ -59,7 +59,9 @@ public interface NetComponent {
 
     void Inject(PaymentsPendingFragment paymentsPendingFragment);
 
-    void Inject(org.localareadelivery.distributorapp.VehicleDashboard.PendingHandoverFragment pendingHandoverFragment);
+    void Inject(org.localareadelivery.distributorapp.VehicleInventory.PendingHandoverFragment pendingHandoverFragment);
 
-    void Inject(org.localareadelivery.distributorapp.VehicleDashboard.PaymentsPendingFragment paymentsPendingFragment);
+    void Inject(org.localareadelivery.distributorapp.VehicleInventory.PaymentsPendingFragment paymentsPendingFragment);
+
+    void Inject(FragmentOutOfStock outOfStockFragment);
 }

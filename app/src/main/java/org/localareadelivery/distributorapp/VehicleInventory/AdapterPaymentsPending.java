@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.VehicleDashboard;
+package org.localareadelivery.distributorapp.VehicleInventory;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -21,7 +21,7 @@ import butterknife.OnClick;
 /**
  * Created by sumeet on 13/6/16.
  */
-public class AdapterPendingHandover extends RecyclerView.Adapter<AdapterPendingHandover.ViewHolder>{
+public class AdapterPaymentsPending extends RecyclerView.Adapter<AdapterPaymentsPending.ViewHolder>{
 
 
     List<Order> dataset = null;
@@ -31,7 +31,7 @@ public class AdapterPendingHandover extends RecyclerView.Adapter<AdapterPendingH
     NotificationReciever notifications;
 
 
-    public AdapterPendingHandover(List<Order> dataset, Context context, NotificationReciever notifications) {
+    public AdapterPaymentsPending(List<Order> dataset, Context context, NotificationReciever notifications) {
         this.dataset = dataset;
         this.context = context;
         this.notifications = notifications;
@@ -39,16 +39,16 @@ public class AdapterPendingHandover extends RecyclerView.Adapter<AdapterPendingH
     }
 
     @Override
-    public AdapterPendingHandover.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public AdapterPaymentsPending.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_item_order_pending_handover_vd,parent,false);
+                .inflate(R.layout.list_item_order_payments_pending_vd,parent,false);
 
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(AdapterPendingHandover.ViewHolder holder, int position) {
+    public void onBindViewHolder(AdapterPaymentsPending.ViewHolder holder, int position) {
 
         if(dataset!=null)
         {
@@ -114,7 +114,8 @@ public class AdapterPendingHandover extends RecyclerView.Adapter<AdapterPendingH
         @Bind(R.id.currentStatus)
         TextView currentStatus;
 
-
+        @Bind(R.id.cancelHandoverButton)
+        TextView cancelHandoverButton;
 
 
         public ViewHolder(View itemView) {
@@ -126,6 +127,7 @@ public class AdapterPendingHandover extends RecyclerView.Adapter<AdapterPendingH
         }
 
 
+        @OnClick(R.id.cancelHandoverButton)
         void onClickConfirmButton(View view)
         {
             notifications.notifyCancelHandover(dataset.get(getLayoutPosition()));

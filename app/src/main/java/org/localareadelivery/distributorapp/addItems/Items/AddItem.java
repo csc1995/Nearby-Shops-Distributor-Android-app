@@ -51,12 +51,15 @@ public class AddItem extends AppCompatActivity {
     public static final String ITEM_CATEGORY_ID_KEY = "itemCategoryIDKey";
 
     @Bind(R.id.itemName) EditText itemName;
-    @Bind(R.id.brandName) EditText brandName;
     @Bind(R.id.itemDescription) EditText itemDescription;
+    @Bind(R.id.itemDescriptionLong) EditText itemDescriptionLong;
+    @Bind(R.id.quantityUnit) EditText quantityUnit;
+
 
     @Bind(R.id.addItemButton) Button addItemButton;
 
     @Bind(R.id.result) TextView result;
+
 
     String imagePath = "";
 
@@ -103,8 +106,9 @@ public class AddItem extends AppCompatActivity {
         }
 
         itemForEdit.setItemDescription(itemDescription.getText().toString());
-        itemForEdit.setBrandName(brandName.getText().toString());
         itemForEdit.setItemName(itemName.getText().toString());
+        itemForEdit.setQuantityUnit(quantityUnit.getText().toString());
+        itemForEdit.setItemDescriptionLong(itemDescriptionLong.getText().toString());
     }
 
 
@@ -151,7 +155,6 @@ public class AddItem extends AppCompatActivity {
     {
         result.setText("Result : " + "\n"
                     + item.getItemImageURL() + "\n"
-                    + item.getBrandName() + "\n"
                     + item.getItemDescription() + "\n"
                     + item.getItemName() + "\n"
                     + item.getItemCategoryID() + "\n"

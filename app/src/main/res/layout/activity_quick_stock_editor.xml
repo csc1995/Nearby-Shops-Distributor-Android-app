@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="org.localareadelivery.distributorapp.VehicleInventory.VehicleDashboard">
+    tools:context="org.localareadelivery.distributorapp.QuickStockEditor.QuickStockEditor">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
@@ -23,6 +23,7 @@
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
         </android.support.v7.widget.Toolbar>
+
 
 
         <android.support.design.widget.TabLayout
@@ -43,5 +44,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
 
 </android.support.design.widget.CoordinatorLayout>
