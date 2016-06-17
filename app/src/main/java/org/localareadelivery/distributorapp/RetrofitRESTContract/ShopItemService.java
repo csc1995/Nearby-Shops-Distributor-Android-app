@@ -23,10 +23,21 @@ public interface ShopItemService {
                                       @Query("ItemCategoryID")int itemCategoryID);
 
 
+
     @GET("/api/ShopItem")
     Call<List<ShopItem>> getShopItems(@Query("ShopID")int ShopID, @Query("ItemID") int itemID,
                                       @Query("ItemCategoryID")int itemCategoryID,
                                       @Query("IsOutOfStock") Boolean isOutOfStock,@Query("PriceEqualsZero")Boolean priceEqualsZero);
+
+
+    @GET("/api/ShopItem")
+    Call<List<ShopItem>> getShopItems(@Query("ShopID")int ShopID, @Query("ItemID") int itemID,
+                                      @Query("ItemCategoryID")int itemCategoryID,
+                                      @Query("IsOutOfStock") Boolean isOutOfStock,@Query("PriceEqualsZero")Boolean priceEqualsZero,
+                                      @Query("SortBy") String sortBy,
+                                      @Query("Limit") int limit, @Query("Offset") int offset
+    );
+
 
     @POST("/api/ShopItem")
     Call<ResponseBody> postShopItem(@Body ShopItem shopItem);

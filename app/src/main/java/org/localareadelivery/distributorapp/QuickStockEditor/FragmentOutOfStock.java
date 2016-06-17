@@ -41,6 +41,8 @@ import retrofit2.Response;
 public class FragmentOutOfStock extends Fragment implements SwipeRefreshLayout.OnRefreshListener, Callback<List<ShopItem>>,AdapterOutOfStock.NotificationReceiver {
 
 
+
+
     @Inject
     ShopItemService shopItemService;
 
@@ -58,6 +60,13 @@ public class FragmentOutOfStock extends Fragment implements SwipeRefreshLayout.O
     NotificationReceiverPager notificationReceiverPager;
 
 
+    public static String ARG_MODE_KEY = "mode_key";
+
+    public static int MODE_OUT_OF_STOCK = 1;
+    public static int MODE_RECENTLY_UPDATED = 2;
+    public static int MODE_RECENTLY_ADDED = 3;
+
+
     public FragmentOutOfStock() {
 
         DaggerComponentBuilder.getInstance()
@@ -70,9 +79,10 @@ public class FragmentOutOfStock extends Fragment implements SwipeRefreshLayout.O
      * Returns a new instance of this fragment for the given section
      * number.
      */
-    public static FragmentOutOfStock newInstance() {
+    public static FragmentOutOfStock newInstance(int mode) {
         FragmentOutOfStock fragment = new FragmentOutOfStock();
         Bundle args = new Bundle();
+        args.putInt(ARG_MODE_KEY,mode);
         fragment.setArguments(args);
         return fragment;
     }
@@ -164,13 +174,32 @@ public class FragmentOutOfStock extends Fragment implements SwipeRefreshLayout.O
 
     void makeNetworkCall()
     {
+        int mode = getArguments().getInt(ARG_MODE_KEY);
 
-            Shop currentShop = ApplicationState.getInstance().getCurrentShop();
+        Shop currentShop = ApplicationState.getInstance().getCurrentShop();
+
+        Call<List<ShopItem>> call = null;
 
 
-            Call<List<ShopItem>> call = shopItemService.getShopItems(currentShop.getShopID(),0,0,true,null);
+        if(mode==MODE_OUT_OF_STOCK)
+        {
+            call = shopItemService.getShopItems(currentShop.getShopID(),0,0,true,null);
 
+        }else if (mode == MODE_RECENTLY_ADDED)
+        {
+            call = shopItemService.getShopItems(currentShop.getShopID(),0,0,null,null,"date_time_added desc",0,0);
+
+        }else if (mode == MODE_RECENTLY_UPDATED)
+        {
+            call = shopItemService.getShopItems(currentShop.getShopID(),0,0,null,null,"last_update_date_time desc",0,0);
+        }
+
+
+        if(call!=null)
+        {
             call.enqueue(this);
+        }
+
     }
 
 

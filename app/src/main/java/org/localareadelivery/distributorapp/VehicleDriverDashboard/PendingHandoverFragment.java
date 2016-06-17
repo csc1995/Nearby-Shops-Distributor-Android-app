@@ -250,11 +250,12 @@ public class PendingHandoverFragment extends Fragment implements SwipeRefreshLay
         swipeContainer.setRefreshing(false);
     }
 
+
     @Override
     public void notifyCancelHandover(Order order) {
 
 
-        order.setStatusHomeDelivery(OrderStatusHomeDelivery.HANDED_TO_END_USER);
+        order.setStatusHomeDelivery(OrderStatusHomeDelivery.DELIVERED_TO_END_USER);
 
         Call<ResponseBody> call = orderService.putOrder(order.getOrderID(),order);
 

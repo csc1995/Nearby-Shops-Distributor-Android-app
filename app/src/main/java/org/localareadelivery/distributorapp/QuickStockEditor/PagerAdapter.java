@@ -16,15 +16,26 @@ public class PagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
+
         // getItem is called to instantiate the fragment for the given page.
         // Return a FragmentOutOfStock_ (defined as a static inner class below).
+
         if(position == 0)
         {
-            return FragmentOutOfStock.newInstance();
+            return FragmentOutOfStock.newInstance(FragmentOutOfStock.MODE_RECENTLY_ADDED);
+        }
+        else if(position == 1)
+        {
+            return FragmentOutOfStock.newInstance(FragmentOutOfStock.MODE_OUT_OF_STOCK);
 
-        }else if(position == 1)
+        }else if(position == 2)
         {
             return FragmentPriceNotSet.newInstance();
+
+        }else if(position == 3)
+        {
+            return FragmentOutOfStock.newInstance(FragmentOutOfStock.MODE_RECENTLY_UPDATED);
+
         }
 
 
@@ -34,18 +45,21 @@ public class PagerAdapter extends FragmentPagerAdapter {
     @Override
     public int getCount() {
         // Show 3 total pages.
-        return 2;
+        return 4;
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
         switch (position) {
             case 0:
-                return "Out of Stock (7)";
+                return "Recently Added";
             case 1:
-                return "Price not Set (3)";
+                return "Out of Stock";
             case 2:
-                return "SECTION 3";
+                return "Price not Set";
+            case 3:
+                return "Recently Updated";
+
         }
         return null;
     }

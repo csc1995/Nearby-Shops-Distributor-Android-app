@@ -11,10 +11,11 @@ public class OrderStatusHomeDelivery {
     public static final int ORDER_PACKED = 3;
     public static final int HANDED_TO_DELIVERY_VEHICLE = 4;
     public static final int HANDOVER_ACCEPTED = 5;
-    public static final int HANDED_TO_END_USER = 6;
+    public static final int DELIVERED_TO_END_USER = 6;
     public static final int DELIVERY_COMPLETE = 7;
 
 
-    public static final int STATUS_CANCELLED = 10;
+    public static final int STATUS_CANCELLED_BY_SHOP = 10;
+    public static final int STATUS_CANCELLED_BY_END_USER = 11;
 
 }

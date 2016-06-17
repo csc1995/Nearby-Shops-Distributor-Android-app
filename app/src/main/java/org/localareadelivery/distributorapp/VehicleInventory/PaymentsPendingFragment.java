@@ -196,7 +196,7 @@ public class PaymentsPendingFragment extends Fragment implements SwipeRefreshLay
         Shop currentShop = ApplicationState.getInstance().getCurrentShop();
 
             Call<List<Order>> call = orderService.getOrders(0, currentShop.getShopID(),false,
-                                            OrderStatusHomeDelivery.HANDED_TO_END_USER,
+                                            OrderStatusHomeDelivery.DELIVERED_TO_END_USER,
                                             0,deliveryVehicleSelf.getID(),false,null,true,true);
 
 
