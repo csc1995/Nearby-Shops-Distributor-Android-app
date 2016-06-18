@@ -1,8 +1,10 @@
 package org.localareadelivery.distributorapp.addItems.Items;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -34,6 +37,7 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -100,128 +104,6 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder>{
         }
 
 
-
-        holder.deleteText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                String url = getServiceURL() + "/api/Item?itemID=" + dataset.get(position).getItemID();
-
-                Log.d("response",url);
-
-                StringRequest stringRequest = new StringRequest(Request.Method.DELETE, url, new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-
-                        Log.d("response",response);
-                        notifyDelete();
-
-
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                        Log.d("response",error.toString());
-                    }
-                });
-
-                VolleySingleton.getInstance(context).addToRequestQueue(stringRequest);
-
-            }
-        });
-
-
-        holder.deleteIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                String url = getServiceURL() + "/api/Item?itemID=" + dataset.get(position).getItemID();
-
-                Log.d("response",url);
-
-                StringRequest stringRequest = new StringRequest(Request.Method.DELETE, url, new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-
-                        Log.d("response",response);
-                        notifyDelete();
-
-
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                        Log.d("response",error.toString());
-                    }
-                });
-
-                VolleySingleton.getInstance(context).addToRequestQueue(stringRequest);
-
-            }
-
-        });
-
-
-
-
-        holder.editText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent intent = new Intent(context,EditItem.class);
-
-                intent.putExtra(EditItem.ITEM_CATEGORY_INTENT_KEY,itemCategory);
-                intent.putExtra(EditItem.ITEM_INTENT_KEY,dataset.get(position));
-
-                context.startActivity(intent);
-            }
-        });
-
-        holder.editIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent intent = new Intent(context,EditItem.class);
-
-                intent.putExtra(EditItem.ITEM_CATEGORY_INTENT_KEY,itemCategory);
-                intent.putExtra(EditItem.ITEM_INTENT_KEY,dataset.get(position));
-
-                context.startActivity(intent);
-            }
-        });
-
-
-
-
-        holder.itemsListItem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if(shopItemDataset!=null) {
-
-                    if (shopItemDataset.containsKey(dataset.get(position).getItemID())) {
-
-                        deleteShopItemRequest(
-                                ApplicationState.getInstance().getCurrentShop().getShopID(),
-                                dataset.get(position).getItemID(),holder,position);
-
-
-                    } else
-                    {
-
-                        postShopItem(
-
-                                ApplicationState.getInstance().getCurrentShop().getShopID(),
-                                dataset.get(position).getItemID(),
-                                holder,
-                                position);
-
-                    }
-                }
-            }
-        });
     }
 
     @Override
@@ -264,12 +146,121 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder>{
 
             //editIcon = (ImageView) itemView.findViewById(R.id.editIcon);
             //editText = (TextView) itemView.findViewById(R.id.editText);
+        }
 
 
 
+        @OnClick(R.id.itemListItem)
+        void listItemClick(View view) {
+            if (shopItemDataset != null) {
+
+                if (shopItemDataset.containsKey(dataset.get(getLayoutPosition()).getItemID())) {
+
+                    deleteShopItemRequest(
+                            ApplicationState.getInstance().getCurrentShop().getShopID(),
+                            dataset.get(getLayoutPosition()).getItemID(), this, getLayoutPosition());
+
+
+                } else {
+
+                    postShopItem(
+
+                            ApplicationState.getInstance().getCurrentShop().getShopID(),
+                            dataset.get(getLayoutPosition()).getItemID(),
+                            this,
+                            getLayoutPosition());
+
+                }
+
+            }
 
         }
 
+
+
+
+        @OnClick({R.id.editIcon,R.id.editText})
+        void editClick(View view)
+        {
+
+            Intent intent = new Intent(context,EditItem.class);
+
+//                intent.putExtra(EditItem.ITEM_CATEGORY_INTENT_KEY,itemCategory);
+            intent.putExtra(EditItem.ITEM_INTENT_KEY,dataset.get(getLayoutPosition()));
+
+            context.startActivity(intent);
+
+        }
+
+
+
+        @OnClick({R.id.deleteIcon,R.id.deleteText})
+        void deleteClick(View view)
+        {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+            builder.setTitle("Confirm Delete Item !")
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            showToastMessage("Cancelled !");
+
+                        }
+                    })
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            deleteItem();
+                        }
+                    })
+                    .setMessage("Do you want to delete this Item ? ")
+                    .show();
+
+        }
+
+
+
+
+        void deleteItem()
+        {
+
+
+            // ?itemID=
+
+            String url = getServiceURL() + "/api/Item/" + dataset.get(getLayoutPosition()).getItemID();
+
+            Log.d("response",url);
+
+            StringRequest stringRequest = new StringRequest(Request.Method.DELETE, url, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+
+                    Log.d("response",response);
+                    notifyDelete();
+
+
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                    Log.d("response",error.toString());
+                }
+            });
+
+            VolleySingleton.getInstance(context).addToRequestQueue(stringRequest);
+
+        }
+
+    }// View Holder Ends
+
+
+
+    void showToastMessage(String message)
+    {
+        Toast.makeText(context,message,Toast.LENGTH_SHORT).show();
     }
 
 

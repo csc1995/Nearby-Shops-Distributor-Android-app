@@ -76,6 +76,17 @@
         android:text="Remove Picture"/>
 
 
+    <CheckBox
+        android:layout_marginTop="15dp"
+        android:gravity="right"
+        android:layout_gravity="right"
+        android:textSize="20sp"
+        android:text="Is Shop Open ?"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
@@ -102,6 +113,132 @@
             android:hint="Enter Shop Name"/>
 
     </android.support.design.widget.TextInputLayout>
+
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/shopAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:hint="Enter Shop Address"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/shopCity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:hint="Enter Shop City / Town"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/shopPincode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:hint="Enter Shop Pincode"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+
+
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/shopLandmark"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:hint="Enter Landmark"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+
+
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/shopCustomerHelplineNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:hint="Enter Customer Helpline Number"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+
+
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/shopDeliveryHelplineNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:hint="Enter Delivery Helpline Number"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/shopShortDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:hint="Enter Short Description (30 words Max)"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+
+
+
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/shopLongDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:hint="Long Description: Explain delivery timings and everythings else."/>
+
+    </android.support.design.widget.TextInputLayout>
+
+
 
 
     <android.support.design.widget.TextInputLayout
@@ -178,9 +315,24 @@
             android:id="@+id/deliveryCharges"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter Delivery Charges"/>
+            android:hint="Enter Delivery Charges Per Order"/>
 
     </android.support.design.widget.TextInputLayout>
+
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/shopBillAmountForFreeDelivery"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:hint="Enter Bill amount for free Delivery"/>
+
+    </android.support.design.widget.TextInputLayout>
+
 
 
 
@@ -205,12 +357,17 @@
         android:textColor="@color/white"
         android:background="@color/blueGrey800"/>
 
+
+    <!--
     <TextView
         android:id="@+id/result"
         android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Result:"/>
+
+        -->
+
 
 </LinearLayout>
 
