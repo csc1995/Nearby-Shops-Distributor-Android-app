@@ -600,7 +600,14 @@ public class EditShop extends AppCompatActivity implements LocationListener, Cal
         Log.d("applog", "inside retrofit call !" + String.valueOf(response.code()));
         Log.d("applog", "image Path : " + image.getPath());
 
-        shop.setImagePath(image.getPath());
+
+
+        shop.setImagePath(null);
+
+        if(image!=null)
+        {
+            shop.setImagePath(image.getPath());
+        }
 
         getDataFromEditText(shop);
 

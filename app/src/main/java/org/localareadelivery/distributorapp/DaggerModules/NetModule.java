@@ -8,7 +8,9 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import org.localareadelivery.distributorapp.Model.ItemCategory;
 import org.localareadelivery.distributorapp.MyApplication;
+import org.localareadelivery.distributorapp.RetrofitRESTContract.ItemCategoryService;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ItemService;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderService;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ShopItemService;
@@ -140,6 +142,14 @@ public class NetModule {
     ItemService provideItemService(Retrofit retrofit)
     {
         ItemService service = retrofit.create(ItemService.class);
+
+        return service;
+    }
+
+    @Provides
+    ItemCategoryService provideItemCategory(Retrofit retrofit)
+    {
+        ItemCategoryService service = retrofit.create(ItemCategoryService.class);
 
         return service;
     }

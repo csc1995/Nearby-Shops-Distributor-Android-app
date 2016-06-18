@@ -63,8 +63,10 @@ public class FragmentOutOfStock extends Fragment implements SwipeRefreshLayout.O
     public static String ARG_MODE_KEY = "mode_key";
 
     public static int MODE_OUT_OF_STOCK = 1;
-    public static int MODE_RECENTLY_UPDATED = 2;
-    public static int MODE_RECENTLY_ADDED = 3;
+    public static int MODE_LOW_STOCK = 2;
+    public static int MODE_RECENTLY_UPDATED = 3;
+    public static int MODE_RECENTLY_ADDED = 4;
+
 
 
     public FragmentOutOfStock() {
@@ -172,8 +174,7 @@ public class FragmentOutOfStock extends Fragment implements SwipeRefreshLayout.O
 
 
 
-    void makeNetworkCall()
-    {
+    void makeNetworkCall() {
         int mode = getArguments().getInt(ARG_MODE_KEY);
 
         Shop currentShop = ApplicationState.getInstance().getCurrentShop();
@@ -181,11 +182,17 @@ public class FragmentOutOfStock extends Fragment implements SwipeRefreshLayout.O
         Call<List<ShopItem>> call = null;
 
 
-        if(mode==MODE_OUT_OF_STOCK)
-        {
-            call = shopItemService.getShopItems(currentShop.getShopID(),0,0,true,null);
+        if (mode == MODE_OUT_OF_STOCK) {
 
-        }else if (mode == MODE_RECENTLY_ADDED)
+            call = shopItemService.getShopItems(currentShop.getShopID(), 0, 0, true, null);
+
+        } else if (mode == MODE_LOW_STOCK)
+        {
+
+            call = shopItemService.getShopItems(currentShop.getShopID(),0,0,null,null,"available_item_quantity",0,0);
+
+        }
+        else if (mode == MODE_RECENTLY_ADDED)
         {
             call = shopItemService.getShopItems(currentShop.getShopID(),0,0,null,null,"date_time_added desc",0,0);
 

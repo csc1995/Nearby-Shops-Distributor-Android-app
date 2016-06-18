@@ -16,7 +16,9 @@ import org.localareadelivery.distributorapp.QuickStockEditor.FragmentOutOfStock;
 import org.localareadelivery.distributorapp.QuickStockEditor.FragmentPriceNotSet;
 import org.localareadelivery.distributorapp.VehicleDriverDashboard.PaymentsPendingFragment;
 import org.localareadelivery.distributorapp.VehicleDriverDashboard.PendingHandoverFragment;
+import org.localareadelivery.distributorapp.addItems.ItemCategories.EditItemCategory;
 import org.localareadelivery.distributorapp.addItems.Items.AddItem;
+import org.localareadelivery.distributorapp.addItems.Items.EditItem;
 
 import javax.inject.Singleton;
 
@@ -72,4 +74,7 @@ public interface NetComponent {
     void Inject(AddItem addItem);
 
 
+    void Inject(EditItemCategory editItemCategory);
+
+    void Inject(EditItem editItem);
 }

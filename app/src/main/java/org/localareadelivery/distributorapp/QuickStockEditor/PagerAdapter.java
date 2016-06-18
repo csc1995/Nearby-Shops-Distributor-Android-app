@@ -22,17 +22,23 @@ public class PagerAdapter extends FragmentPagerAdapter {
 
         if(position == 0)
         {
+
             return FragmentOutOfStock.newInstance(FragmentOutOfStock.MODE_RECENTLY_ADDED);
         }
         else if(position == 1)
         {
-            return FragmentOutOfStock.newInstance(FragmentOutOfStock.MODE_OUT_OF_STOCK);
+
+            return FragmentOutOfStock.newInstance(FragmentOutOfStock.MODE_LOW_STOCK);
 
         }else if(position == 2)
         {
+            return FragmentOutOfStock.newInstance(FragmentOutOfStock.MODE_OUT_OF_STOCK);
+        }
+        else if(position == 3)
+        {
             return FragmentPriceNotSet.newInstance();
 
-        }else if(position == 3)
+        }else if(position == 4)
         {
             return FragmentOutOfStock.newInstance(FragmentOutOfStock.MODE_RECENTLY_UPDATED);
 
@@ -45,7 +51,7 @@ public class PagerAdapter extends FragmentPagerAdapter {
     @Override
     public int getCount() {
         // Show 3 total pages.
-        return 4;
+        return 5;
     }
 
     @Override
@@ -54,10 +60,13 @@ public class PagerAdapter extends FragmentPagerAdapter {
             case 0:
                 return "Recently Added";
             case 1:
-                return "Out of Stock";
+
+                return "Low Stock";
             case 2:
-                return "Price not Set";
+                return "Out of Stock";
             case 3:
+                return "Price not Set";
+            case 4:
                 return "Recently Updated";
 
         }
