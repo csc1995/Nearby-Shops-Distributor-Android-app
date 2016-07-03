@@ -6,14 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
-import com.google.android.gms.maps.LocationSource;
-
+import org.localareadelivery.distributorapp.AddItemsToShopInventory.ItemCategoriesTabs;
 import org.localareadelivery.distributorapp.OrdersHome.OrdersHome;
 import org.localareadelivery.distributorapp.QuickStockEditor.QuickStockEditor;
 import org.localareadelivery.distributorapp.R;
-import org.localareadelivery.distributorapp.addItems.ItemCategories.ItemCategories;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -75,15 +72,15 @@ public class ShopHome extends AppCompatActivity implements View.OnClickListener 
 
             case R.id.option_add_items:
 
-                startActivity(new Intent(this, ItemCategories.class));
+//                startActivity(new Intent(this, ItemCategories.class));
 
-
+                startActivity(new Intent(this, ItemCategoriesTabs.class));
 
                 break;
 
             case R.id.option_add_stock:
 
-                startActivity(new Intent(this, org.localareadelivery.distributorapp.addStock.ItemCategories.class));
+//                startActivity(new Intent(this, org.localareadelivery.distributorapp.addStock.ItemCategories.class));
 
                 break;
 

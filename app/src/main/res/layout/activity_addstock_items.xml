@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:background="#22000000"
-    tools:context=".addItems.Items.Items">
+    tools:context=".DeprecatedAddItems.Items.Items">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"

@@ -1,19 +1,13 @@
-package org.localareadelivery.distributorapp.addItems.Items;
+package org.localareadelivery.distributorapp.AddItemsToShopInventory.Items;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -22,7 +16,6 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 import com.yalantis.ucrop.UCrop;
-import com.yalantis.ucrop.UCropActivity;
 
 
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
@@ -30,29 +23,21 @@ import org.localareadelivery.distributorapp.Model.Image;
 import org.localareadelivery.distributorapp.Model.Item;
 import org.localareadelivery.distributorapp.Model.ItemCategory;
 import org.localareadelivery.distributorapp.R;
-import org.localareadelivery.distributorapp.RetrofitRESTContract.ImageService;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ItemService;
 import org.localareadelivery.distributorapp.Utility.ImageCalls;
 import org.localareadelivery.distributorapp.Utility.ImageCropUtility;
 import org.localareadelivery.distributorapp.Utility.UtilityGeneral;
-import org.localareadelivery.distributorapp.deprecatedCode.ImageUpload;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 
 import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class AddItem extends AppCompatActivity implements Callback<Image> {
 
@@ -70,6 +55,7 @@ public class AddItem extends AppCompatActivity implements Callback<Image> {
 
     EditText itemDescription;
     @Bind(R.id.itemDescriptionLong)
+
     EditText itemDescriptionLong;
     @Bind(R.id.quantityUnit)
     EditText quantityUnit;
@@ -103,7 +89,7 @@ public class AddItem extends AppCompatActivity implements Callback<Image> {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-        itemCategory = getIntent().getParcelableExtra(Items.ADD_ITEM_INTENT_KEY);
+        itemCategory = getIntent().getParcelableExtra(ItemRemakeFragment.ADD_ITEM_INTENT_KEY);
 
 
         if (savedInstanceState == null) {
@@ -213,6 +199,7 @@ public class AddItem extends AppCompatActivity implements Callback<Image> {
     void addItem() {
 
         if (isImageAdded) {
+
             ImageCalls.getInstance().uploadPickedImage(this, REQUEST_CODE_READ_EXTERNAL_STORAGE, this);
 
         } else {

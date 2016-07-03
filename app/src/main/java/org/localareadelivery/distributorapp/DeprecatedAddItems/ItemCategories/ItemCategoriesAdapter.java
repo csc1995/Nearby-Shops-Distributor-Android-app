@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.addItems.ItemCategories;
+package org.localareadelivery.distributorapp.DeprecatedAddItems.ItemCategories;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -19,7 +19,7 @@ import com.squareup.picasso.Picasso;
 
 
 import org.localareadelivery.distributorapp.Utility.UtilityGeneral;
-import org.localareadelivery.distributorapp.addItems.Items.Items;
+import org.localareadelivery.distributorapp.DeprecatedAddItems.Items.Items;
 import org.localareadelivery.distributorapp.Model.ItemCategory;
 import org.localareadelivery.distributorapp.R;
 
@@ -61,7 +61,7 @@ public class ItemCategoriesAdapter extends RecyclerView.Adapter<ItemCategoriesAd
     @Override
     public ItemCategoriesAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_item_category,parent,false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_item_category_deprecated,parent,false);
 
         return new ViewHolder(v);
     }

@@ -43,6 +43,7 @@ public interface ShopItemService {
 
     @GET("/api/v1/ShopItem")
     Call<ShopItemEndPoint> getShopItemEndpoint(
+            @Query("ItemCategoryID")Integer ItemCategoryID,
             @Query("ShopID")Integer ShopID, @Query("ItemID") Integer itemID,
             @Query("latCenter")Double latCenter,@Query("lonCenter")Double lonCenter,
             @Query("deliveryRangeMax")Double deliveryRangeMax,
@@ -65,5 +66,15 @@ public interface ShopItemService {
 
     @DELETE("/api/v1/ShopItem")
     Call<ResponseBody> deleteShopItem(@Query("ShopID")int ShopID, @Query("ItemID") int itemID);
+
+
+    // bulk update methods
+
+
+    @POST("/api/v1/ShopItem/CreateBulk")
+    Call<ResponseBody> createShopItemBulk(@Body List<ShopItem> itemList);
+
+    @POST("/api/v1/ShopItem/DeleteBulk")
+    Call<ResponseBody> deleteShopItemBulk(@Body List<ShopItem> itemList);
 
 }

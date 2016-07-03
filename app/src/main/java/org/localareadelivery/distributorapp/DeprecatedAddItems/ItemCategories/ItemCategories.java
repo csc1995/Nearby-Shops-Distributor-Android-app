@@ -1,9 +1,8 @@
-package org.localareadelivery.distributorapp.addItems.ItemCategories;
+package org.localareadelivery.distributorapp.DeprecatedAddItems.ItemCategories;
 
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;

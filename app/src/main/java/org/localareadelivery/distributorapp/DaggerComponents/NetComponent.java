@@ -1,5 +1,9 @@
 package org.localareadelivery.distributorapp.DaggerComponents;
 
+import org.localareadelivery.distributorapp.AddItemsToShopInventory.ItemCategories.ItemCategoriesAdapter;
+import org.localareadelivery.distributorapp.AddItemsToShopInventory.ItemCategories.ItemCategoriesFragment;
+import org.localareadelivery.distributorapp.AddItemsToShopInventory.Items.ItemRemakeAdapter;
+import org.localareadelivery.distributorapp.AddItemsToShopInventory.Items.ItemRemakeFragment;
 import org.localareadelivery.distributorapp.DaggerModules.AppModule;
 import org.localareadelivery.distributorapp.DaggerModules.NetModule;
 import org.localareadelivery.distributorapp.DataProvidersRetrofit.ItemCategoryRetrofitProvider;
@@ -14,14 +18,16 @@ import org.localareadelivery.distributorapp.OrdersHomeDelivery.PendingAcceptFrag
 import org.localareadelivery.distributorapp.OrdersHomeDelivery.PlacedOrdersFragment;
 import org.localareadelivery.distributorapp.QuickStockEditor.FragmentOutOfStock;
 import org.localareadelivery.distributorapp.QuickStockEditor.FragmentPriceNotSet;
+import org.localareadelivery.distributorapp.SelectParent.ItemCategoriesParent;
+import org.localareadelivery.distributorapp.SelectParent.ItemCategoriesParentAdapter;
 import org.localareadelivery.distributorapp.ShopList.Home;
 import org.localareadelivery.distributorapp.VehicleDriverDashboard.PaymentsPendingFragment;
 import org.localareadelivery.distributorapp.VehicleDriverDashboard.PendingHandoverFragment;
-import org.localareadelivery.distributorapp.addItems.ItemCategories.EditItemCategory;
-import org.localareadelivery.distributorapp.addItems.ItemCategories.ItemCategories;
-import org.localareadelivery.distributorapp.addItems.Items.AddItem;
-import org.localareadelivery.distributorapp.addItems.Items.EditItem;
-import org.localareadelivery.distributorapp.addItems.Items.ItemsAdapter;
+import org.localareadelivery.distributorapp.DeprecatedAddItems.ItemCategories.EditItemCategory;
+import org.localareadelivery.distributorapp.DeprecatedAddItems.ItemCategories.ItemCategories;
+import org.localareadelivery.distributorapp.DeprecatedAddItems.Items.AddItem;
+import org.localareadelivery.distributorapp.DeprecatedAddItems.Items.EditItem;
+import org.localareadelivery.distributorapp.DeprecatedAddItems.Items.ItemsAdapter;
 
 import javax.inject.Singleton;
 
@@ -74,8 +80,6 @@ public interface NetComponent {
 
     void Inject(FragmentPriceNotSet fragmentPriceNotSet);
 
-    void Inject(AddItem addItem);
-
 
     void Inject(EditItemCategory editItemCategory);
 
@@ -86,4 +90,24 @@ public interface NetComponent {
     void Inject(ItemsAdapter itemsAdapter);
 
     void Inject(Home home);
+
+    void Inject(AddItem addItem);
+
+    void Inject(org.localareadelivery.distributorapp.AddItemsToShopInventory.Items.AddItem addItem);
+
+    void Inject(ItemRemakeAdapter itemRemakeAdapter);
+
+    void Inject(org.localareadelivery.distributorapp.AddItemsToShopInventory.ItemCategories.EditItemCategory editItemCategory);
+
+    void Inject(ItemCategoriesAdapter itemCategoriesAdapter);
+
+    void Inject(ItemCategoriesFragment itemCategoriesFragment);
+
+    void Inject(org.localareadelivery.distributorapp.AddItemsToShopInventory.Items.EditItem editItem);
+
+    void Inject(ItemRemakeFragment itemRemakeFragment);
+
+    void Inject(ItemCategoriesParent itemCategoriesParent);
+
+    void Inject(ItemCategoriesParentAdapter itemCategoriesParentAdapter);
 }

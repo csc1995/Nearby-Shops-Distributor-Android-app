@@ -16,6 +16,10 @@ android {
         versionName "1.0"
 
 //        vectorDrawables.useSupportLibrary = true
+        // Enabling multidex support.
+        multiDexEnabled true
+        vectorDrawables.useSupportLibrary = true
+
     }
     buildTypes {
         release {
@@ -43,7 +47,6 @@ android {
     repositories {
         maven {url "https://clojars.org/repo/"}
     }
-
 
 
 }

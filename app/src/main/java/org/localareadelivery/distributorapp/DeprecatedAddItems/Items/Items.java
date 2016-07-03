@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.addItems.Items;
+package org.localareadelivery.distributorapp.DeprecatedAddItems.Items;
 
 import android.content.Intent;
 import android.content.SharedPreferences;

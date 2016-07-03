@@ -65,7 +65,7 @@ public class ShopsListAdapter extends RecyclerView.Adapter<ShopsListAdapter.View
 
         String imagePath = UtilityGeneral.getServiceURL(context) + IMAGE_ENDPOINT_URL + dataset.get(position).getImagePath();
 
-        Picasso.with(context).load(imagePath).placeholder(R.drawable.nature_people).into(holder.shopImage);
+        Picasso.with(context).load(imagePath).into(holder.shopImage);
 
     }
 

@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.addItems.Items;
+package org.localareadelivery.distributorapp.AddItemsToShopInventory.Items;
 
 
 import android.content.Intent;
@@ -210,7 +210,7 @@ public class EditItem extends AppCompatActivity implements Callback<Image> {
         itemCall.enqueue(new Callback<ResponseBody>() {
 
             @Override
-            public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
 
                 if (response.code() == 200)
                 {

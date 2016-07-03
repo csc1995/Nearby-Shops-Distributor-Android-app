@@ -1,8 +1,6 @@
 package org.localareadelivery.distributorapp.DaggerDepricated;
 
-import org.localareadelivery.distributorapp.DaggerDepricated.DataModule;
 import org.localareadelivery.distributorapp.DataRouters.ItemCategoryDataRouter;
-import org.localareadelivery.distributorapp.addItems.ItemCategories.ItemCategories;
 
 import javax.inject.Singleton;
 import dagger.Component;

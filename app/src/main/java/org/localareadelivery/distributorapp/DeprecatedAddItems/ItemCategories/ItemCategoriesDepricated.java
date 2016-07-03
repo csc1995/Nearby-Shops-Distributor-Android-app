@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.addItems.ItemCategories;
+package org.localareadelivery.distributorapp.DeprecatedAddItems.ItemCategories;
 
 import android.content.Intent;
 import android.content.res.Configuration;

@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.addItems.DiscardedCode;
+package org.localareadelivery.distributorapp.DeprecatedAddItems.DiscardedCode;
 
 /**
  * Created by sumeet on 3/4/16.

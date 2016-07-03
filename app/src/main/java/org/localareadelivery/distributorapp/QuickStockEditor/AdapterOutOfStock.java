@@ -81,7 +81,7 @@ public class AdapterOutOfStock extends RecyclerView.Adapter<AdapterOutOfStock.Vi
 
             String imagePath = UtilityGeneral.getImageEndpointURL(MyApplication.getAppContext()) + item.getItemImageURL();
 
-            Picasso.with(context).load(imagePath).placeholder(R.drawable.nature_people).into(holder.itemImage);
+            Picasso.with(context).load(imagePath).into(holder.itemImage);
 
             //holder.availableText.setText("Available : " + shopItem.getAvailableItemQuantity() + " Items");
             //holder.priceText.setText("Price : " + shopItem.getItemPrice());

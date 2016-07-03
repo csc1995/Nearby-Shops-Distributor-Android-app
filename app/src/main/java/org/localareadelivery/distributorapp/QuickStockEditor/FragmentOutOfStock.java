@@ -220,7 +220,8 @@ public class FragmentOutOfStock extends Fragment implements SwipeRefreshLayout.O
 
 //            call = shopItemService.getShopItems(currentShop.getShopID(), null, null, true, null);
 
-            call = shopItemService.getShopItemEndpoint(currentShop.getShopID(),null,null,null,
+            call = shopItemService.getShopItemEndpoint(null,
+                    currentShop.getShopID(),null,null,null,
                     null,null,null,null,null,true,null,null,null,"item_id",limit,offset,false);
 
 
@@ -229,7 +230,8 @@ public class FragmentOutOfStock extends Fragment implements SwipeRefreshLayout.O
 
 //            call = shopItemService.getShopItems(currentShop.getShopID(),null,null,null,null,"available_item_quantity",null,null);
 
-            call = shopItemService.getShopItemEndpoint(currentShop.getShopID(),null,null,null,null,null,null,null,null,null,
+            call = shopItemService.getShopItemEndpoint(null,
+                    currentShop.getShopID(),null,null,null,null,null,null,null,null,null,
                     null,null,null,"available_item_quantity",limit,offset,false);
 
         }
@@ -238,7 +240,8 @@ public class FragmentOutOfStock extends Fragment implements SwipeRefreshLayout.O
 //            call = shopItemService.getShopItems(currentShop.getShopID(),null,null,null,null,"date_time_added desc",null,null);
 
 
-            call = shopItemService.getShopItemEndpoint(currentShop.getShopID(),null,null,null,null,null,null,null,null,null,
+            call = shopItemService.getShopItemEndpoint(null,
+                    currentShop.getShopID(),null,null,null,null,null,null,null,null,null,
                     null,null,null,"date_time_added desc",limit,offset,false);
 
 
@@ -246,12 +249,14 @@ public class FragmentOutOfStock extends Fragment implements SwipeRefreshLayout.O
         {
 //            call = shopItemService.getShopItems(currentShop.getShopID(),null,null,null,null,"last_update_date_time desc",null,null);
 
-            call = shopItemService.getShopItemEndpoint(currentShop.getShopID(),null,null,null,null,null,null,null,null,null,
+            call = shopItemService.getShopItemEndpoint(null,
+                    currentShop.getShopID(),null,null,null,null,null,null,null,null,null,
                     null,null,null,"last_update_date_time desc",limit,offset,false);
         }
         else if (mode == MODE_PRICE_NOT_SET)
         {
-            call = shopItemService.getShopItemEndpoint(currentShop.getShopID(),null,null,null,
+            call = shopItemService.getShopItemEndpoint(null,
+                    currentShop.getShopID(),null,null,null,
                     null,null,null,null,null,null,true,null,null,"item_id",limit,offset,false);
         }
 

@@ -20,6 +20,9 @@
     <string name="title_activity_items_add_stock">Items : Add Stock</string>
 
 
+
+
+
     <string name="google_app_id">419317660589</string>
     <string name="title_activity_orders_home">Orders Home</string>
     <string name="title_activity_home_delivery">Orders : Home Delivery</string>
@@ -28,5 +31,23 @@
     <string name="title_activity_vehicle_dashboard">Home Delivery : Vehicle Dashboard</string>
     <string name="title_activity_quick_stock_editor">Quick Stock Editor</string>
     <string name="network_request_failed">Network Reqest failed. Check your network connection !</string>
+
+
+    <!-- An Abstract Item Category can have only Sub Item Categories and cannot contain items under them. -->
+    <string name="abstract_category_usage">
+        Item Categories Marked as abstract cannot have Items placed under them.
+        But they can have Sub Item Categories Under them.
+        Consider An Example: You have an Item Category : Groceries.
+        You may not want to add / place items directly under Item Category : Groceries.
+        You may want to create sub Item Categories like Dairy\, Shampoo\, Soap under Groceries and then add items under these categories.
+        If i add item \"Milk\" directly under Groceries that will not make sense, but if i add \"Milk\" under Dairy that will make more sense.
+        There are certain Item Categories which doesn\'t need to contain Items placed directly under them and you will want to make it abstract.
+        Making the Item Categories as Abstract will protect / prevent someone from placing items directly under it.</string>
+
+    <string name="leaf_node_item_category_usage">
+        You cannot have a sub Item Category Under a leaf node Item Category.
+        But you can have Items placed under a Leaf Node Item Category.
+        Leaf Node Item Category is an Item Category which can have Items placed under them but cannot have Sub Item Category / Item Categories under it.</string>
+    <string name="title_activity_item_categories_tabs">Item Categories</string>
 
 </resources>
