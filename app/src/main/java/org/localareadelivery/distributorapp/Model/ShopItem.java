@@ -1,9 +1,12 @@
 package org.localareadelivery.distributorapp.Model;
 
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.sql.Timestamp;
 
-public class ShopItem{
+public class ShopItem implements Parcelable{
 	
 	public static final String UNIT_KG = "Kg.";
 	public static final String UNIT_GRAMS = "Grams.";
@@ -59,7 +62,49 @@ public class ShopItem{
 	//int maxQuantity;
 
 
+	protected ShopItem(Parcel in) {
+		shop = in.readParcelable(Shop.class.getClassLoader());
+		item = in.readParcelable(Item.class.getClassLoader());
+		shopID = in.readInt();
+		itemID = in.readInt();
+		availableItemQuantity = in.readInt();
+		itemPrice = in.readDouble();
+		extraDeliveryCharge = in.readInt();
+	}
 
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeParcelable(shop, flags);
+		dest.writeParcelable(item, flags);
+		dest.writeInt(shopID);
+		dest.writeInt(itemID);
+		dest.writeInt(availableItemQuantity);
+		dest.writeDouble(itemPrice);
+		dest.writeInt(extraDeliveryCharge);
+	}
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	public static final Creator<ShopItem> CREATOR = new Creator<ShopItem>() {
+		@Override
+		public ShopItem createFromParcel(Parcel in) {
+			return new ShopItem(in);
+		}
+
+		@Override
+		public ShopItem[] newArray(int size) {
+			return new ShopItem[size];
+		}
+	};
+
+
+	/*
+	*
+	* getter and setters
+	* */
 
 	public int getExtraDeliveryCharge() {
 		return extraDeliveryCharge;

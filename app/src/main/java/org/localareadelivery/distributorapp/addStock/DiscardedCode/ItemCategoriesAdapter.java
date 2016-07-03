@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import org.localareadelivery.distributorapp.Model.ItemCategory;
 import org.localareadelivery.distributorapp.R;
+import org.localareadelivery.distributorapp.addItems.ItemCategories.ItemCategories;
 
 import java.util.ArrayList;
 
@@ -63,7 +64,7 @@ public class ItemCategoriesAdapter extends RecyclerView.Adapter<ItemCategoriesAd
 
                 Intent intent = new Intent(context, org.localareadelivery.distributorapp.addStock.Items.class);
 
-                intent.putExtra(ItemCategories.ITEM_CATEGORY_INTENT_KEY,dataset.get(position));
+//                intent.putExtra(ItemCategories.ITEM_CATEGORY_INTENT_KEY,dataset.get(position));
 
                 context.startActivity(intent);
 
@@ -102,7 +103,7 @@ public class ItemCategoriesAdapter extends RecyclerView.Adapter<ItemCategoriesAd
 
     public void notifyDelete()
     {
-        itemCategories.notifyDelete();
+//        itemCategories.notifyDelete();
 
     }
 

@@ -13,6 +13,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 import com.yalantis.ucrop.UCrop;
@@ -55,7 +56,7 @@ public class AddItemCategory extends AppCompatActivity implements Callback<Image
     @Bind(R.id.itemCategoryDescription) EditText itemCategoryDescription;
     @Bind(R.id.addItemCategory) Button addItemCategory;
 
-    @Bind(R.id.result) TextView result;
+
 
     final String IMAGES_END_POINT_URL = "/api/Images";
 
@@ -129,31 +130,44 @@ public class AddItemCategory extends AppCompatActivity implements Callback<Image
 
                 ItemCategory responseCategory = response.body();
 
-                displayResult(responseCategory);
+//                displayResult(responseCategory);
+
+                if(response.code() == 201)
+                {
+
+                    showToastMessage("Added Successfully !");
+                }
+
             }
 
             @Override
             public void onFailure(Call<ItemCategory> call, Throwable t) {
 
+                showToastMessage("Network request failed !");
             }
         });
 
     }
 
 
-
-    void displayResult(ItemCategory itemCategory)
+    void showToastMessage(String message)
     {
-        if(itemCategory!=null)
-        {
-            result.setText("Result : " + "\n"
-                    + itemCategory.getItemCategoryID() + "\n"
-                    + itemCategory.getCategoryName() + "\n"
-                    + itemCategory.getCategoryDescription() + "\n"
-                    + itemCategory.getImagePath() + "\n"
-                    + itemCategory.getParentCategoryID() + "\n");
-        }
+        Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
     }
+
+
+//    void displayResult(ItemCategory itemCategory)
+//    {
+//        if(itemCategory!=null)
+//        {
+//            result.setText("Result : " + "\n"
+//                    + itemCategory.getItemCategoryID() + "\n"
+//                    + itemCategory.getCategoryName() + "\n"
+//                    + itemCategory.getCategoryDescription() + "\n"
+//                    + itemCategory.getImagePath() + "\n"
+//                    + itemCategory.getParentCategoryID() + "\n");
+//        }
+//    }
 
 
 

@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,25 +14,24 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 import com.squareup.picasso.Picasso;
 
 
 import org.localareadelivery.distributorapp.ApplicationState.ApplicationState;
+import org.localareadelivery.distributorapp.DaggerComponentBuilder;
 import org.localareadelivery.distributorapp.Model.Item;
 import org.localareadelivery.distributorapp.Model.ItemCategory;
 import org.localareadelivery.distributorapp.Model.ShopItem;
 import org.localareadelivery.distributorapp.R;
+import org.localareadelivery.distributorapp.RetrofitRESTContract.ItemService;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ShopItemService;
-import org.localareadelivery.distributorapp.Utility.VolleySingleton;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -41,6 +39,7 @@ import butterknife.OnClick;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -49,14 +48,21 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder>{
 
+
+
+
     ArrayList<Item> dataset = null;
     Context context;
-    Items itemsActivity = null;
-    Map<Integer,ShopItem> shopItemDataset = null;
+    private Items itemsActivity = null;
+    private Map<Integer,ShopItem> shopItemDataset = null;
 
-    ItemCategory itemCategory;
+    private ItemCategory itemCategory;
 
     final String IMAGE_ENDPOINT_URL = "/api/Images";
+
+
+    @Inject
+    ItemService itemService;
 
 
     public ItemsAdapter(ArrayList<Item> dataset, Context context, Items itemsActivity,ItemCategory itemCategory) {
@@ -65,6 +71,10 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder>{
         this.context = context;
         this.itemsActivity = itemsActivity;
         this.itemCategory = itemCategory;
+
+        DaggerComponentBuilder.getInstance()
+                .getNetComponent()
+                .Inject(this);
 
         makeShopItemRequest();
     }
@@ -222,37 +232,42 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder>{
 
 
 
-
         void deleteItem()
         {
 
+            Call<ResponseBody> call  = itemService.deleteItem(dataset.get(getLayoutPosition()).getItemID());
 
-            // ?itemID=
-
-            String url = getServiceURL() + "/api/Item/" + dataset.get(getLayoutPosition()).getItemID();
-
-            Log.d("response",url);
-
-            StringRequest stringRequest = new StringRequest(Request.Method.DELETE, url, new Response.Listener<String>() {
+            call.enqueue(new Callback<ResponseBody>() {
                 @Override
-                public void onResponse(String response) {
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
 
-                    Log.d("response",response);
-                    notifyDelete();
-
-
+                    if(response.code()==200)
+                    {
+                        showToastMessage("Removed !");
+                        notifyDelete();
+                    }
+                    else if(response.code() == 304)
+                    {
+                        showToastMessage("Not removed !");
+                    }else
+                    {
+                        showToastMessage("Server Error");
+                    }
                 }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
 
-                    Log.d("response",error.toString());
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                    showToastMessage(context.getString(R.string.network_request_failed));
                 }
             });
 
-            VolleySingleton.getInstance(context).addToRequestQueue(stringRequest);
+
 
         }
+
+
+
 
     }// View Holder Ends
 
@@ -301,7 +316,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder>{
         final Call<List<ShopItem>> shopItemCall = shopItemService.getShopItems(
 
                                                 ApplicationState.getInstance().getCurrentShop().getShopID(),
-                                                0,
+                                                null,
                                                 itemCategory.getItemCategoryID());
 
 
@@ -360,11 +375,11 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder>{
                 if(response.code() == 304)
                 {
                     isDeleted = false;
-                    Log.d("applog","response code=" + String.valueOf(304));
+//                    Log.d("applog","response code=" + String.valueOf(304));
 
                 }else if(response.code() == 200)
                 {
-                    Log.d("applog","response code=" + String.valueOf(200));
+//                    Log.d("applog","response code=" + String.valueOf(200));
                     isDeleted = true;
 
                     holder.itemsListItem.setBackgroundColor(context.getResources().getColor(R.color.white));
@@ -418,7 +433,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder>{
 
                 if(response.code() == 201){
 
-                    Log.d("applog","response code=" + String.valueOf(201));
+//                    Log.d("applog","response code=" + String.valueOf(201));
                     isCreated = true;
                 }else
                 {

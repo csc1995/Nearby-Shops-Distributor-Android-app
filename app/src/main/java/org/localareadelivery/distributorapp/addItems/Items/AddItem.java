@@ -20,9 +20,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.squareup.picasso.Picasso;
 import com.yalantis.ucrop.UCrop;
 import com.yalantis.ucrop.UCropActivity;
@@ -80,8 +77,6 @@ public class AddItem extends AppCompatActivity implements Callback<Image> {
     @Bind(R.id.addItemButton)
     Button addItemButton;
 
-    @Bind(R.id.result)
-    TextView result;
 
 
 

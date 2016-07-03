@@ -14,11 +14,14 @@ import org.localareadelivery.distributorapp.OrdersHomeDelivery.PendingAcceptFrag
 import org.localareadelivery.distributorapp.OrdersHomeDelivery.PlacedOrdersFragment;
 import org.localareadelivery.distributorapp.QuickStockEditor.FragmentOutOfStock;
 import org.localareadelivery.distributorapp.QuickStockEditor.FragmentPriceNotSet;
+import org.localareadelivery.distributorapp.ShopList.Home;
 import org.localareadelivery.distributorapp.VehicleDriverDashboard.PaymentsPendingFragment;
 import org.localareadelivery.distributorapp.VehicleDriverDashboard.PendingHandoverFragment;
 import org.localareadelivery.distributorapp.addItems.ItemCategories.EditItemCategory;
+import org.localareadelivery.distributorapp.addItems.ItemCategories.ItemCategories;
 import org.localareadelivery.distributorapp.addItems.Items.AddItem;
 import org.localareadelivery.distributorapp.addItems.Items.EditItem;
+import org.localareadelivery.distributorapp.addItems.Items.ItemsAdapter;
 
 import javax.inject.Singleton;
 
@@ -77,4 +80,10 @@ public interface NetComponent {
     void Inject(EditItemCategory editItemCategory);
 
     void Inject(EditItem editItem);
+
+    void Inject(ItemCategories itemCategories);
+
+    void Inject(ItemsAdapter itemsAdapter);
+
+    void Inject(Home home);
 }

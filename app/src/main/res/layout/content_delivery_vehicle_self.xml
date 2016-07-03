@@ -35,7 +35,7 @@
         android:textSize="25sp"
         android:layout_alignParentBottom="true"
         android:padding="10dp"
-        android:text="Add new vehicle"
+        android:text="Add Delivery vehicle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

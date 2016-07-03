@@ -17,6 +17,4 @@ public interface DataComponent {
 
     void Inject(ItemCategoryDataRouter dataRouter);
 
-    void Inject(ItemCategories itemCategories);
-
 }

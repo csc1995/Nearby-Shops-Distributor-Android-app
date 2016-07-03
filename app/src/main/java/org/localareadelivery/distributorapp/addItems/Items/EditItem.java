@@ -57,8 +57,6 @@ public class EditItem extends AppCompatActivity implements Callback<Image> {
 
     @Bind(R.id.saveButton) Button buttonUpdateItem;
 
-    @Bind(R.id.result) TextView result;
-
 
 //    public static final String ITEM_CATEGORY_INTENT_KEY = "itemCategoryIntentKey";
     public static final String ITEM_INTENT_KEY = "itemIntentKey";

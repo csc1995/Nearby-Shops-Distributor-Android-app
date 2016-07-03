@@ -6,10 +6,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="org.localareadelivery.distributorapp.ShopHome.ShopHome"
-    tools:showIn="@layout/activity_shop_home">
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+    <!--tools:showIn="@layout/activity_shop_home"
+    tools:context="org.localareadelivery.distributorapp.ShopHome.ShopHome"-->
 
     <!--
     android:id="@+id/addRemoveItemsButton"
@@ -43,6 +43,7 @@
             android:layout_height="wrap_content">
 
             <RelativeLayout
+                android:layout_marginRight="5dp"
                 android:layout_weight="1"
                 android:id="@+id/option_add_items"
                 android:background="@color/phonographyBlue"
@@ -64,7 +65,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
                     android:textColor="#ffffff"
-                    android:text="Add Items"
+                    android:text="Add Items to Shop Inventory"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </RelativeLayout>
@@ -115,7 +116,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
                     android:textColor="#ffffff"
-                    android:text="Add Stock"
+                    android:text="Edit / Update Stock"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </RelativeLayout>

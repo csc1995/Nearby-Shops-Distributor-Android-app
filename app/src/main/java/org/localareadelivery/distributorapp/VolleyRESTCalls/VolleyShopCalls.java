@@ -1,11 +1,8 @@
+/*
 package org.localareadelivery.distributorapp.VolleyRESTCalls;
 
 import android.util.Log;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -14,14 +11,15 @@ import org.localareadelivery.distributorapp.DAOs.ShopDAO;
 import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.MyApplication;
 import org.localareadelivery.distributorapp.Utility.UtilityGeneral;
-import org.localareadelivery.distributorapp.Utility.VolleySingleton;
 
 import java.lang.reflect.Type;
 import java.util.List;
 
+*/
 /**
  * Created by sumeet on 13/5/16.
- */
+ *//*
+
 public class VolleyShopCalls implements ShopDAO.ShopRESTContract{
 
     String serviceURL;
@@ -118,3 +116,4 @@ public class VolleyShopCalls implements ShopDAO.ShopRESTContract{
 
 
 }
+*/

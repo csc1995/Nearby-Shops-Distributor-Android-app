@@ -8,13 +8,8 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.widget.TextView;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,13 +17,10 @@ import org.json.JSONObject;
 import org.localareadelivery.distributorapp.ApplicationState.ApplicationState;
 import org.localareadelivery.distributorapp.Model.Item;
 import org.localareadelivery.distributorapp.Model.ItemCategory;
-import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.Model.ShopItem;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ItemService;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ShopItemService;
-import org.localareadelivery.distributorapp.Utility.VolleySingleton;
-import org.localareadelivery.distributorapp.addStock.DiscardedCode.ItemCategories;
 
 
 import java.util.ArrayList;
@@ -75,10 +67,11 @@ public class Items extends AppCompatActivity {
         // setup recycler View
         itemsList = (RecyclerView) findViewById(R.id.recyclerViewItems);
 
-        itemCategory = (ItemCategory) getIntent().getParcelableExtra(ItemCategories.ITEM_CATEGORY_INTENT_KEY);
+        itemCategory = (ItemCategory) getIntent().getParcelableExtra(ITEM_CATEGORY_INTENT_KEY);
+
         itemsAdapter = new ItemsAdapter(dataset,this,this,itemCategory,shopItemDataset);
 
-        Log.d("applog","CategoryID : " + String.valueOf(itemCategory.getItemCategoryID()));
+//        Log.d("applog","CategoryID : " + String.valueOf(itemCategory.getItemCategoryID()));
 
         itemsList.setAdapter(itemsAdapter);
 
@@ -98,7 +91,7 @@ public class Items extends AppCompatActivity {
 
 
 
-
+/*
     public void makeRequest()
     {
 
@@ -132,8 +125,7 @@ public class Items extends AppCompatActivity {
         });
 
         VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
-
-    }
+    }*/
 
     public void parseJSON(String jsonString)
     {
@@ -215,8 +207,8 @@ public class Items extends AppCompatActivity {
     public void notifyDelete()
     {
         dataset.clear();
-        //makeRetrofitRequest();
-        makeRequest();
+        makeRetrofitRequest();
+        //makeRequest();
         makeShopItemRequest();
     }
 
@@ -225,8 +217,8 @@ public class Items extends AppCompatActivity {
         super.onResume();
 
         dataset.clear();
-        //makeRetrofitRequest();
-        makeRequest();
+        makeRetrofitRequest();
+        //makeRequest();
         makeShopItemRequest();
 
     }
@@ -250,7 +242,7 @@ public class Items extends AppCompatActivity {
 
         Call<List<ShopItem>> shopItemsCall =  shopItemService.getShopItems(
                 ApplicationState.getInstance().getCurrentShop().getShopID(),
-                0,itemCategory.getItemCategoryID());
+                null,itemCategory.getItemCategoryID());
 
 
         shopItemsCall.enqueue(new Callback<List<ShopItem>>() {

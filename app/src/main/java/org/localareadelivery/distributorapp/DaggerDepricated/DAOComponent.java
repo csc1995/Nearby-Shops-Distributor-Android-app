@@ -17,8 +17,6 @@ import dagger.Component;
 @Component(modules = {DAOProvider.class})
 public interface DAOComponent {
 
-    void Inject(Home home);
-
     void Inject(AddShop addShop);
 
 }

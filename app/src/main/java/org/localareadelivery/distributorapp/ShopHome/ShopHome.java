@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.LocationSource;
+
 import org.localareadelivery.distributorapp.OrdersHome.OrdersHome;
 import org.localareadelivery.distributorapp.QuickStockEditor.QuickStockEditor;
 import org.localareadelivery.distributorapp.R;
@@ -45,7 +47,6 @@ public class ShopHome extends AppCompatActivity implements View.OnClickListener 
 
         addEditStockButton = (RelativeLayout) findViewById(R.id.option_add_stock);
         addEditStockButton.setOnClickListener(this);
-
 
 
     }

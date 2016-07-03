@@ -183,7 +183,7 @@ public class AddStock extends AppCompatActivity {
         ShopItemService shopItemService = retrofit.create(ShopItemService.class);
 
 
-        Call<List<ShopItem>> shopItemCall = shopItemService.getShopItems(shopID,itemID,0);
+        Call<List<ShopItem>> shopItemCall = shopItemService.getShopItems(shopID,itemID,null);
 
         shopItemCall.enqueue(new Callback<List<ShopItem>>() {
             @Override

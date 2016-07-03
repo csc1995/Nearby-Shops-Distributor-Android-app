@@ -15,11 +15,13 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
-import org.localareadelivery.distributorapp.DAOs.ShopDAO;
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
 import org.localareadelivery.distributorapp.Model.Shop;
+import org.localareadelivery.distributorapp.ModelEndpoints.ShopEndPoint;
 import org.localareadelivery.distributorapp.R;
+import org.localareadelivery.distributorapp.RetrofitRESTContract.ShopService;
 import org.localareadelivery.distributorapp.Utility.UtilityGeneral;
 
 import java.util.ArrayList;
@@ -30,8 +32,13 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import icepick.Icepick;
+import icepick.State;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-public class Home extends AppCompatActivity implements ShopDAO.ReadShopCallback, SwipeRefreshLayout.OnRefreshListener {
+public class Home extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
 
 
@@ -40,7 +47,10 @@ public class Home extends AppCompatActivity implements ShopDAO.ReadShopCallback,
 
     private SwipeRefreshLayout swipeContainer;
 
-    @Inject ShopDAO shopDAO;
+//    @Inject ShopDAO shopDAO;
+
+    @Inject
+    ShopService shopService;
 
     ArrayList<Shop> dataset = new ArrayList<>();
 
@@ -63,14 +73,102 @@ public class Home extends AppCompatActivity implements ShopDAO.ReadShopCallback,
 
         // components for dependency injection
         DaggerComponentBuilder.getInstance()
-                .getDaoComponent().Inject(this);
+                .getNetComponent().Inject(this);
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         setSupportActionBar(toolbar);
 
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+
+
+
+        setupSwipeRefreshLayout();
+        setupRecyclerView();
+
+
+
+        if(savedInstanceState == null)
+        {
+
+            swipeContainer.post(new Runnable() {
+                @Override
+                public void run() {
+                    swipeContainer.setRefreshing(true);
+
+                    try {
+
+//                    Log.d("applog",UtilityGeneral.getServiceURL(Home.this));
+
+                        offset = 0;
+                        dataset.clear();
+                        makeNetworkCall();
+
+                    } catch (IllegalArgumentException ex)
+                    {
+                        ex.printStackTrace();
+
+                    }
+                }
+            });
+        }
+
+    }
+
+
+    private int limit = 30;
+    @State int offset = 0;
+
+    @State int item_count = 0;
+
+    void setupRecyclerView()
+    {
+
+        shopListAdapter = new ShopsListAdapter(this,dataset,this);
+        shopList.setAdapter(shopListAdapter);
+
+        layoutManager = new GridLayoutManager(null,1);
+
+        shopList.setLayoutManager(layoutManager);
+
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+
+        layoutManager.setSpanCount(metrics.widthPixels/350);
+
+        shopList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+
+                if(layoutManager.findLastVisibleItemPosition() == dataset.size()-1)
+                {
+                    // trigger fetch next page
+
+
+                    Log.d("applog","Shop List : trigger next fetch " + String.valueOf(offset) + " : " + String.valueOf(limit)
+                    + " : " + String.valueOf(item_count));
+
+                    if((offset+limit)<=item_count)
+                    {
+                        offset = offset + limit;
+                        makeNetworkCall();
+                    }
+
+                }
+
+            }
+        });
+
+    }
+
+
+    void setupSwipeRefreshLayout()
+    {
 
         if(swipeContainer!=null) {
 
@@ -80,32 +178,10 @@ public class Home extends AppCompatActivity implements ShopDAO.ReadShopCallback,
                     android.R.color.holo_orange_light,
                     android.R.color.holo_red_light);
         }
-
-
-
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
-
-
-        //FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-
-        //shopList = (RecyclerView) findViewById(R.id.shopsList);
-
-        shopListAdapter = new ShopsListAdapter(this,dataset,this);
-        shopList.setAdapter(shopListAdapter);
-
-
-
-        layoutManager = new GridLayoutManager(null,1);
-
-        shopList.setLayoutManager(layoutManager);
-        //shopList.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.HORIZONTAL_LIST));
-
-
-        DisplayMetrics metrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metrics);
-
-        layoutManager.setSpanCount(metrics.widthPixels/350);
     }
+
+
+
 
 
     @OnClick(R.id.fab)
@@ -145,43 +221,6 @@ public class Home extends AppCompatActivity implements ShopDAO.ReadShopCallback,
 
     ProgressBar progressBar;
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        isActivityRunning = true;
-
-        dataset.clear();
-
-        if(!isRefreshed)
-        {
-            //progressBar.setVisibility(View.VISIBLE);
-        }
-
-        // reset the flag
-        isRefreshed = false;
-
-        swipeContainer.post(new Runnable() {
-            @Override
-            public void run() {
-                swipeContainer.setRefreshing(true);
-
-                try {
-
-                    Log.d("applog",UtilityGeneral.getServiceURL(Home.this));
-                    shopDAO.readShops(UtilityGeneral.getDistributorID(Home.this), Home.this);
-
-                } catch (IllegalArgumentException ex)
-                {
-                    ex.printStackTrace();
-
-                }
-
-                shopListAdapter.notifyDataSetChanged();
-            }
-        });
-    }
-
 
     @Override
     protected void onPause() {
@@ -194,13 +233,10 @@ public class Home extends AppCompatActivity implements ShopDAO.ReadShopCallback,
 
     void notifyDelete()
     {
-        dataset.clear();
 
-        shopDAO
-                .readShops(
-                        UtilityGeneral.getDistributorID(this),
-                        this
-                );
+        offset = 0; // reset the offset
+        dataset.clear();
+        makeNetworkCall();
     }
 
 
@@ -212,64 +248,54 @@ public class Home extends AppCompatActivity implements ShopDAO.ReadShopCallback,
     }
 
 
+    void makeNetworkCall()
+    {
 
-    @Override
-    public void readShopCallback(boolean isOffline, boolean isSuccessful, int httpStatusCode, Shop shop) {
+        Log.d("applog","Shop List : trigger Network Call " + String.valueOf(offset) + " : " + String.valueOf(limit)
+                + " : " + String.valueOf(item_count));
 
-    }
+        Call<ShopEndPoint> endPointCall = shopService.getShopEndpoint(UtilityGeneral.getDistributorID(this),
+                null,null,null,null,null,null,"shop_id",limit,offset,false);
 
-    @Override
-    public void readShopsCallback(boolean isOffline, boolean isSuccessful, int httpStatusCode, List<Shop> shops) {
+        endPointCall.enqueue(new Callback<ShopEndPoint>() {
+            @Override
+            public void onResponse(Call<ShopEndPoint> call, Response<ShopEndPoint> response) {
 
+                if (response.body() != null) {
 
-        if (!isOffline) {
+                    dataset.addAll(response.body().getResults());
 
-            if (isSuccessful) {
-
-                dataset.clear();
-
-
-                if (shops != null) {
-                    dataset.addAll(shops);
+                    item_count = response.body().getItemCount();
                 }
 
 
-                progressBar.setVisibility(View.GONE);
-
                 shopListAdapter.notifyDataSetChanged();
 
-                swipeContainer.setRefreshing(false);
-
-            }
-            else
-            {
-                // failed case
                 progressBar.setVisibility(View.GONE);
-                shopListAdapter.notifyDataSetChanged();
-
                 swipeContainer.setRefreshing(false);
 
             }
 
+            @Override
+            public void onFailure(Call<ShopEndPoint> call, Throwable t) {
 
-        }
-        else
-        {
-            if(!isSuccessful)
-            {
-                //Toast.makeText(this,"Application is offline.No Data !",Toast.LENGTH_SHORT).show();
+
+                showToastMessage("Network request failed. Please check your connection !");
+
                 progressBar.setVisibility(View.GONE);
-
                 swipeContainer.setRefreshing(false);
 
-
-
             }
-        }
+        });
 
 
     }
 
+
+    void showToastMessage(String message)
+    {
+        Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
+    }
 
 
     // flag for preventing the progress bar showing when the list is refreshed.
@@ -280,19 +306,34 @@ public class Home extends AppCompatActivity implements ShopDAO.ReadShopCallback,
 
         isRefreshed = true;
 
+        offset = 0;
         dataset.clear();
+        makeNetworkCall();
 
-        shopDAO
-                .readShops(
-                        UtilityGeneral
-                                .getDistributorID(this),
-                        this
-                );
-
-        shopListAdapter.notifyDataSetChanged();
     }
 
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        Icepick.saveInstanceState(this, outState);
+        outState.putParcelableArrayList("dataset",dataset);
+    }
 
 
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        if (savedInstanceState != null) {
+
+            ArrayList<Shop> tempList = savedInstanceState.getParcelableArrayList("dataset");
+
+            dataset.clear();
+            dataset.addAll(tempList);
+
+            shopListAdapter.notifyDataSetChanged();
+        }
+    }
 }

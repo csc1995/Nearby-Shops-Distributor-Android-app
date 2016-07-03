@@ -2,6 +2,7 @@ package org.localareadelivery.distributorapp.QuickStockEditor;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
@@ -17,6 +18,7 @@ import org.localareadelivery.distributorapp.ApplicationState.ApplicationState;
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
 import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.Model.ShopItem;
+import org.localareadelivery.distributorapp.ModelEndpoints.ShopItemEndPoint;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ShopItemService;
 
@@ -25,6 +27,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import icepick.Icepick;
+import icepick.State;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -38,7 +42,7 @@ import retrofit2.Response;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class FragmentOutOfStock extends Fragment implements SwipeRefreshLayout.OnRefreshListener, Callback<List<ShopItem>>,AdapterOutOfStock.NotificationReceiver {
+public class FragmentOutOfStock extends Fragment implements SwipeRefreshLayout.OnRefreshListener,AdapterOutOfStock.NotificationReceiver, Callback<ShopItemEndPoint> {
 
 
 
@@ -50,7 +54,7 @@ public class FragmentOutOfStock extends Fragment implements SwipeRefreshLayout.O
 
     AdapterOutOfStock adapter;
 
-    public List<ShopItem> dataset = new ArrayList<>();
+    public ArrayList<ShopItem> dataset = new ArrayList<>();
 
     GridLayoutManager layoutManager;
 
@@ -66,6 +70,7 @@ public class FragmentOutOfStock extends Fragment implements SwipeRefreshLayout.O
     public static int MODE_LOW_STOCK = 2;
     public static int MODE_RECENTLY_UPDATED = 3;
     public static int MODE_RECENTLY_ADDED = 4;
+    public static int MODE_PRICE_NOT_SET = 5;
 
 
 
@@ -104,6 +109,31 @@ public class FragmentOutOfStock extends Fragment implements SwipeRefreshLayout.O
         setupSwipeContainer();
 
 
+        if(savedInstanceState == null)
+        {
+
+            swipeContainer.post(new Runnable() {
+                @Override
+                public void run() {
+                    swipeContainer.setRefreshing(true);
+
+                    try {
+
+
+                        offset = 0; // reset the offset
+                        dataset.clear();
+                        makeNetworkCall();
+
+                    } catch (IllegalArgumentException ex)
+                    {
+                        ex.printStackTrace();
+
+                    }
+                }
+            });
+        }
+
+
         return rootView;
     }
 
@@ -122,6 +152,11 @@ public class FragmentOutOfStock extends Fragment implements SwipeRefreshLayout.O
     }
 
 
+
+    private int limit = 30;
+    @State int offset = 0;
+    @State int item_count = 0;
+
     void setupRecyclerView()
     {
 
@@ -137,6 +172,27 @@ public class FragmentOutOfStock extends Fragment implements SwipeRefreshLayout.O
 
         layoutManager.setSpanCount(metrics.widthPixels/400);
 
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+
+                if(layoutManager.findLastVisibleItemPosition()==dataset.size()-1)
+                {
+                    // trigger fetch next page
+
+                    if((offset+limit)<=item_count)
+                    {
+                        offset = offset + limit;
+                        makeNetworkCall();
+                    }
+
+                }
+            }
+        });
+
     }
 
 
@@ -144,33 +200,11 @@ public class FragmentOutOfStock extends Fragment implements SwipeRefreshLayout.O
     @Override
     public void onRefresh() {
 
+        dataset.clear();
+        offset=0; // reset the offset
         makeNetworkCall();
     }
 
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        swipeContainer.post(new Runnable() {
-            @Override
-            public void run() {
-                swipeContainer.setRefreshing(true);
-
-                try {
-
-                    makeNetworkCall();
-
-                } catch (IllegalArgumentException ex)
-                {
-                    ex.printStackTrace();
-
-                }
-
-                //adapter.notifyDataSetChanged();
-            }
-        });
-    }
 
 
 
@@ -179,26 +213,46 @@ public class FragmentOutOfStock extends Fragment implements SwipeRefreshLayout.O
 
         Shop currentShop = ApplicationState.getInstance().getCurrentShop();
 
-        Call<List<ShopItem>> call = null;
+        Call<ShopItemEndPoint> call = null;
 
 
         if (mode == MODE_OUT_OF_STOCK) {
 
-            call = shopItemService.getShopItems(currentShop.getShopID(), 0, 0, true, null);
+//            call = shopItemService.getShopItems(currentShop.getShopID(), null, null, true, null);
+
+            call = shopItemService.getShopItemEndpoint(currentShop.getShopID(),null,null,null,
+                    null,null,null,null,null,true,null,null,null,"item_id",limit,offset,false);
+
 
         } else if (mode == MODE_LOW_STOCK)
         {
 
-            call = shopItemService.getShopItems(currentShop.getShopID(),0,0,null,null,"available_item_quantity",0,0);
+//            call = shopItemService.getShopItems(currentShop.getShopID(),null,null,null,null,"available_item_quantity",null,null);
+
+            call = shopItemService.getShopItemEndpoint(currentShop.getShopID(),null,null,null,null,null,null,null,null,null,
+                    null,null,null,"available_item_quantity",limit,offset,false);
 
         }
         else if (mode == MODE_RECENTLY_ADDED)
         {
-            call = shopItemService.getShopItems(currentShop.getShopID(),0,0,null,null,"date_time_added desc",0,0);
+//            call = shopItemService.getShopItems(currentShop.getShopID(),null,null,null,null,"date_time_added desc",null,null);
+
+
+            call = shopItemService.getShopItemEndpoint(currentShop.getShopID(),null,null,null,null,null,null,null,null,null,
+                    null,null,null,"date_time_added desc",limit,offset,false);
+
 
         }else if (mode == MODE_RECENTLY_UPDATED)
         {
-            call = shopItemService.getShopItems(currentShop.getShopID(),0,0,null,null,"last_update_date_time desc",0,0);
+//            call = shopItemService.getShopItems(currentShop.getShopID(),null,null,null,null,"last_update_date_time desc",null,null);
+
+            call = shopItemService.getShopItemEndpoint(currentShop.getShopID(),null,null,null,null,null,null,null,null,null,
+                    null,null,null,"last_update_date_time desc",limit,offset,false);
+        }
+        else if (mode == MODE_PRICE_NOT_SET)
+        {
+            call = shopItemService.getShopItemEndpoint(currentShop.getShopID(),null,null,null,
+                    null,null,null,null,null,null,true,null,null,"item_id",limit,offset,false);
         }
 
 
@@ -327,6 +381,9 @@ public class FragmentOutOfStock extends Fragment implements SwipeRefreshLayout.O
                 }
 
 
+
+                dataset.clear();
+                offset = 0;
                 makeNetworkCall();
             }
 
@@ -344,51 +401,72 @@ public class FragmentOutOfStock extends Fragment implements SwipeRefreshLayout.O
 
 
 
-
-
     @Override
-    public void onResponse(Call<List<ShopItem>> call, Response<List<ShopItem>> response) {
+    public void onResponse(Call<ShopItemEndPoint> call, Response<ShopItemEndPoint> response) {
+
 
         if(response.body()!= null)
         {
-            dataset.clear();
-            dataset.addAll(response.body());
-            adapter.notifyDataSetChanged();
-
-            if(notificationReceiverPager!=null)
-            {
-                notificationReceiverPager.OutOfStockChanged();
-            }
-
-        }else
-        {
-            dataset.clear();
-            adapter.notifyDataSetChanged();
-
-
-            if(notificationReceiverPager!=null)
-            {
-                notificationReceiverPager.OutOfStockChanged();
-            }
+            dataset.addAll(response.body().getResults());
+            item_count = response.body().getItemCount();
         }
 
+        if(notificationReceiverPager!=null)
+        {
+            notificationReceiverPager.OutOfStockChanged();
+        }
+
+        adapter.notifyDataSetChanged();
         swipeContainer.setRefreshing(false);
-
-
     }
 
     @Override
-    public void onFailure(Call<List<ShopItem>> call, Throwable t) {
+    public void onFailure(Call<ShopItemEndPoint> call, Throwable t) {
 
         showToastMessage("Network Request failed !");
         swipeContainer.setRefreshing(false);
-
     }
 
 
     interface NotificationReceiverPager
     {
         void OutOfStockChanged();
+    }
+
+
+
+    // save and restore instance state
+
+
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+
+        Icepick.saveInstanceState(this, outState);
+
+
+        outState.putParcelableArrayList("dataset",dataset);
+
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+
+
+        Icepick.restoreInstanceState(this, savedInstanceState);
+
+        if (savedInstanceState != null) {
+
+            ArrayList<ShopItem> tempList = savedInstanceState.getParcelableArrayList("dataset");
+
+            dataset.clear();
+            dataset.addAll(tempList);
+            adapter.notifyDataSetChanged();
+        }
+
     }
 
 

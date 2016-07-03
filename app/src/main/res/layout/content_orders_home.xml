@@ -48,7 +48,7 @@ tools:showIn="@layout/activity_orders_home">
                     android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
                     android:textColor="#ffffff"
-                    android:text="Home Delivery : Inventory"
+                    android:text="Home Delivery : Shop Inventory"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </RelativeLayout>
@@ -78,7 +78,7 @@ tools:showIn="@layout/activity_orders_home">
                     android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
                     android:textColor="#ffffff"
-                    android:text="Pick From Shop : Inventory"
+                    android:text="Pick From Shop : Shop Inventory"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </RelativeLayout>

@@ -36,7 +36,9 @@ public class PagerAdapter extends FragmentPagerAdapter {
         }
         else if(position == 3)
         {
-            return FragmentPriceNotSet.newInstance();
+
+//            return FragmentPriceNotSet.newInstance();
+            return FragmentOutOfStock.newInstance(FragmentOutOfStock.MODE_PRICE_NOT_SET);
 
         }else if(position == 4)
         {

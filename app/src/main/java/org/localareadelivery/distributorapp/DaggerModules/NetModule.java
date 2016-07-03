@@ -14,6 +14,7 @@ import org.localareadelivery.distributorapp.RetrofitRESTContract.ItemCategorySer
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ItemService;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderService;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ShopItemService;
+import org.localareadelivery.distributorapp.RetrofitRESTContract.ShopService;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.VehicleSelfService;
 import org.localareadelivery.distributorapp.Utility.UtilityGeneral;
 
@@ -150,6 +151,15 @@ public class NetModule {
     ItemCategoryService provideItemCategory(Retrofit retrofit)
     {
         ItemCategoryService service = retrofit.create(ItemCategoryService.class);
+
+        return service;
+    }
+
+
+    @Provides
+    ShopService provideShopService(Retrofit retrofit)
+    {
+        ShopService service = retrofit.create(ShopService.class);
 
         return service;
     }

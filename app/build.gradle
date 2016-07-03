@@ -5,15 +5,17 @@ apply plugin: 'com.neenbedankt.android-apt'
 
 
 android {
-    compileSdkVersion 23
+    compileSdkVersion 24
     buildToolsVersion "23.0.2"
 
     defaultConfig {
         applicationId "org.localareadelivery.distributorapp"
         minSdkVersion 15
-        targetSdkVersion 23
+        targetSdkVersion 24
         versionCode 1
         versionName "1.0"
+
+//        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
@@ -38,6 +40,11 @@ android {
             maven { url 'https://jitpack.io' }
         }
 
+    repositories {
+        maven {url "https://clojars.org/repo/"}
+    }
+
+
 
 }
 
@@ -47,19 +54,15 @@ dependencies {
 
     // for implementing pull to refresh
     // android support Libraries
-    compile 'com.android.support:support-v4:23.4.0'
-    compile 'com.android.support:recyclerview-v7:23.4.0'
-    compile 'com.android.support:cardview-v7:23.4.0'
-    compile 'com.android.support:appcompat-v7:23.4.0'
-    compile 'com.android.support:design:23.4.0'
-
-    compile 'com.heinrichreimersoftware:material-intro:1.2.1'
+    compile 'com.android.support:support-v4:24.0.0'
+    compile 'com.android.support:recyclerview-v7:24.0.0'
+    compile 'com.android.support:cardview-v7:24.0.0'
+    compile 'com.android.support:appcompat-v7:24.0.0'
+    compile 'com.android.support:design:24.0.0'
 
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
 
-
-    compile 'com.mcxiaoke.volley:library:1.0.19'
 
     compile 'com.jakewharton:butterknife:7.0.1'
 
@@ -92,12 +95,12 @@ dependencies {
 
     // hugo logger
 
+
+
+    compile 'com.heinrichreimersoftware:material-intro:1.5.4'
     //compile 'com.jakewharton.hugo:hugo-plugin:1.2.1'
 
 
-    // smooth progress bar
-
-    compile 'com.github.castorflex.smoothprogressbar:library:1.1.0'
 
 
     // dependencies for Dagger 2
@@ -106,5 +109,15 @@ dependencies {
     compile 'com.google.dagger:dagger:2.2'
     provided 'javax.annotation:jsr250-api:1.0'
 
-    compile 'com.google.android.gms:play-services-appindexing:8.1.0'
+
+    compile 'com.google.android.gms:play-services-maps:9.0.2'
+
+
+
+    // ice pack dependencies
+
+    compile 'frankiesardo:icepick:3.2.0'
+    provided 'frankiesardo:icepick-processor:3.2.0'
+
+
 }

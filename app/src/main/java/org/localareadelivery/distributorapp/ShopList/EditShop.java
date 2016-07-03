@@ -76,9 +76,6 @@ public class EditShop extends AppCompatActivity implements LocationListener, Cal
     @Bind(R.id.addShopButton)
     Button addShopButton;
 
-    @Bind(R.id.result)
-    TextView result;
-
     @Bind(R.id.getCurrentLocationButton)
     Button getCurrentLocation;
 

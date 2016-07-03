@@ -75,8 +75,6 @@ public class EditItemCategory extends AppCompatActivity implements Callback<Imag
 
     @Bind(R.id.updateItemCategory) Button updateItemCategory;
 
-    @Bind(R.id.result) TextView result;
-
     @Bind(R.id.isLeafNode) CheckBox isLeafNode;
 
 

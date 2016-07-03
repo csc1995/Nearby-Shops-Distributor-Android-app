@@ -1,6 +1,6 @@
-package org.localareadelivery.distributorapp.addStock;
+package org.localareadelivery.distributorapp.addItems.ItemCategories;
 
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -13,33 +13,34 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
-
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.localareadelivery.distributorapp.ApplicationState.ApplicationState;
+import org.localareadelivery.distributorapp.DataRouters.ItemCategoryDataRouter;
 import org.localareadelivery.distributorapp.Model.ItemCategory;
 import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ItemCategoryService;
+import org.localareadelivery.distributorapp.StandardInterfacesGeneric.DataSubscriber;
+import org.localareadelivery.distributorapp.Utility.UtilityGeneral;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class ItemCategories extends AppCompatActivity implements  ItemCategoriesAdapter.requestSubCategory{
-
-
-    int currentCategoryID = 1; // the ID of root category is always supposed to be 1
-    ItemCategory currentCategory = null;
-
+public class ItemCategoriesDepricated extends AppCompatActivity
+        implements  ItemCategoriesAdapter.requestSubCategory, DataSubscriber<ItemCategory>
+{
 
     List<ItemCategory> dataset = new ArrayList<>();
     RecyclerView itemCategoriesList;
@@ -49,40 +50,49 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
 
     Shop shop = null;
 
+    @Inject
+    ItemCategoryDataRouter dataRouter;
+
 
     @Bind(R.id.categoryIndicatorLabel)
     TextView categoryLabel;
 
+    @Bind(R.id.fab) FloatingActionButton fab;
 
 
-    public ItemCategories() {
+    public ItemCategoriesDepricated() {
         super();
+
+        // Inject the dependencies using Dependency Injection
+//        DaggerComponentBuilder.getInstance()
+//                .getDataComponent()
+//                .Inject(this);
 
         currentCategory = new ItemCategory();
         currentCategory.setItemCategoryID(1);
         currentCategory.setParentCategoryID(-1);
+
+
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_addstock_item_categories);
-
-
+        setContentView(R.layout.activity_item_categories);
 
         ButterKnife.bind(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
         itemCategoriesList = (RecyclerView) findViewById(R.id.recyclerViewItemCategories);
-        listAdapter = new ItemCategoriesAdapter(dataset,this,this);
+
+//        listAdapter = new ItemCategoriesAdapter(dataset,this,this);
 
         itemCategoriesList.setAdapter(listAdapter);
 
@@ -103,7 +113,9 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
         Log.d("applog",String.valueOf(metrics.widthPixels/250));
 
 
-        if (metrics.widthPixels >= 600 && (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT))
+        if (metrics.widthPixels >= 600 && (
+                getResources().getConfiguration().orientation
+                        == Configuration.ORIENTATION_PORTRAIT))
         {
             // in case of larger width of tables set the column count to 3
             //layoutManager.setSpanCount(3);
@@ -112,13 +124,28 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
     }
 
 
+    int currentCategoryID = 1; // the ID of root category is always supposed to be 1
+    ItemCategory currentCategory = null;
+
+
+    @OnClick(R.id.fab)
+    public void fabClick()
+    {
+        Intent addCategoryIntent = new Intent(ItemCategoriesDepricated.this,AddItemCategory.class);
+
+        addCategoryIntent.putExtra(AddItemCategory.ADD_ITEM_CATEGORY_INTENT_KEY,currentCategory);
+
+        startActivity(addCategoryIntent);
+        //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+        //      .setAction("Action", null).show();
+    }
+
+    
 /*
-
-
     public void makeRequest()
     {
 
-        String url = getServiceURL() + "/api/ItemCategory" + "?ParentID=" + currentCategoryID + "&ShopID=" + ApplicationState.getInstance().getCurrentShop().getShopID();
+        String url = UtilityGeneral.getServiceURL(this) + "/api/ItemCategory" + "?ParentID=" + currentCategoryID;
 
         Log.d("response",url);
 
@@ -143,16 +170,18 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
         });
 
         VolleySingleton.getInstance(this).addToRequestQueue(request);
-    }
+    }*/
 
-*/
+
+
+
 
 
     public void makeRequestRetrofit()
     {
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getServiceURL())
+                .baseUrl(UtilityGeneral.getServiceURL(this))
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -160,50 +189,35 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
         ItemCategoryService itemCategoryService = retrofit.create(ItemCategoryService.class);
 
 
+        Call<List<ItemCategory>> itemCategoryCall = itemCategoryService.getItemCategories(currentCategory.getItemCategoryID());
 
 
-        if(ApplicationState.getInstance().getCurrentShop()==null) {
+        itemCategoryCall.enqueue(new Callback<List<ItemCategory>>() {
 
-            return;
-        }
 
-        // Null Pointer Exception :
-
-            Log.d("applog","ParentID= " + String.valueOf(currentCategory.getItemCategoryID()) + " ShopID = " + String.valueOf(ApplicationState.getInstance().getCurrentShop().getShopID()));
-
-            Call<List<ItemCategory>> itemCategoryCall = itemCategoryService
-                    .getItemCategories(
-                            currentCategory.getItemCategoryID(),
-                            ApplicationState.getInstance().getCurrentShop().getShopID()
-                    );
+            @Override
+            public void onResponse(Call<List<ItemCategory>> call, retrofit2.Response<List<ItemCategory>> response) {
 
 
 
-            itemCategoryCall.enqueue(new Callback<List<ItemCategory>>() {
+                dataset.clear();
 
+                if(response.body()!=null) {
 
-                @Override
-                public void onResponse(Call<List<ItemCategory>> call, retrofit2.Response<List<ItemCategory>> response) {
-
-
-                    dataset.clear();
-
-                    if (response.body() != null) {
-
-                        dataset.addAll(response.body());
-
-                        Log.d("applog","response.body()" + String.valueOf(response.body().size()) + " Dataset: " + String.valueOf(dataset.size()));
-                    }
-
-                    listAdapter.notifyDataSetChanged();
-
+                    dataset.addAll(response.body());
                 }
 
-                @Override
-                public void onFailure(Call<List<ItemCategory>> call, Throwable t) {
+                listAdapter.notifyDataSetChanged();
 
-                }
-            });
+            }
+
+            @Override
+            public void onFailure(Call<List<ItemCategory>> call, Throwable t) {
+
+            }
+        });
+
+
 
 
     }
@@ -214,16 +228,6 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
     {
         try {
 
-
-            Gson gson = new GsonBuilder().create();
-
-            Type listType = new TypeToken<List<ItemCategory>>() {}.getType();
-            List<ItemCategory> parsedItems = gson.fromJson(jsonString,listType);
-
-            dataset.clear();
-            dataset.addAll(parsedItems);
-
-            /*
             JSONArray array = new JSONArray(jsonString);
 
             for(int i=0;i<array.length();i++) {
@@ -244,28 +248,17 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
                 }
             }
 
-            */
-
-        } catch (Exception e) {
+        } catch (JSONException e) {
             e.printStackTrace();
         }
-    }
-
-
-    public String  getServiceURL()
-    {
-        SharedPreferences sharedPref = this.getSharedPreferences(getString(R.string.preference_file_name), this.MODE_PRIVATE);
-        String service_url = sharedPref.getString(getString(R.string.preference_service_url_key),"default");
-
-        return service_url;
     }
 
 
     void notifyDelete()
     {
         dataset.clear();
-        makeRequestRetrofit();
-        //makeRequest();
+        //makeRequestRetrofit();
+        makeRequestDataProvider();
 
     }
 
@@ -275,11 +268,10 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
 
         shop = ApplicationState.getInstance().getCurrentShop();
 
-        // TODO
-        // null pointer exception : Error Prone
         dataset.clear();
-        makeRequestRetrofit();
-        //makeRequest();
+        //makeRequestRetrofit();
+        makeRequestDataProvider();
+        listAdapter.notifyDataSetChanged();
     }
 
 
@@ -369,8 +361,8 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
 
         }
 
-        makeRequestRetrofit();
-        //makeRequest();
+        //makeRequestRetrofit();
+        makeRequestDataProvider();
     }
 
 
@@ -443,8 +435,10 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
             }
 
 
-            makeRequestRetrofit();
-            //makeRequest();
+            //makeRequestRetrofit();
+
+            makeRequestDataProvider();
+
             //moveTaskToBack(true);
         }
 
@@ -456,6 +450,8 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
     }
 
 
+
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -464,4 +460,57 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
     }
 
 
+
+    void makeRequestDataProvider()
+    {
+
+        dataRouter.getDataProvider()
+                .readMany(currentCategory.getItemCategoryID(),0,this);
+
+    }
+
+
+    @Override
+    public void createCallback(boolean isOffline,
+                               boolean isSuccessful,
+                               int httpStatusCode,
+                               ItemCategory itemCategory) {
+
+    }
+
+    @Override
+    public void readCallback(boolean isOffline, boolean isSuccessful, int httpStatusCode, ItemCategory itemCategory) {
+
+
+
+    }
+
+    @Override
+    public void readManyCallback(
+            boolean isOffline,
+            boolean isSuccessful,
+            int httpStatusCode,
+            List<ItemCategory> list) {
+
+
+        dataset.clear();
+
+        if(list !=null) {
+
+            dataset.addAll(list);
+        }
+
+        listAdapter.notifyDataSetChanged();
+
+    }
+
+    @Override
+    public void updateCallback(boolean isOffline, boolean isSuccessful, int httpStatusCode) {
+
+    }
+
+    @Override
+    public void deleteShopCallback(boolean isOffline, boolean isSuccessful, int httpStatusCode) {
+
+    }
 }

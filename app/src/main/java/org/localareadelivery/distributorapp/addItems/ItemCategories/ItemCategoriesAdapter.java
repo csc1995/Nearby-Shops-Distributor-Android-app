@@ -1,7 +1,9 @@
 package org.localareadelivery.distributorapp.addItems.ItemCategories;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,11 +13,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 import com.squareup.picasso.Picasso;
 
 
@@ -23,7 +22,6 @@ import org.localareadelivery.distributorapp.Utility.UtilityGeneral;
 import org.localareadelivery.distributorapp.addItems.Items.Items;
 import org.localareadelivery.distributorapp.Model.ItemCategory;
 import org.localareadelivery.distributorapp.R;
-import org.localareadelivery.distributorapp.Utility.VolleySingleton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -160,8 +158,43 @@ public class ItemCategoriesAdapter extends RecyclerView.Adapter<ItemCategoriesAd
 
 
 
+
+
+
+
+
         @OnClick(R.id.deleteIcon)
-        public void deleteIconClick()
+        void deleteClick(View view)
+        {
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+            builder.setTitle("Confirm Delete Item Category !")
+                    .setMessage("Do you want to delete this Item Category ?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            //deleteItemCategory();
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+
+                            showToastMessage("Cancelled !");
+                        }
+                    })
+                    .show();
+
+
+        }
+
+
+
+
+       /* public void deleteItemCategory()
         {
 
 
@@ -172,10 +205,14 @@ public class ItemCategoriesAdapter extends RecyclerView.Adapter<ItemCategoriesAd
                 public void onResponse(String response) {
 
                     notifyDelete();
+
+
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
+
+                    Toast.makeText(context,"Delete failed !",Toast.LENGTH_SHORT).show();
 
                 }
             });
@@ -184,7 +221,7 @@ public class ItemCategoriesAdapter extends RecyclerView.Adapter<ItemCategoriesAd
 
         }
 
-
+*/
         @OnClick({R.id.editIcon,R.id.textviewEdit})
         public void editIcon()
         {
@@ -195,6 +232,14 @@ public class ItemCategoriesAdapter extends RecyclerView.Adapter<ItemCategoriesAd
         }
 
     }// ViewHolder Class declaration ends
+
+
+
+
+    void showToastMessage(String message)
+    {
+        Toast.makeText(context,message,Toast.LENGTH_SHORT).show();
+    }
 
 
     public void notifyDelete()

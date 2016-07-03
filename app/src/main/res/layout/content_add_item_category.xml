@@ -122,13 +122,6 @@
         android:textColor="@color/white"
         android:background="@drawable/selector"/>
 
-    <TextView
-        android:id="@+id/result"
-        android:layout_marginTop="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Result:"/>
-
 </LinearLayout>
 
 </ScrollView>

@@ -168,7 +168,7 @@ public class FragmentPriceNotSet extends Fragment implements SwipeRefreshLayout.
             Shop currentShop = ApplicationState.getInstance().getCurrentShop();
 
 
-            Call<List<ShopItem>> call = shopItemService.getShopItems(currentShop.getShopID(),0,0,null,true);
+            Call<List<ShopItem>> call = shopItemService.getShopItems(currentShop.getShopID(),null,null,null,true);
 
             call.enqueue(this);
     }
