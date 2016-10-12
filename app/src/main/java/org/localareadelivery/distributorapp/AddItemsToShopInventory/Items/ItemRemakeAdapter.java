@@ -60,7 +60,7 @@ public class ItemRemakeAdapter extends RecyclerView.Adapter<ItemRemakeAdapter.Vi
     List<Item> dataset;
 
     Context context;
-    ItemRemakeFragment activity;
+    ItemRemakeFragmentOld activity;
 
 
     Item requestedChangeParent = null;
@@ -71,7 +71,7 @@ public class ItemRemakeAdapter extends RecyclerView.Adapter<ItemRemakeAdapter.Vi
 
     final String IMAGE_ENDPOINT_URL = "/api/Images";
 
-    public ItemRemakeAdapter(List<Item> dataset, Context context, ItemRemakeFragment activity, ItemRemakeAdapter.NotificationReceiver notificationReceiver) {
+    public ItemRemakeAdapter(List<Item> dataset, Context context, ItemRemakeFragmentOld activity, ItemRemakeAdapter.NotificationReceiver notificationReceiver) {
 
 
         DaggerComponentBuilder.getInstance()
@@ -122,7 +122,6 @@ public class ItemRemakeAdapter extends RecyclerView.Adapter<ItemRemakeAdapter.Vi
         {
 
             holder.inShopColor.setBackgroundColor(context.getResources().getColor(R.color.darkGreen));
-
             holder.inShopText.setText("In Shop");
 
         }
@@ -133,10 +132,7 @@ public class ItemRemakeAdapter extends RecyclerView.Adapter<ItemRemakeAdapter.Vi
         }
 
 
-        if(!dataset.get(position).getItemImageURL().equals(""))
-        {
             Picasso.with(context).load(imagePath).into(holder.categoryImage);
-        }
 
 
 //        Log.d("applog",imagePath);
@@ -328,12 +324,12 @@ public class ItemRemakeAdapter extends RecyclerView.Adapter<ItemRemakeAdapter.Vi
 
                 case R.id.action_edit:
 
-//                    Intent intent = new Intent(context,EditItemCategory.class);
-//                    intent.putExtra(EditItemCategory.ITEM_CATEGORY_INTENT_KEY,dataset.get(getLayoutPosition()));
+//                    Intent intent = new Intent(context,EditItemCategoryOld.class);
+//                    intent.putExtra(EditItemCategoryOld.ITEM_CATEGORY_INTENT_KEY,dataset.get(getLayoutPosition()));
 //                    context.startActivity(intent);
 
-                    Intent intentEdit = new Intent(context,EditItem.class);
-                    intentEdit.putExtra(EditItem.ITEM_INTENT_KEY,dataset.get(getLayoutPosition()));
+                    Intent intentEdit = new Intent(context,EditItemOld.class);
+                    intentEdit.putExtra(EditItemOld.ITEM_INTENT_KEY,dataset.get(getLayoutPosition()));
                     context.startActivity(intentEdit);
 
                     break;

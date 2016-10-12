@@ -1,16 +1,32 @@
 package org.localareadelivery.distributorapp.DaggerComponents;
 
-import org.localareadelivery.distributorapp.AddItemsToShopInventory.ItemCategories.ItemCategoriesAdapter;
-import org.localareadelivery.distributorapp.AddItemsToShopInventory.ItemCategories.ItemCategoriesFragment;
+import org.localareadelivery.distributorapp.AddItemsToShopInventory.ItemCategories.EditItemCategoryOld;
+import org.localareadelivery.distributorapp.AddItemsToShopInventory.ItemCategories.ItemCategoriesAdapterOld;
+import org.localareadelivery.distributorapp.AddItemsToShopInventory.ItemCategories.ItemCategoriesFragmentOld;
+import org.localareadelivery.distributorapp.AddItemsToShopInventory.Items.AddItemOld;
+import org.localareadelivery.distributorapp.AddItemsToShopInventory.Items.EditItemOld;
 import org.localareadelivery.distributorapp.AddItemsToShopInventory.Items.ItemRemakeAdapter;
-import org.localareadelivery.distributorapp.AddItemsToShopInventory.Items.ItemRemakeFragment;
+
+import org.localareadelivery.distributorapp.AddItemsToShopInventory.Items.ItemRemakeFragmentOld;
 import org.localareadelivery.distributorapp.DaggerModules.AppModule;
 import org.localareadelivery.distributorapp.DaggerModules.NetModule;
-import org.localareadelivery.distributorapp.DataProvidersRetrofit.ItemCategoryRetrofitProvider;
-import org.localareadelivery.distributorapp.DataProvidersRetrofit.ShopRESTInterface;
-import org.localareadelivery.distributorapp.DeliveryVehicleSelf.AddVehicleSelfActivity;
-import org.localareadelivery.distributorapp.DeliveryVehicleSelf.DeliveryVehicleActivity;
-import org.localareadelivery.distributorapp.DeliveryVehicleSelf.EditAddressActivity;
+import org.localareadelivery.distributorapp.DistributorLogin;
+import org.localareadelivery.distributorapp.EditStock.ItemCategories.ItemCategoriesAdapterEditStock;
+import org.localareadelivery.distributorapp.EditStock.ItemCategories.ItemCategoriesFragmentEditStock;
+import org.localareadelivery.distributorapp.EditStock.Items.FragmentItemsEditor;
+import org.localareadelivery.distributorapp.ItemCategoriesTabs.ItemCategories.EditItemCategory;
+import org.localareadelivery.distributorapp.ItemCategoriesTabs.ItemCategories.ItemCategoriesAdapter;
+import org.localareadelivery.distributorapp.ItemCategoriesTabs.ItemCategories.ItemCategoriesFragment;
+import org.localareadelivery.distributorapp.ItemCategoriesTabs.Items.AddItem;
+import org.localareadelivery.distributorapp.ItemCategoriesTabs.Items.EditItem;
+import org.localareadelivery.distributorapp.ItemCategoriesTabs.Items.ItemAdapterTwo;
+import org.localareadelivery.distributorapp.ItemCategoriesTabs.Items.ItemRemakeFragment;
+import org.localareadelivery.distributorapp.ShopList.ShopList;
+import org.localareadelivery.distributorapp.zzDataProvidersRetrofit.ItemCategoryRetrofitProvider;
+import org.localareadelivery.distributorapp.zzDataProvidersRetrofit.ShopRESTInterface;
+import org.localareadelivery.distributorapp.DeliveryGuy.AddVehicleSelfActivity;
+import org.localareadelivery.distributorapp.DeliveryGuy.DeliveryVehicleActivity;
+import org.localareadelivery.distributorapp.DeliveryGuy.EditAddressActivity;
 import org.localareadelivery.distributorapp.OrdersHomeDelivery.ConfirmItemsForDelivery;
 import org.localareadelivery.distributorapp.OrdersHomeDelivery.ConfirmedOrdersFragment;
 import org.localareadelivery.distributorapp.OrdersHomeDelivery.PackedOrdersFragment;
@@ -20,14 +36,8 @@ import org.localareadelivery.distributorapp.QuickStockEditor.FragmentOutOfStock;
 import org.localareadelivery.distributorapp.QuickStockEditor.FragmentPriceNotSet;
 import org.localareadelivery.distributorapp.SelectParent.ItemCategoriesParent;
 import org.localareadelivery.distributorapp.SelectParent.ItemCategoriesParentAdapter;
-import org.localareadelivery.distributorapp.ShopList.Home;
 import org.localareadelivery.distributorapp.VehicleDriverDashboard.PaymentsPendingFragment;
 import org.localareadelivery.distributorapp.VehicleDriverDashboard.PendingHandoverFragment;
-import org.localareadelivery.distributorapp.DeprecatedAddItems.ItemCategories.EditItemCategory;
-import org.localareadelivery.distributorapp.DeprecatedAddItems.ItemCategories.ItemCategories;
-import org.localareadelivery.distributorapp.DeprecatedAddItems.Items.AddItem;
-import org.localareadelivery.distributorapp.DeprecatedAddItems.Items.EditItem;
-import org.localareadelivery.distributorapp.DeprecatedAddItems.Items.ItemsAdapter;
 
 import javax.inject.Singleton;
 
@@ -80,34 +90,46 @@ public interface NetComponent {
 
     void Inject(FragmentPriceNotSet fragmentPriceNotSet);
 
+    void Inject(ShopList shopList);
 
-    void Inject(EditItemCategory editItemCategory);
-
-    void Inject(EditItem editItem);
-
-    void Inject(ItemCategories itemCategories);
-
-    void Inject(ItemsAdapter itemsAdapter);
-
-    void Inject(Home home);
-
-    void Inject(AddItem addItem);
-
-    void Inject(org.localareadelivery.distributorapp.AddItemsToShopInventory.Items.AddItem addItem);
+    void Inject(AddItemOld addItemOld);
 
     void Inject(ItemRemakeAdapter itemRemakeAdapter);
 
-    void Inject(org.localareadelivery.distributorapp.AddItemsToShopInventory.ItemCategories.EditItemCategory editItemCategory);
+    void Inject(EditItemCategoryOld editItemCategoryOld);
+
+    void Inject(ItemCategoriesAdapterOld itemCategoriesAdapterOld);
+
+    void Inject(ItemCategoriesFragmentOld itemCategoriesFragmentOld);
+
+    void Inject(EditItemOld editItemOld);
+
+    void Inject(ItemCategoriesParent itemCategoriesParent);
+
+
+    void Inject(ItemCategoriesParentAdapter itemCategoriesParentAdapter);
+
+    void Inject(DistributorLogin distributorLogin);
+
+    void Inject(ItemRemakeFragment itemRemakeFragment);
+
+    void Inject(ItemAdapterTwo itemAdapterTwo);
+
+    void Inject(EditItem editItem);
+
+    void Inject(AddItem addItem);
+
+    void Inject(EditItemCategory editItemCategory);
 
     void Inject(ItemCategoriesAdapter itemCategoriesAdapter);
 
     void Inject(ItemCategoriesFragment itemCategoriesFragment);
 
-    void Inject(org.localareadelivery.distributorapp.AddItemsToShopInventory.Items.EditItem editItem);
+    void Inject(ItemRemakeFragmentOld itemRemakeFragmentOld);
 
-    void Inject(ItemRemakeFragment itemRemakeFragment);
+    void Inject(ItemCategoriesAdapterEditStock itemCategoriesAdapterEditStock);
 
-    void Inject(ItemCategoriesParent itemCategoriesParent);
+    void Inject(ItemCategoriesFragmentEditStock itemCategoriesFragmentEditStock);
 
-    void Inject(ItemCategoriesParentAdapter itemCategoriesParentAdapter);
+    void Inject(FragmentItemsEditor fragmentItemsEditor);
 }

@@ -7,7 +7,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.RelativeLayout;
 
-import org.localareadelivery.distributorapp.AddItemsToShopInventory.ItemCategoriesTabs;
+import org.localareadelivery.distributorapp.EditStock.EditStock;
+import org.localareadelivery.distributorapp.ItemCategoriesTabs.ItemCategoriesTabs;
 import org.localareadelivery.distributorapp.OrdersHome.OrdersHome;
 import org.localareadelivery.distributorapp.QuickStockEditor.QuickStockEditor;
 import org.localareadelivery.distributorapp.R;
@@ -20,6 +21,8 @@ public class ShopHome extends AppCompatActivity implements View.OnClickListener 
     public static final String SHOP_ID_INTENT_KEY = "shop_id_key";
 
     RelativeLayout addRemoveItemsButton,addEditStockButton;
+
+    RelativeLayout optionEditStock;
 
 
 
@@ -42,8 +45,8 @@ public class ShopHome extends AppCompatActivity implements View.OnClickListener 
         addRemoveItemsButton = (RelativeLayout) findViewById(R.id.option_add_items);
         addRemoveItemsButton.setOnClickListener(this);
 
-        addEditStockButton = (RelativeLayout) findViewById(R.id.option_add_stock);
-        addEditStockButton.setOnClickListener(this);
+//        addEditStockButton = (RelativeLayout) findViewById(R.id.option_edit_stock);
+//        addEditStockButton.setOnClickListener(this);
 
 
     }
@@ -60,8 +63,15 @@ public class ShopHome extends AppCompatActivity implements View.OnClickListener 
     void quickStockEditorClick(View view)
     {
         startActivity(new Intent(this, QuickStockEditor.class));
+
     }
 
+
+    @OnClick(R.id.option_edit_stock)
+    void editStockClick(View view)
+    {
+        startActivity(new Intent(this, EditStock.class));
+    }
 
 
     @Override
@@ -78,12 +88,6 @@ public class ShopHome extends AppCompatActivity implements View.OnClickListener 
 
                 break;
 
-            case R.id.option_add_stock:
-
-//                startActivity(new Intent(this, org.localareadelivery.distributorapp.addStock.ItemCategories.class));
-
-                break;
-
             default:
                 break;
         }
@@ -96,8 +100,6 @@ public class ShopHome extends AppCompatActivity implements View.OnClickListener 
     protected void onDestroy() {
         super.onDestroy();
 
-
         ButterKnife.unbind(this);
-
     }
 }

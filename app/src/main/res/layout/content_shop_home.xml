@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <!--tools:showIn="@layout/activity_shop_home"
@@ -65,7 +64,38 @@
                     android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
                     android:textColor="#ffffff"
-                    android:text="Add Items to Shop Inventory"
+                    android:text="Items by Category"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
+                android:layout_weight="1"
+                android:id="@+id/option_items"
+                android:background="@color/buttonColorDark"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/menu_item_width">
+
+                <ImageView
+                    android:tint="#ffffff"
+                    android:padding="10dp"
+                    android:layout_above="@+id/text_items"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+
+                <TextView
+                    android:padding="10dp"
+                    android:id="@+id/text_items"
+                    android:textSize="@dimen/menu_item_text_size"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentBottom="true"
+                    android:textColor="#ffffff"
+                    android:text="Items"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </RelativeLayout>
@@ -93,9 +123,10 @@
 
             <RelativeLayout
                 android:layout_marginRight="5dp"
+                android:layout_marginEnd="5dp"
                 android:layout_weight="1"
                 android:layout_below="@id/borderOne"
-                android:id="@+id/option_add_stock"
+                android:id="@+id/option_edit_stock"
                 android:background="@color/gplus_color_1"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/menu_item_width">
@@ -113,10 +144,11 @@
                     android:padding="10dp"
                     android:id="@+id/text_add_stock"
                     android:textSize="@dimen/menu_item_text_size"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true"
                     android:layout_alignParentBottom="true"
                     android:textColor="#ffffff"
-                    android:text="Edit / Update Stock"
+                    android:text="Edit Stock"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </RelativeLayout>
@@ -126,6 +158,7 @@
 
             <RelativeLayout
                 android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
                 android:id="@+id/shop_home_quick_stock_editor"
                 android:background="@color/gplus_color_2"
                 android:layout_weight="1"
@@ -140,17 +173,17 @@
                     android:layout_height="match_parent" />
 
                 <TextView
-                    android:gravity="right"
                     android:padding="10dp"
                     android:id="@+id/text_quick_stock_editor"
                     android:textSize="@dimen/menu_item_text_size"
-                    android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
                     android:textColor="#ffffff"
                     android:text="Quick Stock Editor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </RelativeLayout>
+
+
         </LinearLayout>
 
         <LinearLayout

@@ -170,7 +170,7 @@ public class FragmentOutOfStock extends Fragment implements SwipeRefreshLayout.O
         DisplayMetrics metrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
-        layoutManager.setSpanCount(metrics.widthPixels/400);
+        layoutManager.setSpanCount(metrics.widthPixels/350);
 
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {

@@ -25,7 +25,7 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 import com.yalantis.ucrop.UCrop;
 
-import org.localareadelivery.distributorapp.DAOs.ShopDAO;
+import org.localareadelivery.distributorapp.zzDAOs.ShopDAO;
 import org.localareadelivery.distributorapp.Utility.ImageCalls;
 import org.localareadelivery.distributorapp.Utility.ImageCropUtility;
 import org.localareadelivery.distributorapp.Utility.UtilityGeneral;

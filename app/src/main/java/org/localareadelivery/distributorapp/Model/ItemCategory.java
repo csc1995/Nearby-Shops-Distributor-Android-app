@@ -25,6 +25,7 @@ public class ItemCategory implements Parcelable{
 	ItemCategory parentCategory = null;
 
 
+
 	protected ItemCategory(Parcel in) {
 		parentCategory = in.readParcelable(ItemCategory.class.getClassLoader());
 		itemCategoryID = in.readInt();

@@ -4,8 +4,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import org.localareadelivery.distributorapp.AddItemsToShopInventory.ItemCategories.ItemCategoriesFragment;
-import org.localareadelivery.distributorapp.AddItemsToShopInventory.Items.ItemRemakeFragment;
+import org.localareadelivery.distributorapp.AddItemsToShopInventory.ItemCategories.ItemCategoriesFragmentOld;
+import org.localareadelivery.distributorapp.AddItemsToShopInventory.Items.ItemRemakeFragmentOld;
 
 /**
  * Created by sumeet on 27/6/16.
@@ -26,9 +26,9 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     }
 
 
-    ItemCategoriesFragment itemCategoriesFragment;
+    ItemCategoriesFragmentOld itemCategoriesFragmentOld;
 
-    ItemRemakeFragment itemRemakeFragment;
+    ItemRemakeFragmentOld itemRemakeFragmentOld;
 
     @Override
     public Fragment getItem(int position) {
@@ -39,18 +39,18 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         if(position == 0)
         {
-            itemCategoriesFragment = new ItemCategoriesFragment();
+            itemCategoriesFragmentOld = new ItemCategoriesFragmentOld();
 
-//            activity.setNotificationReceiver(itemCategoriesFragment);
+//            activity.setNotificationReceiver(itemCategoriesFragmentOld);
 
-            return itemCategoriesFragment;
+            return itemCategoriesFragmentOld;
         }
         else if (position == 1)
         {
 
-            itemRemakeFragment = new ItemRemakeFragment();
+            itemRemakeFragmentOld = new ItemRemakeFragmentOld();
 
-            return itemRemakeFragment;
+            return itemRemakeFragmentOld;
         }
 
         return  null;

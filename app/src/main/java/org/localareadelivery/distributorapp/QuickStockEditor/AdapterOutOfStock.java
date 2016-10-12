@@ -1,6 +1,8 @@
 package org.localareadelivery.distributorapp.QuickStockEditor;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -36,11 +38,9 @@ import butterknife.OnClick;
 public class AdapterOutOfStock extends RecyclerView.Adapter<AdapterOutOfStock.ViewHolder>{
 
 
-    List<ShopItem> dataset = null;
-
-    Context context;
-
-    NotificationReceiver notificationReceiver;
+    private List<ShopItem> dataset = null;
+    private Context context;
+    private NotificationReceiver notificationReceiver;
 
 
     public AdapterOutOfStock(List<ShopItem> dataset, Context context, NotificationReceiver notifications) {
@@ -81,7 +81,15 @@ public class AdapterOutOfStock extends RecyclerView.Adapter<AdapterOutOfStock.Vi
 
             String imagePath = UtilityGeneral.getImageEndpointURL(MyApplication.getAppContext()) + item.getItemImageURL();
 
-            Picasso.with(context).load(imagePath).into(holder.itemImage);
+            Drawable placeholder = VectorDrawableCompat
+                    .create(context.getResources(),
+                            R.drawable.nature_people, context.getTheme());
+
+            Picasso.with(context)
+                    .load(imagePath)
+                    .placeholder(placeholder)
+                    .into(holder.itemImage);
+
 
             //holder.availableText.setText("Available : " + shopItem.getAvailableItemQuantity() + " Items");
             //holder.priceText.setText("Price : " + shopItem.getItemPrice());

@@ -2,8 +2,6 @@ package org.localareadelivery.distributorapp.OrdersHomeDelivery;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -14,7 +12,7 @@ import android.widget.Toast;
 
 import org.localareadelivery.distributorapp.ApplicationState.ApplicationState;
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
-import org.localareadelivery.distributorapp.DeliveryVehicleSelf.DeliveryVehicleActivity;
+import org.localareadelivery.distributorapp.DeliveryGuy.DeliveryVehicleActivity;
 import org.localareadelivery.distributorapp.Model.Order;
 import org.localareadelivery.distributorapp.ModelStats.DeliveryVehicleSelf;
 import org.localareadelivery.distributorapp.ModelStats.OrderStatusHomeDelivery;

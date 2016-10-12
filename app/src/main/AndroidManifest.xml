@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ShopList.Home"
+            android:name=".ShopList.ShopList"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -32,24 +32,12 @@
         <activity
             android:name=".ShopHome.ShopHome"
             android:label="@string/title_activity_shop_home"
-            android:parentActivityName=".ShopList.Home"
+            android:parentActivityName=".ShopList.ShopList"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.localareadelivery.distributorapp.ShopList.Home" />
+                android:value="org.localareadelivery.distributorapp.ShopList.ShopList" />
         </activity>
-
-
-        <activity
-            android:name=".DeprecatedAddItems.ItemCategories.ItemCategories"
-            android:label="@string/title_activity_item_categories"
-            android:parentActivityName=".ShopHome.ShopHome"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.localareadelivery.distributorapp.ShopHome.ShopHome" />
-        </activity>
-
 
 
         <activity
@@ -61,9 +49,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.localareadelivery.distributorapp.ShopHome.ShopHome" />
         </activity>
-
-
-
         <activity
             android:name=".addStock.Items"
             android:label="@string/title_activity_items_add_stock"
@@ -74,67 +59,22 @@
                 android:value="org.localareadelivery.distributorapp.ShopHome.ShopHome" />
         </activity>
         <activity
-            android:name=".DeprecatedAddItems.ItemCategories.AddItemCategory"
-            android:label="@string/title_activity_add_item_category"
-            android:parentActivityName=".DeprecatedAddItems.ItemCategories.ItemCategories"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".DeprecatedAddItems.ItemCategories.ItemCategories" />
-        </activity>
-        <activity
-            android:name=".DeprecatedAddItems.ItemCategories.EditItemCategory"
-            android:label="@string/title_activity_edit_item_category"
-            android:parentActivityName=".DeprecatedAddItems.ItemCategories.ItemCategories"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".DeprecatedAddItems.ItemCategories.ItemCategories" />
-        </activity>
-        <activity
-            android:name=".DeprecatedAddItems.Items.Items"
-            android:label="@string/title_activity_items"
-            android:parentActivityName=".DeprecatedAddItems.ItemCategories.ItemCategories"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".DeprecatedAddItems.ItemCategories.ItemCategories" />
-        </activity>
-        <activity
-            android:name=".DeprecatedAddItems.Items.AddItem"
-            android:label="@string/title_activity_add_item"
-            android:parentActivityName=".DeprecatedAddItems.ItemCategories.ItemCategories"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".DeprecatedAddItems.ItemCategories.ItemCategories" />
-        </activity>
-        <activity
-            android:name=".DeprecatedAddItems.Items.EditItem"
-            android:label="@string/title_activity_edit_item"
-            android:parentActivityName=".DeprecatedAddItems.Items.Items"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".DeprecatedAddItems.Items.Items" />
-        </activity>
-        <activity
             android:name=".ShopList.AddShop"
             android:label="@string/title_activity_add_shop"
-            android:parentActivityName=".ShopList.Home"
+            android:parentActivityName=".ShopList.ShopList"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.localareadelivery.distributorapp.ShopList.Home" />
+                android:value="org.localareadelivery.distributorapp.ShopList.ShopList" />
         </activity>
         <activity
             android:name=".ShopList.EditShop"
             android:label="@string/title_activity_edit_shop"
-            android:parentActivityName=".ShopList.Home"
+            android:parentActivityName=".ShopList.ShopList"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.localareadelivery.distributorapp.ShopList.Home" />
+                android:value="org.localareadelivery.distributorapp.ShopList.ShopList" />
         </activity>
         <activity
             android:name=".addStock.AddStock"
@@ -171,7 +111,7 @@
                 android:value="org.localareadelivery.distributorapp.OrdersHome.OrdersHome" />
         </activity>
         <activity
-            android:name=".DeliveryVehicleSelf.DeliveryVehicleActivity"
+            android:name=".DeliveryGuy.DeliveryVehicleActivity"
             android:label="Delivery Vehicles"
             android:parentActivityName=".OrdersHome.OrdersHome"
             android:theme="@style/AppTheme.NoActionBar">
@@ -180,22 +120,22 @@
                 android:value="org.localareadelivery.distributorapp.OrdersHome.OrdersHome" />
         </activity>
         <activity
-            android:name=".DeliveryVehicleSelf.AddVehicleSelfActivity"
+            android:name=".DeliveryGuy.AddVehicleSelfActivity"
             android:label="Add Delivery Vehicle"
-            android:parentActivityName=".DeliveryVehicleSelf.DeliveryVehicleActivity"
+            android:parentActivityName=".DeliveryGuy.DeliveryVehicleActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.localareadelivery.distributorapp.DeliveryVehicleSelf.DeliveryVehicleActivity" />
+                android:value="org.localareadelivery.distributorapp.DeliveryGuy.DeliveryVehicleActivity" />
         </activity>
         <activity
-            android:name=".DeliveryVehicleSelf.EditAddressActivity"
+            android:name=".DeliveryGuy.EditAddressActivity"
             android:label="Edit Delivery Vehicle"
-            android:parentActivityName=".DeliveryVehicleSelf.DeliveryVehicleActivity"
+            android:parentActivityName=".DeliveryGuy.DeliveryVehicleActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.localareadelivery.distributorapp.DeliveryVehicleSelf.DeliveryVehicleActivity" />
+                android:value="org.localareadelivery.distributorapp.DeliveryGuy.DeliveryVehicleActivity" />
         </activity>
         <activity
             android:name=".OrdersHomeDelivery.ConfirmItemsForDelivery"
@@ -209,20 +149,20 @@
         <activity
             android:name=".VehicleInventory.VehicleDashboard"
             android:label="@string/title_activity_vehicle_dashboard"
-            android:parentActivityName=".DeliveryVehicleSelf.DeliveryVehicleActivity"
+            android:parentActivityName=".DeliveryGuy.DeliveryVehicleActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.localareadelivery.distributorapp.DeliveryVehicleSelf.DeliveryVehicleActivity" />
+                android:value="org.localareadelivery.distributorapp.DeliveryGuy.DeliveryVehicleActivity" />
         </activity>
         <activity
             android:name=".VehicleDriverDashboard.VehicleDriverDashboard"
             android:label="Vehicle Driver Dashboard"
-            android:parentActivityName=".DeliveryVehicleSelf.DeliveryVehicleActivity"
+            android:parentActivityName=".DeliveryGuy.DeliveryVehicleActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.localareadelivery.distributorapp.DeliveryVehicleSelf.DeliveryVehicleActivity" />
+                android:value="org.localareadelivery.distributorapp.DeliveryGuy.DeliveryVehicleActivity" />
         </activity>
         <activity
             android:name=".QuickStockEditor.QuickStockEditor"
@@ -232,12 +172,14 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.localareadelivery.distributorapp.ShopHome.ShopHome" />
-        </activity><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
-     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
+        </activity>
+        <!--
+ ATTENTION: This was auto-generated to add Google Play services to your project for
+     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
+        -->
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-
 
         <!-- Recently added activities -->
 
@@ -250,12 +192,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ShopHome.ShopHome" />
         </activity>
-
-
-
-
         <activity
-            android:name=".AddItemsToShopInventory.ItemCategories.AddItemCategory"
+            android:name=".AddItemsToShopInventory.ItemCategories.AddItemCategoryOld"
             android:label="Add Item Category"
             android:parentActivityName=".ShopHome.ShopHome"
             android:theme="@style/AppTheme.NoActionBar">
@@ -264,8 +202,33 @@
                 android:value=".ShopHome.ShopHome" />
         </activity>
         <activity
-            android:name=".AddItemsToShopInventory.ItemCategories.EditItemCategory"
+            android:name=".AddItemsToShopInventory.ItemCategories.EditItemCategoryOld"
             android:label="Edit Item Category"
+            android:parentActivityName=".ShopHome.ShopHome"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ShopHome.ShopHome" />
+        </activity>
+        <activity
+            android:name=".SelectParent.ItemCategoriesParent"
+            android:label="Select Parent Category"
+            android:parentActivityName=".AddItemsToShopInventory.ItemCategoriesTabs"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ShopHome.ShopHome" />
+        </activity>
+        <activity
+            android:name=".Home.HomeActivity"
+            android:label="@string/title_activity_home"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+
+
+
+        <activity
+            android:name=".ItemCategoriesTabs.ItemCategoriesTabs"
+            android:label="@string/title_activity_item_categories_tabs"
             android:parentActivityName=".ShopHome.ShopHome"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
@@ -274,9 +237,30 @@
         </activity>
 
         <activity
-            android:name=".SelectParent.ItemCategoriesParent"
-            android:label="Select Parent Category"
-            android:parentActivityName=".AddItemsToShopInventory.ItemCategoriesTabs"
+            android:name=".ItemCategoriesTabs.ItemCategories.AddItemCategory"
+            android:label="Add Item Category"
+            android:parentActivityName=".ShopHome.ShopHome"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ShopHome.ShopHome" />
+        </activity>
+        <activity
+            android:name=".ItemCategoriesTabs.ItemCategories.EditItemCategory"
+            android:label="Edit Item Category"
+            android:parentActivityName=".ShopHome.ShopHome"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ShopHome.ShopHome" />
+        </activity>
+
+
+
+        <activity
+            android:name=".EditStock.EditStock"
+            android:label="@string/title_activity_item_categories_tabs"
+            android:parentActivityName=".ShopHome.ShopHome"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

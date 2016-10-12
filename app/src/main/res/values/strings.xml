@@ -20,9 +20,6 @@
     <string name="title_activity_items_add_stock">Items : Add Stock</string>
 
 
-
-
-
     <string name="google_app_id">419317660589</string>
     <string name="title_activity_orders_home">Orders Home</string>
     <string name="title_activity_home_delivery">Orders : Home Delivery</string>
@@ -49,5 +46,24 @@
         But you can have Items placed under a Leaf Node Item Category.
         Leaf Node Item Category is an Item Category which can have Items placed under them but cannot have Sub Item Category / Item Categories under it.</string>
     <string name="title_activity_item_categories_tabs">Item Categories</string>
+    <string name="title_activity_home">Home</string>
+
+    <string name="sort_by_created">Created</string>
+    <string name="sort_by_username">Username</string>
+    <string name="sort_by_name">Name</string>
+    <string name="sort_by_ascending">Ascending</string>
+    <string name="sort_by_descending">Descending</string>
+
+
+    <string name="fab_label_add_item_category">Add Item Category</string>
+    <string name="fab_label_change_parent_categories">Change Parent for Selected Item Categories</string>
+    <string name="fab_label_add_Item">Add Item</string>
+    <string name="fab_label_change_parent_item">Change Parent for Selected Items</string>
+    <string name="fab_label_add_from_global_item_cat">Add Item Category from Global Database</string>
+    <string name="fab_label_add_from_global_item">Add Item From Global Database</string>
+    <string name="fab_label_detach_item_category">Detach Selected Item Categories</string>
+    <string name="fab_label_detach_item">Detach Selected Items</string>
+
+
 
 </resources>

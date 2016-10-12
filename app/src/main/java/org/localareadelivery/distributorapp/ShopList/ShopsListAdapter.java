@@ -15,7 +15,7 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 
 import org.localareadelivery.distributorapp.ApplicationState.ApplicationState;
-import org.localareadelivery.distributorapp.DAOs.ShopDAO;
+import org.localareadelivery.distributorapp.zzDAOs.ShopDAO;
 import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.ShopHome.ShopHome;
@@ -34,10 +34,10 @@ public class ShopsListAdapter extends RecyclerView.Adapter<ShopsListAdapter.View
 
     Context context;
     ArrayList<Shop> dataset;
-    Home shopListActivity;
+    ShopList shopListActivity;
 
 
-    public ShopsListAdapter(Context context, ArrayList<Shop> dataset, Home shopListActivity) {
+    public ShopsListAdapter(Context context, ArrayList<Shop> dataset, ShopList shopListActivity) {
         this.context = context;
         this.dataset = dataset;
         this.shopListActivity = shopListActivity;

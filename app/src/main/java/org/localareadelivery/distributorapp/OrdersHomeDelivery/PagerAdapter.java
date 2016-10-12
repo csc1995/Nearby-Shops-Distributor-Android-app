@@ -76,7 +76,7 @@ public class PagerAdapter extends FragmentStatePagerAdapter implements PlacedOrd
     @Override
     public int getCount() {
         // Show 3 total pages.
-        return 4;
+        return 3;
     }
 
     @Override

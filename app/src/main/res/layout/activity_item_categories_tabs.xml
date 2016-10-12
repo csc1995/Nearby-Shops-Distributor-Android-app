@@ -1,18 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main_content"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/coordinatorLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#22000000"
-    android:animateLayoutChanges="true"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    tools:context=".ItemCategoriesTabs.ItemCategoriesTabs">
+
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/container"
+        android:layout_below="@id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
-        android:animateLayoutChanges="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
@@ -25,23 +35,41 @@
             app:layout_scrollFlags="scroll|enterAlways"
             app:popupTheme="@style/AppTheme.PopupOverlay"/>
 
+        <LinearLayout
+            app:layout_scrollFlags = "scroll|enterAlways"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
+            <ImageView
+                android:id="@+id/icon_sort"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                app:srcCompat="@drawable/ic_sort_black_24px"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+
+            <TextView
+                android:id="@+id/text_sort"
+                android:padding="5dp"
+                android:text="Filter / Sort"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
 
         <android.support.design.widget.TabLayout
-            android:visibility="gone"
+            android:visibility="visible"
             android:layout_below="@id/appbar"
             app:tabTextColor="@color/white"
             app:tabSelectedTextColor="@color/white"
             app:layout_scrollFlags = "scroll|enterAlways"
-            android:background="@color/buttonColorDark"
             android:id="@+id/tablayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:tabGravity="fill"
             app:tabMode="scrollable"
-            app:tabIndicatorHeight="4dp"
-            app:tabIndicatorColor="@color/colorAccent"
-            app:tabBackground="@color/buttonColorDark" />
+            app:tabIndicatorHeight="2dp"
+            app:tabIndicatorColor="@color/colorAccent"/>
 
 
         <android.support.design.widget.TabLayout
@@ -49,20 +77,103 @@
             android:id="@+id/tablayoutPager"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:layout_scrollFlags="scroll|enterAlways"
             app:tabGravity="fill"
             app:tabMode="scrollable"
-            app:tabIndicatorHeight="4dp"
+            app:tabIndicatorHeight="2dp"
             app:tabIndicatorColor="@color/gplus_color_2"
             app:tabBackground="@color/blueGrey800" />
 
 
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/container"
-        android:layout_below="@id/appbar"
+
+    <com.github.clans.fab.FloatingActionMenu
+        android:id="@+id/fab_menu"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        android:layout_gravity="end|bottom"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        fab:menu_labels_ellipsize="end"
+        fab:menu_labels_singleLine="false"
+        app:menu_labels_colorNormal="#ffffff"
+        app:menu_labels_textColor="#000000"
+        fab:menu_backgroundColor="#aa37474F"
+        app:menu_colorNormal="@color/buttonColorDark"
+        app:menu_colorPressed="@color/phonographyBlue"
+        app:menu_colorRipple="@color/white"
+        fab:menu_fab_label="Close">
 
-</RelativeLayout>
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fab_detach"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/fab_add"
+            fab:fab_size="mini"
+            app:fab_colorNormal="@color/phonographyBlue"
+            app:fab_colorPressed="@color/blueGrey800"
+            fab:fab_label="Detach Selected Item Categories" />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:visibility="gone"
+            android:id="@+id/fab_change_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_size="mini"
+            app:srcCompat="@drawable/ic_details_black_48px"
+            app:fab_colorNormal="@color/phonographyBlue"
+            app:fab_colorPressed="@color/blueGrey800"
+            fab:fab_label="Change Parent for Selected" />
+
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fab_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_size="mini"
+            app:srcCompat="@drawable/fab_add"
+            app:fab_colorNormal="@color/phonographyBlue"
+            app:fab_colorPressed="@color/blueGrey800"
+            fab:fab_label="Add Item Category" />
+
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fab_add_from_global"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_size="mini"
+            app:srcCompat="@drawable/fab_add"
+            app:fab_colorNormal="@color/phonographyBlue"
+            app:fab_colorPressed="@color/blueGrey800"
+            fab:fab_label="Add Item Category From Global Database" />
+
+    </com.github.clans.fab.FloatingActionMenu>
+
+
+
+    <com.wunderlist.slidinglayer.SlidingLayer
+        android:id="@+id/slidingLayer"
+        android:elevation="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <FrameLayout
+            android:background="@color/white"
+            android:layout_gravity="end"
+            android:layout_marginLeft="@dimen/slidinglayerwidth"
+            android:layout_marginStart="@dimen/slidinglayerwidth"
+            android:id="@+id/slidinglayerfragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+
+
+    </com.wunderlist.slidinglayer.SlidingLayer>
+
+
+
+</android.support.design.widget.CoordinatorLayout>

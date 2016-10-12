@@ -2,14 +2,12 @@ package org.localareadelivery.distributorapp.OrdersHome;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.RelativeLayout;
 
-import org.localareadelivery.distributorapp.DeliveryVehicleSelf.DeliveryVehicleActivity;
+import org.localareadelivery.distributorapp.DeliveryGuy.DeliveryVehicleActivity;
 import org.localareadelivery.distributorapp.OrdersHomeDelivery.HomeDelivery;
 import org.localareadelivery.distributorapp.R;
 
@@ -59,10 +57,6 @@ public class OrdersHome extends AppCompatActivity {
         intent.putExtra(DeliveryVehicleActivity.INTENT_REQUEST_CODE_KEY,DeliveryVehicleActivity.INTENT_CODE_VEHICLE_DRIVER_DASHBOARD);
         startActivity(intent);
     }
-
-
-
-
 
     @Override
     protected void onDestroy() {

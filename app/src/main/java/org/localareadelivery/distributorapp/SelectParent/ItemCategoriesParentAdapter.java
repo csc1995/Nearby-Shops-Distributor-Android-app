@@ -19,7 +19,7 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
-import org.localareadelivery.distributorapp.AddItemsToShopInventory.ItemCategories.EditItemCategory;
+import org.localareadelivery.distributorapp.AddItemsToShopInventory.ItemCategories.EditItemCategoryOld;
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
 import org.localareadelivery.distributorapp.Model.ItemCategory;
 import org.localareadelivery.distributorapp.R;
@@ -334,8 +334,8 @@ public class ItemCategoriesParentAdapter extends RecyclerView.Adapter<ItemCatego
 
                 case R.id.action_edit:
 
-                    Intent intent = new Intent(context,EditItemCategory.class);
-                    intent.putExtra(EditItemCategory.ITEM_CATEGORY_INTENT_KEY,dataset.get(getLayoutPosition()));
+                    Intent intent = new Intent(context,EditItemCategoryOld.class);
+                    intent.putExtra(EditItemCategoryOld.ITEM_CATEGORY_INTENT_KEY,dataset.get(getLayoutPosition()));
                     context.startActivity(intent);
 
                     break;
