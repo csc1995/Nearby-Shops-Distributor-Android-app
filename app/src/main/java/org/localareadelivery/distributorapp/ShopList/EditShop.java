@@ -25,7 +25,7 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 import com.yalantis.ucrop.UCrop;
 
-import org.localareadelivery.distributorapp.zzDAOs.ShopDAO;
+
 import org.localareadelivery.distributorapp.Utility.ImageCalls;
 import org.localareadelivery.distributorapp.Utility.ImageCropUtility;
 import org.localareadelivery.distributorapp.Utility.UtilityGeneral;
@@ -221,12 +221,12 @@ public class EditShop extends AppCompatActivity implements LocationListener, Cal
 
                     getDataFromEditText(shop);
 
-                    ShopDAO.getInstance()
+                    /*ShopDAO.getInstance()
                             .updateShop(
                                     shop,
                                     new updateShopCallback()
                             );
-
+*/
 
                 }else
                 {
@@ -255,11 +255,11 @@ public class EditShop extends AppCompatActivity implements LocationListener, Cal
         {
             getDataFromEditText(shop);
 
-            ShopDAO.getInstance()
+            /*ShopDAO.getInstance()
                     .updateShop(
                             shop,
                             new updateShopCallback()
-                    );
+                    );*/
         }
     }
 
@@ -608,12 +608,12 @@ public class EditShop extends AppCompatActivity implements LocationListener, Cal
 
         getDataFromEditText(shop);
 
-        ShopDAO.getInstance()
+        /*ShopDAO.getInstance()
                 .updateShop(
                         shop,
                         new updateShopCallback()
                 );
-
+*/
 
     }
 
@@ -630,17 +630,17 @@ public class EditShop extends AppCompatActivity implements LocationListener, Cal
 
         getDataFromEditText(shop);
 
-        ShopDAO.getInstance()
+        /*ShopDAO.getInstance()
                 .updateShop(
                         shop,
                         new updateShopCallback()
                 );
-
+*/
     }
 
 
 
-    class updateShopCallback implements ShopDAO.UpdateShopCallback{
+   /* class updateShopCallback implements ShopDAO.UpdateShopCallback{
 
         @Override
         public void updateShopCallback(boolean isOffline, boolean isSuccessful, int httpStatusCode) {
@@ -666,7 +666,7 @@ public class EditShop extends AppCompatActivity implements LocationListener, Cal
 
 
         }
-    }
+    }*/
 
 
     @Override

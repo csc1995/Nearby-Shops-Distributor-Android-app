@@ -3,12 +3,6 @@ package org.localareadelivery.distributorapp;
 import org.localareadelivery.distributorapp.ApplicationState.ApplicationState;
 import org.localareadelivery.distributorapp.DaggerComponents.DaggerNetComponent;
 import org.localareadelivery.distributorapp.DaggerComponents.NetComponent;
-import org.localareadelivery.distributorapp.zzDaggerDepricated.DAOComponent;
-import org.localareadelivery.distributorapp.zzDaggerDepricated.DaggerDAOComponent;
-import org.localareadelivery.distributorapp.zzDaggerDepricated.DaggerDataComponent;
-import org.localareadelivery.distributorapp.zzDaggerDepricated.DaggerRESTComponent;
-import org.localareadelivery.distributorapp.zzDaggerDepricated.DataComponent;
-import org.localareadelivery.distributorapp.zzDaggerDepricated.RESTComponent;
 import org.localareadelivery.distributorapp.DaggerModules.AppModule;
 import org.localareadelivery.distributorapp.DaggerModules.NetModule;
 
@@ -21,10 +15,6 @@ public class DaggerComponentBuilder {
     private static DaggerComponentBuilder instance;
 
     private NetComponent mNetComponent;
-    private RESTComponent restComponent;
-    private DAOComponent daoComponent;
-
-    private DataComponent dataComponent;
 
 
     private DaggerComponentBuilder() {
@@ -60,41 +50,6 @@ public class DaggerComponentBuilder {
         }
 
         return mNetComponent;
-    }
-
-
-    public RESTComponent getRestComponent()
-    {
-
-        if(restComponent == null) {
-
-            restComponent = DaggerRESTComponent.create();
-        }
-
-        return restComponent;
-    }
-
-
-    public DAOComponent getDaoComponent()
-    {
-        if(daoComponent == null)
-        {
-            daoComponent = DaggerDAOComponent.create();
-        }
-
-        return daoComponent;
-    }
-
-
-    public DataComponent getDataComponent()
-    {
-        if(dataComponent == null)
-        {
-            dataComponent = DaggerDataComponent.create();
-
-        }
-
-        return dataComponent;
     }
 
 }

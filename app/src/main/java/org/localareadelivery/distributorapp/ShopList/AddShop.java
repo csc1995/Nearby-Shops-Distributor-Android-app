@@ -26,8 +26,6 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 import com.yalantis.ucrop.UCrop;
 
-import org.localareadelivery.distributorapp.zzDAOs.ShopDAO;
-import org.localareadelivery.distributorapp.DaggerComponentBuilder;
 import org.localareadelivery.distributorapp.Model.Image;
 import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.R;
@@ -46,7 +44,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AddShop extends AppCompatActivity implements LocationListener, Callback<Image>, ShopDAO.CreateShopCallback{
+public class AddShop extends AppCompatActivity implements LocationListener, Callback<Image>{
 
 
     boolean isImageAdded = false;
@@ -54,7 +52,7 @@ public class AddShop extends AppCompatActivity implements LocationListener, Call
     // Upload the image after picked up
     private static final int REQUEST_CODE_READ_EXTERNAL_STORAGE = 56;
 
-    @Inject ShopDAO shopDAO;
+//    @Inject ShopDAO shopDAO;
 
 
     @Bind(R.id.shopName)
@@ -99,9 +97,9 @@ public class AddShop extends AppCompatActivity implements LocationListener, Call
         super.onCreate(savedInstanceState);
 
         // Use dependency injection
-        DaggerComponentBuilder.getInstance()
-                .getDaoComponent()
-                .Inject(this);
+//        DaggerComponentBuilder.getInstance()
+//                .getDaoComponent()
+//                .Inject(this);
 
 
         setContentView(R.layout.activity_add_shop);
@@ -151,7 +149,7 @@ public class AddShop extends AppCompatActivity implements LocationListener, Call
 
         }
 
-        shopDAO.createShop(shop,this);
+//        shopDAO.createShop(shop,this);
     }
 
 
@@ -527,7 +525,7 @@ public class AddShop extends AppCompatActivity implements LocationListener, Call
 
 
 
-    @Override
+
     public void createShopCallback(boolean isOffline, boolean isSuccessful, int httpStatusCode, Shop shop) {
 
         if (!isOffline) {

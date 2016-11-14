@@ -11,7 +11,7 @@ import android.widget.Toast;
 import org.localareadelivery.distributorapp.ApplicationState.ApplicationState;
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
 import org.localareadelivery.distributorapp.Model.Shop;
-import org.localareadelivery.distributorapp.ModelStats.DeliveryVehicleSelf;
+import org.localareadelivery.distributorapp.ModelStats.DeliveryGuySelf;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.VehicleSelfService;
 
@@ -23,9 +23,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AddVehicleSelfActivity extends AppCompatActivity implements View.OnClickListener, Callback<DeliveryVehicleSelf> {
+public class AddVehicleSelfActivity extends AppCompatActivity implements View.OnClickListener, Callback<DeliveryGuySelf> {
 
-    DeliveryVehicleSelf deliveryVehicleSelf;
+    DeliveryGuySelf deliveryGuySelf;
 
     @Inject
     VehicleSelfService vehicleSelfService;
@@ -76,10 +76,10 @@ public class AddVehicleSelfActivity extends AppCompatActivity implements View.On
 
         Shop shop = ApplicationState.getInstance().getCurrentShop();
 
-        deliveryVehicleSelf = new DeliveryVehicleSelf();
+        deliveryGuySelf = new DeliveryGuySelf();
 
-        deliveryVehicleSelf.setVehicleName(vehicleName.getText().toString());
-        deliveryVehicleSelf.setShopID(shop.getShopID());
+        deliveryGuySelf.setVehicleName(vehicleName.getText().toString());
+        deliveryGuySelf.setShopID(shop.getShopID());
 
     }
 
@@ -90,9 +90,9 @@ public class AddVehicleSelfActivity extends AppCompatActivity implements View.On
         getDataFromViews();
 
 
-        if(deliveryVehicleSelf !=null)
+        if(deliveryGuySelf !=null)
         {
-            Call<DeliveryVehicleSelf> call = vehicleSelfService.postVehicle(deliveryVehicleSelf);
+            Call<DeliveryGuySelf> call = vehicleSelfService.postVehicle(deliveryGuySelf);
 
             call.enqueue(this);
 
@@ -117,7 +117,7 @@ public class AddVehicleSelfActivity extends AppCompatActivity implements View.On
     }
 
     @Override
-    public void onResponse(Call<DeliveryVehicleSelf> call, Response<DeliveryVehicleSelf> response) {
+    public void onResponse(Call<DeliveryGuySelf> call, Response<DeliveryGuySelf> response) {
 
 
         if (response != null && response.code() == 201) {
@@ -131,7 +131,7 @@ public class AddVehicleSelfActivity extends AppCompatActivity implements View.On
     }
 
     @Override
-    public void onFailure(Call<DeliveryVehicleSelf> call, Throwable t) {
+    public void onFailure(Call<DeliveryGuySelf> call, Throwable t) {
 
         showToastMessage("Add Vehicle Failed. Try again !");
 

@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import org.localareadelivery.distributorapp.DeliveryGuy.DeliveryVehicleActivity;
-import org.localareadelivery.distributorapp.OrdersHomeDelivery.HomeDelivery;
+import org.localareadelivery.distributorapp.HomeDeliveryInventory.HomeDelivery;
 import org.localareadelivery.distributorapp.R;
 
 import butterknife.ButterKnife;

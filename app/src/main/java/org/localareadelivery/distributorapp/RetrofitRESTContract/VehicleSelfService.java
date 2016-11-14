@@ -1,6 +1,6 @@
 package org.localareadelivery.distributorapp.RetrofitRESTContract;
 
-import org.localareadelivery.distributorapp.ModelStats.DeliveryVehicleSelf;
+import org.localareadelivery.distributorapp.ModelStats.DeliveryGuySelf;
 
 import java.util.List;
 
@@ -19,19 +19,19 @@ import retrofit2.http.Query;
  */
 public interface VehicleSelfService {
 
-    @GET("/api/DeliveryVehicleSelf")
-    Call<List<DeliveryVehicleSelf>> getVehicles(@Query("ShopID") int shopID);
+    @GET("/api/DeliveryGuySelf")
+    Call<List<DeliveryGuySelf>> getVehicles(@Query("ShopID") int shopID);
 
-    @GET("/api/DeliveryVehicleSelf/{id}")
-    Call<DeliveryVehicleSelf> getVehicle(@Path("id") int id);
+    @GET("/api/DeliveryGuySelf/{id}")
+    Call<DeliveryGuySelf> getVehicle(@Path("id") int id);
 
-    @POST("/api/DeliveryVehicleSelf")
-    Call<DeliveryVehicleSelf> postVehicle(@Body DeliveryVehicleSelf deliveryVehicleSelf);
+    @POST("/api/DeliveryGuySelf")
+    Call<DeliveryGuySelf> postVehicle(@Body DeliveryGuySelf deliveryGuySelf);
 
-    @PUT("/api/DeliveryVehicleSelf/{id}")
-    Call<ResponseBody> putVehicle(@Body DeliveryVehicleSelf deliveryVehicleSelf, @Path("id") int id);
+    @PUT("/api/DeliveryGuySelf/{id}")
+    Call<ResponseBody> putVehicle(@Body DeliveryGuySelf deliveryGuySelf, @Path("id") int id);
 
-    @DELETE("/api/DeliveryVehicleSelf/{id}")
+    @DELETE("/api/DeliveryGuySelf/{id}")
     Call<ResponseBody> deleteVehicle(@Path("id") int id);
 
 }

@@ -38,7 +38,7 @@
         android:textColor="@color/white"
         android:background="@color/orangeDark"
         android:layout_marginRight="10dp"
-        android:text="Received 1097 from Delivery Guy."
+        android:text="Received all from Delivery Guy."
         android:id="@+id/receivedTotal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

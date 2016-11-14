@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="org.localareadelivery.distributorapp.OrdersHomeDelivery.HomeDelivery">
+    tools:context="org.localareadelivery.distributorapp.HomeDeliveryInventory.HomeDelivery">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
@@ -16,6 +16,7 @@
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
+            app:layout_scrollFlags="scroll|enterAlways"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
@@ -32,14 +33,14 @@
             android:layout_height="wrap_content"
             app:tabGravity="fill"
             app:tabMode="scrollable"
-            app:tabIndicatorHeight="4dp"
+            app:tabIndicatorHeight="2dp"
             app:tabIndicatorColor="@color/gplus_color_2"
             app:tabBackground="@color/blueGrey800" />
 
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.view.ViewPager
-        android:layout_marginTop="110dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
@@ -48,5 +49,22 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     app:layout_scrollFlags="scroll|enterAlways"
      -->
+
+
+    <TextView
+
+        android:visibility="gone"
+        android:layout_gravity="bottom"
+        android:background="@color/blueGrey800"
+        android:textColor="#ffffff"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:padding="10dp"
+        android:layout_margin="5dp"
+        android:id="@+id/confirmItems"
+        android:text="Transfer Orders to Delivery Guy"
+        android:layout_width="match_parent"
+        android:layout_height="50dp" />
+
 
 </android.support.design.widget.CoordinatorLayout>

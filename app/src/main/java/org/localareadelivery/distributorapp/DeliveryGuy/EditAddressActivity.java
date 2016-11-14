@@ -9,7 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
-import org.localareadelivery.distributorapp.ModelStats.DeliveryVehicleSelf;
+import org.localareadelivery.distributorapp.ModelStats.DeliveryGuySelf;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.VehicleSelfService;
 
@@ -25,7 +25,7 @@ import retrofit2.Response;
 
 public class EditAddressActivity extends AppCompatActivity implements Callback<ResponseBody> {
 
-    DeliveryVehicleSelf deliveryVehicleSelf;
+    DeliveryGuySelf deliveryGuySelf;
 
     static final String DELIVERY_VEHICLE_SELF_INTENT_KEY = "edit_delivery_vehicle_self_intent_key";
 
@@ -62,7 +62,7 @@ public class EditAddressActivity extends AppCompatActivity implements Callback<R
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-        deliveryVehicleSelf = getIntent().getParcelableExtra(DELIVERY_VEHICLE_SELF_INTENT_KEY);
+        deliveryGuySelf = getIntent().getParcelableExtra(DELIVERY_VEHICLE_SELF_INTENT_KEY);
 
         bindDataToViews();
 
@@ -73,19 +73,19 @@ public class EditAddressActivity extends AppCompatActivity implements Callback<R
 
     void getDataFromViews()
     {
-        if(deliveryVehicleSelf!=null)
+        if(deliveryGuySelf !=null)
         {
-            deliveryVehicleSelf.setVehicleName(vehicleName.getText().toString());
+            deliveryGuySelf.setVehicleName(vehicleName.getText().toString());
         }
     }
 
 
     void bindDataToViews()
     {
-        if(deliveryVehicleSelf!=null)
+        if(deliveryGuySelf !=null)
         {
 
-            vehicleName.setText(deliveryVehicleSelf.getVehicleName());
+            vehicleName.setText(deliveryGuySelf.getVehicleName());
         }
     }
 
@@ -97,7 +97,7 @@ public class EditAddressActivity extends AppCompatActivity implements Callback<R
 
         getDataFromViews();
 
-        Call<ResponseBody> call = vehicleSelfService.putVehicle(deliveryVehicleSelf,deliveryVehicleSelf.getID());
+        Call<ResponseBody> call = vehicleSelfService.putVehicle(deliveryGuySelf, deliveryGuySelf.getID());
         call.enqueue(this);
 
     }

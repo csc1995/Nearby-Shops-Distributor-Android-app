@@ -123,7 +123,17 @@ public class FragmentPriceNotSet extends Fragment implements SwipeRefreshLayout.
         DisplayMetrics metrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
-        layoutManager.setSpanCount(metrics.widthPixels/400);
+//        layoutManager.setSpanCount(metrics.widthPixels/400);
+
+
+
+        int spanCount = (int) (metrics.widthPixels/(230 * metrics.density));
+
+        if(spanCount==0){
+            spanCount = 1;
+        }
+
+        layoutManager.setSpanCount(spanCount);
 
     }
 

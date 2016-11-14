@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import org.localareadelivery.distributorapp.ModelStats.DeliveryVehicleSelf;
+import org.localareadelivery.distributorapp.ModelStats.DeliveryGuySelf;
 import org.localareadelivery.distributorapp.R;
 
 import java.util.List;
@@ -19,7 +19,7 @@ import java.util.List;
 public class DeliveryVehicleAdapter extends RecyclerView.Adapter<DeliveryVehicleAdapter.ViewHolder>{
 
 
-    List<DeliveryVehicleSelf> dataset = null;
+    List<DeliveryGuySelf> dataset = null;
 
 
     Context context;
@@ -27,7 +27,7 @@ public class DeliveryVehicleAdapter extends RecyclerView.Adapter<DeliveryVehicle
 
 
 
-    public DeliveryVehicleAdapter(List<DeliveryVehicleSelf> dataset, Context context, NotificationReceiver notificationReceiver) {
+    public DeliveryVehicleAdapter(List<DeliveryGuySelf> dataset, Context context, NotificationReceiver notificationReceiver) {
 
         this.dataset = dataset;
         this.context = context;
@@ -48,13 +48,13 @@ public class DeliveryVehicleAdapter extends RecyclerView.Adapter<DeliveryVehicle
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
 
-        DeliveryVehicleSelf deliveryVehicleSelf = dataset.get(position);
+        DeliveryGuySelf deliveryGuySelf = dataset.get(position);
 
-        if(deliveryVehicleSelf != null)
+        if(deliveryGuySelf != null)
         {
 
-            holder.vehicleName.setText(deliveryVehicleSelf.getVehicleName());
-            holder.vehicleID.setText("Vehicle ID : " + deliveryVehicleSelf.getID());
+            holder.vehicleName.setText(deliveryGuySelf.getVehicleName());
+            holder.vehicleID.setText("Vehicle ID : " + deliveryGuySelf.getID());
 
         }
     }
@@ -144,11 +144,11 @@ public class DeliveryVehicleAdapter extends RecyclerView.Adapter<DeliveryVehicle
 
     public interface NotificationReceiver{
 
-        void notifyEdit(DeliveryVehicleSelf deliveryVehicleSelf);
+        void notifyEdit(DeliveryGuySelf deliveryGuySelf);
 
-        void notifyRemove(DeliveryVehicleSelf deliveryVehicleSelf);
+        void notifyRemove(DeliveryGuySelf deliveryGuySelf);
 
-        void notifyListItemClick(DeliveryVehicleSelf deliveryVehicleSelf);
+        void notifyListItemClick(DeliveryGuySelf deliveryGuySelf);
 
     }
 

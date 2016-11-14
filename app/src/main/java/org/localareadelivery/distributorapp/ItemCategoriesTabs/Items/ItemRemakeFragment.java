@@ -192,9 +192,17 @@ public class ItemRemakeFragment extends Fragment
 
         final DisplayMetrics metrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
+//        layoutManager.setSpanCount(metrics.widthPixels/350);
 
 
-        layoutManager.setSpanCount(metrics.widthPixels/350);
+
+        int spanCount = (int) (metrics.widthPixels/(230 * metrics.density));
+
+        if(spanCount==0){
+            spanCount = 1;
+        }
+
+        layoutManager.setSpanCount(spanCount);
 
 
         itemCategoriesList.addOnScrollListener(new RecyclerView.OnScrollListener() {

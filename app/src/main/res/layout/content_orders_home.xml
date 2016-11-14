@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView
+<android.support.v4.widget.NestedScrollView
 app:layout_behavior="@string/appbar_scrolling_view_behavior"
 xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -26,7 +26,8 @@ tools:showIn="@layout/activity_orders_home">
             android:layout_height="wrap_content">
 
             <RelativeLayout
-                android:layout_marginRight="5dp"
+                android:layout_marginRight="0dp"
+                android:layout_marginEnd="0dp"
                 android:layout_weight="1"
                 android:id="@+id/order_home_delivery"
                 android:background="@color/gplus_color_1"
@@ -45,7 +46,6 @@ tools:showIn="@layout/activity_orders_home">
                     android:padding="10dp"
                     android:id="@+id/text_home"
                     android:textSize="@dimen/menu_item_text_size"
-                    android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
                     android:textColor="#ffffff"
                     android:text="Home Delivery Inventory"
@@ -56,32 +56,7 @@ tools:showIn="@layout/activity_orders_home">
 
 
 
-            <RelativeLayout
-                android:layout_marginLeft="5dp"
-                android:id="@+id/order_pick_from_shop"
-                android:background="@color/gplus_color_2"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/menu_item_width">
 
-                <ImageView
-                    android:tint="#ffffff"
-                    android:padding="10dp"
-                    android:layout_above="@+id/text_pick"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-                <TextView
-                    android:padding="10dp"
-                    android:id="@+id/text_pick"
-                    android:textSize="@dimen/menu_item_text_size"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentBottom="true"
-                    android:textColor="#ffffff"
-                    android:text="Pick From Shop Inventory"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </RelativeLayout>
         </LinearLayout>
 
 
@@ -91,75 +66,17 @@ tools:showIn="@layout/activity_orders_home">
         <LinearLayout
             android:id="@+id/row_two"
             android:weightSum="2"
+            android:orientation="horizontal"
             android:layout_marginTop="10dp"
             android:layout_below="@id/row_one"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
 
-            <RelativeLayout
-                android:layout_marginRight="10dp"
-                android:id="@+id/order_cancelled_orders"
-                android:background="@color/gplus_color_4"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/menu_item_width">
-
-                <ImageView
-                    android:tint="#ffffff"
-                    android:padding="10dp"
-                    android:layout_above="@+id/text_cancel"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-                <TextView
-                    android:padding="10dp"
-                    android:id="@+id/text_cancel"
-                    android:textSize="@dimen/menu_item_text_size"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentBottom="true"
-                    android:textColor="#ffffff"
-                    android:text="Cancelled Orders"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </RelativeLayout>
-
-            <ImageView
-                android:tint="#ffffff"
-                android:padding="10dp"
-                android:layout_above="@+id/text_vehicle"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:id="@+id/imageView"
-                android:layout_weight="1" />
-        </LinearLayout>
-
-
-
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:id="@+id/borderOne"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_below="@id/row_two"
-            android:background="#88000000"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"/>
-
-
-
-
-
-        <LinearLayout
-            android:layout_below="@id/borderOne"
-            android:weightSum="2"
-            android:id="@+id/row_zero"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
 
             <RelativeLayout
                 android:layout_marginRight="5dp"
+                android:layout_marginEnd="5dp"
                 android:layout_weight="1"
                 android:id="@+id/order_edit_delivery_vehicles"
                 android:background="@color/phonographyBlue"
@@ -179,6 +96,7 @@ tools:showIn="@layout/activity_orders_home">
                     android:id="@+id/text_pending"
                     android:textSize="@dimen/menu_item_text_size"
                     android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_alignParentBottom="true"
                     android:textColor="#ffffff"
                     android:text="Delivery Guy Inventory"
@@ -189,25 +107,151 @@ tools:showIn="@layout/activity_orders_home">
 
             <RelativeLayout
                 android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
                 android:layout_weight="1"
                 android:id="@+id/orderhome_vehicle_driver_dashboard"
-                android:background="@color/phonographyBlue"
+                android:background="@color/buttonColorDark"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/menu_item_width">
 
 
                 <TextView
-                    android:gravity="right"
                     android:padding="10dp"
                     android:id="@+id/text_vehicle"
                     android:textSize="@dimen/menu_item_text_size"
                     android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_alignParentBottom="true"
                     android:textColor="#ffffff"
                     android:text="Delivery Guy Dashboard"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </RelativeLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/row_two_one"
+            android:weightSum="2"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/row_two"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+
+
+            <RelativeLayout
+                android:layout_marginRight="5dp"
+                android:layout_marginEnd="5dp"
+                android:id="@+id/order_cancelled_orders"
+                android:background="@color/gplus_color_4"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/menu_item_width">
+
+                <ImageView
+                    android:tint="#ffffff"
+                    android:padding="10dp"
+                    android:layout_above="@+id/text_cancel"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <TextView
+                    android:padding="10dp"
+                    android:id="@+id/text_cancel"
+                    android:textSize="@dimen/menu_item_text_size"
+                    android:layout_alignParentBottom="true"
+                    android:textColor="#ffffff"
+                    android:text="Cancelled Orders"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
+
+
+
+            <RelativeLayout
+                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
+                android:layout_weight="1"
+                android:id="@+id/order_home_delivery_returned"
+                android:background="@color/teal"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/menu_item_width">
+
+
+                <TextView
+                    android:padding="10dp"
+                    android:textSize="@dimen/menu_item_text_size"
+                    android:layout_alignParentBottom="true"
+                    android:textColor="#ffffff"
+                    android:text="Returned Orders"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
+
+
+
+        </LinearLayout>
+
+
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:id="@+id/borderOne"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_below="@id/row_two_one"
+            android:background="#88000000"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
+
+
+
+
+
+        <LinearLayout
+            android:layout_below="@id/borderOne"
+            android:weightSum="2"
+            android:id="@+id/row_zero"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+
+            <RelativeLayout
+                android:layout_marginRight="5dp"
+                android:layout_marginEnd="5dp"
+                android:id="@+id/order_pick_from_shop"
+                android:background="@color/gplus_color_2"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/menu_item_width">
+
+                <ImageView
+                    android:tint="#ffffff"
+                    android:padding="10dp"
+                    android:layout_above="@+id/text_pick"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <TextView
+                    android:padding="10dp"
+                    android:id="@+id/text_pick"
+                    android:textSize="@dimen/menu_item_text_size"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:textColor="#ffffff"
+                    android:text="Pick\nFrom Shop Inventory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
+
+
+
 
 
         </LinearLayout>
@@ -236,6 +280,7 @@ tools:showIn="@layout/activity_orders_home">
 
             <RelativeLayout
                 android:layout_marginRight="5dp"
+                android:layout_marginEnd="5dp"
                 android:layout_weight="1"
                 android:id="@+id/order_history"
                 android:background="@color/blueGrey800"
@@ -254,7 +299,6 @@ tools:showIn="@layout/activity_orders_home">
                     android:padding="10dp"
                     android:id="@+id/text_history"
                     android:textSize="@dimen/menu_item_text_size"
-                    android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
                     android:textColor="#ffffff"
                     android:text="Order History"
@@ -267,6 +311,7 @@ tools:showIn="@layout/activity_orders_home">
 
             <RelativeLayout
                 android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
                 android:id="@+id/order_search_orders"
                 android:background="@color/cyan900"
                 android:layout_weight="1"
@@ -285,6 +330,7 @@ tools:showIn="@layout/activity_orders_home">
                     android:id="@+id/text_search"
                     android:textSize="@dimen/menu_item_text_size"
                     android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_alignParentBottom="true"
                     android:textColor="#ffffff"
                     android:text="Search Orders"
@@ -295,6 +341,6 @@ tools:showIn="@layout/activity_orders_home">
 
     </RelativeLayout>
 
-</ScrollView>
+</android.support.v4.widget.NestedScrollView>
 
 

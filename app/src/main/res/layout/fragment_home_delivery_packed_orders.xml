@@ -20,25 +20,11 @@
 
 
 
-    <TextView
-        android:layout_alignParentBottom="true"
-        android:background="@color/blueGrey800"
-        android:textColor="#ffffff"
-        android:gravity="center"
-        android:textSize="20sp"
-        android:padding="10dp"
-        android:id="@+id/confirmItems"
-        android:layout_marginRight="10dp"
-        android:text="Confirm Items for Delivery"
-        android:layout_width="match_parent"
-        android:layout_height="50dp" />
-
-
 
 
     <android.support.v4.widget.SwipeRefreshLayout
-        android:layout_above="@id/confirmItems"
         android:id="@+id/swipeContainer"
+        android:layout_marginBottom="50dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

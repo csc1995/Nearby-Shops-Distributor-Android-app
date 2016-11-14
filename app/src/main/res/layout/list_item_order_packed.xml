@@ -3,7 +3,7 @@
     android:id="@+id/list_item_order_packed"
     android:layout_marginRight="10dp"
     android:layout_marginBottom="10dp"
-    android:background="#22000000"
+    android:background="@color/light_grey"
     android:paddingRight="10dp"
     android:paddingLeft="10dp"
     android:paddingTop="10dp"

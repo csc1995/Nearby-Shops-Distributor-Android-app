@@ -171,40 +171,6 @@ public class ItemCategoriesAdapterEditStock extends RecyclerView.Adapter<ItemCat
 
 
 
-        @OnLongClick(R.id.itemCategoryListItem)
-        public boolean listItemLongClick()
-        {
-
-//            showToastMessage("Long Click !");
-
-
-            if(selectedItems.containsKey(
-                    dataset.get(getLayoutPosition())
-                            .getItemCategoryID()
-            )
-                    )
-
-            {
-                selectedItems.remove(dataset.get(getLayoutPosition()).getItemCategoryID());
-
-            }else
-            {
-
-                selectedItems.put(dataset.get(getLayoutPosition()).getItemCategoryID(),dataset.get(getLayoutPosition()));
-
-                notificationReceiver.notifyItemCategorySelected();
-            }
-
-
-            notifyItemChanged(getLayoutPosition());
-
-//            showToastMessage(String.valueOf(selectedItems.size()));
-
-
-//            itemCategoryListItem.setBackgroundColor(context.getResources().getColor(R.color.cyan900));
-
-            return true;
-        }
 
 
 
@@ -222,71 +188,12 @@ public class ItemCategoriesAdapterEditStock extends RecyclerView.Adapter<ItemCat
                 return;
             }
 
-
-//            itemCategoryListItem.animate()
-//                    .y(100)
-//                    .x(100);
-
-
             notificationReceiver.notifyRequestSubCategory(dataset.get(getLayoutPosition()));
             selectedItems.clear();
-
-
-
-
-            /*if (dataset.get(getLayoutPosition()).getIsLeafNode()) {
-
-//                Intent intent = new Intent(context, Items.class);
-//
-//                intent.putExtra(Items.ITEM_CATEGORY_INTENT_KEY,dataset.get(getLayoutPosition()));
-//
-//                context.startActivity(intent);
-
-            }
-            else
-            {
-
-            }*/
-
         }
 
 
 
-        public void deleteItemCategory()
-        {
-
-
-            Call<ResponseBody> call = itemCategoryService.deleteItemCategory(dataset.get(getLayoutPosition()).getItemCategoryID());
-
-            call.enqueue(new Callback<ResponseBody>() {
-
-                @Override
-                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-
-
-                    if(response.code()==200)
-                    {
-                        notifyDelete();
-
-                        showToastMessage("Removed !");
-
-                    }else if(response.code()==304)
-                    {
-                        showToastMessage("Delete failed !");
-
-                    }else
-                    {
-                        showToastMessage("Server Error !");
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<ResponseBody> call, Throwable t) {
-
-                    showToastMessage("Network request failed ! Please check your connection!");
-                }
-            });
-        }
 
 
         @OnClick(R.id.more_options)
@@ -305,71 +212,7 @@ public class ItemCategoriesAdapterEditStock extends RecyclerView.Adapter<ItemCat
 
             switch (item.getItemId())
             {
-                case R.id.action_remove:
 
-                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
-
-                    builder.setTitle("Confirm Delete Item Category !")
-                            .setMessage("Do you want to delete this Item Category ?")
-                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-
-                                    deleteItemCategory();
-                                }
-                            })
-                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-
-
-                                    showToastMessage("Cancelled !");
-                                }
-                            })
-                            .show();
-
-
-                    break;
-
-                case R.id.action_edit:
-
-                    Intent intent = new Intent(context,EditItemCategory.class);
-                    intent.putExtra(EditItemCategory.ITEM_CATEGORY_INTENT_KEY,dataset.get(getLayoutPosition()));
-                    context.startActivity(intent);
-
-                    break;
-
-
-
-                case R.id.action_detach:
-
-                    showToastMessage("Detach");
-
-                    break;
-
-                case R.id.action_change_parent:
-
-
-//                    showToastMessage("Change parent !");
-
-                    Intent intentParent = new Intent(context, ItemCategoriesParent.class);
-
-                    requestedChangeParent = dataset.get(getLayoutPosition());
-
-                    // add the selected item category in the exclude list so that it does not get showed up as an option.
-                    // This is required to prevent an item category to assign itself or its children as its parent.
-                    // This should not happen because it would be erratic.
-
-                    ItemCategoriesParent.clearExcludeList(); // it is a safe to clear the list before adding any items in it.
-                    ItemCategoriesParent.excludeList
-                            .put(requestedChangeParent.getItemCategoryID(),requestedChangeParent);
-
-                    activity.startActivityForResult(intentParent,1,null);
-                    break;
-
-                default:
-
-                    break;
 
             }
 
@@ -389,10 +232,6 @@ public class ItemCategoriesAdapterEditStock extends RecyclerView.Adapter<ItemCat
     }
 
 
-    public void notifyDelete()
-    {
-        activity.notifyDelete();
-    }
 
 
     public interface ReceiveNotificationsFromAdapter
@@ -401,14 +240,4 @@ public class ItemCategoriesAdapterEditStock extends RecyclerView.Adapter<ItemCat
         public void notifyRequestSubCategory(ItemCategory itemCategory);
         public void notifyItemCategorySelected();
     }
-
-
-    public void setRequestedChangeParent(ItemCategory requestedChangeParent) {
-        this.requestedChangeParent = requestedChangeParent;
-    }
-
-    public ItemCategory getRequestedChangeParent() {
-        return requestedChangeParent;
-    }
-
 }

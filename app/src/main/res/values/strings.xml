@@ -25,7 +25,7 @@
     <string name="title_activity_home_delivery">Orders : Home Delivery</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="title_activity_confirm_items_for_delivery">Confirm Items For Delivery</string>
-    <string name="title_activity_vehicle_dashboard">Home Delivery : Vehicle Dashboard</string>
+    <string name="title_activity_vehicle_dashboard">Delivery Guy Inventory</string>
     <string name="title_activity_quick_stock_editor">Quick Stock Editor</string>
     <string name="network_request_failed">Network Reqest failed. Check your network connection !</string>
 

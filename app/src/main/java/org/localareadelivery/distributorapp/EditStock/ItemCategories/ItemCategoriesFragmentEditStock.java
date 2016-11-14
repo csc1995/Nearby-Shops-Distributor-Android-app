@@ -1,7 +1,6 @@
 package org.localareadelivery.distributorapp.EditStock.ItemCategories;
 
-import android.app.Activity;
-import android.content.Intent;
+
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -183,7 +182,18 @@ public class ItemCategoriesFragmentEditStock extends Fragment
         final DisplayMetrics metrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
-        layoutManager.setSpanCount(metrics.widthPixels/350);
+//        layoutManager.setSpanCount(metrics.widthPixels/350);
+
+        int spanCount = (int) (metrics.widthPixels/(230 * metrics.density));
+
+        if(spanCount==0){
+            spanCount = 1;
+        }
+
+        layoutManager.setSpanCount(spanCount);
+
+
+
         itemCategoriesList.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
 
@@ -341,19 +351,8 @@ public class ItemCategoriesFragmentEditStock extends Fragment
 
 
 
-    void notifyDelete()
-    {
-        dataset.clear();
-        offset = 0 ; // reset the offset
-        makeRequestRetrofit(false,false);
-    }
 
-
-
-
-
-
-
+/*
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -397,9 +396,11 @@ public class ItemCategoriesFragmentEditStock extends Fragment
             }
         }
     }
+*/
 
 
 
+/*
     void makeRequestUpdate(ItemCategory itemCategory)
     {
         Call<ResponseBody> call = itemCategoryService.updateItemCategory(itemCategory,itemCategory.getItemCategoryID());
@@ -433,10 +434,11 @@ public class ItemCategoriesFragmentEditStock extends Fragment
             }
         });
     }
+*/
 
 
 
-
+/*
     void makeRequestUpdateBulk(final List<ItemCategory> list)
     {
         Call<ResponseBody> call = itemCategoryService.updateItemCategoryBulk(list);
@@ -481,7 +483,7 @@ public class ItemCategoriesFragmentEditStock extends Fragment
             }
         });
 
-    }
+    }*/
 
 
     void clearSelectedItems()
@@ -594,7 +596,6 @@ public class ItemCategoriesFragmentEditStock extends Fragment
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-
         Icepick.saveInstanceState(this, outState);
     }
 

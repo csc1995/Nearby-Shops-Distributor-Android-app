@@ -138,7 +138,16 @@ public class ShopList extends AppCompatActivity implements SwipeRefreshLayout.On
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
-        layoutManager.setSpanCount(metrics.widthPixels/350);
+//        layoutManager.setSpanCount(metrics.widthPixels/350);
+        int spanCount = (int) (metrics.widthPixels/(230 * metrics.density));
+
+        if(spanCount==0){
+            spanCount = 1;
+        }
+
+        layoutManager.setSpanCount(spanCount);
+
+
 
         shopList.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override

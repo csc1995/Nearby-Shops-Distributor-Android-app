@@ -15,7 +15,6 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 
 import org.localareadelivery.distributorapp.ApplicationState.ApplicationState;
-import org.localareadelivery.distributorapp.zzDAOs.ShopDAO;
 import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.ShopHome.ShopHome;
@@ -30,7 +29,7 @@ import butterknife.OnClick;
 /**
  * Created by sumeet on 30/12/15.
  */
-public class ShopsListAdapter extends RecyclerView.Adapter<ShopsListAdapter.ViewHolder> implements ShopDAO.DeleteShopCallback{
+public class ShopsListAdapter extends RecyclerView.Adapter<ShopsListAdapter.ViewHolder>{
 
     Context context;
     ArrayList<Shop> dataset;
@@ -129,17 +128,17 @@ public class ShopsListAdapter extends RecyclerView.Adapter<ShopsListAdapter.View
         @OnClick(R.id.deleteIcon)
         public void deleteButtonClick()
         {
-            ShopDAO.getInstance()
+            /*ShopDAO.getInstance()
                     .deleteShop(
                             dataset.get(this.getAdapterPosition()).getShopID(),
                             ShopsListAdapter.this
-                    );
+                    );*/
         }
 
     }
 
 
-    @Override
+
     public void deleteShopCallback(boolean isOffline, boolean isSuccessful, int httpStatusCode) {
 
         if (!isOffline)

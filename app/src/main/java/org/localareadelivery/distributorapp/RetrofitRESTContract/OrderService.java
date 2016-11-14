@@ -2,6 +2,7 @@ package org.localareadelivery.distributorapp.RetrofitRESTContract;
 
 import org.localareadelivery.distributorapp.Model.Order;
 import org.localareadelivery.distributorapp.Model.Shop;
+import org.localareadelivery.distributorapp.ModelEndpoints.OrderEndPoint;
 
 import java.util.List;
 
@@ -21,16 +22,38 @@ import retrofit2.http.Query;
 public interface OrderService {
 
     @GET("/api/Order")
-    Call<List<Order>> getOrders(@Query("EndUserID")int endUserID,
-                                @Query("ShopID")int shopID,
+    Call<OrderEndPoint> getOrders(@Query("EndUserID")Integer endUserID,
+                                  @Query("ShopID")Integer shopID,
+                                  @Query("PickFromShop") Boolean pickFromShop,
+                                  @Query("StatusHomeDelivery")Integer homeDeliveryStatus,
+                                  @Query("StatusPickFromShopStatus")Integer pickFromShopStatus,
+                                  @Query("VehicleSelfID")Integer vehicleSelfID,
+                                  @Query("PaymentsReceived") Boolean paymentsReceived,
+                                  @Query("DeliveryReceived") Boolean deliveryReceived,
+                                  @Query("GetDeliveryAddress")Boolean getDeliveryAddress,
+                                  @Query("GetStats")Boolean getStats,
+                                  @Query("SortBy") String sortBy,
+                                  @Query("Limit")Integer limit, @Query("Offset")Integer offset,
+                                  @Query("metadata_only")Boolean metaonly
+    );
+
+
+
+    @GET("/api/Order")
+    Call<List<Order>> getOrders(@Query("EndUserID")Integer endUserID,
+                                @Query("ShopID")Integer shopID,
                                 @Query("PickFromShop") Boolean pickFromShop,
-                                @Query("StatusHomeDelivery")int homeDeliveryStatus,
-                                @Query("StatusPickFromShopStatus")int pickFromShopStatus,
-                                @Query("VehicleSelfID")int vehicleSelfID,
+                                @Query("StatusHomeDelivery")Integer homeDeliveryStatus,
+                                @Query("StatusPickFromShopStatus")Integer pickFromShopStatus,
+                                @Query("VehicleSelfID")Integer vehicleSelfID,
                                 @Query("PaymentsReceived") Boolean paymentsReceived,
                                 @Query("DeliveryReceived") Boolean deliveryReceived,
-                                @Query("GetDeliveryAddress")boolean getDeliveryAddress,
-                                @Query("GetStats")boolean getStats);
+                                @Query("GetDeliveryAddress")Boolean getDeliveryAddress,
+                                @Query("GetStats")Boolean getStats
+    );
+
+
+
 
     @GET("/api/Order/{id}")
     Call<Order> getOrder(@Path("id") int orderID);
@@ -38,6 +61,8 @@ public interface OrderService {
     @PUT("/api/Order/{OrderID}")
     Call<ResponseBody> putOrder(@Path("OrderID")int orderID,@Body Order order);
 
+    @PUT("/api/Order/ReturnOrder/{OrderID}")
+    Call<ResponseBody> returnOrder(@Path("OrderID")int orderID);
 
     @PUT("/api/Order")
     Call<ResponseBody> putOrderBulk(@Body List<Order> order);

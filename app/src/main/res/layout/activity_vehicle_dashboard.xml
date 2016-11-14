@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="org.localareadelivery.distributorapp.VehicleInventory.VehicleDashboard">
+    tools:context="org.localareadelivery.distributorapp.DeliveryGuyInventory.VehicleDashboard">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             app:tabGravity="fill"
             app:tabMode="scrollable"
-            app:tabIndicatorHeight="4dp"
+            app:tabIndicatorHeight="2dp"
             app:tabIndicatorColor="@color/gplus_color_2"
             app:tabBackground="@color/blueGrey800" />
 

@@ -14,12 +14,12 @@ import android.widget.Toast;
 
 import org.localareadelivery.distributorapp.ApplicationState.ApplicationState;
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
+import org.localareadelivery.distributorapp.DeliveryGuyDashboard.DeliveryGuyDashboard;
 import org.localareadelivery.distributorapp.Model.Shop;
-import org.localareadelivery.distributorapp.ModelStats.DeliveryVehicleSelf;
+import org.localareadelivery.distributorapp.ModelStats.DeliveryGuySelf;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.VehicleSelfService;
-import org.localareadelivery.distributorapp.VehicleInventory.VehicleDashboard;
-import org.localareadelivery.distributorapp.VehicleDriverDashboard.VehicleDriverDashboard;
+import org.localareadelivery.distributorapp.DeliveryGuyInventory.VehicleDashboard;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +31,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class DeliveryVehicleActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, View.OnClickListener, DeliveryVehicleAdapter.NotificationReceiver, Callback<List<DeliveryVehicleSelf>> {
+public class DeliveryVehicleActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, View.OnClickListener, DeliveryVehicleAdapter.NotificationReceiver, Callback<List<DeliveryGuySelf>> {
 
     @Inject
     VehicleSelfService vehicleSelfService;
@@ -44,7 +44,7 @@ public class DeliveryVehicleActivity extends AppCompatActivity implements SwipeR
 
     SwipeRefreshLayout swipeContainer;
 
-    List<DeliveryVehicleSelf> dataset = new ArrayList<>();
+    List<DeliveryGuySelf> dataset = new ArrayList<>();
 
 
     Shop shop = null;
@@ -135,12 +135,23 @@ public class DeliveryVehicleActivity extends AppCompatActivity implements SwipeR
         DisplayMetrics metrics = new DisplayMetrics();
         this.getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
-        int spanCount = (metrics.widthPixels/350);
+//        int spanCount = (metrics.widthPixels/350);
 
-        if(spanCount > 0)
-        {
-            layoutManager.setSpanCount(spanCount);
+//        if(spanCount > 0)
+//        {
+//            layoutManager.setSpanCount(spanCount);
+//        }
+
+
+
+
+        int spanCount = (int) (metrics.widthPixels/(230 * metrics.density));
+
+        if(spanCount==0){
+            spanCount = 1;
         }
+
+        layoutManager.setSpanCount(spanCount);
 
     }
 
@@ -163,7 +174,7 @@ public class DeliveryVehicleActivity extends AppCompatActivity implements SwipeR
 
         Shop shop = ApplicationState.getInstance().getCurrentShop();
 
-        Call<List<DeliveryVehicleSelf>> call = vehicleSelfService.getVehicles(shop.getShopID());
+        Call<List<DeliveryGuySelf>> call = vehicleSelfService.getVehicles(shop.getShopID());
 
         call.enqueue(this);
 
@@ -241,23 +252,23 @@ public class DeliveryVehicleActivity extends AppCompatActivity implements SwipeR
     }
 
     @Override
-    public void notifyEdit(DeliveryVehicleSelf deliveryVehicleSelf) {
+    public void notifyEdit(DeliveryGuySelf deliveryGuySelf) {
 
         Intent intent = new Intent(this, EditAddressActivity.class);
-        intent.putExtra(EditAddressActivity.DELIVERY_VEHICLE_SELF_INTENT_KEY,deliveryVehicleSelf);
+        intent.putExtra(EditAddressActivity.DELIVERY_VEHICLE_SELF_INTENT_KEY, deliveryGuySelf);
         startActivity(intent);
 
     }
 
     @Override
-    public void notifyRemove(DeliveryVehicleSelf deliveryVehicleSelf) {
+    public void notifyRemove(DeliveryGuySelf deliveryGuySelf) {
 
         showToastMessage("Remove");
 
     }
 
     @Override
-    public void notifyListItemClick(DeliveryVehicleSelf deliveryVehicleSelf) {
+    public void notifyListItemClick(DeliveryGuySelf deliveryGuySelf) {
 
         requestCode = getIntent().getIntExtra(INTENT_REQUEST_CODE_KEY,0);
 
@@ -265,7 +276,7 @@ public class DeliveryVehicleActivity extends AppCompatActivity implements SwipeR
         {
 
             Intent output = new Intent();
-            output.putExtra("output",deliveryVehicleSelf);
+            output.putExtra("output", deliveryGuySelf);
             setResult(2,output);
             finish();
         }
@@ -273,14 +284,14 @@ public class DeliveryVehicleActivity extends AppCompatActivity implements SwipeR
         {
 
             Intent vehicleDashboardIntent = new Intent(this,VehicleDashboard.class);
-            vehicleDashboardIntent.putExtra(VehicleDashboard.DELIVERY_VEHICLE_INTENT_KEY,deliveryVehicleSelf);
+            vehicleDashboardIntent.putExtra(VehicleDashboard.DELIVERY_VEHICLE_INTENT_KEY, deliveryGuySelf);
             startActivity(vehicleDashboardIntent);
 
         }else if(requestCode == INTENT_CODE_VEHICLE_DRIVER_DASHBOARD)
         {
 
-            Intent vehicleDashboardIntent = new Intent(this,VehicleDriverDashboard.class);
-            vehicleDashboardIntent.putExtra(VehicleDriverDashboard.DELIVERY_VEHICLE_INTENT_KEY,deliveryVehicleSelf);
+            Intent vehicleDashboardIntent = new Intent(this,DeliveryGuyDashboard.class);
+            vehicleDashboardIntent.putExtra(DeliveryGuyDashboard.DELIVERY_VEHICLE_INTENT_KEY, deliveryGuySelf);
             startActivity(vehicleDashboardIntent);
         }
 
@@ -290,7 +301,7 @@ public class DeliveryVehicleActivity extends AppCompatActivity implements SwipeR
     }
 
     @Override
-    public void onResponse(Call<List<DeliveryVehicleSelf>> call, Response<List<DeliveryVehicleSelf>> response) {
+    public void onResponse(Call<List<DeliveryGuySelf>> call, Response<List<DeliveryGuySelf>> response) {
 
 
         if(response.body()!=null)
@@ -313,11 +324,10 @@ public class DeliveryVehicleActivity extends AppCompatActivity implements SwipeR
     }
 
     @Override
-    public void onFailure(Call<List<DeliveryVehicleSelf>> call, Throwable t) {
+    public void onFailure(Call<List<DeliveryGuySelf>> call, Throwable t) {
 
         showToastMessage("Network Request failed !");
         swipeContainer.setRefreshing(false);
-
 
     }
 

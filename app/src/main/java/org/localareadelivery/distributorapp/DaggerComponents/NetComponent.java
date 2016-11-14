@@ -10,6 +10,11 @@ import org.localareadelivery.distributorapp.AddItemsToShopInventory.Items.ItemRe
 import org.localareadelivery.distributorapp.AddItemsToShopInventory.Items.ItemRemakeFragmentOld;
 import org.localareadelivery.distributorapp.DaggerModules.AppModule;
 import org.localareadelivery.distributorapp.DaggerModules.NetModule;
+import org.localareadelivery.distributorapp.DeliveryGuyDashboard.PendingDeliveryApproval.PendingDeliveryApprovalDGD;
+import org.localareadelivery.distributorapp.DeliveryGuyDashboard.PendingReturn.PendingReturnByDG;
+import org.localareadelivery.distributorapp.DeliveryGuyInventory.OutForDelivery.OutForDeliveryFragment;
+import org.localareadelivery.distributorapp.DeliveryGuyInventory.PendingDeliveryApproval.PendingDeliveryApproval;
+import org.localareadelivery.distributorapp.DeliveryGuyInventory.PendingReturn.PendingReturnDGI;
 import org.localareadelivery.distributorapp.DistributorLogin;
 import org.localareadelivery.distributorapp.EditStock.ItemCategories.ItemCategoriesAdapterEditStock;
 import org.localareadelivery.distributorapp.EditStock.ItemCategories.ItemCategoriesFragmentEditStock;
@@ -22,22 +27,20 @@ import org.localareadelivery.distributorapp.ItemCategoriesTabs.Items.EditItem;
 import org.localareadelivery.distributorapp.ItemCategoriesTabs.Items.ItemAdapterTwo;
 import org.localareadelivery.distributorapp.ItemCategoriesTabs.Items.ItemRemakeFragment;
 import org.localareadelivery.distributorapp.ShopList.ShopList;
-import org.localareadelivery.distributorapp.zzDataProvidersRetrofit.ItemCategoryRetrofitProvider;
-import org.localareadelivery.distributorapp.zzDataProvidersRetrofit.ShopRESTInterface;
 import org.localareadelivery.distributorapp.DeliveryGuy.AddVehicleSelfActivity;
 import org.localareadelivery.distributorapp.DeliveryGuy.DeliveryVehicleActivity;
 import org.localareadelivery.distributorapp.DeliveryGuy.EditAddressActivity;
-import org.localareadelivery.distributorapp.OrdersHomeDelivery.ConfirmItemsForDelivery;
-import org.localareadelivery.distributorapp.OrdersHomeDelivery.ConfirmedOrdersFragment;
-import org.localareadelivery.distributorapp.OrdersHomeDelivery.PackedOrdersFragment;
-import org.localareadelivery.distributorapp.OrdersHomeDelivery.PendingAcceptFragment;
-import org.localareadelivery.distributorapp.OrdersHomeDelivery.PlacedOrdersFragment;
+import org.localareadelivery.distributorapp.HomeDeliveryInventory.ConfirmItemsForDelivery;
+import org.localareadelivery.distributorapp.HomeDeliveryInventory.Confirmed.ConfirmedOrdersFragment;
+import org.localareadelivery.distributorapp.HomeDeliveryInventory.Packed.PackedOrdersFragment;
+import org.localareadelivery.distributorapp.HomeDeliveryInventory.PendingAccept.PendingAcceptFragment;
+import org.localareadelivery.distributorapp.HomeDeliveryInventory.Placed.PlacedOrdersFragment;
 import org.localareadelivery.distributorapp.QuickStockEditor.FragmentOutOfStock;
 import org.localareadelivery.distributorapp.QuickStockEditor.FragmentPriceNotSet;
 import org.localareadelivery.distributorapp.SelectParent.ItemCategoriesParent;
 import org.localareadelivery.distributorapp.SelectParent.ItemCategoriesParentAdapter;
-import org.localareadelivery.distributorapp.VehicleDriverDashboard.PaymentsPendingFragment;
-import org.localareadelivery.distributorapp.VehicleDriverDashboard.PendingHandoverFragment;
+import org.localareadelivery.distributorapp.DeliveryGuyDashboard.PendingPayments.PaymentsPendingFragment;
+import org.localareadelivery.distributorapp.DeliveryGuyDashboard.OutForDelivery.PendingHandoverFragment;
 
 import javax.inject.Singleton;
 
@@ -52,11 +55,6 @@ import dagger.Component;
 public interface NetComponent {
 
 
-    void inject(ShopRESTInterface shopRESTInterface);
-    // void inject(MyFragment fragment);
-    // void inject(MyService service);
-
-    void inject(ItemCategoryRetrofitProvider provider);
 
     void Inject(PlacedOrdersFragment placedOrdersFragment);
 
@@ -74,17 +72,17 @@ public interface NetComponent {
 
     void Inject(PendingAcceptFragment pendingAcceptOrdersFragment);
 
-    void Inject(org.localareadelivery.distributorapp.VehicleInventory.PendingAcceptFragment pendingAcceptFragment);
+    void Inject(org.localareadelivery.distributorapp.DeliveryGuyInventory.PendingHandover.PendingHandoverFragment pendingHandoverFragment);
 
-    void Inject(org.localareadelivery.distributorapp.VehicleDriverDashboard.PendingAcceptFragment pendingAcceptFragment);
+    void Inject(org.localareadelivery.distributorapp.DeliveryGuyDashboard.PendingHandover.PendingAcceptFragment pendingAcceptFragment);
 
     void Inject(PendingHandoverFragment pendingHandoverFragment);
 
     void Inject(PaymentsPendingFragment paymentsPendingFragment);
 
-    void Inject(org.localareadelivery.distributorapp.VehicleInventory.PendingHandoverFragment pendingHandoverFragment);
+    void Inject(OutForDeliveryFragment outForDeliveryFragment);
 
-    void Inject(org.localareadelivery.distributorapp.VehicleInventory.PaymentsPendingFragment paymentsPendingFragment);
+    void Inject(org.localareadelivery.distributorapp.DeliveryGuyInventory.PaymentsPending.PaymentsPendingFragment paymentsPendingFragment);
 
     void Inject(FragmentOutOfStock outOfStockFragment);
 
@@ -132,4 +130,12 @@ public interface NetComponent {
     void Inject(ItemCategoriesFragmentEditStock itemCategoriesFragmentEditStock);
 
     void Inject(FragmentItemsEditor fragmentItemsEditor);
+
+    void Inject(PendingDeliveryApproval pendingDeliveryApproval);
+
+    void Inject(PendingDeliveryApprovalDGD pendingDeliveryApprovalDGD);
+
+    void Inject(PendingReturnByDG pendingReturnByDG);
+
+    void Inject(PendingReturnDGI pendingReturnDGI);
 }

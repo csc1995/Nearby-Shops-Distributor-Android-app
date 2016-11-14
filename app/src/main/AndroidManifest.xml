@@ -102,7 +102,7 @@
                 android:value="org.localareadelivery.distributorapp.ShopHome.ShopHome" />
         </activity>
         <activity
-            android:name=".OrdersHomeDelivery.HomeDelivery"
+            android:name=".HomeDeliveryInventory.HomeDelivery"
             android:label="@string/title_activity_home_delivery"
             android:parentActivityName=".OrdersHome.OrdersHome"
             android:theme="@style/AppTheme.NoActionBar">
@@ -138,16 +138,16 @@
                 android:value="org.localareadelivery.distributorapp.DeliveryGuy.DeliveryVehicleActivity" />
         </activity>
         <activity
-            android:name=".OrdersHomeDelivery.ConfirmItemsForDelivery"
+            android:name=".HomeDeliveryInventory.ConfirmItemsForDelivery"
             android:label="@string/title_activity_confirm_items_for_delivery"
-            android:parentActivityName=".OrdersHomeDelivery.HomeDelivery"
+            android:parentActivityName=".HomeDeliveryInventory.HomeDelivery"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.localareadelivery.distributorapp.OrdersHomeDelivery.HomeDelivery" />
+                android:value="org.localareadelivery.distributorapp.HomeDeliveryInventory.HomeDelivery" />
         </activity>
         <activity
-            android:name=".VehicleInventory.VehicleDashboard"
+            android:name=".DeliveryGuyInventory.VehicleDashboard"
             android:label="@string/title_activity_vehicle_dashboard"
             android:parentActivityName=".DeliveryGuy.DeliveryVehicleActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -156,8 +156,8 @@
                 android:value="org.localareadelivery.distributorapp.DeliveryGuy.DeliveryVehicleActivity" />
         </activity>
         <activity
-            android:name=".VehicleDriverDashboard.VehicleDriverDashboard"
-            android:label="Vehicle Driver Dashboard"
+            android:name=".DeliveryGuyDashboard.DeliveryGuyDashboard"
+            android:label="Delivery Guy Dashboard"
             android:parentActivityName=".DeliveryGuy.DeliveryVehicleActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data

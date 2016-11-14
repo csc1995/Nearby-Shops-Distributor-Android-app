@@ -87,18 +87,7 @@ public class DistributorLogin extends AppCompatActivity implements View.OnClickL
         setRoleButtons();
 
 
-        //loginButton = (Button) findViewById(R.id.loginButton);
-        //signUpButton = (Button) findViewById(R.id.signUpButton);
-
-        //loginButton.setOnClickListener(this);
-
-
-
-        //serviceUrlEditText = (EditText) findViewById(R.id.serviceURLEditText);
-        //distributorIDEditText = (EditText) findViewById(R.id.distributorIDEdittext);
-
         serviceUrlEditText.setText(getServiceURL());
-//        distributorIDEditText.setText(String.valueOf(getDistributorID()));
 
         serviceUrlEditText.addTextChangedListener(new TextWatcher() {
             @Override
