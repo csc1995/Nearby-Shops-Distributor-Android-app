@@ -1,8 +1,10 @@
 package org.localareadelivery.distributorapp.DeliveryGuyInventory.OutForDelivery;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
@@ -38,7 +40,7 @@ import retrofit2.Response;
  */
 
 
-public class OutForDeliveryFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
+public class OutForDeliveryFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, AdapterOutForDelivery.NotifyCancelOrder{
 
 
     @Inject
@@ -132,7 +134,7 @@ public class OutForDeliveryFragment extends Fragment implements SwipeRefreshLayo
     void setupRecyclerView()
     {
 
-        adapter = new AdapterOutForDelivery(dataset);
+        adapter = new AdapterOutForDelivery(dataset, this);
 
         recyclerView.setAdapter(adapter);
         layoutManager = new GridLayoutManager(getActivity(),1);
@@ -373,5 +375,63 @@ public class OutForDeliveryFragment extends Fragment implements SwipeRefreshLayo
     public void onDestroy() {
         super.onDestroy();
         isDestroyed = true;
+    }
+
+    @Override
+    public void notifyPaymentReceived(final Order order) {
+
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        builder.setTitle("Confirm Cancel Order !")
+                .setMessage("Are you sure you want to cancel this order !")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        cancelOrder(order);
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        showToastMessage(" Not Cancelled !");
+                    }
+                })
+                .show();
+    }
+
+
+    private void cancelOrder(Order order) {
+
+        Call<ResponseBody> call = orderService.cancelOrderByShop(order.getOrderID());
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                if(response.code() == 200 )
+                {
+                    showToastMessage("Successful");
+                    makeRefreshNetworkCall();
+                }
+                else if(response.code() == 304)
+                {
+                    showToastMessage("Not Cancelled !");
+                }
+                else
+                {
+                    showToastMessage("Server Error");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                showToastMessage("Network Request Failed. Check your internet connection !");
+            }
+        });
+
     }
 }

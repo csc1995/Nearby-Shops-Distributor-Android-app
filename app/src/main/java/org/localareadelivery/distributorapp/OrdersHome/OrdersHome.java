@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import org.localareadelivery.distributorapp.CancelledOrders.CancelledOrdersHomeDelivery;
 import org.localareadelivery.distributorapp.DeliveryGuy.DeliveryVehicleActivity;
 import org.localareadelivery.distributorapp.HomeDeliveryInventory.HomeDelivery;
 import org.localareadelivery.distributorapp.R;
@@ -57,6 +58,15 @@ public class OrdersHome extends AppCompatActivity {
         intent.putExtra(DeliveryVehicleActivity.INTENT_REQUEST_CODE_KEY,DeliveryVehicleActivity.INTENT_CODE_VEHICLE_DRIVER_DASHBOARD);
         startActivity(intent);
     }
+
+
+    @OnClick(R.id.cancelled_orders_home_delivery)
+    void cancelledOrdersClick(View view)
+    {
+        Intent intent = new Intent(this, CancelledOrdersHomeDelivery.class);
+        startActivity(intent);
+    }
+
 
     @Override
     protected void onDestroy() {

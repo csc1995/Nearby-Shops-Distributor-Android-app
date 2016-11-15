@@ -54,7 +54,7 @@ class AdapterPlacedOrders extends RecyclerView.Adapter<AdapterPlacedOrders.ViewH
             OrderStats orderStats = order.getOrderStats();
 
             holder.orderID.setText("Order ID : " + order.getOrderID());
-            holder.dateTimePlaced.setText("Placed : " + order.getDateTimePlaced().toString());
+            holder.dateTimePlaced.setText("" + order.getDateTimePlaced().toLocaleString());
 
 
             holder.deliveryAddressName.setText(deliveryAddress.getName());
@@ -125,15 +125,20 @@ class AdapterPlacedOrders extends RecyclerView.Adapter<AdapterPlacedOrders.ViewH
             notifyConfirmOrder.notifyConfirmOrder(dataset.get(getLayoutPosition()));
         }
 
+
+        @OnClick(R.id.close_button)
+        void closeButton(View view)
+        {
+            notifyConfirmOrder.notifyCancelOrder(dataset.get(getLayoutPosition()));
+        }
     }
 
 
 
 
     interface NotifyConfirmOrder{
-
         void notifyConfirmOrder(Order order);
-
+        void notifyCancelOrder(Order order);
     }
 
 }

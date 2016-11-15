@@ -1,9 +1,12 @@
 package org.localareadelivery.distributorapp.DeliveryGuyInventory.PendingHandover;
 
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.localareadelivery.distributorapp.Model.Order;
@@ -59,7 +62,7 @@ public class AdapterPendingHandover extends RecyclerView.Adapter<AdapterPendingH
             OrderStats orderStats = order.getOrderStats();
 
             holder.orderID.setText("Order ID : " + order.getOrderID());
-            holder.dateTimePlaced.setText("Placed : " + order.getDateTimePlaced().toString());
+            holder.dateTimePlaced.setText("Placed : " + order.getDateTimePlaced().toLocaleString());
 
 
             holder.deliveryAddressName.setText(deliveryAddress.getName());
@@ -114,6 +117,9 @@ public class AdapterPendingHandover extends RecyclerView.Adapter<AdapterPendingH
         @Bind(R.id.cancelHandoverButton)
         TextView cancelHandoverButton;
 
+        @Bind(R.id.close_button)
+        ImageView closeButton;
+
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -130,11 +136,18 @@ public class AdapterPendingHandover extends RecyclerView.Adapter<AdapterPendingH
             notifications.notifyCancelHandover(dataset.get(getLayoutPosition()));
         }
 
+        @OnClick(R.id.close_button)
+        void closeButton(View view)
+        {
+            notifications.notifyCancelOrder(dataset.get(getLayoutPosition()));
+        }
+
     }
 
 
     interface NotifyCancelHandover {
         void notifyCancelHandover(Order order);
+        void notifyCancelOrder(Order order);
     }
 
 }

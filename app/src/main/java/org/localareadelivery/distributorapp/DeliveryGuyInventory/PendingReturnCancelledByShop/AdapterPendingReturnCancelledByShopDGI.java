@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.DeliveryGuyInventory.PendingReturn;
+package org.localareadelivery.distributorapp.DeliveryGuyInventory.PendingReturnCancelledByShop;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,29 +20,29 @@ import butterknife.OnClick;
 /**
  * Created by sumeet on 13/6/16.
  */
-class AdapterPendingReturnDGI extends RecyclerView.Adapter<AdapterPendingReturnDGI.ViewHolder>{
+class AdapterPendingReturnCancelledByShopDGI extends RecyclerView.Adapter<AdapterPendingReturnCancelledByShopDGI.ViewHolder>{
 
 
     private List<Order> dataset = null;
     private NotifyAcceptReturn notifications;
 
 
-    AdapterPendingReturnDGI(List<Order> dataset,NotifyAcceptReturn notifications) {
+    AdapterPendingReturnCancelledByShopDGI(List<Order> dataset, NotifyAcceptReturn notifications) {
         this.dataset = dataset;
         this.notifications = notifications;
     }
 
     @Override
-    public AdapterPendingReturnDGI.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public AdapterPendingReturnCancelledByShopDGI.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_item_pending_return_dgi,parent,false);
+                .inflate(R.layout.list_item_pending_return_cancelled_by_shop_dgi,parent,false);
 
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(AdapterPendingReturnDGI.ViewHolder holder, int position) {
+    public void onBindViewHolder(AdapterPendingReturnCancelledByShopDGI.ViewHolder holder, int position) {
 
         if(dataset!=null)
         {

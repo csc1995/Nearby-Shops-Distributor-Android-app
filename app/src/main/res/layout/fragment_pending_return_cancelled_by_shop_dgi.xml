@@ -1,10 +1,20 @@
-
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:padding="5dp">
+
+
+
+    <TextView
+        android:id="@+id/header"
+        android:textSize="20sp"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginBottom="5dp"
+        android:text="Orders Cancelled By Shop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <!--
 
@@ -16,13 +26,9 @@
     -->
 
 
-
-
-
-
     <android.support.v4.widget.SwipeRefreshLayout
+        android:layout_below="@id/header"
         android:id="@+id/swipeContainer"
-        android:layout_marginBottom="50dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -34,9 +40,4 @@
 
     </android.support.v4.widget.SwipeRefreshLayout>
 
-
-
-
-
 </RelativeLayout>
-

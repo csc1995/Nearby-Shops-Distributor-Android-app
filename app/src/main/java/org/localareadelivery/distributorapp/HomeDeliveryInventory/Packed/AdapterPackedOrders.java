@@ -29,12 +29,12 @@ class AdapterPackedOrders extends RecyclerView.Adapter<AdapterPackedOrders.ViewH
     private List<Order> dataset = null;
     private Map<Integer,Order> selectedOrders = new HashMap<>();
 
-//    private NotifyCancelHandover notifications;
+    private NotifyCancelHandover notifications;
 
 
-    AdapterPackedOrders(List<Order> dataset) {
+    AdapterPackedOrders(List<Order> dataset, NotifyCancelHandover notifications) {
         this.dataset = dataset;
-//        this.notifications = notifications;
+        this.notifications = notifications;
         selectedOrders.clear();
     }
 
@@ -62,7 +62,7 @@ class AdapterPackedOrders extends RecyclerView.Adapter<AdapterPackedOrders.ViewH
             OrderStats orderStats = order.getOrderStats();
 
             holder.orderID.setText("Order ID : " + order.getOrderID());
-            holder.dateTimePlaced.setText("Placed : " + order.getDateTimePlaced().toString());
+            holder.dateTimePlaced.setText("Placed : " + order.getDateTimePlaced().toLocaleString());
 
 
             holder.deliveryAddressName.setText(deliveryAddress.getName());
@@ -161,6 +161,13 @@ class AdapterPackedOrders extends RecyclerView.Adapter<AdapterPackedOrders.ViewH
             notifications.notifyConfirmOrder(dataset.get(getLayoutPosition()));
         }*/
 
+
+        @OnClick(R.id.close_button)
+        void closeButton(View view)
+        {
+            notifications.notifyCancelOrder(dataset.get(getLayoutPosition()));
+        }
+
     }
 
 
@@ -174,10 +181,8 @@ class AdapterPackedOrders extends RecyclerView.Adapter<AdapterPackedOrders.ViewH
 
 
 
-/*
     public interface NotifyCancelHandover{
-
-        void notifyConfirmOrder(Order order);
-    }*/
+        void notifyCancelOrder(Order order);
+    }
 
 }

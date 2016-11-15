@@ -1,10 +1,8 @@
-package org.localareadelivery.distributorapp.HomeDeliveryInventory.Placed;
+package org.localareadelivery.distributorapp.CancelledOrders.CancelledByShop;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
@@ -15,12 +13,12 @@ import android.widget.Toast;
 
 import org.localareadelivery.distributorapp.ApplicationState.ApplicationState;
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
+import org.localareadelivery.distributorapp.HomeDeliveryInventory.Interface.NotifyTitleChanged;
 import org.localareadelivery.distributorapp.Model.Order;
 import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.ModelEndpoints.OrderEndPoint;
+import org.localareadelivery.distributorapp.ModelStats.DeliveryGuySelf;
 import org.localareadelivery.distributorapp.ModelStats.OrderStatusHomeDelivery;
-import org.localareadelivery.distributorapp.HomeDeliveryInventory.Interface.NotifyTitleChanged;
-import org.localareadelivery.distributorapp.HomeDeliveryInventory.Interface.RefreshFragment;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderService;
 
@@ -35,15 +33,20 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * Created by sumeet on 13/6/16.
+ */
 
-public class PlacedOrdersFragment extends Fragment implements AdapterPlacedOrders.NotifyConfirmOrder, SwipeRefreshLayout.OnRefreshListener {
+
+public class FragmentCancelledByShop extends Fragment
+        implements SwipeRefreshLayout.OnRefreshListener,AdapterPendingHandover.NotifyCancelHandover {
 
 
     @Inject
     OrderService orderService;
 
     RecyclerView recyclerView;
-    AdapterPlacedOrders adapter;
+    AdapterPendingHandover adapter;
 
     public List<Order> dataset = new ArrayList<>();
 
@@ -51,15 +54,22 @@ public class PlacedOrdersFragment extends Fragment implements AdapterPlacedOrder
     SwipeRefreshLayout swipeContainer;
 
 
+
+//    NotificationReceiver notificationReceiver;
+
+//    DeliveryGuySelf deliveryGuySelf;
+
+
+
     final private int limit = 5;
     @State int offset = 0;
     @State int item_count = 0;
-
     boolean isDestroyed;
 
 
 
-    public PlacedOrdersFragment() {
+
+    public FragmentCancelledByShop() {
 
         DaggerComponentBuilder.getInstance()
                 .getNetComponent()
@@ -68,35 +78,44 @@ public class PlacedOrdersFragment extends Fragment implements AdapterPlacedOrder
     }
 
 
-    public static PlacedOrdersFragment newInstance() {
-        PlacedOrdersFragment fragment = new PlacedOrdersFragment();
+
+    public static FragmentCancelledByShop newInstance() {
+        FragmentCancelledByShop fragment = new FragmentCancelledByShop();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
     }
 
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_home_delivery_cancelled_by_shop, container, false);
 
 
         setRetainInstance(true);
-        View rootView = inflater.inflate(R.layout.fragment_home_delivery_placed_orders, container, false);
-
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
         swipeContainer = (SwipeRefreshLayout)rootView.findViewById(R.id.swipeContainer);
 
 
-        if(savedInstanceState==null)
+
+
+        if(savedInstanceState!=null)
+        {
+            // restore instance state
+//            deliveryGuySelf = savedInstanceState.getParcelable("savedVehicle");
+        }
+        else
         {
             makeRefreshNetworkCall();
         }
 
 
+
         setupRecyclerView();
         setupSwipeContainer();
-
 
         return rootView;
     }
@@ -119,7 +138,7 @@ public class PlacedOrdersFragment extends Fragment implements AdapterPlacedOrder
     void setupRecyclerView()
     {
 
-        adapter = new AdapterPlacedOrders(dataset,this);
+        adapter = new AdapterPendingHandover(dataset,this);
 
         recyclerView.setAdapter(adapter);
 
@@ -147,11 +166,11 @@ public class PlacedOrdersFragment extends Fragment implements AdapterPlacedOrder
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
 
-                if(layoutManager.findLastVisibleItemPosition()==dataset.size())
+                if(layoutManager.findLastVisibleItemPosition()==dataset.size()-1)
                 {
                     // trigger fetch next page
 
-                    if(dataset.size()== previous_position)
+                    if(layoutManager.findLastVisibleItemPosition() == previous_position)
                     {
                         return;
                     }
@@ -160,22 +179,28 @@ public class PlacedOrdersFragment extends Fragment implements AdapterPlacedOrder
                     if((offset+limit)<=item_count)
                     {
                         offset = offset + limit;
-                        makeNetworkCall(false);
+
+
+                        swipeContainer.post(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                swipeContainer.setRefreshing(true);
+
+                                makeNetworkCall(false);
+                            }
+                        });
+
                     }
 
-                    previous_position = dataset.size();
-
+                    previous_position = layoutManager.findLastVisibleItemPosition();
                 }
-
             }
         });
     }
 
 
-
     int previous_position = -1;
-
-
 
     @Override
     public void onRefresh() {
@@ -191,24 +216,38 @@ public class PlacedOrdersFragment extends Fragment implements AdapterPlacedOrder
         swipeContainer.post(new Runnable() {
             @Override
             public void run() {
-                swipeContainer.setRefreshing(true);
 
+                swipeContainer.setRefreshing(true);
                 onRefresh();
             }
         });
+    }
 
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        notifyTitleChanged();
     }
 
 
     void makeNetworkCall(final boolean clearDataset)
     {
 
-            Shop currentShop = ApplicationState.getInstance().getCurrentShop();
+//
+//        if(deliveryGuySelf ==null)
+//        {
+//            return;
+//        }
 
-            Call<OrderEndPoint> call = orderService.getOrders(null, currentShop.getShopID()  ,false,
-                    OrderStatusHomeDelivery.ORDER_PLACED,null,null,
-                    null,null,true,true,
-                    null,limit,offset,null);
+        Shop currentShop = ApplicationState.getInstance().getCurrentShop();
+
+            Call<OrderEndPoint> call = orderService
+                    .getOrders(null, currentShop.getShopID(),false,
+                            OrderStatusHomeDelivery.CANCELLED_BY_SHOP,
+                            null,null,null,null,true,true,
+                            null,limit,offset,null);
 
 
             call.enqueue(new Callback<OrderEndPoint>() {
@@ -248,18 +287,12 @@ public class PlacedOrdersFragment extends Fragment implements AdapterPlacedOrder
 
                     showToastMessage("Network Request failed !");
                     swipeContainer.setRefreshing(false);
-
                 }
             });
 
     }
 
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        notifyTitleChanged();
-    }
 
     void showToastMessage(String message)
     {
@@ -273,60 +306,13 @@ public class PlacedOrdersFragment extends Fragment implements AdapterPlacedOrder
 
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        isDestroyed=true;
-    }
+    public void notifyCancelHandover(Order order) {
 
 
 
 
-
-    void notifyTitleChanged()
-    {
-
-        if(getActivity() instanceof NotifyTitleChanged)
-        {
-            ((NotifyTitleChanged)getActivity())
-                    .NotifyTitleChanged(
-                            "Placed ( " + String.valueOf(dataset.size())
-                                    + "/" + String.valueOf(item_count) + " )",0);
-
-
-        }
-    }
-
-
-
-
-
-    // Refresh the Confirmed PlaceHolderFragment
-
-    private static String makeFragmentName(int viewId, int index) {
-        return "android:switcher:" + viewId + ":" + index;
-    }
-
-
-
-    void refreshConfirmedFragment()
-    {
-        Fragment fragment = getActivity().getSupportFragmentManager()
-                .findFragmentByTag(makeFragmentName(R.id.container,1));
-
-        if(fragment instanceof RefreshFragment)
-        {
-            ((RefreshFragment)fragment).refreshFragment();
-        }
-    }
-
-
-
-
-    @Override
-    public void notifyConfirmOrder(Order order) {
-
-
-        order.setStatusHomeDelivery(OrderStatusHomeDelivery.ORDER_CONFIRMED);
+        /*order.setStatusHomeDelivery(OrderStatusHomeDelivery.ORDER_PACKED);
+        order.setDeliveryVehicleSelfID(null);
 
         Call<ResponseBody> call = orderService.putOrder(order.getOrderID(),order);
 
@@ -336,13 +322,8 @@ public class PlacedOrdersFragment extends Fragment implements AdapterPlacedOrder
 
                 if(response.code()==200)
                 {
-                    showToastMessage("Order Confirmed !");
-
-//                    makeNetworkCall(true);
-
+                    showToastMessage("Handover cancelled !");
                     makeRefreshNetworkCall();
-
-                    refreshConfirmedFragment();
                 }
 
             }
@@ -353,68 +334,54 @@ public class PlacedOrdersFragment extends Fragment implements AdapterPlacedOrder
                 showToastMessage("Network Request Failed. Try again !");
 
             }
-        });
-
+        });*/
     }
+
+/*
+
+    public DeliveryGuySelf getDeliveryGuySelf() {
+        return deliveryGuySelf;
+    }
+
+    public void setDeliveryGuySelf(DeliveryGuySelf deliveryGuySelf) {
+        this.deliveryGuySelf = deliveryGuySelf;
+    }
+*/
+
+    /*public interface NotificationReceiver
+    {
+        void notifyPendingAcceptChanged();
+    }
+    */
 
     @Override
-    public void notifyCancelOrder(final Order order) {
-
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
-        builder.setTitle("Confirm Cancel Order !")
-                .setMessage("Are you sure you want to cancel this order !")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        cancelOrder(order);
-                    }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        showToastMessage(" Not Cancelled !");
-                    }
-                })
-                .show();
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+//        outState.putParcelable("savedVehicle", deliveryGuySelf);
     }
 
 
-    private void cancelOrder(Order order) {
-
-        Call<ResponseBody> call = orderService.cancelOrderByShop(order.getOrderID());
-
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-
-                if(response.code() == 200 )
-                {
-                    showToastMessage("Successful");
-                    makeRefreshNetworkCall();
-                }
-                else if(response.code() == 304)
-                {
-                    showToastMessage("Not Cancelled !");
-                }
-                else
-                {
-                    showToastMessage("Server Error");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-
-                showToastMessage("Network Request Failed. Check your internet connection !");
-            }
-        });
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        isDestroyed = true;
     }
 
+
+
+    void notifyTitleChanged()
+    {
+
+        if(getActivity() instanceof NotifyTitleChanged)
+        {
+            ((NotifyTitleChanged)getActivity())
+                    .NotifyTitleChanged(
+                            "Cancelled By Shop ( " + String.valueOf(dataset.size())
+                                    + "/" + String.valueOf(item_count) + " )",1);
+
+
+        }
+    }
 
 
 }

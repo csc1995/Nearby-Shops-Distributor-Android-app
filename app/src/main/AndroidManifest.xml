@@ -38,8 +38,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.localareadelivery.distributorapp.ShopList.ShopList" />
         </activity>
-
-
         <activity
             android:name=".addStock.ItemCategories"
             android:label="@string/title_activity_item_categories"
@@ -222,10 +220,7 @@
         <activity
             android:name=".Home.HomeActivity"
             android:label="@string/title_activity_home"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-
-
-
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ItemCategoriesTabs.ItemCategoriesTabs"
             android:label="@string/title_activity_item_categories_tabs"
@@ -235,7 +230,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ShopHome.ShopHome" />
         </activity>
-
         <activity
             android:name=".ItemCategoriesTabs.ItemCategories.AddItemCategory"
             android:label="Add Item Category"
@@ -254,9 +248,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ShopHome.ShopHome" />
         </activity>
-
-
-
         <activity
             android:name=".EditStock.EditStock"
             android:label="@string/title_activity_item_categories_tabs"
@@ -266,8 +257,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ShopHome.ShopHome" />
         </activity>
-
-
+        <activity
+            android:name=".CancelledOrders.CancelledOrdersHomeDelivery"
+            android:label="@string/title_activity_cancelled_orders_home_delivery"
+            android:parentActivityName=".OrdersHome.OrdersHome"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.localareadelivery.distributorapp.OrdersHome.OrdersHome" />
+        </activity>
     </application>
 
 </manifest>

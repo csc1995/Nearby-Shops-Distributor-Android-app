@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.DeliveryGuyInventory.PendingReturn;
+package org.localareadelivery.distributorapp.CancelledOrders.CancelledByShop;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,29 +20,32 @@ import butterknife.OnClick;
 /**
  * Created by sumeet on 13/6/16.
  */
-class AdapterPendingReturnDGI extends RecyclerView.Adapter<AdapterPendingReturnDGI.ViewHolder>{
+public class AdapterPendingHandover extends RecyclerView.Adapter<AdapterPendingHandover.ViewHolder>{
 
 
     private List<Order> dataset = null;
-    private NotifyAcceptReturn notifications;
+//    private Context context;
+    private NotifyCancelHandover notifications;
 
 
-    AdapterPendingReturnDGI(List<Order> dataset,NotifyAcceptReturn notifications) {
+    public AdapterPendingHandover(List<Order> dataset, NotifyCancelHandover notifications) {
         this.dataset = dataset;
+//        this.context = context;
         this.notifications = notifications;
+
     }
 
     @Override
-    public AdapterPendingReturnDGI.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public AdapterPendingHandover.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_item_pending_return_dgi,parent,false);
+                .inflate(R.layout.list_item_order_cancelled_by_shop,parent,false);
 
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(AdapterPendingReturnDGI.ViewHolder holder, int position) {
+    public void onBindViewHolder(AdapterPendingHandover.ViewHolder holder, int position) {
 
         if(dataset!=null)
         {
@@ -108,28 +111,30 @@ class AdapterPendingReturnDGI extends RecyclerView.Adapter<AdapterPendingReturnD
         @Bind(R.id.currentStatus)
         TextView currentStatus;
 
-//        @Bind(R.id.cancelHandoverButton)
-//        TextView cancelHandoverButton;
+        @Bind(R.id.cancelHandoverButton)
+        TextView cancelHandoverButton;
 
 
         public ViewHolder(View itemView) {
             super(itemView);
+
             ButterKnife.bind(this,itemView);
+
+
         }
 
 
-        @OnClick(R.id.accept_return)
+        @OnClick(R.id.cancelHandoverButton)
         void onClickConfirmButton(View view)
         {
-            notifications.notifyAcceptReturn(dataset.get(getLayoutPosition()));
+            notifications.notifyCancelHandover(dataset.get(getLayoutPosition()));
         }
 
     }
 
 
-    interface NotifyAcceptReturn {
-
-        void notifyAcceptReturn(Order order);
+    interface NotifyCancelHandover {
+        void notifyCancelHandover(Order order);
     }
 
 }

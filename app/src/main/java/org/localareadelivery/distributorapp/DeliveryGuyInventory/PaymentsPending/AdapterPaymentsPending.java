@@ -57,7 +57,7 @@ public class AdapterPaymentsPending extends RecyclerView.Adapter<AdapterPayments
             OrderStats orderStats = order.getOrderStats();
 
             holder.orderID.setText("Order ID : " + order.getOrderID());
-            holder.dateTimePlaced.setText("Placed : " + order.getDateTimePlaced().toString());
+            holder.dateTimePlaced.setText("Placed : " + order.getDateTimePlaced().toLocaleString());
 
 
             holder.deliveryAddressName.setText(deliveryAddress.getName());

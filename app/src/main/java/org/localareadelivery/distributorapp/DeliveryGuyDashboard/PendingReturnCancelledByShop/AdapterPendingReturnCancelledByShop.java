@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.DeliveryGuyInventory.PendingReturn;
+package org.localareadelivery.distributorapp.DeliveryGuyDashboard.PendingReturnCancelledByShop;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,34 +15,33 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by sumeet on 13/6/16.
  */
-class AdapterPendingReturnDGI extends RecyclerView.Adapter<AdapterPendingReturnDGI.ViewHolder>{
+class AdapterPendingReturnCancelledByShop extends RecyclerView.Adapter<AdapterPendingReturnCancelledByShop.ViewHolder>{
 
 
     private List<Order> dataset = null;
-    private NotifyAcceptReturn notifications;
+    private NotificationReciever notifications;
 
 
-    AdapterPendingReturnDGI(List<Order> dataset,NotifyAcceptReturn notifications) {
+    AdapterPendingReturnCancelledByShop(List<Order> dataset) {
         this.dataset = dataset;
-        this.notifications = notifications;
+//        this.notifications = notifications;
     }
 
     @Override
-    public AdapterPendingReturnDGI.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public AdapterPendingReturnCancelledByShop.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_item_pending_return_dgi,parent,false);
+                .inflate(R.layout.list_item_pending_return_cancelled_by_shop,parent,false);
 
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(AdapterPendingReturnDGI.ViewHolder holder, int position) {
+    public void onBindViewHolder(AdapterPendingReturnCancelledByShop.ViewHolder holder, int position) {
 
         if(dataset!=null)
         {
@@ -114,22 +113,29 @@ class AdapterPendingReturnDGI extends RecyclerView.Adapter<AdapterPendingReturnD
 
         public ViewHolder(View itemView) {
             super(itemView);
+
             ButterKnife.bind(this,itemView);
+
+
         }
 
 
-        @OnClick(R.id.accept_return)
+/*
         void onClickConfirmButton(View view)
         {
-            notifications.notifyAcceptReturn(dataset.get(getLayoutPosition()));
+            notifications.notifyCancelHandover(dataset.get(getLayoutPosition()));
         }
+*/
 
     }
 
 
-    interface NotifyAcceptReturn {
 
-        void notifyAcceptReturn(Order order);
+
+
+    interface NotificationReciever{
+
+        void notifyCancelHandover(Order order);
     }
 
 }

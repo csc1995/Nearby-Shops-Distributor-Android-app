@@ -85,7 +85,7 @@ public class HomeDelivery extends AppCompatActivity implements NotifyTitleChange
 
     // methods for getting fragment reference
 
-    /*public Fragment getActiveFragment(ViewPager container, int position) {
+    /*public PlaceHolderFragment getActiveFragment(ViewPager container, int position) {
         String name = makeFragmentName(container.getId(), position);
         return  getSupportFragmentManager().findFragmentByTag(name);
     }*/

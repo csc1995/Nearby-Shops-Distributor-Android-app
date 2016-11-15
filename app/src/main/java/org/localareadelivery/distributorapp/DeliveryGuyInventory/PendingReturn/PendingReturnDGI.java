@@ -333,7 +333,7 @@ public class PendingReturnDGI extends Fragment implements SwipeRefreshLayout.OnR
     public void notifyAcceptReturn(Order order) {
 
 
-        order.setStatusHomeDelivery(OrderStatusHomeDelivery.CANCELLED_BY_SHOP);
+        order.setStatusHomeDelivery(OrderStatusHomeDelivery.RETURNED);
 
         Call<ResponseBody> call = orderService.putOrder(order.getOrderID(),order);
 

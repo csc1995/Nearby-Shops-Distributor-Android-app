@@ -1,8 +1,10 @@
 package org.localareadelivery.distributorapp.HomeDeliveryInventory.Confirmed;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
@@ -175,40 +177,6 @@ public class ConfirmedOrdersFragment extends Fragment implements SwipeRefreshLay
 
     int previous_position = -1;
 
-    @Override
-    public void notifyOrderPacked(Order order) {
-
-
-        order.setStatusHomeDelivery(OrderStatusHomeDelivery.ORDER_PACKED);
-
-        Call<ResponseBody> call = orderService.putOrder(order.getOrderID(),order);
-
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-
-                if(response.code()==200)
-                {
-                    showToastMessage("Order Set Packed !");
-                    makeRefreshNetworkCall();
-
-                    refreshPackedFragment();
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-
-                showToastMessage("Network Request Failed. Try again !");
-
-            }
-        });
-
-
-    }
-
-
 
 
     @Override
@@ -358,6 +326,99 @@ public class ConfirmedOrdersFragment extends Fragment implements SwipeRefreshLay
             ((RefreshFragment)fragment).refreshFragment();
         }
     }
+
+
+
+    @Override
+    public void notifyOrderPacked(Order order) {
+
+
+        order.setStatusHomeDelivery(OrderStatusHomeDelivery.ORDER_PACKED);
+
+        Call<ResponseBody> call = orderService.putOrder(order.getOrderID(),order);
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                if(response.code()==200)
+                {
+                    showToastMessage("Order Set Packed !");
+                    makeRefreshNetworkCall();
+
+                    refreshPackedFragment();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                showToastMessage("Network Request Failed. Try again !");
+
+            }
+        });
+
+
+    }
+
+    @Override
+    public void notifyCancelOrder(final Order order) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        builder.setTitle("Confirm Cancel Order !")
+                .setMessage("Are you sure you want to cancel this order !")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        cancelOrder(order);
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        showToastMessage(" Not Cancelled !");
+                    }
+                })
+                .show();
+    }
+
+    private void cancelOrder(Order order) {
+
+        Call<ResponseBody> call = orderService.cancelOrderByShop(order.getOrderID());
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                if(response.code() == 200 )
+                {
+                    showToastMessage("Successful");
+                    makeRefreshNetworkCall();
+                }
+                else if(response.code() == 304)
+                {
+                    showToastMessage("Not Cancelled !");
+                }
+                else
+                {
+                    showToastMessage("Server Error");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                showToastMessage("Network Request Failed. Check your internet connection !");
+            }
+        });
+
+    }
+
+
 
 
 }

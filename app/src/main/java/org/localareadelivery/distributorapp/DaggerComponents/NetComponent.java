@@ -8,13 +8,17 @@ import org.localareadelivery.distributorapp.AddItemsToShopInventory.Items.EditIt
 import org.localareadelivery.distributorapp.AddItemsToShopInventory.Items.ItemRemakeAdapter;
 
 import org.localareadelivery.distributorapp.AddItemsToShopInventory.Items.ItemRemakeFragmentOld;
+import org.localareadelivery.distributorapp.CancelledOrders.CancelledByShop.FragmentCancelledByShop;
+import org.localareadelivery.distributorapp.CancelledOrders.ReturnedByDeliveryGuy.FragmentReturnedByDG;
 import org.localareadelivery.distributorapp.DaggerModules.AppModule;
 import org.localareadelivery.distributorapp.DaggerModules.NetModule;
 import org.localareadelivery.distributorapp.DeliveryGuyDashboard.PendingDeliveryApproval.PendingDeliveryApprovalDGD;
 import org.localareadelivery.distributorapp.DeliveryGuyDashboard.PendingReturn.PendingReturnByDG;
+import org.localareadelivery.distributorapp.DeliveryGuyDashboard.PendingReturnCancelledByShop.PendingReturnCancelledByShop;
 import org.localareadelivery.distributorapp.DeliveryGuyInventory.OutForDelivery.OutForDeliveryFragment;
 import org.localareadelivery.distributorapp.DeliveryGuyInventory.PendingDeliveryApproval.PendingDeliveryApproval;
 import org.localareadelivery.distributorapp.DeliveryGuyInventory.PendingReturn.PendingReturnDGI;
+import org.localareadelivery.distributorapp.DeliveryGuyInventory.PendingReturnCancelledByShop.PendingReturnCancelledByShopDGI;
 import org.localareadelivery.distributorapp.DistributorLogin;
 import org.localareadelivery.distributorapp.EditStock.ItemCategories.ItemCategoriesAdapterEditStock;
 import org.localareadelivery.distributorapp.EditStock.ItemCategories.ItemCategoriesFragmentEditStock;
@@ -138,4 +142,12 @@ public interface NetComponent {
     void Inject(PendingReturnByDG pendingReturnByDG);
 
     void Inject(PendingReturnDGI pendingReturnDGI);
+
+    void Inject(FragmentCancelledByShop fragmentCancelledByShop);
+
+    void Inject(FragmentReturnedByDG fragmentReturnedByDG);
+
+    void Inject(PendingReturnCancelledByShop pendingReturnCancelledByShop);
+
+    void Inject(PendingReturnCancelledByShopDGI pendingReturnCancelledByShopDGI);
 }

@@ -9,6 +9,7 @@ import org.localareadelivery.distributorapp.DeliveryGuyDashboard.PendingHandover
 import org.localareadelivery.distributorapp.DeliveryGuyDashboard.OutForDelivery.PendingHandoverFragment;
 import org.localareadelivery.distributorapp.DeliveryGuyDashboard.PendingPayments.PaymentsPendingFragment;
 import org.localareadelivery.distributorapp.DeliveryGuyDashboard.PendingReturn.PendingReturnByDG;
+import org.localareadelivery.distributorapp.DeliveryGuyDashboard.PendingReturnCancelledByShop.PendingReturnCancelledByShop;
 import org.localareadelivery.distributorapp.DeliveryGuyInventory.PendingDeliveryApproval.PendingDeliveryApproval;
 import org.localareadelivery.distributorapp.ModelStats.DeliveryGuySelf;
 import org.localareadelivery.distributorapp.DeliveryGuyInventory.PlaceholderFragment;
@@ -79,6 +80,13 @@ public class PagerAdapter extends FragmentPagerAdapter {
             pendingReturnByDG.setDeliveryGuySelf(deliveryVehicle);
             return pendingReturnByDG;
         }
+        else if(position == 5)
+        {
+            PendingReturnCancelledByShop returnCancelledByShop;
+            returnCancelledByShop = PendingReturnCancelledByShop.newInstance();
+            returnCancelledByShop.setDeliveryGuySelf(deliveryVehicle);
+            return returnCancelledByShop;
+        }
 
 
         return PlaceholderFragment.newInstance(vehicleID);
@@ -87,7 +95,7 @@ public class PagerAdapter extends FragmentPagerAdapter {
     @Override
     public int getCount() {
         // Show 3 total pages.
-        return 5;
+        return 6;
     }
 
 
@@ -104,6 +112,8 @@ public class PagerAdapter extends FragmentPagerAdapter {
                 return titlePendingPayments;
             case 4:
                 return titlePendingReturn;
+            case 5:
+                return titlePendingReturnCancelledShop;
 
         }
         return null;
@@ -135,6 +145,7 @@ public class PagerAdapter extends FragmentPagerAdapter {
     private String titleDeliveryApproval = "Pending Delivery Approval (0/0)";
     private String titlePendingPayments = "Pending Payments (0/0)";
     private String titlePendingReturn = "Pending Return (0/0)";
+    private String titlePendingReturnCancelledShop = "Pending Return (0/0)";
 
 
     public void setTitle(String title, int tabPosition)
@@ -159,8 +170,10 @@ public class PagerAdapter extends FragmentPagerAdapter {
         {
             titlePendingReturn = title;
         }
-
-
+        else if(tabPosition == 5)
+        {
+            titlePendingReturnCancelledShop = title;
+        }
 
 
         notifyDataSetChanged();

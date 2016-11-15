@@ -54,7 +54,6 @@
     <string name="sort_by_ascending">Ascending</string>
     <string name="sort_by_descending">Descending</string>
 
-
     <string name="fab_label_add_item_category">Add Item Category</string>
     <string name="fab_label_change_parent_categories">Change Parent for Selected Item Categories</string>
     <string name="fab_label_add_Item">Add Item</string>
@@ -63,7 +62,7 @@
     <string name="fab_label_add_from_global_item">Add Item From Global Database</string>
     <string name="fab_label_detach_item_category">Detach Selected Item Categories</string>
     <string name="fab_label_detach_item">Detach Selected Items</string>
-
+    <string name="title_activity_cancelled_orders_home_delivery">Cancelled Orders</string>
 
 
 </resources>

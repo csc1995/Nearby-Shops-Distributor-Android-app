@@ -112,7 +112,7 @@ public class ItemCategoriesFragment extends Fragment
         if(getActivity() instanceof ItemCategoriesTabs)
         {
             ItemCategoriesTabs activity = (ItemCategoriesTabs)getActivity();
-//            Log.d("applog","DetachedItemFragment: Fragment Recreated");
+//            Log.d("applog","DetachedItemFragment: PlaceHolderFragment Recreated");
             activity.notifyFabClickItemCategories = this;
             activity.notifyBackPressed = this;
         }

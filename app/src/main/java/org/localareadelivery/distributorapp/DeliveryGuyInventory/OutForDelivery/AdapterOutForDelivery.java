@@ -1,6 +1,5 @@
 package org.localareadelivery.distributorapp.DeliveryGuyInventory.OutForDelivery;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +15,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by sumeet on 13/6/16.
@@ -24,12 +24,12 @@ public class AdapterOutForDelivery extends RecyclerView.Adapter<AdapterOutForDel
 
 
     private List<Order> dataset = null;
-//    NotifyPaymentReceived notifications;
+    private NotifyCancelOrder notifications;
 
 
-    public AdapterOutForDelivery(List<Order> dataset) {
+    public AdapterOutForDelivery(List<Order> dataset, NotifyCancelOrder notifications) {
         this.dataset = dataset;
-//        this.notifications = notifications;
+        this.notifications = notifications;
     }
 
     @Override
@@ -56,7 +56,7 @@ public class AdapterOutForDelivery extends RecyclerView.Adapter<AdapterOutForDel
             OrderStats orderStats = order.getOrderStats();
 
             holder.orderID.setText("Order ID : " + order.getOrderID());
-            holder.dateTimePlaced.setText("Placed : " + order.getDateTimePlaced().toString());
+            holder.dateTimePlaced.setText("Placed : " + order.getDateTimePlaced().toLocaleString());
 
 
             holder.deliveryAddressName.setText(deliveryAddress.getName());
@@ -119,13 +119,12 @@ public class AdapterOutForDelivery extends RecyclerView.Adapter<AdapterOutForDel
 
         }
 
-/*
 
+        @OnClick(R.id.close_button)
         void onClickConfirmButton(View view)
         {
             notifications.notifyPaymentReceived(dataset.get(getLayoutPosition()));
         }
-*/
 
     }
 
@@ -134,12 +133,10 @@ public class AdapterOutForDelivery extends RecyclerView.Adapter<AdapterOutForDel
 
 
 
-/*
-    public interface NotifyPaymentReceived{
+    interface NotifyCancelOrder {
 
         void notifyPaymentReceived(Order order);
 
     }
-*/
 
 }

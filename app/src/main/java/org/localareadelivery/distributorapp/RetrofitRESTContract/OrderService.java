@@ -64,6 +64,10 @@ public interface OrderService {
     @PUT("/api/Order/ReturnOrder/{OrderID}")
     Call<ResponseBody> returnOrder(@Path("OrderID")int orderID);
 
+    @PUT("/api/Order/CancelByShop/{OrderID}")
+    Call<ResponseBody> cancelOrderByShop(@Path("OrderID")int orderID);
+
+
     @PUT("/api/Order")
     Call<ResponseBody> putOrderBulk(@Body List<Order> order);
 
