@@ -130,7 +130,7 @@ public class ConfirmItemsForDelivery extends AppCompatActivity implements Callba
         if(selectedVehicle!=null)
         {
             vehicleID.setText("Vehicle ID : " + String.valueOf(selectedVehicle.getDeliveryGuyID()));
-            vehicleName.setText("Vehicle Name" + String.valueOf(selectedVehicle.getVehicleName()));
+            vehicleName.setText("Vehicle Name" + String.valueOf(selectedVehicle.getName()));
         }
     }
 

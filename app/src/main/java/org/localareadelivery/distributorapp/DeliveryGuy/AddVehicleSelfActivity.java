@@ -78,7 +78,7 @@ public class AddVehicleSelfActivity extends AppCompatActivity implements View.On
 
         deliveryGuySelf = new DeliveryGuySelf();
 
-        deliveryGuySelf.setVehicleName(vehicleName.getText().toString());
+        deliveryGuySelf.setName(vehicleName.getText().toString());
         deliveryGuySelf.setShopID(shop.getShopID());
 
     }

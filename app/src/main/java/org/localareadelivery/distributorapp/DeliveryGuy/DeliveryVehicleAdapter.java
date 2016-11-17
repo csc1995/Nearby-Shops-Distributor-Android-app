@@ -53,7 +53,7 @@ public class DeliveryVehicleAdapter extends RecyclerView.Adapter<DeliveryVehicle
         if(deliveryGuySelf != null)
         {
 
-            holder.vehicleName.setText(deliveryGuySelf.getVehicleName());
+            holder.vehicleName.setText(deliveryGuySelf.getName());
             holder.vehicleID.setText("Vehicle ID : " + deliveryGuySelf.getDeliveryGuyID());
 
         }

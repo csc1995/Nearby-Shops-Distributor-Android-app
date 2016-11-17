@@ -75,7 +75,7 @@ public class EditAddressActivity extends AppCompatActivity implements Callback<R
     {
         if(deliveryGuySelf !=null)
         {
-            deliveryGuySelf.setVehicleName(vehicleName.getText().toString());
+            deliveryGuySelf.setName(vehicleName.getText().toString());
         }
     }
 
@@ -85,7 +85,7 @@ public class EditAddressActivity extends AppCompatActivity implements Callback<R
         if(deliveryGuySelf !=null)
         {
 
-            vehicleName.setText(deliveryGuySelf.getVehicleName());
+            vehicleName.setText(deliveryGuySelf.getName());
         }
     }
 
