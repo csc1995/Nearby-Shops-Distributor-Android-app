@@ -6,7 +6,6 @@ import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,10 +17,7 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 
 import org.localareadelivery.distributorapp.Model.Item;
-import org.localareadelivery.distributorapp.Model.Order;
 import org.localareadelivery.distributorapp.Model.ShopItem;
-import org.localareadelivery.distributorapp.ModelStats.DeliveryAddress;
-import org.localareadelivery.distributorapp.ModelStats.OrderStats;
 import org.localareadelivery.distributorapp.MyApplication;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.Utility.UtilityGeneral;

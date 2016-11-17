@@ -9,7 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
-import org.localareadelivery.distributorapp.ModelStats.DeliveryGuySelf;
+import org.localareadelivery.distributorapp.Model.DeliveryGuySelf;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.VehicleSelfService;
 
@@ -97,7 +97,7 @@ public class EditAddressActivity extends AppCompatActivity implements Callback<R
 
         getDataFromViews();
 
-        Call<ResponseBody> call = vehicleSelfService.putVehicle(deliveryGuySelf, deliveryGuySelf.getID());
+        Call<ResponseBody> call = vehicleSelfService.putVehicle(deliveryGuySelf, deliveryGuySelf.getDeliveryGuyID());
         call.enqueue(this);
 
     }

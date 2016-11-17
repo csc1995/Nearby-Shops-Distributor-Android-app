@@ -8,7 +8,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.localareadelivery.distributorapp.Model.Order;
-import org.localareadelivery.distributorapp.ModelStats.DeliveryAddress;
+import org.localareadelivery.distributorapp.Model.DeliveryAddress;
 import org.localareadelivery.distributorapp.ModelStats.OrderStats;
 import org.localareadelivery.distributorapp.R;
 

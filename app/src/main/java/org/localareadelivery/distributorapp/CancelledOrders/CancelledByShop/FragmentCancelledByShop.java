@@ -17,8 +17,7 @@ import org.localareadelivery.distributorapp.HomeDeliveryInventory.Interface.Noti
 import org.localareadelivery.distributorapp.Model.Order;
 import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.ModelEndpoints.OrderEndPoint;
-import org.localareadelivery.distributorapp.ModelStats.DeliveryGuySelf;
-import org.localareadelivery.distributorapp.ModelStats.OrderStatusHomeDelivery;
+import org.localareadelivery.distributorapp.ModelStatusCodes.OrderStatusHomeDelivery;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderService;
 
@@ -28,7 +27,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import icepick.State;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

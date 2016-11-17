@@ -10,7 +10,7 @@ import org.localareadelivery.distributorapp.DeliveryGuyInventory.PendingDelivery
 import org.localareadelivery.distributorapp.DeliveryGuyInventory.PendingHandover.PendingHandoverFragment;
 import org.localareadelivery.distributorapp.DeliveryGuyInventory.PendingReturn.PendingReturnDGI;
 import org.localareadelivery.distributorapp.DeliveryGuyInventory.PendingReturnCancelledByShop.PendingReturnCancelledByShopDGI;
-import org.localareadelivery.distributorapp.ModelStats.DeliveryGuySelf;
+import org.localareadelivery.distributorapp.Model.DeliveryGuySelf;
 
 /**
  * Created by sumeet on 15/6/16.
@@ -30,7 +30,7 @@ public class PagerAdapter extends FragmentPagerAdapter {
 
         if(deliveryVehicle!=null)
         {
-            vehicleID = deliveryVehicle.getID();
+            vehicleID = deliveryVehicle.getDeliveryGuyID();
         }
     }
 

@@ -11,7 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import org.localareadelivery.distributorapp.HomeDeliveryInventory.Interface.NotifyTitleChanged;
-import org.localareadelivery.distributorapp.ModelStats.DeliveryGuySelf;
+import org.localareadelivery.distributorapp.Model.DeliveryGuySelf;
 import org.localareadelivery.distributorapp.R;
 
 import butterknife.Bind;

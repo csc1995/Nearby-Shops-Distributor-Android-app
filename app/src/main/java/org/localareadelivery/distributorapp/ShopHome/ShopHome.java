@@ -12,6 +12,7 @@ import org.localareadelivery.distributorapp.ItemCategoriesTabs.ItemCategoriesTab
 import org.localareadelivery.distributorapp.OrdersHome.OrdersHome;
 import org.localareadelivery.distributorapp.QuickStockEditor.QuickStockEditor;
 import org.localareadelivery.distributorapp.R;
+import org.localareadelivery.distributorapp.SSEExample.SSEExample;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -72,6 +73,13 @@ public class ShopHome extends AppCompatActivity implements View.OnClickListener 
     {
         startActivity(new Intent(this, EditStock.class));
     }
+
+    @OnClick(R.id.option_billing)
+    void billingClick(View view)
+    {
+        startActivity(new Intent(this, SSEExample.class));
+    }
+
 
 
     @Override

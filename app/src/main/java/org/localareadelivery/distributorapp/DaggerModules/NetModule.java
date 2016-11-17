@@ -13,6 +13,7 @@ import org.localareadelivery.distributorapp.MyApplication;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.DistributorService;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ItemCategoryService;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ItemService;
+import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderItemService;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderService;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ShopItemService;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ShopService;
@@ -170,11 +171,14 @@ public class NetModule {
     @Provides
     DistributorService provideDistributorService(Retrofit retrofit)
     {
-        DistributorService service = retrofit.create(DistributorService.class);
-
-        return service;
+        return retrofit.create(DistributorService.class);
     }
 
 
+    @Provides
+    OrderItemService provideOrderItemService(Retrofit retrofit)
+    {
+        return retrofit.create(OrderItemService.class);
+    }
 
 }

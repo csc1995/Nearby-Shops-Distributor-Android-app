@@ -19,7 +19,7 @@ import org.localareadelivery.distributorapp.DaggerComponentBuilder;
 import org.localareadelivery.distributorapp.Model.Order;
 import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.ModelEndpoints.OrderEndPoint;
-import org.localareadelivery.distributorapp.ModelStats.OrderStatusHomeDelivery;
+import org.localareadelivery.distributorapp.ModelStatusCodes.OrderStatusHomeDelivery;
 import org.localareadelivery.distributorapp.HomeDeliveryInventory.ConfirmItemsForDelivery;
 import org.localareadelivery.distributorapp.HomeDeliveryInventory.Interface.ConfirmOrdersClicked;
 import org.localareadelivery.distributorapp.HomeDeliveryInventory.Interface.NotifyTitleChanged;

@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.localareadelivery.distributorapp.Model.Order;
-import org.localareadelivery.distributorapp.ModelStats.DeliveryAddress;
+import org.localareadelivery.distributorapp.Model.DeliveryAddress;
 import org.localareadelivery.distributorapp.ModelStats.OrderStats;
 import org.localareadelivery.distributorapp.R;
 
@@ -81,7 +81,7 @@ public class AdapterConfirmedOrders extends RecyclerView.Adapter<AdapterConfirme
     }
 
 
-    class ViewHolder extends RecyclerView.ViewHolder{
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
 
         @Bind(R.id.order_id)
@@ -114,10 +114,9 @@ public class AdapterConfirmedOrders extends RecyclerView.Adapter<AdapterConfirme
 
         public ViewHolder(View itemView) {
             super(itemView);
-
             ButterKnife.bind(this,itemView);
 
-
+            itemView.setOnClickListener(this);
         }
 
 
@@ -134,12 +133,18 @@ public class AdapterConfirmedOrders extends RecyclerView.Adapter<AdapterConfirme
             notifications.notifyCancelOrder(dataset.get(getLayoutPosition()));
         }
 
+        @Override
+        public void onClick(View v) {
+            notifications.notifyOrderSelected(dataset.get(getLayoutPosition()));
+        }
     }
 
 
 
 
     interface NotifyOrderPacked {
+
+        void notifyOrderSelected(Order order);
         void notifyOrderPacked(Order order);
         void notifyCancelOrder(Order order);
     }

@@ -1,7 +1,5 @@
 package org.localareadelivery.distributorapp.DeliveryGuyInventory.PendingHandover;
 
-import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.localareadelivery.distributorapp.Model.Order;
-import org.localareadelivery.distributorapp.ModelStats.DeliveryAddress;
+import org.localareadelivery.distributorapp.Model.DeliveryAddress;
 import org.localareadelivery.distributorapp.ModelStats.OrderStats;
 import org.localareadelivery.distributorapp.R;
 

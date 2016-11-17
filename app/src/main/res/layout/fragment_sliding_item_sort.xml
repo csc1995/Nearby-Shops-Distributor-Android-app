@@ -83,7 +83,7 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/shop_count"
+                android:id="@+id/item_total"
                 android:padding="10dp"
                 android:gravity="center"
                 android:layout_weight="1"
@@ -96,7 +96,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginLeft="5dp"
                 android:background="#22000000"
-                android:id="@+id/price_average"
+                android:id="@+id/item_price"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
                 android:paddingLeft="2dp"

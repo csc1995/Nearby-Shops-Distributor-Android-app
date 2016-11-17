@@ -36,10 +36,10 @@ public class SlidingLayerItemSort extends Fragment {
 //    @Bind(R.id.sort_by_updated)
 //    TextView sort_by_updated;
 
-    @Bind(R.id.price_average)
+    @Bind(R.id.item_price)
     TextView sort_by_price_avg;
 
-    @Bind(R.id.shop_count)
+    @Bind(R.id.item_total)
     TextView sort_by_shop_count;
 
     @Bind(R.id.sort_ascending)
@@ -168,7 +168,7 @@ public class SlidingLayerItemSort extends Fragment {
 
 
 
-    @OnClick(R.id.shop_count)
+    @OnClick(R.id.item_total)
     void sortByShopCount(View view)
     {
         clearSelectionSort();
@@ -184,7 +184,7 @@ public class SlidingLayerItemSort extends Fragment {
     }
 
 
-    @OnClick(R.id.price_average)
+    @OnClick(R.id.item_price)
     void sortByPriceAvg(View view)
     {
         clearSelectionSort();

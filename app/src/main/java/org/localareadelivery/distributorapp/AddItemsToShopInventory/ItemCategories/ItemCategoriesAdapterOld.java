@@ -386,7 +386,7 @@ public class ItemCategoriesAdapterOld extends RecyclerView.Adapter<ItemCategorie
 
 
 
-    }// ViewHolder Class declaration ends
+    }// ViewHolderOrder Class declaration ends
 
 
 

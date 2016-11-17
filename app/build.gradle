@@ -38,12 +38,12 @@ android {
     }
 
 
-        repositories {
-            maven { url 'https://jitpack.io' }
-        }
+    repositories {
+        maven { url 'https://jitpack.io' }
+    }
 
     repositories {
-        maven {url "https://clojars.org/repo/"}
+        maven { url "https://clojars.org/repo/" }
     }
 
 
@@ -52,77 +52,56 @@ android {
 
 dependencies {
 
-
     // for implementing pull to refresh
     // android support Libraries
+
+
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+
+    // libraries for retrofit configuration
+
+    // retrofit support
+
+    //compile 'com.google.android.gms:play-services:8.4.0'
+
+    // leak canary dependencies
+
+    // hugo logger
+
+    //compile 'com.jakewharton.hugo:hugo-plugin:1.2.1'
+
+    // dependencies for Dagger 2
+    // apt command comes from the android-apt plugin
+
+    // ice pack dependencies
+
+
+    compile 'org.glassfish.jersey.media:jersey-media-sse:2.24'
+    compile 'org.glassfish.jersey.core:jersey-client:2.24'
     compile 'com.android.support:support-v4:24.2.1'
     compile 'com.android.support:recyclerview-v7:24.2.1'
     compile 'com.android.support:cardview-v7:24.2.1'
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.android.support:design:24.2.1'
-
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
-
-
     compile 'com.jakewharton:butterknife:7.0.1'
-
-
-
-
-    // libraries for retrofit configuration
     compile 'com.google.code.gson:gson:2.7'
     compile 'com.squareup.retrofit2:converter-gson:2.0.2'
     compile 'com.squareup.retrofit2:retrofit:2.0.2'
     compile 'com.squareup.okhttp3:okhttp:3.1.2'
-
-
-
-
-    // retrofit support
-
     compile 'com.squareup.picasso:picasso:2.5.2'
-
     compile 'com.yalantis:ucrop:1.3.+'
-
-    //compile 'com.google.android.gms:play-services:8.4.0'
-
-
-    // leak canary dependencies
-    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta2'
-    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
-    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
-
-
-    // hugo logger
-
-
-
     compile 'com.heinrichreimersoftware:material-intro:1.5.4'
-    //compile 'com.jakewharton.hugo:hugo-plugin:1.2.1'
-
-
-
-
-    // dependencies for Dagger 2
-    // apt command comes from the android-apt plugin
-    apt 'com.google.dagger:dagger-compiler:2.2'
     compile 'com.google.dagger:dagger:2.2'
-    provided 'javax.annotation:jsr250-api:1.0'
-
-
     compile 'com.google.android.gms:play-services-maps:9.8.0'
-
-
-
-    // ice pack dependencies
-
     compile 'frankiesardo:icepick:3.2.0'
-    provided 'frankiesardo:icepick-processor:3.2.0'
-
-
     compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha9'
-
     compile 'com.github.clans:fab:1.6.4'
     compile 'com.wunderlist:sliding-layer:1.2.5'
+    testCompile 'junit:junit:4.12'
+    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
+    apt 'com.google.dagger:dagger-compiler:2.2'
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta2'
+    provided 'javax.annotation:jsr250-api:1.0'
+    provided 'frankiesardo:icepick-processor:3.2.0'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
 }

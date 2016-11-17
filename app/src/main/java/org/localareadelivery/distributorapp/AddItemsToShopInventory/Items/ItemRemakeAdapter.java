@@ -382,7 +382,7 @@ public class ItemRemakeAdapter extends RecyclerView.Adapter<ItemRemakeAdapter.Vi
 
 
 
-    }// ViewHolder Class declaration ends
+    }// ViewHolderOrder Class declaration ends
 
 
 

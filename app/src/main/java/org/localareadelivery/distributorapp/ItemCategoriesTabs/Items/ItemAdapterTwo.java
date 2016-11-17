@@ -390,7 +390,7 @@ public class ItemAdapterTwo extends RecyclerView.Adapter<ItemAdapterTwo.ViewHold
 
 
 
-    }// ViewHolder Class declaration ends
+    }// ViewHolderOrder Class declaration ends
 
 
 

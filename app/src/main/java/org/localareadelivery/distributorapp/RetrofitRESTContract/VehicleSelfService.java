@@ -1,6 +1,6 @@
 package org.localareadelivery.distributorapp.RetrofitRESTContract;
 
-import org.localareadelivery.distributorapp.ModelStats.DeliveryGuySelf;
+import org.localareadelivery.distributorapp.Model.DeliveryGuySelf;
 
 import java.util.List;
 

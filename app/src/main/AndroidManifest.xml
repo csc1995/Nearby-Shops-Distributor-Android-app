@@ -266,6 +266,24 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.localareadelivery.distributorapp.OrdersHome.OrdersHome" />
         </activity>
+        <activity
+            android:name=".OrderDetail.OrderDetail"
+            android:label="@string/title_activity_order_detail"
+            android:parentActivityName=".OrdersHome.OrdersHome"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.localareadelivery.distributorapp.OrdersHome.OrdersHome" />
+        </activity>
+        <activity android:name=".SSEExample.SSEExample"></activity>
+
+
+
+        <service
+            android:name=".Home.SSEIntentService"
+            android:exported="false"/>
+
+
     </application>
 
 </manifest>

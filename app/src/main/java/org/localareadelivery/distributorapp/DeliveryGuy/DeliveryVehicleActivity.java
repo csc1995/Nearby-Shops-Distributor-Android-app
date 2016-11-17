@@ -16,7 +16,7 @@ import org.localareadelivery.distributorapp.ApplicationState.ApplicationState;
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
 import org.localareadelivery.distributorapp.DeliveryGuyDashboard.DeliveryGuyDashboard;
 import org.localareadelivery.distributorapp.Model.Shop;
-import org.localareadelivery.distributorapp.ModelStats.DeliveryGuySelf;
+import org.localareadelivery.distributorapp.Model.DeliveryGuySelf;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.VehicleSelfService;
 import org.localareadelivery.distributorapp.DeliveryGuyInventory.VehicleDashboard;

@@ -14,8 +14,8 @@ import org.localareadelivery.distributorapp.ApplicationState.ApplicationState;
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
 import org.localareadelivery.distributorapp.DeliveryGuy.DeliveryVehicleActivity;
 import org.localareadelivery.distributorapp.Model.Order;
-import org.localareadelivery.distributorapp.ModelStats.DeliveryGuySelf;
-import org.localareadelivery.distributorapp.ModelStats.OrderStatusHomeDelivery;
+import org.localareadelivery.distributorapp.Model.DeliveryGuySelf;
+import org.localareadelivery.distributorapp.ModelStatusCodes.OrderStatusHomeDelivery;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderService;
 
@@ -129,7 +129,7 @@ public class ConfirmItemsForDelivery extends AppCompatActivity implements Callba
     {
         if(selectedVehicle!=null)
         {
-            vehicleID.setText("Vehicle ID : " + String.valueOf(selectedVehicle.getID()));
+            vehicleID.setText("Vehicle ID : " + String.valueOf(selectedVehicle.getDeliveryGuyID()));
             vehicleName.setText("Vehicle Name" + String.valueOf(selectedVehicle.getVehicleName()));
         }
     }
@@ -155,7 +155,7 @@ public class ConfirmItemsForDelivery extends AppCompatActivity implements Callba
         {
             Log.d("datalog","Order ID" + String.valueOf(order.getOrderID()));
 
-            order.setDeliveryVehicleSelfID(selectedVehicle.getID());
+            order.setDeliveryVehicleSelfID(selectedVehicle.getDeliveryGuyID());
             order.setStatusHomeDelivery(OrderStatusHomeDelivery.PENDING_HANDOVER);
 
         }

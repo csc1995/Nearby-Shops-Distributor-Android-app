@@ -63,6 +63,7 @@
     <string name="fab_label_detach_item_category">Detach Selected Item Categories</string>
     <string name="fab_label_detach_item">Detach Selected Items</string>
     <string name="title_activity_cancelled_orders_home_delivery">Cancelled Orders</string>
+    <string name="title_activity_order_detail">OrderDetail</string>
 
 
 </resources>

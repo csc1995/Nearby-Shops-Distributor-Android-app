@@ -30,6 +30,7 @@ import org.localareadelivery.distributorapp.ItemCategoriesTabs.Items.AddItem;
 import org.localareadelivery.distributorapp.ItemCategoriesTabs.Items.EditItem;
 import org.localareadelivery.distributorapp.ItemCategoriesTabs.Items.ItemAdapterTwo;
 import org.localareadelivery.distributorapp.ItemCategoriesTabs.Items.ItemRemakeFragment;
+import org.localareadelivery.distributorapp.OrderDetail.FragmentOrderDetail;
 import org.localareadelivery.distributorapp.ShopList.ShopList;
 import org.localareadelivery.distributorapp.DeliveryGuy.AddVehicleSelfActivity;
 import org.localareadelivery.distributorapp.DeliveryGuy.DeliveryVehicleActivity;
@@ -150,4 +151,6 @@ public interface NetComponent {
     void Inject(PendingReturnCancelledByShop pendingReturnCancelledByShop);
 
     void Inject(PendingReturnCancelledByShopDGI pendingReturnCancelledByShopDGI);
+
+    void Inject(FragmentOrderDetail fragmentOrderDetail);
 }

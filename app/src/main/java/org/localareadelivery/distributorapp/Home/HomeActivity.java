@@ -42,6 +42,10 @@ public class HomeActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });*/
+
+//        SSEIntentService intentService = new SSEIntentService("service");
+
+
     }
 
 
@@ -51,6 +55,7 @@ public class HomeActivity extends AppCompatActivity {
     void shopListClick()
     {
         Intent intent = new Intent(this, ShopList.class);
+
         startActivity(intent);
     }
 

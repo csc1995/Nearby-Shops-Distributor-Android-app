@@ -221,7 +221,7 @@ public class ItemCategoriesAdapterEditStock extends RecyclerView.Adapter<ItemCat
 
 
 
-    }// ViewHolder Class declaration ends
+    }// ViewHolderOrder Class declaration ends
 
 
 

@@ -1,7 +1,6 @@
 package org.localareadelivery.distributorapp.Model;
 
 
-import org.localareadelivery.distributorapp.ModelStats.DeliveryAddress;
 import org.localareadelivery.distributorapp.ModelStats.OrderStats;
 
 import java.sql.Timestamp;

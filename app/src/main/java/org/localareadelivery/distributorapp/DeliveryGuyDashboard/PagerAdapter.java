@@ -10,8 +10,7 @@ import org.localareadelivery.distributorapp.DeliveryGuyDashboard.OutForDelivery.
 import org.localareadelivery.distributorapp.DeliveryGuyDashboard.PendingPayments.PaymentsPendingFragment;
 import org.localareadelivery.distributorapp.DeliveryGuyDashboard.PendingReturn.PendingReturnByDG;
 import org.localareadelivery.distributorapp.DeliveryGuyDashboard.PendingReturnCancelledByShop.PendingReturnCancelledByShop;
-import org.localareadelivery.distributorapp.DeliveryGuyInventory.PendingDeliveryApproval.PendingDeliveryApproval;
-import org.localareadelivery.distributorapp.ModelStats.DeliveryGuySelf;
+import org.localareadelivery.distributorapp.Model.DeliveryGuySelf;
 import org.localareadelivery.distributorapp.DeliveryGuyInventory.PlaceholderFragment;
 
 /**
@@ -37,7 +36,7 @@ public class PagerAdapter extends FragmentPagerAdapter {
 
         if(deliveryVehicle!=null)
         {
-            vehicleID = deliveryVehicle.getID();
+            vehicleID = deliveryVehicle.getDeliveryGuyID();
         }
     }
 

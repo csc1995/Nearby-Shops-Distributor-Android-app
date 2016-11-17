@@ -1,6 +1,7 @@
 package org.localareadelivery.distributorapp.HomeDeliveryInventory.Confirmed;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -18,9 +19,11 @@ import org.localareadelivery.distributorapp.DaggerComponentBuilder;
 import org.localareadelivery.distributorapp.Model.Order;
 import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.ModelEndpoints.OrderEndPoint;
-import org.localareadelivery.distributorapp.ModelStats.OrderStatusHomeDelivery;
+import org.localareadelivery.distributorapp.ModelStatusCodes.OrderStatusHomeDelivery;
 import org.localareadelivery.distributorapp.HomeDeliveryInventory.Interface.NotifyTitleChanged;
 import org.localareadelivery.distributorapp.HomeDeliveryInventory.Interface.RefreshFragment;
+import org.localareadelivery.distributorapp.OrderDetail.OrderDetail;
+import org.localareadelivery.distributorapp.OrderDetail.UtilityOrderDetail;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderService;
 
@@ -149,15 +152,15 @@ public class ConfirmedOrdersFragment extends Fragment implements SwipeRefreshLay
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
 
-                if(layoutManager.findLastVisibleItemPosition()==dataset.size())
+
+                if(layoutManager.findLastVisibleItemPosition()==dataset.size()-1)
                 {
                     // trigger fetch next page
 
-                    if(dataset.size()== previous_position)
+                    if(layoutManager.findLastVisibleItemPosition() == previous_position)
                     {
                         return;
                     }
-
 
                     if((offset+limit)<=item_count)
                     {
@@ -165,11 +168,8 @@ public class ConfirmedOrdersFragment extends Fragment implements SwipeRefreshLay
                         makeNetworkCall(false);
                     }
 
-                    previous_position = dataset.size();
-
+                    previous_position = layoutManager.findLastVisibleItemPosition();
                 }
-
-
             }
         });
     }
@@ -328,6 +328,12 @@ public class ConfirmedOrdersFragment extends Fragment implements SwipeRefreshLay
     }
 
 
+    @Override
+    public void notifyOrderSelected(Order order) {
+
+        UtilityOrderDetail.saveOrder(order,getActivity());
+        getActivity().startActivity(new Intent(getActivity(),OrderDetail.class));
+    }
 
     @Override
     public void notifyOrderPacked(Order order) {

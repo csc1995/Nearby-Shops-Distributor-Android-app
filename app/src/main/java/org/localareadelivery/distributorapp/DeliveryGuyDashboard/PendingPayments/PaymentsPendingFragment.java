@@ -18,8 +18,8 @@ import org.localareadelivery.distributorapp.HomeDeliveryInventory.Interface.Noti
 import org.localareadelivery.distributorapp.Model.Order;
 import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.ModelEndpoints.OrderEndPoint;
-import org.localareadelivery.distributorapp.ModelStats.DeliveryGuySelf;
-import org.localareadelivery.distributorapp.ModelStats.OrderStatusHomeDelivery;
+import org.localareadelivery.distributorapp.Model.DeliveryGuySelf;
+import org.localareadelivery.distributorapp.ModelStatusCodes.OrderStatusHomeDelivery;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderService;
 
@@ -248,7 +248,7 @@ public class PaymentsPendingFragment extends Fragment implements SwipeRefreshLay
         Call<OrderEndPoint> call = orderService
                 .getOrders(null, currentShop.getShopID(),false,
                         OrderStatusHomeDelivery.PENDING_DELIVERY,
-                        null, deliveryGuySelf.getID(),false,null,true,true,
+                        null, deliveryGuySelf.getDeliveryGuyID(),false,null,true,true,
                         null,limit,offset,null);
 
 

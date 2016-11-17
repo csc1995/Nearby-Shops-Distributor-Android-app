@@ -18,7 +18,7 @@ import org.localareadelivery.distributorapp.DaggerComponentBuilder;
 import org.localareadelivery.distributorapp.Model.Order;
 import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.ModelEndpoints.OrderEndPoint;
-import org.localareadelivery.distributorapp.ModelStats.OrderStatusHomeDelivery;
+import org.localareadelivery.distributorapp.ModelStatusCodes.OrderStatusHomeDelivery;
 import org.localareadelivery.distributorapp.HomeDeliveryInventory.Interface.NotifyTitleChanged;
 import org.localareadelivery.distributorapp.HomeDeliveryInventory.Interface.RefreshFragment;
 import org.localareadelivery.distributorapp.R;
@@ -74,6 +74,9 @@ public class PlacedOrdersFragment extends Fragment implements AdapterPlacedOrder
         fragment.setArguments(args);
         return fragment;
     }
+
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -147,11 +150,11 @@ public class PlacedOrdersFragment extends Fragment implements AdapterPlacedOrder
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
 
-                if(layoutManager.findLastVisibleItemPosition()==dataset.size())
+                if(layoutManager.findLastVisibleItemPosition()==dataset.size()-1)
                 {
                     // trigger fetch next page
 
-                    if(dataset.size()== previous_position)
+                    if(layoutManager.findLastVisibleItemPosition() == previous_position)
                     {
                         return;
                     }
@@ -163,7 +166,7 @@ public class PlacedOrdersFragment extends Fragment implements AdapterPlacedOrder
                         makeNetworkCall(false);
                     }
 
-                    previous_position = dataset.size();
+                    previous_position = layoutManager.findLastVisibleItemPosition();
 
                 }
 

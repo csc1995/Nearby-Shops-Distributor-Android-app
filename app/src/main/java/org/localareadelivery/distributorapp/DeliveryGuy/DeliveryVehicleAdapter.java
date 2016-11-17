@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import org.localareadelivery.distributorapp.ModelStats.DeliveryGuySelf;
+import org.localareadelivery.distributorapp.Model.DeliveryGuySelf;
 import org.localareadelivery.distributorapp.R;
 
 import java.util.List;
@@ -54,7 +54,7 @@ public class DeliveryVehicleAdapter extends RecyclerView.Adapter<DeliveryVehicle
         {
 
             holder.vehicleName.setText(deliveryGuySelf.getVehicleName());
-            holder.vehicleID.setText("Vehicle ID : " + deliveryGuySelf.getID());
+            holder.vehicleID.setText("Vehicle ID : " + deliveryGuySelf.getDeliveryGuyID());
 
         }
     }

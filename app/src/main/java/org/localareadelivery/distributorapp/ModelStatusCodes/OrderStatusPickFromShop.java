@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.ModelStats;
+package org.localareadelivery.distributorapp.ModelStatusCodes;
 
 /**
  * Created by sumeet on 13/6/16.
