@@ -43,9 +43,8 @@ public class PagerAdapter extends FragmentPagerAdapter {
 
         if(position==0)
         {
-            PendingHandoverFragment pendingHandoverFragment = PendingHandoverFragment.newInstance();
-            pendingHandoverFragment.setDeliveryGuySelf(deliveryVehicle);
-            return pendingHandoverFragment;
+            //            pendingHandoverFragment.setDeliveryGuySelf(deliveryVehicle);
+            return PendingHandoverFragment.newInstance();
         }
         else if(position == 1)
         {

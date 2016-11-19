@@ -12,15 +12,15 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.localareadelivery.distributorapp.ApplicationState.ApplicationState;
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
 import org.localareadelivery.distributorapp.DeliveryGuyDashboard.DeliveryGuyDashboard;
 import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.Model.DeliveryGuySelf;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.DeliveryGuySelfService;
-import org.localareadelivery.distributorapp.DeliveryGuyInventory.VehicleDashboard;
+import org.localareadelivery.distributorapp.DeliveryGuyInventory.DeliveryGuyInventory;
 import org.localareadelivery.distributorapp.ShopHome.UtilityShopHome;
+import org.localareadelivery.distributorapp.Utility.UtilityLogin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,14 +32,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class DeliveryVehicleActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, View.OnClickListener, DeliveryVehicleAdapter.NotificationReceiver, Callback<List<DeliveryGuySelf>> {
+public class DeliveryVehicleActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, View.OnClickListener, Adapter.NotificationReceiver, Callback<List<DeliveryGuySelf>> {
 
     @Inject
     DeliveryGuySelfService deliveryGuySelfService;
 
     RecyclerView recyclerView;
 
-    DeliveryVehicleAdapter adapter;
+    Adapter adapter;
 
     GridLayoutManager layoutManager;
 
@@ -57,10 +57,11 @@ public class DeliveryVehicleActivity extends AppCompatActivity implements SwipeR
     public final static int INTENT_CODE_DASHBOARD = 2;
     public final static int INTENT_CODE_VEHICLE_DRIVER_DASHBOARD = 3;
 
+    int requestCode;
 
     TextView addNewAddress;
 
-    int requestCode;
+
 
 
     public DeliveryVehicleActivity() {
@@ -117,7 +118,7 @@ public class DeliveryVehicleActivity extends AppCompatActivity implements SwipeR
     {
 
 
-        adapter = new DeliveryVehicleAdapter(dataset,this,this);
+        adapter = new Adapter(dataset,this,this);
 
         recyclerView.setAdapter(adapter);
 
@@ -175,7 +176,11 @@ public class DeliveryVehicleActivity extends AppCompatActivity implements SwipeR
 
         Shop shop = UtilityShopHome.getShop(this);
 
-        Call<List<DeliveryGuySelf>> call = deliveryGuySelfService.getVehicles(shop.getShopID(),null);
+        Call<List<DeliveryGuySelf>> call = deliveryGuySelfService
+                .getVehicles(
+                        UtilityLogin.getAuthorizationHeaders(this),
+                        shop.getShopID(),null
+                );
 
         call.enqueue(this);
 
@@ -284,8 +289,8 @@ public class DeliveryVehicleActivity extends AppCompatActivity implements SwipeR
         else if(requestCode == INTENT_CODE_DASHBOARD)
         {
 
-            Intent vehicleDashboardIntent = new Intent(this,VehicleDashboard.class);
-            vehicleDashboardIntent.putExtra(VehicleDashboard.DELIVERY_VEHICLE_INTENT_KEY, deliveryGuySelf);
+            Intent vehicleDashboardIntent = new Intent(this,DeliveryGuyInventory.class);
+            vehicleDashboardIntent.putExtra(DeliveryGuyInventory.DELIVERY_VEHICLE_INTENT_KEY, deliveryGuySelf);
             startActivity(vehicleDashboardIntent);
 
         }else if(requestCode == INTENT_CODE_VEHICLE_DRIVER_DASHBOARD)

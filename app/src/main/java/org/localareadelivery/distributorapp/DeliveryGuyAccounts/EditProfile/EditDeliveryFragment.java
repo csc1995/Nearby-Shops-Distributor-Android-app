@@ -38,6 +38,7 @@ import org.localareadelivery.distributorapp.RetrofitRESTContract.DeliveryGuySelf
 import org.localareadelivery.distributorapp.ShopHome.UtilityShopHome;
 import org.localareadelivery.distributorapp.Utility.ImageCropUtility;
 import org.localareadelivery.distributorapp.Utility.UtilityGeneral;
+import org.localareadelivery.distributorapp.Utility.UtilityLogin;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -418,7 +419,8 @@ public class EditDeliveryFragment extends Fragment {
         getDataFromViews();
 
         // update Item Call
-        Call<ResponseBody> call = deliveryService.putVehicle(deliveryGuySelf,deliveryGuySelf.getDeliveryGuyID());
+        Call<ResponseBody> call = deliveryService.putVehicle(UtilityLogin.getAuthorizationHeaders(getContext()),
+                deliveryGuySelf,deliveryGuySelf.getDeliveryGuyID());
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -450,7 +452,8 @@ public class EditDeliveryFragment extends Fragment {
     {
         getDataFromViews();
 
-        Call<DeliveryGuySelf> call = deliveryService.postVehicle(deliveryGuySelf);
+        Call<DeliveryGuySelf> call = deliveryService.postVehicle(UtilityLogin.getAuthorizationHeaders(getContext()),
+                deliveryGuySelf);
 
         call.enqueue(new Callback<DeliveryGuySelf>() {
             @Override
@@ -740,7 +743,8 @@ public class EditDeliveryFragment extends Fragment {
 
 
 
-        Call<Image> imageCall = deliveryService.uploadImage(requestBodyBinary);
+        Call<Image> imageCall = deliveryService.uploadImage(UtilityLogin.getAuthorizationHeaders(getContext()),
+                requestBodyBinary);
 
 
         imageCall.enqueue(new Callback<Image>() {
@@ -808,7 +812,7 @@ public class EditDeliveryFragment extends Fragment {
 
     void deleteImage(String filename)
     {
-        Call<ResponseBody> call = deliveryService.deleteImage(filename);
+        Call<ResponseBody> call = deliveryService.deleteImage(UtilityLogin.getAuthorizationHeaders(getContext()),filename);
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override

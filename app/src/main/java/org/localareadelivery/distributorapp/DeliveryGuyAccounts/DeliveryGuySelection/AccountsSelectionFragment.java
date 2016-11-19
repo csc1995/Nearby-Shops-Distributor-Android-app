@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.DeliveryGuyAccounts;
+package org.localareadelivery.distributorapp.DeliveryGuyAccounts.DeliveryGuySelection;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -41,7 +41,7 @@ import retrofit2.Response;
  */
 
 
-public class AccountsFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, Adapter.NotifyConfirmOrder {
+public class AccountsSelectionFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, Adapter.Notifications {
 
 
     @Inject
@@ -63,7 +63,7 @@ public class AccountsFragment extends Fragment implements SwipeRefreshLayout.OnR
     public static final String MODE_ACCOUNTS_DISABLED = "accounts_disabled";
 
 
-    public AccountsFragment() {
+    public AccountsSelectionFragment() {
 
         DaggerComponentBuilder.getInstance()
                 .getNetComponent()
@@ -74,6 +74,7 @@ public class AccountsFragment extends Fragment implements SwipeRefreshLayout.OnR
 
     public final static String INTENT_REQUEST_CODE_KEY = "request_code_key";
 
+    public final static int INTENT_CODE_SELECT_DELIVERY_GUY = 1;
     public final static int INTENT_CODE_DELIVERY_GUY_INVENTORY = 2;
     public final static int INTENT_CODE_DELIVERY_GUY_DASHBOARD = 3;
 
@@ -82,8 +83,8 @@ public class AccountsFragment extends Fragment implements SwipeRefreshLayout.OnR
 
 
 
-    public static AccountsFragment newInstance(boolean isEnabled) {
-        AccountsFragment fragment = new AccountsFragment();
+    public static AccountsSelectionFragment newInstance(boolean isEnabled) {
+        AccountsSelectionFragment fragment = new AccountsSelectionFragment();
         Bundle args = new Bundle();
         args.putBoolean(ARG_ACCOUNTS_MODE, isEnabled);
         fragment.setArguments(args);
@@ -93,7 +94,7 @@ public class AccountsFragment extends Fragment implements SwipeRefreshLayout.OnR
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_delivery_guy_accounts, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_delivery_guy_accounts_selection, container, false);
         setRetainInstance(true);
 
 
@@ -313,21 +314,24 @@ public class AccountsFragment extends Fragment implements SwipeRefreshLayout.OnR
         }
     }
 
-    @Override
-    public void notifyEditClick(DeliveryGuySelf deliveryGuySelf) {
 
-        Intent intent = new Intent(getContext(), EditDelivery.class);
-        intent.putExtra(EditDeliveryFragment.DELIVERY_GUY_INTENT_KEY,deliveryGuySelf);
-        intent.putExtra(EditDeliveryFragment.EDIT_MODE_INTENT_KEY,EditDeliveryFragment.MODE_UPDATE);
-        startActivity(intent);
-    }
 
     @Override
     public void notifyListItemClick(DeliveryGuySelf deliveryGuySelf) {
 
         requestCode = getActivity().getIntent().getIntExtra(INTENT_REQUEST_CODE_KEY,-1);
 
-        if(requestCode == INTENT_CODE_DELIVERY_GUY_INVENTORY)
+
+        if(requestCode == INTENT_CODE_SELECT_DELIVERY_GUY)
+        {
+
+            Intent output = new Intent();
+            output.putExtra("output", deliveryGuySelf);
+            getActivity().setResult(2,output);
+            getActivity().finish();
+
+        }
+        else if(requestCode == INTENT_CODE_DELIVERY_GUY_INVENTORY)
         {
 
             Intent vehicleDashboardIntent = new Intent(getContext(),DeliveryGuyInventory.class);

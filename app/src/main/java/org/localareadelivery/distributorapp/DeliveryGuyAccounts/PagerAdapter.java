@@ -18,7 +18,7 @@ class PagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         // getItem is called to instantiate the fragment for the given page.
-        // Return a AccountsFragment (defined as a static inner class below).
+        // Return a AccountsSelectionFragment (defined as a static inner class below).
 
         if(position==0)
         {

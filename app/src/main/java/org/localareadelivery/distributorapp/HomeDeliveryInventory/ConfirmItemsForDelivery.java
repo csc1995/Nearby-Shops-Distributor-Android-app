@@ -13,6 +13,8 @@ import android.widget.Toast;
 import org.localareadelivery.distributorapp.ApplicationState.ApplicationState;
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
 import org.localareadelivery.distributorapp.DeliveryGuy.DeliveryVehicleActivity;
+import org.localareadelivery.distributorapp.DeliveryGuyAccounts.DeliveryGuySelection.AccountsSelectionFragment;
+import org.localareadelivery.distributorapp.DeliveryGuyAccounts.DeliveryGuySelection.DeliveryGuySelection;
 import org.localareadelivery.distributorapp.Model.Order;
 import org.localareadelivery.distributorapp.Model.DeliveryGuySelf;
 import org.localareadelivery.distributorapp.ModelStatusCodes.OrderStatusHomeDelivery;
@@ -90,8 +92,8 @@ public class ConfirmItemsForDelivery extends AppCompatActivity implements Callba
     void onClickSelectVehicle(View view)
     {
 
-        Intent intent = new Intent(this, DeliveryVehicleActivity.class);
-        intent.putExtra(DeliveryVehicleActivity.INTENT_REQUEST_CODE_KEY,DeliveryVehicleActivity.INTENT_CODE_SELECT_VEHICLE);
+        Intent intent = new Intent(this, DeliveryGuySelection.class);
+        intent.putExtra(AccountsSelectionFragment.INTENT_REQUEST_CODE_KEY, AccountsSelectionFragment.INTENT_CODE_SELECT_DELIVERY_GUY);
 
         startActivityForResult(intent,1);
 
@@ -129,8 +131,8 @@ public class ConfirmItemsForDelivery extends AppCompatActivity implements Callba
     {
         if(selectedVehicle!=null)
         {
-            vehicleID.setText("Vehicle ID : " + String.valueOf(selectedVehicle.getDeliveryGuyID()));
-            vehicleName.setText("Vehicle Name" + String.valueOf(selectedVehicle.getName()));
+            vehicleID.setText("ID : " + String.valueOf(selectedVehicle.getDeliveryGuyID()));
+            vehicleName.setText(String.valueOf(selectedVehicle.getName()));
         }
     }
 
@@ -175,6 +177,7 @@ public class ConfirmItemsForDelivery extends AppCompatActivity implements Callba
         if(response.code() == 200)
         {
             showToastMessage("Handover Successful !");
+            finish();
         }
         else
         {

@@ -17,6 +17,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
@@ -29,33 +30,37 @@ public interface DeliveryGuySelfService {
 
 
     @GET("/api/DeliveryGuySelf")
-    Call<List<DeliveryGuySelf>> getVehicles(@Query("ShopID") int shopID,
+    Call<List<DeliveryGuySelf>> getVehicles(@Header("Authorization") String headers,
+                                            @Query("ShopID") int shopID,
                                             @Query("IsEnabled") Boolean isEnabled);
 
 
     @GET("/api/DeliveryGuySelf/{id}")
-    Call<DeliveryGuySelf> getVehicle(@Path("id") int id);
+    Call<DeliveryGuySelf> getVehicle(@Header("Authorization") String headers,
+                                     @Path("id") int id);
 
     @POST("/api/DeliveryGuySelf")
-    Call<DeliveryGuySelf> postVehicle(@Body DeliveryGuySelf deliveryGuySelf);
+    Call<DeliveryGuySelf> postVehicle(@Header("Authorization") String headers,
+                                      @Body DeliveryGuySelf deliveryGuySelf);
 
     @PUT("/api/DeliveryGuySelf/{id}")
-    Call<ResponseBody> putVehicle(@Body DeliveryGuySelf deliveryGuySelf, @Path("id") int id);
+    Call<ResponseBody> putVehicle(@Header("Authorization") String headers,
+                                  @Body DeliveryGuySelf deliveryGuySelf, @Path("id") int id);
 
     @DELETE("/api/DeliveryGuySelf/{id}")
-    Call<ResponseBody> deleteVehicle(@Path("id") int id);
-
-
+    Call<ResponseBody> deleteVehicle(@Header("Authorization") String headers,
+                                     @Path("id") int id);
 
 
     @POST("/api/DeliveryGuySelf/Image")
-    Call<Image> uploadImage(@Body RequestBody image);
+    Call<Image> uploadImage(@Header("Authorization") String headers,
+                            @Body RequestBody image);
 
     //@QueryParam("PreviousImageName") String previousImageName
 
     @DELETE("/api/DeliveryGuySelf/Image/{name}")
-    Call<ResponseBody> deleteImage(@Path("name")String fileName);
-
+    Call<ResponseBody> deleteImage(@Header("Authorization") String headers,
+                                   @Path("name")String fileName);
 
 
     @GET("/api/DeliveryGuySelf/CheckUsernameExists/{username}")

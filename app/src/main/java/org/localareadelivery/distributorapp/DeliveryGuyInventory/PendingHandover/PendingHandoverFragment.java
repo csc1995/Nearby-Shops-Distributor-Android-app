@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import org.localareadelivery.distributorapp.ApplicationState.ApplicationState;
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
 import org.localareadelivery.distributorapp.HomeDeliveryInventory.Interface.NotifyTitleChanged;
 import org.localareadelivery.distributorapp.Model.Order;
@@ -35,6 +34,8 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static org.localareadelivery.distributorapp.DeliveryGuyInventory.DeliveryGuyInventory.DELIVERY_VEHICLE_INTENT_KEY;
 
 /**
  * Created by sumeet on 13/6/16.
@@ -103,14 +104,20 @@ public class PendingHandoverFragment extends Fragment
         swipeContainer = (SwipeRefreshLayout)rootView.findViewById(R.id.swipeContainer);
 
 
-
-
-        if(savedInstanceState!=null)
+        if(deliveryGuySelf==null)
         {
-            // restore instance state
-            deliveryGuySelf = savedInstanceState.getParcelable("savedVehicle");
+            deliveryGuySelf = getActivity().getIntent().getParcelableExtra(DELIVERY_VEHICLE_INTENT_KEY);
         }
-        else
+
+
+//        if(savedInstanceState!=null)
+//        {
+
+//            deliveryGuySelf = savedInstanceState.getParcelable("savedVehicle");
+//        }
+
+
+        if(savedInstanceState==null)
         {
             makeRefreshNetworkCall();
         }
@@ -401,24 +408,11 @@ public class PendingHandoverFragment extends Fragment
     }
 
 
-    public DeliveryGuySelf getDeliveryGuySelf() {
-        return deliveryGuySelf;
-    }
-
-    public void setDeliveryGuySelf(DeliveryGuySelf deliveryGuySelf) {
-        this.deliveryGuySelf = deliveryGuySelf;
-    }
-
-    /*public interface NotificationReceiver
-    {
-        void notifyPendingAcceptChanged();
-    }
-    */
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelable("savedVehicle", deliveryGuySelf);
+//        outState.putParcelable("savedVehicle", deliveryGuySelf);
     }
 
 

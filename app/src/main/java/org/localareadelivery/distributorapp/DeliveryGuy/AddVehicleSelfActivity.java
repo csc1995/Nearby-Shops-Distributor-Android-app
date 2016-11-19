@@ -15,6 +15,7 @@ import org.localareadelivery.distributorapp.Model.DeliveryGuySelf;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.DeliveryGuySelfService;
 import org.localareadelivery.distributorapp.ShopHome.UtilityShopHome;
+import org.localareadelivery.distributorapp.Utility.UtilityLogin;
 
 import javax.inject.Inject;
 
@@ -93,7 +94,7 @@ public class AddVehicleSelfActivity extends AppCompatActivity implements View.On
 
         if(deliveryGuySelf !=null)
         {
-            Call<DeliveryGuySelf> call = deliveryGuySelfService.postVehicle(deliveryGuySelf);
+            Call<DeliveryGuySelf> call = deliveryGuySelfService.postVehicle(UtilityLogin.getAuthorizationHeaders(this),deliveryGuySelf);
 
             call.enqueue(this);
 

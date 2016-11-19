@@ -13,6 +13,7 @@ import org.localareadelivery.distributorapp.CancelledOrders.ReturnedByDeliveryGu
 import org.localareadelivery.distributorapp.DaggerModules.AppModule;
 import org.localareadelivery.distributorapp.DaggerModules.NetModule;
 import org.localareadelivery.distributorapp.DeliveryGuyAccounts.AccountsFragment;
+import org.localareadelivery.distributorapp.DeliveryGuyAccounts.DeliveryGuySelection.AccountsSelectionFragment;
 import org.localareadelivery.distributorapp.DeliveryGuyAccounts.EditProfile.EditDeliveryFragment;
 import org.localareadelivery.distributorapp.DeliveryGuyDashboard.PendingDeliveryApproval.PendingDeliveryApprovalDGD;
 import org.localareadelivery.distributorapp.DeliveryGuyDashboard.PendingReturn.PendingReturnByDG;
@@ -159,4 +160,6 @@ public interface NetComponent {
     void Inject(AccountsFragment accountsFragment);
 
     void Inject(EditDeliveryFragment editDeliveryFragment);
+
+    void Inject(AccountsSelectionFragment accountsSelectionFragment);
 }

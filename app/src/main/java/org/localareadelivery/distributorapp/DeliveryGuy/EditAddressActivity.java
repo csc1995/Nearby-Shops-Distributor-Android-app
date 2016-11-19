@@ -12,6 +12,7 @@ import org.localareadelivery.distributorapp.DaggerComponentBuilder;
 import org.localareadelivery.distributorapp.Model.DeliveryGuySelf;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.DeliveryGuySelfService;
+import org.localareadelivery.distributorapp.Utility.UtilityLogin;
 
 import javax.inject.Inject;
 
@@ -97,7 +98,7 @@ public class EditAddressActivity extends AppCompatActivity implements Callback<R
 
         getDataFromViews();
 
-        Call<ResponseBody> call = deliveryGuySelfService.putVehicle(deliveryGuySelf, deliveryGuySelf.getDeliveryGuyID());
+        Call<ResponseBody> call = deliveryGuySelfService.putVehicle(UtilityLogin.getAuthorizationHeaders(this),deliveryGuySelf, deliveryGuySelf.getDeliveryGuyID());
         call.enqueue(this);
 
     }

@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * Created by sumeet on 6/6/16.
  */
-public class DeliveryVehicleAdapter extends RecyclerView.Adapter<DeliveryVehicleAdapter.ViewHolder>{
+public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>{
 
 
     List<DeliveryGuySelf> dataset = null;
@@ -27,7 +27,7 @@ public class DeliveryVehicleAdapter extends RecyclerView.Adapter<DeliveryVehicle
 
 
 
-    public DeliveryVehicleAdapter(List<DeliveryGuySelf> dataset, Context context, NotificationReceiver notificationReceiver) {
+    public Adapter(List<DeliveryGuySelf> dataset, Context context, NotificationReceiver notificationReceiver) {
 
         this.dataset = dataset;
         this.context = context;

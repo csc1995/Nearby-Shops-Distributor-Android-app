@@ -143,7 +143,7 @@
                 android:value="org.localareadelivery.distributorapp.HomeDeliveryInventory.HomeDelivery" />
         </activity>
         <activity
-            android:name=".DeliveryGuyInventory.VehicleDashboard"
+            android:name=".DeliveryGuyInventory.DeliveryGuyInventory"
             android:label="@string/title_activity_vehicle_dashboard"
             android:parentActivityName=".DeliveryGuy.DeliveryVehicleActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -288,17 +288,24 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.localareadelivery.distributorapp.ShopHome.ShopHome" />
         </activity>
-
         <activity
-            android:label="Edit Delivery Account"
             android:name=".DeliveryGuyAccounts.EditProfile.EditDelivery"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".DeliveryGuyAccounts.DeliveryGuyAccounts">
+            android:label="Edit Delivery Account"
+            android:parentActivityName=".DeliveryGuyAccounts.DeliveryGuyAccounts"
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".DeliveryGuyAccounts.DeliveryGuyAccounts" />
         </activity>
-
+        <activity
+            android:name=".DeliveryGuyAccounts.DeliveryGuySelection.DeliveryGuySelection"
+            android:label="@string/title_activity_delivery_guy_selection"
+            android:parentActivityName=".OrdersHome.OrdersHome"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.localareadelivery.distributorapp.OrdersHome.OrdersHome" />
+        </activity>
     </application>
 
 </manifest>

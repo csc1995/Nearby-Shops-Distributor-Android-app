@@ -17,7 +17,7 @@ import org.localareadelivery.distributorapp.R;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class VehicleDashboard extends AppCompatActivity implements NotifyTitleChanged {
+public class DeliveryGuyInventory extends AppCompatActivity implements NotifyTitleChanged {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide

@@ -1,10 +1,8 @@
-package org.localareadelivery.distributorapp.DeliveryGuyAccounts;
+package org.localareadelivery.distributorapp.DeliveryGuyAccounts.DeliveryGuySelection;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,10 +12,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import org.localareadelivery.distributorapp.Model.DeliveryAddress;
 import org.localareadelivery.distributorapp.Model.DeliveryGuySelf;
-import org.localareadelivery.distributorapp.Model.Order;
-import org.localareadelivery.distributorapp.ModelStats.OrderStats;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.Utility.UtilityGeneral;
 
@@ -25,7 +20,6 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by sumeet on 13/6/16.
@@ -33,12 +27,12 @@ import butterknife.OnClick;
 class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>{
 
     private List<DeliveryGuySelf> dataset = null;
-    private NotifyConfirmOrder notifyConfirmOrder;
+    private Notifications notifications;
     private  Context context;
 
-    Adapter(List<DeliveryGuySelf> dataset, NotifyConfirmOrder notifyConfirmOrder, Context context) {
+    Adapter(List<DeliveryGuySelf> dataset, Notifications notifications, Context context) {
         this.dataset = dataset;
-        this.notifyConfirmOrder = notifyConfirmOrder;
+        this.notifications = notifications;
         this.context = context;
     }
 
@@ -46,7 +40,7 @@ class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>{
     public Adapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_item_delivery_guy_self,parent,false);
+                .inflate(R.layout.list_item_delivery_guy_self_selection,parent,false);
 
         return new ViewHolder(view);
     }
@@ -58,7 +52,6 @@ class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>{
 
         holder.deliveryGuyName.setText(deliveryGuy.getName());
         holder.phoneNumber.setText(deliveryGuy.getPhoneNumber());
-        holder.username.setText("username : " + deliveryGuy.getUsername());
         holder.about.setText(deliveryGuy.getAbout());
 
 
@@ -88,17 +81,11 @@ class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>{
         @Bind(R.id.phone_number)
         TextView phoneNumber;
 
-        @Bind(R.id.username)
-        TextView username;
-
         @Bind(R.id.about)
         TextView about;
 
         @Bind(R.id.profile_image)
         ImageView profileImage;
-
-        @Bind(R.id.edit_icon)
-        ImageView editIcon;
 
 
 
@@ -109,25 +96,17 @@ class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>{
             itemView.setOnClickListener(this);
         }
 
-        @OnClick({R.id.edit_icon,R.id.edit_text})
-        void editClick()
-        {
-            notifyConfirmOrder.notifyEditClick(dataset.get(getLayoutPosition()));
-        }
-
 
         @Override
         public void onClick(View v) {
-            notifyConfirmOrder.notifyListItemClick(dataset.get(getLayoutPosition()));
+            notifications.notifyListItemClick(dataset.get(getLayoutPosition()));
         }
     }
 
 
 
 
-    interface NotifyConfirmOrder{
-
-        void notifyEditClick(DeliveryGuySelf deliveryGuySelf);
+    interface Notifications {
         void notifyListItemClick(DeliveryGuySelf deliveryGuySelf);
     }
 

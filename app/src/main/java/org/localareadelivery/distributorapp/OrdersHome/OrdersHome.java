@@ -8,7 +8,8 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import org.localareadelivery.distributorapp.CancelledOrders.CancelledOrdersHomeDelivery;
-import org.localareadelivery.distributorapp.DeliveryGuy.DeliveryVehicleActivity;
+import org.localareadelivery.distributorapp.DeliveryGuyAccounts.AccountsFragment;
+import org.localareadelivery.distributorapp.DeliveryGuyAccounts.DeliveryGuySelection.DeliveryGuySelection;
 import org.localareadelivery.distributorapp.HomeDeliveryInventory.HomeDelivery;
 import org.localareadelivery.distributorapp.R;
 
@@ -45,17 +46,27 @@ public class OrdersHome extends AppCompatActivity {
     @OnClick(R.id.order_edit_delivery_vehicles)
     void deliveryVehiclesClick(View view)
     {
-        Intent intent = new Intent(this, DeliveryVehicleActivity.class);
-        intent.putExtra(DeliveryVehicleActivity.INTENT_REQUEST_CODE_KEY,DeliveryVehicleActivity.INTENT_CODE_DASHBOARD);
+//        Intent intent = new Intent(this, DeliveryVehicleActivity.class);
+//        intent.putExtra(DeliveryVehicleActivity.INTENT_REQUEST_CODE_KEY,DeliveryVehicleActivity.INTENT_CODE_DASHBOARD);
+//        startActivity(intent);
+
+
+        Intent intent = new Intent(this, DeliveryGuySelection.class);
+        intent.putExtra(AccountsFragment.INTENT_REQUEST_CODE_KEY,AccountsFragment.INTENT_CODE_DELIVERY_GUY_INVENTORY);
         startActivity(intent);
+
     }
 
 
     @OnClick(R.id.orderhome_vehicle_driver_dashboard)
     void vehicleDriverDashboardClick(View view)
     {
-        Intent intent = new Intent(this, DeliveryVehicleActivity.class);
-        intent.putExtra(DeliveryVehicleActivity.INTENT_REQUEST_CODE_KEY,DeliveryVehicleActivity.INTENT_CODE_VEHICLE_DRIVER_DASHBOARD);
+//        Intent intent = new Intent(this, DeliveryVehicleActivity.class);
+//        intent.putExtra(DeliveryVehicleActivity.INTENT_REQUEST_CODE_KEY,DeliveryVehicleActivity.INTENT_CODE_VEHICLE_DRIVER_DASHBOARD);
+//        startActivity(intent);
+
+        Intent intent = new Intent(this, DeliveryGuySelection.class);
+        intent.putExtra(AccountsFragment.INTENT_REQUEST_CODE_KEY,AccountsFragment.INTENT_CODE_DELIVERY_GUY_DASHBOARD);
         startActivity(intent);
     }
 
