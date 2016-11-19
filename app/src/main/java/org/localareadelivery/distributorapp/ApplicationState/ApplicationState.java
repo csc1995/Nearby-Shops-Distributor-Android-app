@@ -48,7 +48,7 @@ public class ApplicationState {
         this.selectedOrdersForDelivery = selectedOrdersForDelivery;
     }
 
-    public Shop getCurrentShop() {
+    /*public Shop getCurrentShop() {
 
         Log.i("applog",String.valueOf(currentShop.getShopID()));
 
@@ -60,7 +60,7 @@ public class ApplicationState {
         Log.i("applog",String.valueOf(currentShop.getShopID()));
 
         this.currentShop = currentShop;
-    }
+    }*/
 
 
     public MyApplication getMyApplication() {

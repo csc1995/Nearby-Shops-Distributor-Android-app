@@ -23,6 +23,7 @@ import org.localareadelivery.distributorapp.Model.DeliveryGuySelf;
 import org.localareadelivery.distributorapp.ModelStatusCodes.OrderStatusHomeDelivery;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderService;
+import org.localareadelivery.distributorapp.ShopHome.UtilityShopHome;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -238,7 +239,7 @@ public class OutForDeliveryFragment extends Fragment implements SwipeRefreshLayo
             return;
         }
 
-        Shop currentShop = ApplicationState.getInstance().getCurrentShop();
+        Shop currentShop = UtilityShopHome.getShop(getContext());
 
         Call<OrderEndPoint> call = orderService
                 .getOrders(null, currentShop.getShopID(),false,

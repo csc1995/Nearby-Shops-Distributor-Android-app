@@ -26,6 +26,7 @@ import org.localareadelivery.distributorapp.ModelEndpoints.ShopItemEndPoint;
 import org.localareadelivery.distributorapp.QuickStockEditor.AdapterOutOfStock;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ShopItemService;
+import org.localareadelivery.distributorapp.ShopHome.UtilityShopHome;
 
 import java.util.ArrayList;
 
@@ -232,7 +233,7 @@ public class FragmentItemsEditor extends Fragment
     void makeNetworkCall() {
         int mode = getArguments().getInt(ARG_MODE_KEY);
 
-        Shop currentShop = ApplicationState.getInstance().getCurrentShop();
+        Shop currentShop = UtilityShopHome.getShop(getContext());
 
         Call<ShopItemEndPoint> call = null;
 

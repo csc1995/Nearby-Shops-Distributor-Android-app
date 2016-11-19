@@ -12,6 +12,8 @@ import org.localareadelivery.distributorapp.CancelledOrders.CancelledByShop.Frag
 import org.localareadelivery.distributorapp.CancelledOrders.ReturnedByDeliveryGuy.FragmentReturnedByDG;
 import org.localareadelivery.distributorapp.DaggerModules.AppModule;
 import org.localareadelivery.distributorapp.DaggerModules.NetModule;
+import org.localareadelivery.distributorapp.DeliveryGuyAccounts.AccountsFragment;
+import org.localareadelivery.distributorapp.DeliveryGuyAccounts.EditProfile.EditDeliveryFragment;
 import org.localareadelivery.distributorapp.DeliveryGuyDashboard.PendingDeliveryApproval.PendingDeliveryApprovalDGD;
 import org.localareadelivery.distributorapp.DeliveryGuyDashboard.PendingReturn.PendingReturnByDG;
 import org.localareadelivery.distributorapp.DeliveryGuyDashboard.PendingReturnCancelledByShop.PendingReturnCancelledByShop;
@@ -153,4 +155,8 @@ public interface NetComponent {
     void Inject(PendingReturnCancelledByShopDGI pendingReturnCancelledByShopDGI);
 
     void Inject(FragmentOrderDetail fragmentOrderDetail);
+
+    void Inject(AccountsFragment accountsFragment);
+
+    void Inject(EditDeliveryFragment editDeliveryFragment);
 }

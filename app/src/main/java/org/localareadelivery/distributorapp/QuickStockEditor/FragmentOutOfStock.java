@@ -21,6 +21,7 @@ import org.localareadelivery.distributorapp.Model.ShopItem;
 import org.localareadelivery.distributorapp.ModelEndpoints.ShopItemEndPoint;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ShopItemService;
+import org.localareadelivery.distributorapp.ShopHome.UtilityShopHome;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -219,7 +220,7 @@ public class FragmentOutOfStock extends Fragment implements SwipeRefreshLayout.O
     void makeNetworkCall() {
         int mode = getArguments().getInt(ARG_MODE_KEY);
 
-        Shop currentShop = ApplicationState.getInstance().getCurrentShop();
+        Shop currentShop = UtilityShopHome.getShop(getContext());
 
         Call<ShopItemEndPoint> call = null;
 

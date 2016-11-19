@@ -8,7 +8,6 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import org.localareadelivery.distributorapp.Model.ItemCategory;
 import org.localareadelivery.distributorapp.MyApplication;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.DistributorService;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ItemCategoryService;
@@ -17,14 +16,13 @@ import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderItemServic
 import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderService;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ShopItemService;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ShopService;
-import org.localareadelivery.distributorapp.RetrofitRESTContract.VehicleSelfService;
+import org.localareadelivery.distributorapp.RetrofitRESTContract.DeliveryGuySelfService;
 import org.localareadelivery.distributorapp.Utility.UtilityGeneral;
 
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -133,9 +131,9 @@ public class NetModule {
 
 
     @Provides
-    VehicleSelfService provideVehicleService(Retrofit retrofit)
+    DeliveryGuySelfService provideVehicleService(Retrofit retrofit)
     {
-        VehicleSelfService service = retrofit.create(VehicleSelfService.class);
+        DeliveryGuySelfService service = retrofit.create(DeliveryGuySelfService.class);
 
         return service;
     }

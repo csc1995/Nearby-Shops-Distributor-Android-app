@@ -23,6 +23,7 @@ import org.localareadelivery.distributorapp.HomeDeliveryInventory.Interface.Noti
 import org.localareadelivery.distributorapp.HomeDeliveryInventory.Interface.RefreshFragment;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderService;
+import org.localareadelivery.distributorapp.ShopHome.UtilityShopHome;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -206,7 +207,7 @@ public class PlacedOrdersFragment extends Fragment implements AdapterPlacedOrder
     void makeNetworkCall(final boolean clearDataset)
     {
 
-            Shop currentShop = ApplicationState.getInstance().getCurrentShop();
+            Shop currentShop = UtilityShopHome.getShop(getContext());
 
             Call<OrderEndPoint> call = orderService.getOrders(null, currentShop.getShopID()  ,false,
                     OrderStatusHomeDelivery.ORDER_PLACED,null,null,

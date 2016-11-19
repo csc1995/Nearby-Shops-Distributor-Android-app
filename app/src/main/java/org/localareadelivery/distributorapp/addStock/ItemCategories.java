@@ -22,6 +22,7 @@ import org.localareadelivery.distributorapp.Model.ItemCategory;
 import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ItemCategoryService;
+import org.localareadelivery.distributorapp.ShopHome.UtilityShopHome;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -162,19 +163,19 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
 
 
 
-        if(ApplicationState.getInstance().getCurrentShop()==null) {
+        if(UtilityShopHome.getShop(this)==null) {
 
             return;
         }
 
         // Null Pointer Exception :
 
-            Log.d("applog","ParentID= " + String.valueOf(currentCategory.getItemCategoryID()) + " ShopID = " + String.valueOf(ApplicationState.getInstance().getCurrentShop().getShopID()));
+            Log.d("applog","ParentID= " + String.valueOf(currentCategory.getItemCategoryID()) + " ShopID = " + String.valueOf(UtilityShopHome.getShop(this).getShopID()));
 
             Call<List<ItemCategory>> itemCategoryCall = itemCategoryService
                     .getItemCategories(
                             currentCategory.getItemCategoryID(),
-                            ApplicationState.getInstance().getCurrentShop().getShopID()
+                            UtilityShopHome.getShop(this).getShopID()
                     );
 
 
@@ -273,7 +274,7 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
     protected void onResume() {
         super.onResume();
 
-        shop = ApplicationState.getInstance().getCurrentShop();
+        shop = UtilityShopHome.getShop(this);
 
         // TODO
         // null pointer exception : Error Prone

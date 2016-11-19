@@ -13,7 +13,8 @@ import org.localareadelivery.distributorapp.DaggerComponentBuilder;
 import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.Model.DeliveryGuySelf;
 import org.localareadelivery.distributorapp.R;
-import org.localareadelivery.distributorapp.RetrofitRESTContract.VehicleSelfService;
+import org.localareadelivery.distributorapp.RetrofitRESTContract.DeliveryGuySelfService;
+import org.localareadelivery.distributorapp.ShopHome.UtilityShopHome;
 
 import javax.inject.Inject;
 
@@ -28,7 +29,7 @@ public class AddVehicleSelfActivity extends AppCompatActivity implements View.On
     DeliveryGuySelf deliveryGuySelf;
 
     @Inject
-    VehicleSelfService vehicleSelfService;
+    DeliveryGuySelfService deliveryGuySelfService;
 
     TextView addVehicleSelf;
 
@@ -74,7 +75,7 @@ public class AddVehicleSelfActivity extends AppCompatActivity implements View.On
     {
 
 
-        Shop shop = ApplicationState.getInstance().getCurrentShop();
+        Shop shop = UtilityShopHome.getShop(this);
 
         deliveryGuySelf = new DeliveryGuySelf();
 
@@ -92,7 +93,7 @@ public class AddVehicleSelfActivity extends AppCompatActivity implements View.On
 
         if(deliveryGuySelf !=null)
         {
-            Call<DeliveryGuySelf> call = vehicleSelfService.postVehicle(deliveryGuySelf);
+            Call<DeliveryGuySelf> call = deliveryGuySelfService.postVehicle(deliveryGuySelf);
 
             call.enqueue(this);
 

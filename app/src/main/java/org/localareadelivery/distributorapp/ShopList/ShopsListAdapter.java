@@ -18,6 +18,7 @@ import org.localareadelivery.distributorapp.ApplicationState.ApplicationState;
 import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.ShopHome.ShopHome;
+import org.localareadelivery.distributorapp.ShopHome.UtilityShopHome;
 import org.localareadelivery.distributorapp.Utility.UtilityGeneral;
 
 import java.util.ArrayList;
@@ -111,7 +112,9 @@ public class ShopsListAdapter extends RecyclerView.Adapter<ShopsListAdapter.View
             context.startActivity(intent);
 
             //Messy Code - To be refactored in future
-            ApplicationState.getInstance().setCurrentShop(dataset.get(getLayoutPosition()));
+//            ApplicationState.getInstance().setCurrentShop(dataset.get(getLayoutPosition()));
+
+            UtilityShopHome.saveShop(dataset.get(getLayoutPosition()),context);
         }
 
 

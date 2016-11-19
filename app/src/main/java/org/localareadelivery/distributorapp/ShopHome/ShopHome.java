@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import org.localareadelivery.distributorapp.DeliveryGuyAccounts.DeliveryGuyAccounts;
 import org.localareadelivery.distributorapp.EditStock.EditStock;
 import org.localareadelivery.distributorapp.ItemCategoriesTabs.ItemCategoriesTabs;
 import org.localareadelivery.distributorapp.OrdersHome.OrdersHome;
@@ -79,6 +80,14 @@ public class ShopHome extends AppCompatActivity implements View.OnClickListener 
     {
         startActivity(new Intent(this, SSEExample.class));
     }
+
+
+    @OnClick(R.id.option_delivery_guy_accounts)
+    void DeliveryAccountsClick(View view)
+    {
+        startActivity(new Intent(this, DeliveryGuyAccounts.class));
+    }
+
 
 
 

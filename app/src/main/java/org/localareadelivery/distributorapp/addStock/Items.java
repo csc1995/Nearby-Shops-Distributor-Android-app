@@ -21,6 +21,7 @@ import org.localareadelivery.distributorapp.Model.ShopItem;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ItemService;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ShopItemService;
+import org.localareadelivery.distributorapp.ShopHome.UtilityShopHome;
 
 
 import java.util.ArrayList;
@@ -170,7 +171,7 @@ public class Items extends AppCompatActivity {
 
 
         Call<List<Item>> items = itemService.getItems(itemCategory.getItemCategoryID(),
-                ApplicationState.getInstance().getCurrentShop().getShopID());
+                UtilityShopHome.getShop(this).getShopID());
 
         items.enqueue(new Callback<List<Item>>() {
 
@@ -241,7 +242,7 @@ public class Items extends AppCompatActivity {
         ShopItemService shopItemService = retrofit.create(ShopItemService.class);
 
         Call<List<ShopItem>> shopItemsCall =  shopItemService.getShopItems(
-                ApplicationState.getInstance().getCurrentShop().getShopID(),
+                UtilityShopHome.getShop(this).getShopID(),
                 null,itemCategory.getItemCategoryID());
 
 

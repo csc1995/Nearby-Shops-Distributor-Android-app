@@ -2,9 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.localareadelivery.distributorapp">
 
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
@@ -275,14 +273,31 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.localareadelivery.distributorapp.OrdersHome.OrdersHome" />
         </activity>
-        <activity android:name=".SSEExample.SSEExample"></activity>
-
-
+        <activity android:name=".SSEExample.SSEExample" />
 
         <service
             android:name=".Home.SSEIntentService"
-            android:exported="false"/>
+            android:exported="false" />
 
+        <activity
+            android:name=".DeliveryGuyAccounts.DeliveryGuyAccounts"
+            android:label="@string/title_activity_delivery_guy_accounts"
+            android:parentActivityName=".ShopHome.ShopHome"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.localareadelivery.distributorapp.ShopHome.ShopHome" />
+        </activity>
+
+        <activity
+            android:label="Edit Delivery Account"
+            android:name=".DeliveryGuyAccounts.EditProfile.EditDelivery"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".DeliveryGuyAccounts.DeliveryGuyAccounts">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".DeliveryGuyAccounts.DeliveryGuyAccounts" />
+        </activity>
 
     </application>
 

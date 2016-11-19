@@ -17,6 +17,7 @@ import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.ModelEndpoints.OrderItemEndPoint;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderItemService;
+import org.localareadelivery.distributorapp.ShopHome.UtilityShopHome;
 import org.localareadelivery.distributorapp.Utility.DividerItemDecoration;
 
 import java.util.ArrayList;
@@ -242,7 +243,7 @@ public class FragmentOrderDetail extends Fragment implements SwipeRefreshLayout.
     void makeNetworkCall(final boolean clearDataset)
     {
 
-        Shop currentShop = ApplicationState.getInstance().getCurrentShop();
+        Shop currentShop = UtilityShopHome.getShop(getContext());
 
         Call<OrderItemEndPoint> call = orderItemService.getOrderItem(
                 order.getOrderID(),null,null,null,limit,offset,null);

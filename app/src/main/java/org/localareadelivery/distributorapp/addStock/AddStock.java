@@ -17,6 +17,7 @@ import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.Model.ShopItem;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ShopItemService;
+import org.localareadelivery.distributorapp.ShopHome.UtilityShopHome;
 
 import java.util.List;
 
@@ -69,7 +70,7 @@ public class AddStock extends AppCompatActivity {
 
         item = getIntent().getParcelableExtra(ITEM_INTENT_KEY);
 
-        Shop currentShop = ApplicationState.getInstance().getCurrentShop();
+        Shop currentShop = UtilityShopHome.getShop(this);
 
         if(item!=null && currentShop!=null) {
 
@@ -88,7 +89,7 @@ public class AddStock extends AppCompatActivity {
         ShopItem shopItem = new ShopItem();
 
         shopItem.setItemID(item.getItemID());
-        shopItem.setShopID(ApplicationState.getInstance().getCurrentShop().getShopID());
+        shopItem.setShopID(UtilityShopHome.getShop(this).getShopID());
 
 
         //TODO remove this comment after api update

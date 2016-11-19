@@ -19,6 +19,7 @@ import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.Model.ShopItem;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ShopItemService;
+import org.localareadelivery.distributorapp.ShopHome.UtilityShopHome;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -175,7 +176,7 @@ public class FragmentPriceNotSet extends Fragment implements SwipeRefreshLayout.
     void makeNetworkCall()
     {
 
-            Shop currentShop = ApplicationState.getInstance().getCurrentShop();
+            Shop currentShop = UtilityShopHome.getShop(getContext());
 
 
             Call<List<ShopItem>> call = shopItemService.getShopItems(currentShop.getShopID(),null,null,null,true);

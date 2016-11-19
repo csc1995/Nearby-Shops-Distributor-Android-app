@@ -11,7 +11,7 @@ import android.widget.Toast;
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
 import org.localareadelivery.distributorapp.Model.DeliveryGuySelf;
 import org.localareadelivery.distributorapp.R;
-import org.localareadelivery.distributorapp.RetrofitRESTContract.VehicleSelfService;
+import org.localareadelivery.distributorapp.RetrofitRESTContract.DeliveryGuySelfService;
 
 import javax.inject.Inject;
 
@@ -31,7 +31,7 @@ public class EditAddressActivity extends AppCompatActivity implements Callback<R
 
 
     @Inject
-    VehicleSelfService vehicleSelfService;
+    DeliveryGuySelfService deliveryGuySelfService;
 
 
     @Bind(R.id.updateDeliveryVehicle)
@@ -97,7 +97,7 @@ public class EditAddressActivity extends AppCompatActivity implements Callback<R
 
         getDataFromViews();
 
-        Call<ResponseBody> call = vehicleSelfService.putVehicle(deliveryGuySelf, deliveryGuySelf.getDeliveryGuyID());
+        Call<ResponseBody> call = deliveryGuySelfService.putVehicle(deliveryGuySelf, deliveryGuySelf.getDeliveryGuyID());
         call.enqueue(this);
 
     }

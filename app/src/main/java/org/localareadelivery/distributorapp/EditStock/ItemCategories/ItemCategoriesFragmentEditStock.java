@@ -27,6 +27,7 @@ import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.ModelEndpoints.ItemCategoryEndPoint;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ItemCategoryService;
+import org.localareadelivery.distributorapp.ShopHome.UtilityShopHome;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -285,7 +286,7 @@ public class ItemCategoriesFragmentEditStock extends Fragment
     public void makeRequestRetrofit(final boolean notifyItemCategoryChanged, final boolean backPressed)
     {
 
-        Shop currentShop = ApplicationState.getInstance().getCurrentShop();
+        Shop currentShop = UtilityShopHome.getShop(getContext());
 
 
         Call<ItemCategoryEndPoint> endPointCall = itemCategoryService.getItemCategories(

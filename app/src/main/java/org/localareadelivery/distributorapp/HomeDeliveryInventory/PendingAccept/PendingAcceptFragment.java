@@ -19,6 +19,7 @@ import org.localareadelivery.distributorapp.ModelEndpoints.OrderEndPoint;
 import org.localareadelivery.distributorapp.ModelStatusCodes.OrderStatusHomeDelivery;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderService;
+import org.localareadelivery.distributorapp.ShopHome.UtilityShopHome;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -159,7 +160,7 @@ public class PendingAcceptFragment extends Fragment implements SwipeRefreshLayou
     void makeNetworkCall()
     {
 
-            Shop currentShop = ApplicationState.getInstance().getCurrentShop();
+            Shop currentShop = UtilityShopHome.getShop(getContext());
 
             Call<OrderEndPoint> call = orderService.getOrders(null, currentShop.getShopID(),false,
                                             OrderStatusHomeDelivery.PENDING_HANDOVER,

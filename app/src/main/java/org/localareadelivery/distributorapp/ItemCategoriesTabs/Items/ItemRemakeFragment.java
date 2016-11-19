@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 
-import org.localareadelivery.distributorapp.ApplicationState.ApplicationState;
+
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
 import org.localareadelivery.distributorapp.ItemCategoriesTabs.Interfaces.NotifyCategoryChanged;
 import org.localareadelivery.distributorapp.ItemCategoriesTabs.Interfaces.NotifyFabClick_Item;
@@ -34,6 +34,7 @@ import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ItemService;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ShopItemService;
 import org.localareadelivery.distributorapp.SelectParent.ItemCategoriesParent;
+import org.localareadelivery.distributorapp.ShopHome.UtilityShopHome;
 import org.localareadelivery.distributorapp.Utility.UtilitySortItem;
 
 import java.util.ArrayList;
@@ -707,7 +708,7 @@ public class ItemRemakeFragment extends Fragment
 
 
             ShopItem shopItem = new ShopItem();
-            shopItem.setShopID(ApplicationState.getInstance().getCurrentShop().getShopID());
+            shopItem.setShopID(UtilityShopHome.getShop(getContext()).getShopID());
             shopItem.setItemID(entry.getValue().getItemID());
 
             tempShopItemList.add(shopItem);
@@ -785,7 +786,7 @@ public class ItemRemakeFragment extends Fragment
 
 
             ShopItem shopItem = new ShopItem();
-            shopItem.setShopID(ApplicationState.getInstance().getCurrentShop().getShopID());
+            shopItem.setShopID(UtilityShopHome.getShop(getContext()).getShopID());
             shopItem.setItemID(entry.getValue().getItemID());
 
             tempShopItemList.add(shopItem);
@@ -853,7 +854,7 @@ public class ItemRemakeFragment extends Fragment
     void makeNetworkCallShopItem()
     {
 
-        int currentShopID = ApplicationState.getInstance().getCurrentShop().getShopID();
+        int currentShopID = UtilityShopHome.getShop(getContext()).getShopID();
 
         if(notifiedCurrentCategory==null)
         {

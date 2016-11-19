@@ -18,8 +18,9 @@ import org.localareadelivery.distributorapp.DeliveryGuyDashboard.DeliveryGuyDash
 import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.Model.DeliveryGuySelf;
 import org.localareadelivery.distributorapp.R;
-import org.localareadelivery.distributorapp.RetrofitRESTContract.VehicleSelfService;
+import org.localareadelivery.distributorapp.RetrofitRESTContract.DeliveryGuySelfService;
 import org.localareadelivery.distributorapp.DeliveryGuyInventory.VehicleDashboard;
+import org.localareadelivery.distributorapp.ShopHome.UtilityShopHome;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +35,7 @@ import retrofit2.Response;
 public class DeliveryVehicleActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, View.OnClickListener, DeliveryVehicleAdapter.NotificationReceiver, Callback<List<DeliveryGuySelf>> {
 
     @Inject
-    VehicleSelfService vehicleSelfService;
+    DeliveryGuySelfService deliveryGuySelfService;
 
     RecyclerView recyclerView;
 
@@ -172,9 +173,9 @@ public class DeliveryVehicleActivity extends AppCompatActivity implements SwipeR
     void makeNetworkCall()
     {
 
-        Shop shop = ApplicationState.getInstance().getCurrentShop();
+        Shop shop = UtilityShopHome.getShop(this);
 
-        Call<List<DeliveryGuySelf>> call = vehicleSelfService.getVehicles(shop.getShopID());
+        Call<List<DeliveryGuySelf>> call = deliveryGuySelfService.getVehicles(shop.getShopID(),null);
 
         call.enqueue(this);
 

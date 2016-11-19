@@ -20,7 +20,6 @@ import android.widget.Toast;
 import org.localareadelivery.distributorapp.AddItemsToShopInventory.FragmentsNotificationReceiver;
 import org.localareadelivery.distributorapp.AddItemsToShopInventory.ItemCategoriesTabs;
 import org.localareadelivery.distributorapp.AddItemsToShopInventory.NotifyPagerAdapter;
-import org.localareadelivery.distributorapp.ApplicationState.ApplicationState;
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
 import org.localareadelivery.distributorapp.Model.Item;
 import org.localareadelivery.distributorapp.Model.ItemCategory;
@@ -31,6 +30,7 @@ import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ItemService;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ShopItemService;
 import org.localareadelivery.distributorapp.SelectParent.ItemCategoriesParent;
+import org.localareadelivery.distributorapp.ShopHome.UtilityShopHome;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -773,7 +773,7 @@ public class ItemRemakeFragmentOld extends Fragment
 
 
             ShopItem shopItem = new ShopItem();
-            shopItem.setShopID(ApplicationState.getInstance().getCurrentShop().getShopID());
+            shopItem.setShopID(UtilityShopHome.getShop(getContext()).getShopID());
             shopItem.setItemID(entry.getValue().getItemID());
 
             tempShopItemList.add(shopItem);
@@ -851,7 +851,7 @@ public class ItemRemakeFragmentOld extends Fragment
 
 
             ShopItem shopItem = new ShopItem();
-            shopItem.setShopID(ApplicationState.getInstance().getCurrentShop().getShopID());
+            shopItem.setShopID(UtilityShopHome.getShop(getContext()).getShopID());
             shopItem.setItemID(entry.getValue().getItemID());
 
             tempShopItemList.add(shopItem);
@@ -919,7 +919,7 @@ public class ItemRemakeFragmentOld extends Fragment
     void makeNetworkCallShopItem()
     {
 
-        int currentShopID = ApplicationState.getInstance().getCurrentShop().getShopID();
+        int currentShopID = UtilityShopHome.getShop(getContext()).getShopID();
 
         if(notifiedCurrentCategory==null)
         {

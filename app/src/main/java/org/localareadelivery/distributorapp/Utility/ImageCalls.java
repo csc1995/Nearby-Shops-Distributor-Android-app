@@ -30,8 +30,8 @@ public class ImageCalls {
 
     private static ImageCalls instance;
 
-    Retrofit retrofit;
-    ImageService imageService;
+    private Retrofit retrofit;
+    private ImageService imageService;
 
 
     private ImageCalls(Context context) {

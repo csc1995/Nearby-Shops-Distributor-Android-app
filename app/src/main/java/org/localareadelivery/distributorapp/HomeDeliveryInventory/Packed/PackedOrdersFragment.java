@@ -26,6 +26,7 @@ import org.localareadelivery.distributorapp.HomeDeliveryInventory.Interface.Noti
 import org.localareadelivery.distributorapp.HomeDeliveryInventory.Interface.RefreshFragment;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderService;
+import org.localareadelivery.distributorapp.ShopHome.UtilityShopHome;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -271,7 +272,7 @@ public class PackedOrdersFragment extends Fragment implements SwipeRefreshLayout
     void makeNetworkCall(final boolean clearDataset)
     {
 
-            Shop currentShop = ApplicationState.getInstance().getCurrentShop();
+            Shop currentShop = UtilityShopHome.getShop(getContext());
 
             Call<OrderEndPoint> call = orderService.getOrders(null, currentShop.getShopID(),false,
                                             OrderStatusHomeDelivery.ORDER_PACKED,
