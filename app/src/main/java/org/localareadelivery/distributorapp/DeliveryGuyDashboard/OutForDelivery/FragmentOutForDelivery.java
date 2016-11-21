@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.DeliveryGuyDashboard.PendingHandover;
+package org.localareadelivery.distributorapp.DeliveryGuyDashboard.OutForDelivery;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -6,23 +6,19 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import org.localareadelivery.distributorapp.ApplicationState.ApplicationState;
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
 import org.localareadelivery.distributorapp.HomeDeliveryInventory.Interface.NotifyTitleChanged;
 import org.localareadelivery.distributorapp.Model.Order;
-import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.ModelEndpoints.OrderEndPoint;
-import org.localareadelivery.distributorapp.Model.DeliveryGuySelf;
+import org.localareadelivery.distributorapp.ModelRoles.DeliveryGuySelf;
 import org.localareadelivery.distributorapp.ModelStatusCodes.OrderStatusHomeDelivery;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderService;
-import org.localareadelivery.distributorapp.ShopHome.UtilityShopHome;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,21 +36,23 @@ import retrofit2.Response;
  */
 
 
-public class PendingAcceptFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener,
-        AdapterPendingAccept.NotificationReciever {
+/**
+ * A placeholder fragment containing a simple view.
+ */
+public class FragmentOutForDelivery extends Fragment implements SwipeRefreshLayout.OnRefreshListener,AdapterOutForDelivery.NotifyHandoverToUser {
 
 
     @Inject
     OrderService orderService;
+
     RecyclerView recyclerView;
+    AdapterOutForDelivery adapter;
 
-    AdapterPendingAccept adapter;
     public List<Order> dataset = new ArrayList<>();
-    GridLayoutManager layoutManager;
 
+    GridLayoutManager layoutManager;
     SwipeRefreshLayout swipeContainer;
 
-    DeliveryGuySelf deliveryGuySelf;
 
 
     final private int limit = 5;
@@ -64,7 +62,12 @@ public class PendingAcceptFragment extends Fragment implements SwipeRefreshLayou
 
 
 
-    public PendingAcceptFragment() {
+//    NotificationReceiver notificationReceiver;
+
+    DeliveryGuySelf deliveryGuySelf;
+
+
+    public FragmentOutForDelivery() {
 
         DaggerComponentBuilder.getInstance()
                 .getNetComponent()
@@ -76,8 +79,8 @@ public class PendingAcceptFragment extends Fragment implements SwipeRefreshLayou
      * Returns a new instance of this fragment for the given section
      * number.
      */
-    public static PendingAcceptFragment newInstance() {
-        PendingAcceptFragment fragment = new PendingAcceptFragment();
+    public static FragmentOutForDelivery newInstance() {
+        FragmentOutForDelivery fragment = new FragmentOutForDelivery();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -86,12 +89,12 @@ public class PendingAcceptFragment extends Fragment implements SwipeRefreshLayou
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_home_delivery_pending_accept_driver_dashboard, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_home_delivery_pending_handover_driver_dashboard, container, false);
 
         setRetainInstance(true);
 
-        recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
         swipeContainer = (SwipeRefreshLayout)rootView.findViewById(R.id.swipeContainer);
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
 
 
 
@@ -99,6 +102,7 @@ public class PendingAcceptFragment extends Fragment implements SwipeRefreshLayou
         {
             // restore instance state
             deliveryGuySelf = savedInstanceState.getParcelable("savedVehicle");
+
         }
         else
         {
@@ -106,9 +110,9 @@ public class PendingAcceptFragment extends Fragment implements SwipeRefreshLayou
         }
 
 
+
         setupRecyclerView();
         setupSwipeContainer();
-
 
         return rootView;
     }
@@ -127,11 +131,10 @@ public class PendingAcceptFragment extends Fragment implements SwipeRefreshLayou
 
     }
 
-
     void setupRecyclerView()
     {
 
-        adapter = new AdapterPendingAccept(dataset,getActivity(),this);
+        adapter = new AdapterOutForDelivery(dataset,this);
 
         recyclerView.setAdapter(adapter);
 
@@ -151,7 +154,6 @@ public class PendingAcceptFragment extends Fragment implements SwipeRefreshLayou
         }
 
         layoutManager.setSpanCount(spanCount);
-
 
 
 
@@ -191,6 +193,7 @@ public class PendingAcceptFragment extends Fragment implements SwipeRefreshLayou
                 }
             }
         });
+
     }
 
     int previous_position = -1;
@@ -198,10 +201,8 @@ public class PendingAcceptFragment extends Fragment implements SwipeRefreshLayou
 
 
 
-
     @Override
     public void onRefresh() {
-
         offset = 0;
         makeNetworkCall(true);
     }
@@ -212,6 +213,8 @@ public class PendingAcceptFragment extends Fragment implements SwipeRefreshLayou
         super.onResume();
         notifyTitleChanged();
     }
+
+
 
     void makeRefreshNetworkCall()
     {
@@ -228,7 +231,6 @@ public class PendingAcceptFragment extends Fragment implements SwipeRefreshLayou
 
 
 
-
     void makeNetworkCall(final boolean clearDataset)
     {
 
@@ -237,13 +239,11 @@ public class PendingAcceptFragment extends Fragment implements SwipeRefreshLayou
             return;
         }
 
-        Shop currentShop = UtilityShopHome.getShop(getContext());
-
-        Log.d("delivery","Delivery Guy ID : " + String.valueOf(deliveryGuySelf.getDeliveryGuyID()));
+//        Shop currentShop = UtilityShopHome.getShop(getContext());
 
         Call<OrderEndPoint> call = orderService
-                .getOrders(null, currentShop.getShopID(),false,
-                        OrderStatusHomeDelivery.PENDING_HANDOVER,
+                .getOrders(null, deliveryGuySelf.getShopID(),false,
+                        OrderStatusHomeDelivery.HANDOVER_ACCEPTED,
                         null, deliveryGuySelf.getDeliveryGuyID(),null,null,true,true,
                         null,limit,offset,null);
 
@@ -293,6 +293,8 @@ public class PendingAcceptFragment extends Fragment implements SwipeRefreshLayou
 
 
 
+
+
     void showToastMessage(String message)
     {
         if(getActivity()!=null)
@@ -304,11 +306,12 @@ public class PendingAcceptFragment extends Fragment implements SwipeRefreshLayou
 
 
 
+
     @Override
-    public void notifyCancelHandover(Order order) {
+    public void notifyHandoverToUser(Order order) {
 
 
-        order.setStatusHomeDelivery(OrderStatusHomeDelivery.HANDOVER_ACCEPTED);
+        order.setStatusHomeDelivery(OrderStatusHomeDelivery.PENDING_DELIVERY);
 
         Call<ResponseBody> call = orderService.putOrder(order.getOrderID(),order);
 
@@ -318,9 +321,18 @@ public class PendingAcceptFragment extends Fragment implements SwipeRefreshLayou
 
                 if(response.code()==200)
                 {
-                    showToastMessage("Order Accepted !");
+                    showToastMessage("Successful !");
                     makeRefreshNetworkCall();
                 }
+                else if(response.code()==304)
+                {
+                    showToastMessage("Not Successful !");
+                }
+                else
+                {
+                    showToastMessage("Server Error !");
+                }
+
             }
 
             @Override
@@ -332,7 +344,40 @@ public class PendingAcceptFragment extends Fragment implements SwipeRefreshLayou
         });
     }
 
+    @Override
+    public void notifyReturnPackage(Order order) {
 
+        Call<ResponseBody> callReturn = orderService.returnOrder(order.getOrderID());
+
+        callReturn.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                if(response.code()==200)
+                {
+                    showToastMessage("Successful !");
+                    makeRefreshNetworkCall();
+                }
+                else if(response.code()==304)
+                {
+                    showToastMessage("Not Updated !");
+                }
+                else
+                {
+                    showToastMessage("Server Error !");
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                showToastMessage("Network Request Failed. Try again !");
+            }
+        });
+
+
+    }
 
 
     public DeliveryGuySelf getDeliveryGuySelf() {
@@ -344,12 +389,12 @@ public class PendingAcceptFragment extends Fragment implements SwipeRefreshLayou
     }
 
 
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelable("savedVehicle", deliveryGuySelf);
     }
-
 
 
     void notifyTitleChanged()
@@ -359,12 +404,18 @@ public class PendingAcceptFragment extends Fragment implements SwipeRefreshLayou
         {
             ((NotifyTitleChanged)getActivity())
                     .NotifyTitleChanged(
-                            "Pending Handover ( " + String.valueOf(dataset.size())
-                                    + "/" + String.valueOf(item_count) + " )",0);
+                            "Out For Delivery ( " + String.valueOf(dataset.size())
+                                    + "/" + String.valueOf(item_count) + " )",1);
 
 
         }
     }
 
 
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        isDestroyed = true;
+    }
 }

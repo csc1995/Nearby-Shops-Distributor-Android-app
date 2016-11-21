@@ -14,6 +14,7 @@ import org.localareadelivery.distributorapp.RetrofitRESTContract.ItemCategorySer
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ItemService;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderItemService;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderService;
+import org.localareadelivery.distributorapp.RetrofitRESTContract.ShopAdminService;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ShopItemService;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ShopService;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.DeliveryGuySelfService;
@@ -131,11 +132,16 @@ public class NetModule {
 
 
     @Provides
-    DeliveryGuySelfService provideVehicleService(Retrofit retrofit)
+    DeliveryGuySelfService provideDeliveryGuyService(Retrofit retrofit)
     {
-        DeliveryGuySelfService service = retrofit.create(DeliveryGuySelfService.class);
+        return retrofit.create(DeliveryGuySelfService.class);
+    }
 
-        return service;
+
+    @Provides
+    ShopAdminService provideShopAdmin(Retrofit retrofit)
+    {
+        return retrofit.create(ShopAdminService.class);
     }
 
 

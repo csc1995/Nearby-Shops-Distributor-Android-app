@@ -1,21 +1,18 @@
-package org.localareadelivery.distributorapp.Home;
+package org.localareadelivery.distributorapp.HomeDistributor;
 
 import android.app.IntentService;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
-import android.os.AsyncTask;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
-import android.widget.Toast;
 
 import org.glassfish.jersey.media.sse.EventInput;
 import org.glassfish.jersey.media.sse.InboundEvent;
 import org.glassfish.jersey.media.sse.SseFeature;
 import org.localareadelivery.distributorapp.MyApplication;
 import org.localareadelivery.distributorapp.R;
-import org.localareadelivery.distributorapp.SSEExample.SSEExample;
 import org.localareadelivery.distributorapp.Utility.UtilityGeneral;
 
 import javax.ws.rs.client.Client;

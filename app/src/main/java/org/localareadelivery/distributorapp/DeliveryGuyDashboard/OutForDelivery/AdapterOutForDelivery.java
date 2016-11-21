@@ -20,14 +20,14 @@ import butterknife.OnClick;
 /**
  * Created by sumeet on 13/6/16.
  */
-public class AdapterPendingHandover extends RecyclerView.Adapter<AdapterPendingHandover.ViewHolder>{
+public class AdapterOutForDelivery extends RecyclerView.Adapter<AdapterOutForDelivery.ViewHolder>{
 
 
     private List<Order> dataset = null;
     private NotifyHandoverToUser notifications;
 
 
-    public AdapterPendingHandover(List<Order> dataset, NotifyHandoverToUser notifications) {
+    public AdapterOutForDelivery(List<Order> dataset, NotifyHandoverToUser notifications) {
         this.dataset = dataset;
 //        this.context = context;
         this.notifications = notifications;
@@ -35,7 +35,7 @@ public class AdapterPendingHandover extends RecyclerView.Adapter<AdapterPendingH
     }
 
     @Override
-    public AdapterPendingHandover.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public AdapterOutForDelivery.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item_order_pending_handover_driver_dashboard,parent,false);
@@ -44,7 +44,7 @@ public class AdapterPendingHandover extends RecyclerView.Adapter<AdapterPendingH
     }
 
     @Override
-    public void onBindViewHolder(AdapterPendingHandover.ViewHolder holder, int position) {
+    public void onBindViewHolder(AdapterOutForDelivery.ViewHolder holder, int position) {
 
         if(dataset!=null)
         {

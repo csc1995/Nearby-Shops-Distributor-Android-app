@@ -12,11 +12,10 @@ import android.widget.Toast;
 
 import org.localareadelivery.distributorapp.ApplicationState.ApplicationState;
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
-import org.localareadelivery.distributorapp.DeliveryGuy.DeliveryVehicleActivity;
 import org.localareadelivery.distributorapp.DeliveryGuyAccounts.DeliveryGuySelection.AccountsSelectionFragment;
 import org.localareadelivery.distributorapp.DeliveryGuyAccounts.DeliveryGuySelection.DeliveryGuySelection;
 import org.localareadelivery.distributorapp.Model.Order;
-import org.localareadelivery.distributorapp.Model.DeliveryGuySelf;
+import org.localareadelivery.distributorapp.ModelRoles.DeliveryGuySelf;
 import org.localareadelivery.distributorapp.ModelStatusCodes.OrderStatusHomeDelivery;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderService;

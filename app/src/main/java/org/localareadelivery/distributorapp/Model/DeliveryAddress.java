@@ -1,18 +1,71 @@
 package org.localareadelivery.distributorapp.Model;
 
+
+
 /**
  * Created by sumeet on 10/6/16.
  */
 public class DeliveryAddress {
 
-    int id;
-    String name;
-    long phoneNumber;
-    String deliveryAddress;
-    String city;
-    long pincode;
-    String landmark;
-    int endUserID;
+
+    // Table Name
+    public static final String TABLE_NAME = "DELIVERY_ADDRESS";
+
+    // column Names
+    public static final String ID = "ID";
+    public static final String NAME = "DISTRIBUTOR_NAME";
+    public static final String PHONE_NUMBER = "PHONE_NUMBER";
+
+    public static final String DELIVERY_ADDRESS = "DELIVERY_ADDRESS";
+    public static final String CITY = "CITY";
+
+    public static final String PINCODE = "PINCODE";
+    public static final String LANDMARK = "LANDMARK";
+    public static final String END_USER_ID = "END_USER_ID"; // Primary Key
+
+    public static final String LATITUDE = "LATITUDE";
+    public static final String LONGITUDE = "LONGITUDE";
+
+
+
+    // instance variables
+    private int id;
+    private String name;
+    private long phoneNumber;
+    private String deliveryAddress;
+    private String city;
+    private long pincode;
+    private String landmark;
+    private Double latitude;
+    private Double longitude;
+    private int endUserID;
+
+    private Double rt_distance;
+
+
+    public Double getRt_distance() {
+        return rt_distance;
+    }
+
+    public void setRt_distance(Double rt_distance) {
+        this.rt_distance = rt_distance;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
 
     public int getEndUserID() {
         return endUserID;

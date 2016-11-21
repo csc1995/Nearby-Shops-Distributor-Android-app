@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.DeliveryGuy;
+package org.localareadelivery.distributorapp.aaDeprecated_DeliveryGuy;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import org.localareadelivery.distributorapp.Model.DeliveryGuySelf;
+import org.localareadelivery.distributorapp.ModelRoles.DeliveryGuySelf;
 import org.localareadelivery.distributorapp.R;
 
 import java.util.List;

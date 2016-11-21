@@ -5,12 +5,12 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import org.localareadelivery.distributorapp.DeliveryGuyDashboard.PendingDeliveryApproval.PendingDeliveryApprovalDGD;
-import org.localareadelivery.distributorapp.DeliveryGuyDashboard.PendingHandover.PendingAcceptFragment;
-import org.localareadelivery.distributorapp.DeliveryGuyDashboard.OutForDelivery.PendingHandoverFragment;
+import org.localareadelivery.distributorapp.DeliveryGuyDashboard.PendingHandover.PendingHandoverFragment;
+import org.localareadelivery.distributorapp.DeliveryGuyDashboard.OutForDelivery.FragmentOutForDelivery;
 import org.localareadelivery.distributorapp.DeliveryGuyDashboard.PendingPayments.PaymentsPendingFragment;
 import org.localareadelivery.distributorapp.DeliveryGuyDashboard.PendingReturn.PendingReturnByDG;
 import org.localareadelivery.distributorapp.DeliveryGuyDashboard.PendingReturnCancelledByShop.PendingReturnCancelledByShop;
-import org.localareadelivery.distributorapp.Model.DeliveryGuySelf;
+import org.localareadelivery.distributorapp.ModelRoles.DeliveryGuySelf;
 import org.localareadelivery.distributorapp.DeliveryGuyInventory.PlaceholderFragment;
 
 /**
@@ -49,15 +49,15 @@ public class PagerAdapter extends FragmentPagerAdapter {
 
         if(position==0)
         {
-            PendingAcceptFragment pendingAcceptFragment = PendingAcceptFragment.newInstance();
-            pendingAcceptFragment.setDeliveryGuySelf(deliveryVehicle);
-            return pendingAcceptFragment;
-
-        }else if(position == 1)
-        {
             PendingHandoverFragment pendingHandoverFragment = PendingHandoverFragment.newInstance();
             pendingHandoverFragment.setDeliveryGuySelf(deliveryVehicle);
             return pendingHandoverFragment;
+
+        }else if(position == 1)
+        {
+            FragmentOutForDelivery fragmentOutForDelivery = FragmentOutForDelivery.newInstance();
+            fragmentOutForDelivery.setDeliveryGuySelf(deliveryVehicle);
+            return fragmentOutForDelivery;
         }
         else if(position == 2)
         {

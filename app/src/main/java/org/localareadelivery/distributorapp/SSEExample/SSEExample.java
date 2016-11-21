@@ -1,10 +1,7 @@
 package org.localareadelivery.distributorapp.SSEExample;
 
-import android.app.NotificationManager;
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -13,7 +10,7 @@ import android.widget.Toast;
 import org.glassfish.jersey.media.sse.EventInput;
 import org.glassfish.jersey.media.sse.InboundEvent;
 import org.glassfish.jersey.media.sse.SseFeature;
-import org.localareadelivery.distributorapp.Home.SSEIntentService;
+import org.localareadelivery.distributorapp.HomeDistributor.SSEIntentService;
 import org.localareadelivery.distributorapp.MyApplication;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.Utility.UtilityGeneral;

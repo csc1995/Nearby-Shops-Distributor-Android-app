@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.Model;
+package org.localareadelivery.distributorapp.ModelRoles;
 
 
 import java.sql.Timestamp;

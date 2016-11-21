@@ -6,7 +6,9 @@ import android.util.Base64;
 
 import com.google.gson.Gson;
 
-import org.localareadelivery.distributorapp.Model.Distributor;
+import org.localareadelivery.distributorapp.ModelRoles.DeliveryGuySelf;
+import org.localareadelivery.distributorapp.ModelRoles.Distributor;
+import org.localareadelivery.distributorapp.ModelRoles.ShopAdmin;
 import org.localareadelivery.distributorapp.MyApplication;
 import org.localareadelivery.distributorapp.R;
 
@@ -162,6 +164,75 @@ public class UtilityLogin {
         }else
         {
             return gson.fromJson(json, Distributor.class);
+        }
+    }
+
+
+    public static void saveDeliveryGuySelf(DeliveryGuySelf deliveryGuySelf, Context context)
+    {
+
+        //Creating a shared preference
+
+        SharedPreferences sharedPref = context.getSharedPreferences(context.getString(R.string.preference_file_name), MODE_PRIVATE);
+
+        SharedPreferences.Editor prefsEditor = sharedPref.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(deliveryGuySelf);
+        prefsEditor.putString("deliveryGuySelf", json);
+        prefsEditor.apply();
+    }
+
+
+    public static DeliveryGuySelf getDeliveryGuySelf(Context context)
+    {
+        SharedPreferences sharedPref = context.getSharedPreferences(context.getString(R.string.preference_file_name), MODE_PRIVATE);
+
+        Gson gson = new Gson();
+        String json = sharedPref.getString("deliveryGuySelf", "null");
+
+        if(json.equals("null"))
+        {
+
+            return null;
+
+        }else
+        {
+            return gson.fromJson(json, DeliveryGuySelf.class);
+        }
+    }
+
+
+
+    public static void saveShopAdmin(ShopAdmin shopAdmin, Context context)
+    {
+
+        //Creating a shared preference
+
+        SharedPreferences sharedPref = context.getSharedPreferences(context.getString(R.string.preference_file_name), MODE_PRIVATE);
+
+        SharedPreferences.Editor prefsEditor = sharedPref.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(shopAdmin);
+        prefsEditor.putString("shopAdmin", json);
+        prefsEditor.apply();
+    }
+
+
+    public static ShopAdmin getShopAdmin(Context context)
+    {
+        SharedPreferences sharedPref = context.getSharedPreferences(context.getString(R.string.preference_file_name), MODE_PRIVATE);
+
+        Gson gson = new Gson();
+        String json = sharedPref.getString("shopAdmin", "null");
+
+        if(json.equals("null"))
+        {
+
+            return null;
+
+        }else
+        {
+            return gson.fromJson(json, ShopAdmin.class);
         }
     }
 

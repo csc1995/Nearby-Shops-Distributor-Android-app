@@ -1,6 +1,6 @@
 package org.localareadelivery.distributorapp.RetrofitRESTContract;
 
-import org.localareadelivery.distributorapp.Model.Distributor;
+import org.localareadelivery.distributorapp.ModelRoles.Distributor;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;

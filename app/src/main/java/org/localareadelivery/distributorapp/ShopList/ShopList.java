@@ -18,12 +18,11 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
-import org.localareadelivery.distributorapp.Model.Distributor;
+import org.localareadelivery.distributorapp.ModelRoles.Distributor;
 import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.ModelEndpoints.ShopEndPoint;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ShopService;
-import org.localareadelivery.distributorapp.Utility.UtilityGeneral;
 import org.localareadelivery.distributorapp.Utility.UtilityLogin;
 
 import java.util.ArrayList;

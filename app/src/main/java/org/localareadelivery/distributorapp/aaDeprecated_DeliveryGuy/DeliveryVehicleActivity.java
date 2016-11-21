@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.DeliveryGuy;
+package org.localareadelivery.distributorapp.aaDeprecated_DeliveryGuy;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,7 +15,7 @@ import android.widget.Toast;
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
 import org.localareadelivery.distributorapp.DeliveryGuyDashboard.DeliveryGuyDashboard;
 import org.localareadelivery.distributorapp.Model.Shop;
-import org.localareadelivery.distributorapp.Model.DeliveryGuySelf;
+import org.localareadelivery.distributorapp.ModelRoles.DeliveryGuySelf;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.DeliveryGuySelfService;
 import org.localareadelivery.distributorapp.DeliveryGuyInventory.DeliveryGuyInventory;

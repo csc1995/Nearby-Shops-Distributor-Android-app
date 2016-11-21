@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import org.localareadelivery.distributorapp.Model.DeliveryGuySelf;
+import org.localareadelivery.distributorapp.ModelRoles.DeliveryGuySelf;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.Utility.UtilityGeneral;
 

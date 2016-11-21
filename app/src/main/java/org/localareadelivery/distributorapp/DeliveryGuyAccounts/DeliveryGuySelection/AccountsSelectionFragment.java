@@ -13,13 +13,11 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
-import org.localareadelivery.distributorapp.DeliveryGuyAccounts.EditProfile.EditDelivery;
-import org.localareadelivery.distributorapp.DeliveryGuyAccounts.EditProfile.EditDeliveryFragment;
 import org.localareadelivery.distributorapp.DeliveryGuyDashboard.DeliveryGuyDashboard;
 import org.localareadelivery.distributorapp.DeliveryGuyInventory.DeliveryGuyInventory;
 import org.localareadelivery.distributorapp.HomeDeliveryInventory.Interface.NotifyTitleChanged;
 import org.localareadelivery.distributorapp.HomeDeliveryInventory.Interface.RefreshFragment;
-import org.localareadelivery.distributorapp.Model.DeliveryGuySelf;
+import org.localareadelivery.distributorapp.ModelRoles.DeliveryGuySelf;
 import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.DeliveryGuySelfService;
@@ -216,7 +214,12 @@ public class AccountsSelectionFragment extends Fragment implements SwipeRefreshL
                     {
                         dataset.clear();
                     }
-                    dataset.addAll(response.body());
+
+                    if(response.code()==200 && response.body()!=null)
+                    {
+                        dataset.addAll(response.body());
+                    }
+
                     adapter.notifyDataSetChanged();
                     notifyTitleChanged();
                 }

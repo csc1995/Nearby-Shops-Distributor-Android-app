@@ -65,7 +65,9 @@
     <string name="title_activity_cancelled_orders_home_delivery">Cancelled Orders</string>
     <string name="title_activity_order_detail">Order Detail</string>
     <string name="title_activity_delivery_guy_accounts">Delivery Accounts</string>
-    <string name="title_activity_delivery_guy_selection">Delivery Guy Selection</string>
+    <string name="title_activity_delivery_guy_selection">Select Delivery Guy</string>
+    <string name="title_activity_delivery_guy_home">Home</string>
+    <string name="title_activity_shop_admin_home">Home</string>
 
 
 </resources>

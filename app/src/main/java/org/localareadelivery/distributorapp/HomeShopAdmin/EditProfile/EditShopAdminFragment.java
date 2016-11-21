@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.DeliveryGuyAccounts.EditProfile;
+package org.localareadelivery.distributorapp.HomeShopAdmin.EditProfile;
 
 
 import android.Manifest;
@@ -28,8 +28,8 @@ import com.yalantis.ucrop.UCrop;
 import com.yalantis.ucrop.UCropActivity;
 
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
-import org.localareadelivery.distributorapp.ModelRoles.DeliveryGuySelf;
 import org.localareadelivery.distributorapp.Model.Image;
+import org.localareadelivery.distributorapp.ModelRoles.DeliveryGuySelf;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.DeliveryGuySelfService;
 import org.localareadelivery.distributorapp.ShopHome.UtilityShopHome;
@@ -57,7 +57,7 @@ import retrofit2.Response;
 import static android.app.Activity.RESULT_OK;
 
 
-public class EditDeliveryFragment extends Fragment {
+public class EditShopAdminFragment extends Fragment {
 
     public static int PICK_IMAGE_REQUEST = 21;
     // Upload the image after picked up
@@ -103,7 +103,7 @@ public class EditDeliveryFragment extends Fragment {
     DeliveryGuySelf deliveryGuySelf = new DeliveryGuySelf();
 
 
-    public EditDeliveryFragment() {
+    public EditShopAdminFragment() {
 
         DaggerComponentBuilder.getInstance()
                 .getNetComponent().Inject(this);

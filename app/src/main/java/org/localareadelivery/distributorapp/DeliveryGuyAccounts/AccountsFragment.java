@@ -19,7 +19,7 @@ import org.localareadelivery.distributorapp.DeliveryGuyDashboard.DeliveryGuyDash
 import org.localareadelivery.distributorapp.DeliveryGuyInventory.DeliveryGuyInventory;
 import org.localareadelivery.distributorapp.HomeDeliveryInventory.Interface.NotifyTitleChanged;
 import org.localareadelivery.distributorapp.HomeDeliveryInventory.Interface.RefreshFragment;
-import org.localareadelivery.distributorapp.Model.DeliveryGuySelf;
+import org.localareadelivery.distributorapp.ModelRoles.DeliveryGuySelf;
 import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.DeliveryGuySelfService;
@@ -208,17 +208,18 @@ public class AccountsFragment extends Fragment implements SwipeRefreshLayout.OnR
                 }
 
 
-                if(response.code()==200)
+                if(clearDataset)
                 {
-
-                    if(clearDataset)
-                    {
-                        dataset.clear();
-                    }
-                    dataset.addAll(response.body());
-                    adapter.notifyDataSetChanged();
-                    notifyTitleChanged();
+                    dataset.clear();
                 }
+
+                if(response.code()==200 && response.body()!=null)
+                {
+                    dataset.addAll(response.body());
+                }
+
+                notifyTitleChanged();
+                adapter.notifyDataSetChanged();
 
 
                 swipeContainer.setRefreshing(false);

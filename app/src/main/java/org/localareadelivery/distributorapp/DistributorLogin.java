@@ -14,9 +14,17 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.localareadelivery.distributorapp.Home.HomeActivity;
-import org.localareadelivery.distributorapp.Model.Distributor;
+import com.google.common.io.BaseEncoding;
+
+import org.localareadelivery.distributorapp.HomeDeliveryGuy.DeliveryGuyHome;
+import org.localareadelivery.distributorapp.HomeDistributor.DistributorHome;
+import org.localareadelivery.distributorapp.HomeShopAdmin.ShopAdminHome;
+import org.localareadelivery.distributorapp.ModelRoles.DeliveryGuySelf;
+import org.localareadelivery.distributorapp.ModelRoles.Distributor;
+import org.localareadelivery.distributorapp.ModelRoles.ShopAdmin;
+import org.localareadelivery.distributorapp.RetrofitRESTContract.DeliveryGuySelfService;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.DistributorService;
+import org.localareadelivery.distributorapp.RetrofitRESTContract.ShopAdminService;
 import org.localareadelivery.distributorapp.ShopList.ShopList;
 import org.localareadelivery.distributorapp.Utility.UtilityGeneral;
 import org.localareadelivery.distributorapp.Utility.UtilityLogin;
@@ -64,10 +72,19 @@ public class DistributorLogin extends AppCompatActivity implements View.OnClickL
     @Inject
     DistributorService service;
 
+    @Inject
+    ShopAdminService shopAdminService;
+
+    @Inject
+    DeliveryGuySelfService deliveryRetrofitService;
+
 
     public DistributorLogin() {
 
-        DaggerComponentBuilder.getInstance().getNetComponent().Inject(this);
+        DaggerComponentBuilder
+                .getInstance()
+                .getNetComponent()
+                .Inject(this);
 
     }
 
@@ -180,7 +197,8 @@ public class DistributorLogin extends AppCompatActivity implements View.OnClickL
 
         if (role == UtilityLogin.ROLE_DISTRIBUTOR) {
 
-            networkCallLoginDistributor();
+            networkCallLoginShopAdmin();
+
 
         } else if (role == UtilityLogin.ROLE_STAFF) {
 
@@ -188,7 +206,7 @@ public class DistributorLogin extends AppCompatActivity implements View.OnClickL
 
         } else if (role == UtilityLogin.ROLE_DELIVERY)
         {
-
+            networkCallDeliveryLogin();
         }
         else if(role == -1)
         {
@@ -198,7 +216,101 @@ public class DistributorLogin extends AppCompatActivity implements View.OnClickL
     }
 
 
+
+    private void networkCallLoginShopAdmin()
+    {
+        String username = this.username.getText().toString();
+        String password = this.password.getText().toString();
+
+        Call<ShopAdmin> call = shopAdminService.getShopAdminLogin(UtilityLogin.baseEncoding(username,password));
+
+        call.enqueue(new Callback<ShopAdmin>() {
+            @Override
+            public void onResponse(Call<ShopAdmin> call, Response<ShopAdmin> response) {
+
+                if(response.body()!=null && response.code() ==200)
+                {
+                    UtilityLogin.saveCredentials(DistributorLogin.this,
+                            DistributorLogin.this.username.getText().toString(),
+                            DistributorLogin.this.password.getText().toString());
+
+                    UtilityLogin.saveShopAdmin(response.body(),DistributorLogin.this);
+                    startActivity(new Intent(DistributorLogin.this,ShopAdminHome.class));
+
+                }
+                else if(response.code() ==401)
+                {
+                    showSnackBar("We are not able to identify you !");
+                }
+                else if(response.code()==403)
+                {
+                    showSnackBar("Your account is disabled. Please contact administrator for more information !");
+                }
+                else
+                {
+                    showSnackBar("Server Error !");
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ShopAdmin> call, Throwable t) {
+                showSnackBar("No Internet. Please Check your Internet Connection !");
+            }
+        });
+    }
+
+
+
+
     private void networkCallLoginStaff() {
+    }
+
+
+    private void networkCallDeliveryLogin()
+    {
+        String username = this.username.getText().toString();
+        String password = this.password.getText().toString();
+
+        Call<DeliveryGuySelf> call = deliveryRetrofitService
+                .getLogin(UtilityLogin.baseEncoding(username,password));
+
+        call.enqueue(new Callback<DeliveryGuySelf>() {
+            @Override
+            public void onResponse(Call<DeliveryGuySelf> call, Response<DeliveryGuySelf> response) {
+
+                if(response.body()!=null && response.code() ==200)
+                {
+
+                    UtilityLogin.saveCredentials(DistributorLogin.this,
+                            DistributorLogin.this.username.getText().toString(),
+                            DistributorLogin.this.password.getText().toString());
+
+                    UtilityLogin.saveDeliveryGuySelf(response.body(),DistributorLogin.this);
+                    startActivity(new Intent(DistributorLogin.this,DeliveryGuyHome.class));
+
+                }
+                else if(response.code() ==401)
+                {
+                    showSnackBar("We are not able to identify you !");
+                }
+                else if(response.code()==403)
+                {
+                    showSnackBar("Your account is disabled. Please contact administrator for more information !");
+                }
+                else
+                {
+                    showSnackBar("Server Error !");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DeliveryGuySelf> call, Throwable t) {
+
+                showSnackBar("No Internet. Please Check your Internet Connection !");
+            }
+        });
+
     }
 
 
@@ -237,12 +349,13 @@ public class DistributorLogin extends AppCompatActivity implements View.OnClickL
 //                    Gson gson = new Gson();
 //                    Log.d("login", gson.toJson(admin));
 
-                    UtilityLogin.saveCredentials(DistributorLogin.this, DistributorLogin.this.username.getText().toString(),
+                    UtilityLogin.saveCredentials(DistributorLogin.this,
+                            DistributorLogin.this.username.getText().toString(),
                             DistributorLogin.this.password.getText().toString());
 
                     UtilityLogin.saveDistributor(response.body(),DistributorLogin.this);
 
-                    startActivity(new Intent(DistributorLogin.this,HomeActivity.class));
+                    startActivity(new Intent(DistributorLogin.this,DistributorHome.class));
 
                 }
 

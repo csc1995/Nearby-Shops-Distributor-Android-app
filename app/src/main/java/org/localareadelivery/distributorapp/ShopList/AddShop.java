@@ -122,7 +122,7 @@ public class AddShop extends AppCompatActivity implements LocationListener, Call
                 + "\n : " + shop.getShopName()
                 + "\n : " + String.valueOf(shop.getLatCenter())
                 + "\n : " + String.valueOf(shop.getLonCenter())
-                + "\n : " + shop.getImagePath();
+                + "\n : " + shop.getLogoImagePath();
 
         result.setText(resultString);
     }
@@ -135,9 +135,9 @@ public class AddShop extends AppCompatActivity implements LocationListener, Call
         //uploadPickedImage();
 
         Shop shop = new Shop();
-        shop.setDistributorID(UtilityGeneral.getDistributorID(this));
+//        shop.setDistributorID(UtilityGeneral.getDistributorID(this));
         shop.setShopName(shopName.getText().toString());
-        shop.setImagePath(imagePath);
+        shop.setLogoImagePath(imagePath);
 
         try {
 

@@ -1,10 +1,8 @@
-package org.localareadelivery.distributorapp.Model;
+package org.localareadelivery.distributorapp.ModelRoles;
 
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import org.localareadelivery.distributorapp.Model.Shop;
 
 /**
  * Created by sumeet on 14/6/16.

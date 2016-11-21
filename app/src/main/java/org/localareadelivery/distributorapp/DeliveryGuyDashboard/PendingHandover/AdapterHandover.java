@@ -1,5 +1,6 @@
-package org.localareadelivery.distributorapp.DeliveryGuyDashboard.PendingDeliveryApproval;
+package org.localareadelivery.distributorapp.DeliveryGuyDashboard.PendingHandover;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,36 +16,39 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by sumeet on 13/6/16.
  */
-public class AdapterPendingHandover extends RecyclerView.Adapter<AdapterPendingHandover.ViewHolder>{
+public class AdapterHandover extends RecyclerView.Adapter<AdapterHandover.ViewHolder>{
 
 
-    private List<Order> dataset = null;
-//    private Context context;
-    private NotifyCancelHandover notifications;
+    List<Order> dataset = null;
+
+    Context context;
+
+    NotificationReciever notifications;
 
 
-    public AdapterPendingHandover(List<Order> dataset) {
+    public AdapterHandover(List<Order> dataset, Context context, NotificationReciever notifications) {
         this.dataset = dataset;
-//        this.context = context;
+        this.context = context;
         this.notifications = notifications;
 
     }
 
     @Override
-    public AdapterPendingHandover.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public AdapterHandover.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_item_pending_delivery_approval_dgd,parent,false);
+                .inflate(R.layout.list_item_order_pending_accept_driver_dashboard,parent,false);
 
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(AdapterPendingHandover.ViewHolder holder, int position) {
+    public void onBindViewHolder(AdapterHandover.ViewHolder holder, int position) {
 
         if(dataset!=null)
         {
@@ -110,8 +114,8 @@ public class AdapterPendingHandover extends RecyclerView.Adapter<AdapterPendingH
         @Bind(R.id.currentStatus)
         TextView currentStatus;
 
-//        @Bind(R.id.cancelHandoverButton)
-//        TextView cancelHandoverButton;
+        @Bind(R.id.cancelHandoverButton)
+        TextView cancelHandoverButton;
 
 
         public ViewHolder(View itemView) {
@@ -123,7 +127,7 @@ public class AdapterPendingHandover extends RecyclerView.Adapter<AdapterPendingH
         }
 
 
-//        @OnClick(R.id.cancelHandoverButton)
+        @OnClick(R.id.cancelHandoverButton)
         void onClickConfirmButton(View view)
         {
             notifications.notifyCancelHandover(dataset.get(getLayoutPosition()));
@@ -132,8 +136,14 @@ public class AdapterPendingHandover extends RecyclerView.Adapter<AdapterPendingH
     }
 
 
-    interface NotifyCancelHandover {
+
+
+
+
+    public interface NotificationReciever{
+
         void notifyCancelHandover(Order order);
+
     }
 
 }

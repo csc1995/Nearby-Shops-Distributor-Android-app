@@ -63,7 +63,7 @@ public class ShopsListAdapter extends RecyclerView.Adapter<ShopsListAdapter.View
         holder.shopName.setText(dataset.get(position).getShopName());
         holder.shopRadius.setText(String.valueOf("Delivery Range : " + dataset.get(position).getDeliveryRange()) + "Km");
 
-        String imagePath = UtilityGeneral.getServiceURL(context) + IMAGE_ENDPOINT_URL + dataset.get(position).getImagePath();
+        String imagePath = UtilityGeneral.getServiceURL(context) + IMAGE_ENDPOINT_URL + dataset.get(position).getLogoImagePath();
 
         Picasso.with(context).load(imagePath).into(holder.shopImage);
 

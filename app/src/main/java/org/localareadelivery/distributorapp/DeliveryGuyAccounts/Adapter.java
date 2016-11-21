@@ -1,10 +1,8 @@
 package org.localareadelivery.distributorapp.DeliveryGuyAccounts;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,10 +12,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import org.localareadelivery.distributorapp.Model.DeliveryAddress;
-import org.localareadelivery.distributorapp.Model.DeliveryGuySelf;
-import org.localareadelivery.distributorapp.Model.Order;
-import org.localareadelivery.distributorapp.ModelStats.OrderStats;
+import org.localareadelivery.distributorapp.ModelRoles.DeliveryGuySelf;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.Utility.UtilityGeneral;
 

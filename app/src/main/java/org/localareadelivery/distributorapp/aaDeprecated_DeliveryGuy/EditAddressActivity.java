@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.DeliveryGuy;
+package org.localareadelivery.distributorapp.aaDeprecated_DeliveryGuy;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -9,7 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
-import org.localareadelivery.distributorapp.Model.DeliveryGuySelf;
+import org.localareadelivery.distributorapp.ModelRoles.DeliveryGuySelf;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.DeliveryGuySelfService;
 import org.localareadelivery.distributorapp.Utility.UtilityLogin;

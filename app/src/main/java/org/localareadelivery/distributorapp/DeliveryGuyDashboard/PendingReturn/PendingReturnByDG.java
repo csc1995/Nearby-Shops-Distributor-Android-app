@@ -11,17 +11,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import org.localareadelivery.distributorapp.ApplicationState.ApplicationState;
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
 import org.localareadelivery.distributorapp.HomeDeliveryInventory.Interface.NotifyTitleChanged;
 import org.localareadelivery.distributorapp.Model.Order;
-import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.ModelEndpoints.OrderEndPoint;
-import org.localareadelivery.distributorapp.Model.DeliveryGuySelf;
+import org.localareadelivery.distributorapp.ModelRoles.DeliveryGuySelf;
 import org.localareadelivery.distributorapp.ModelStatusCodes.OrderStatusHomeDelivery;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderService;
-import org.localareadelivery.distributorapp.ShopHome.UtilityShopHome;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -234,10 +231,10 @@ public class PendingReturnByDG extends Fragment implements SwipeRefreshLayout.On
             return;
         }
 
-        Shop currentShop = UtilityShopHome.getShop(getContext());
+//        Shop currentShop = UtilityShopHome.getShop(getContext());
 
         Call<OrderEndPoint> call = orderService
-                .getOrders(null, currentShop.getShopID(),false,
+                .getOrders(null, deliveryGuySelf.getShopID(),false,
                         OrderStatusHomeDelivery.RETURN_PENDING,
                         null, deliveryGuySelf.getDeliveryGuyID(),null,null,true,true,
                         null,limit,offset,null);

@@ -1,15 +1,9 @@
 package org.localareadelivery.distributorapp.RetrofitRESTContract;
 
-import org.localareadelivery.distributorapp.Model.DeliveryGuySelf;
+import org.localareadelivery.distributorapp.ModelRoles.DeliveryGuySelf;
 import org.localareadelivery.distributorapp.Model.Image;
 
 import java.util.List;
-
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
@@ -28,6 +22,9 @@ import retrofit2.http.Query;
  */
 public interface DeliveryGuySelfService {
 
+
+    @GET("/api/DeliveryGuySelf/Login")
+    Call<DeliveryGuySelf> getLogin(@Header("Authorization") String headers);
 
     @GET("/api/DeliveryGuySelf")
     Call<List<DeliveryGuySelf>> getVehicles(@Header("Authorization") String headers,

@@ -16,6 +16,7 @@ import org.localareadelivery.distributorapp.DeliveryGuyAccounts.AccountsFragment
 import org.localareadelivery.distributorapp.DeliveryGuyAccounts.DeliveryGuySelection.AccountsSelectionFragment;
 import org.localareadelivery.distributorapp.DeliveryGuyAccounts.EditProfile.EditDeliveryFragment;
 import org.localareadelivery.distributorapp.DeliveryGuyDashboard.PendingDeliveryApproval.PendingDeliveryApprovalDGD;
+import org.localareadelivery.distributorapp.DeliveryGuyDashboard.PendingHandover.PendingHandoverFragment;
 import org.localareadelivery.distributorapp.DeliveryGuyDashboard.PendingReturn.PendingReturnByDG;
 import org.localareadelivery.distributorapp.DeliveryGuyDashboard.PendingReturnCancelledByShop.PendingReturnCancelledByShop;
 import org.localareadelivery.distributorapp.DeliveryGuyInventory.OutForDelivery.OutForDeliveryFragment;
@@ -26,6 +27,7 @@ import org.localareadelivery.distributorapp.DistributorLogin;
 import org.localareadelivery.distributorapp.EditStock.ItemCategories.ItemCategoriesAdapterEditStock;
 import org.localareadelivery.distributorapp.EditStock.ItemCategories.ItemCategoriesFragmentEditStock;
 import org.localareadelivery.distributorapp.EditStock.Items.FragmentItemsEditor;
+import org.localareadelivery.distributorapp.HomeShopAdmin.EditProfile.EditShopAdminFragment;
 import org.localareadelivery.distributorapp.ItemCategoriesTabs.ItemCategories.EditItemCategory;
 import org.localareadelivery.distributorapp.ItemCategoriesTabs.ItemCategories.ItemCategoriesAdapter;
 import org.localareadelivery.distributorapp.ItemCategoriesTabs.ItemCategories.ItemCategoriesFragment;
@@ -35,9 +37,9 @@ import org.localareadelivery.distributorapp.ItemCategoriesTabs.Items.ItemAdapter
 import org.localareadelivery.distributorapp.ItemCategoriesTabs.Items.ItemRemakeFragment;
 import org.localareadelivery.distributorapp.OrderDetail.FragmentOrderDetail;
 import org.localareadelivery.distributorapp.ShopList.ShopList;
-import org.localareadelivery.distributorapp.DeliveryGuy.AddVehicleSelfActivity;
-import org.localareadelivery.distributorapp.DeliveryGuy.DeliveryVehicleActivity;
-import org.localareadelivery.distributorapp.DeliveryGuy.EditAddressActivity;
+import org.localareadelivery.distributorapp.aaDeprecated_DeliveryGuy.AddVehicleSelfActivity;
+import org.localareadelivery.distributorapp.aaDeprecated_DeliveryGuy.DeliveryVehicleActivity;
+import org.localareadelivery.distributorapp.aaDeprecated_DeliveryGuy.EditAddressActivity;
 import org.localareadelivery.distributorapp.HomeDeliveryInventory.ConfirmItemsForDelivery;
 import org.localareadelivery.distributorapp.HomeDeliveryInventory.Confirmed.ConfirmedOrdersFragment;
 import org.localareadelivery.distributorapp.HomeDeliveryInventory.Packed.PackedOrdersFragment;
@@ -48,7 +50,7 @@ import org.localareadelivery.distributorapp.QuickStockEditor.FragmentPriceNotSet
 import org.localareadelivery.distributorapp.SelectParent.ItemCategoriesParent;
 import org.localareadelivery.distributorapp.SelectParent.ItemCategoriesParentAdapter;
 import org.localareadelivery.distributorapp.DeliveryGuyDashboard.PendingPayments.PaymentsPendingFragment;
-import org.localareadelivery.distributorapp.DeliveryGuyDashboard.OutForDelivery.PendingHandoverFragment;
+import org.localareadelivery.distributorapp.DeliveryGuyDashboard.OutForDelivery.FragmentOutForDelivery;
 
 import javax.inject.Singleton;
 
@@ -82,9 +84,9 @@ public interface NetComponent {
 
     void Inject(org.localareadelivery.distributorapp.DeliveryGuyInventory.PendingHandover.PendingHandoverFragment pendingHandoverFragment);
 
-    void Inject(org.localareadelivery.distributorapp.DeliveryGuyDashboard.PendingHandover.PendingAcceptFragment pendingAcceptFragment);
-
     void Inject(PendingHandoverFragment pendingHandoverFragment);
+
+    void Inject(FragmentOutForDelivery fragmentOutForDelivery);
 
     void Inject(PaymentsPendingFragment paymentsPendingFragment);
 
@@ -162,4 +164,6 @@ public interface NetComponent {
     void Inject(EditDeliveryFragment editDeliveryFragment);
 
     void Inject(AccountsSelectionFragment accountsSelectionFragment);
+
+    void Inject(EditShopAdminFragment editShopAdminFragment);
 }

@@ -6,8 +6,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import org.localareadelivery.distributorapp.CancelledOrders.CancelledByShop.FragmentCancelledByShop;
 import org.localareadelivery.distributorapp.CancelledOrders.ReturnedByDeliveryGuy.FragmentReturnedByDG;
-import org.localareadelivery.distributorapp.DeliveryGuyDashboard.OutForDelivery.PendingHandoverFragment;
-import org.localareadelivery.distributorapp.DeliveryGuyDashboard.PendingHandover.PendingAcceptFragment;
 
 /**
  * Created by sumeet on 15/11/16.

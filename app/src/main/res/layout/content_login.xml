@@ -38,13 +38,13 @@
 
             <android.support.design.widget.TextInputLayout
                 android:layout_marginTop="10dp"
+                app:passwordToggleEnabled="true"
                 android:layout_gravity="center_vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <EditText
-
-                    android:inputType="textVisiblePassword"
+                    android:inputType="textPassword"
                     android:id="@+id/distributorPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -101,21 +101,21 @@
                     android:layout_height="wrap_content">
 
                     <TextView
-                        android:layout_marginRight="3dp"
                         android:layout_marginEnd="3dp"
+                        android:layout_marginRight="3dp"
+                        android:id="@+id/role_delivery"
+                        android:gravity="center"
+                        android:padding="13dp"
+                        android:background="@color/light_grey"
+                        android:text="Delivery"
                         android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="match_parent" />
 
-                    <TextView
-                        android:layout_marginStart="2dp"
-                        android:layout_marginLeft="2dp"
-                        android:id="@+id/role_delivery"
-                        android:gravity="center"
 
-                        android:padding="13dp"
-                        android:background="@color/light_grey"
-                        android:text="Delivery"
+                    <TextView
+                        android:layout_marginRight="3dp"
+                        android:layout_marginEnd="3dp"
                         android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="match_parent" />
@@ -137,7 +137,7 @@
                         android:layout_marginEnd="3dp"
                         android:padding="10dp"
                         android:background="#22000000"
-                        android:text="Distributor"
+                        android:text="Shop Admin"
                         android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="match_parent" />

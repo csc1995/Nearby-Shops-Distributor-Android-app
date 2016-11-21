@@ -118,7 +118,7 @@ public class EditShop extends AppCompatActivity implements LocationListener, Cal
 
             bindDataToEditText(shop);
 
-            loadImage(shop.getImagePath());
+            loadImage(shop.getLogoImagePath());
 
         }
 
@@ -153,7 +153,7 @@ public class EditShop extends AppCompatActivity implements LocationListener, Cal
     void bindDataToEditText(Shop shop) {
 
         if (shop != null) {
-            shop.setDistributorID(UtilityGeneral.getDistributorID(this));
+//            shop.setDistributorID(UtilityGeneral.getDistributorID(this));
 
             Log.d("applog", shop.toString());
             shopID.setText(String.valueOf(shop.getShopID()));
@@ -162,7 +162,7 @@ public class EditShop extends AppCompatActivity implements LocationListener, Cal
             latitude.setText(String.valueOf(shop.getLatCenter()));
             longitude.setText(String.valueOf(shop.getLonCenter()));
             deliveryCharge.setText(String.valueOf(shop.getDeliveryCharges()));
-            distributorID.setText(String.valueOf(shop.getDistributorID()));
+//            distributorID.setText(String.valueOf(shop.getDistributorID()));
 
         }
     }
@@ -206,7 +206,7 @@ public class EditShop extends AppCompatActivity implements LocationListener, Cal
                 // delete previous Image from the Server
                 ImageCalls.getInstance()
                         .deleteImage(
-                                shop.getImagePath(),
+                                shop.getLogoImagePath(),
                                 new DeleteImageCallback()
                         );
 
@@ -216,7 +216,7 @@ public class EditShop extends AppCompatActivity implements LocationListener, Cal
                 {
 
 
-                    shop.setImagePath("");
+                    shop.setLogoImagePath("");
 
 
                     getDataFromEditText(shop);
@@ -599,11 +599,11 @@ public class EditShop extends AppCompatActivity implements LocationListener, Cal
 
 
 
-        shop.setImagePath(null);
+        shop.setLogoImagePath(null);
 
         if(image!=null)
         {
-            shop.setImagePath(image.getPath());
+            shop.setLogoImagePath(image.getPath());
         }
 
         getDataFromEditText(shop);
@@ -623,7 +623,7 @@ public class EditShop extends AppCompatActivity implements LocationListener, Cal
         Log.d("applog", "inside Error: " + t.getMessage());
 
 
-        shop.setImagePath("");
+        shop.setLogoImagePath("");
 
         Toast.makeText(this,"Unable to Upload Image. Try Later ! ",Toast.LENGTH_SHORT).show();
 
