@@ -314,6 +314,19 @@
             android:name=".HomeShopAdmin.ShopAdminHome"
             android:label="@string/title_activity_shop_admin_home"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+
+
+        <activity
+            android:name=".HomeShopAdmin.EditProfile.EditShopAdmin"
+            android:label="Edit Shop Admin"
+            android:parentActivityName=".HomeShopAdmin.ShopAdminHome"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".HomeShopAdmin.ShopAdminHome" />
+        </activity>
+
+
     </application>
 
 </manifest>

@@ -5,7 +5,7 @@ import org.localareadelivery.distributorapp.Model.Shop;
 /**
  * Created by sumeet on 14/6/16.
  */
-public class ShopAdmin {
+public class ShopAdmin{
 
     // Note : ShopAdmin has one to one relationship with Shop therefore the columns of ShopAdmin has been
     // merged inside the Shop table for preserving data and relationship consistency.
