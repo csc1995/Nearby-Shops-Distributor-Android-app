@@ -3,22 +3,25 @@ package org.localareadelivery.distributorapp.OrderDetail;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import org.localareadelivery.distributorapp.ApplicationState.ApplicationState;
+
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
 import org.localareadelivery.distributorapp.Model.Order;
+import org.localareadelivery.distributorapp.Model.OrderItem;
 import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.ModelEndpoints.OrderItemEndPoint;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderItemService;
 import org.localareadelivery.distributorapp.ShopHome.UtilityShopHome;
-import org.localareadelivery.distributorapp.Utility.DividerItemDecoration;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -143,41 +146,68 @@ public class FragmentOrderDetail extends Fragment implements SwipeRefreshLayout.
 //        layoutManager.setSpanCount(spanCount);
 
 //        final int finalSpanCount = spanCount;
-/*
-        layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+
+        /*layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
 
-                if(dataset.get(position) instanceof Order)
+                System.out.println("Position : " + position);
+
+
+//                if(adapter.getItemViewType(position)==AdapterOrderDetail.TAG_VIEW_HOLDER_ORDER_ITEM)
+//                {
+//                    return 1;
+//                }
+//                else if(adapter.getItemViewType(position)==AdapterOrderDetail.TAG_VIEW_HOLDER_ORDER)
+//                {
+//
+
+
+//                    DisplayMetrics metrics = new DisplayMetrics();
+//                    getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
+//                    int spanCount = (int) (metrics.widthPixels / (230 * metrics.density));
+//
+//                    if (spanCount == 0) {
+//                        return 1;
+//                    } else {
+//                        return spanCount;
+//                    }
+
+//                    return 2;
+//                }
+
+
+
+                if (dataset.get(position) instanceof OrderItem) {
+
+                    return 2;
+
+                }
+                else if (dataset.get(position) instanceof Order)
                 {
-                    return 1;
+
+//                    DisplayMetrics metrics = new DisplayMetrics();
+//                    getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
+//                    int spanCount = (int) (metrics.widthPixels / (230 * metrics.density));
+//
+//                    if (spanCount == 0) {
+//                        return 1;
+//                    } else {
+//                        return spanCount;
+//                    }
+
+                    return 4;
                 }
-                else{
 
-                    DisplayMetrics metrics = new DisplayMetrics();
-                    getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
-                    int spanCount = (int) (metrics.widthPixels/(230 * metrics.density));
-
-
-
-
-                    if(spanCount==0)
-                    {
-                        return 1;
-                    }
-                    else
-                    {
-                        return spanCount;
-                    }
-
-                }
+                return 4;
             }
-        });*/
-
+        });
+*/
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL_LIST));
+        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL));
+        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(),DividerItemDecoration.HORIZONTAL));
 
 
 

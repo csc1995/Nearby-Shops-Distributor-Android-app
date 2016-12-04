@@ -20,7 +20,9 @@ import org.localareadelivery.distributorapp.ModelRoles.DeliveryGuySelf;
 import org.localareadelivery.distributorapp.ModelStatusCodes.OrderStatusHomeDelivery;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderService;
+import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderServiceShopStaff;
 import org.localareadelivery.distributorapp.ShopHome.UtilityShopHome;
+import org.localareadelivery.distributorapp.Utility.UtilityLogin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +42,8 @@ import retrofit2.Response;
 
 public class PendingReturnCancelledByShopDGI extends Fragment implements SwipeRefreshLayout.OnRefreshListener, AdapterPendingReturnCancelledByShopDGI.NotifyAcceptReturn {
 
+    @Inject
+    OrderServiceShopStaff orderServiceShopStaff;
 
     @Inject
     OrderService orderService;
@@ -334,9 +338,13 @@ public class PendingReturnCancelledByShopDGI extends Fragment implements SwipeRe
     public void notifyAcceptReturn(Order order) {
 
 
-        order.setStatusHomeDelivery(OrderStatusHomeDelivery.CANCELLED_BY_SHOP);
+//        order.setStatusHomeDelivery(OrderStatusHomeDelivery.CANCELLED_BY_SHOP);
+//        Call<ResponseBody> call = orderService.putOrder(order.getOrderID(),order);
 
-        Call<ResponseBody> call = orderService.putOrder(order.getOrderID(),order);
+        Call<ResponseBody> call = orderServiceShopStaff.acceptReturnCancelledByShop(
+                UtilityLogin.getAuthorizationHeaders(getActivity()),
+                order.getOrderID()
+        );
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -353,7 +361,7 @@ public class PendingReturnCancelledByShopDGI extends Fragment implements SwipeRe
                 }
                 else
                 {
-                    showToastMessage("Server Error !");
+                    showToastMessage("Server Error Code : " + String.valueOf(response.code()));
                 }
 
             }

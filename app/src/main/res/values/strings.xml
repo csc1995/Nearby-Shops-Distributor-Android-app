@@ -68,6 +68,7 @@
     <string name="title_activity_delivery_guy_selection">Select Delivery Guy</string>
     <string name="title_activity_delivery_guy_home">Home</string>
     <string name="title_activity_shop_admin_home">Home</string>
+    <string name="notice_account_deactivated">Notice :\nYour account is not activated. If this is a new account please wait for activation.\nIf this is an old account please contact service administrator for knowing the reason for account deactivation.</string>
 
 
 </resources>

@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.DeliveryGuyAccounts;
+package org.localareadelivery.distributorapp.DeliveryAccounts;
 
 import android.content.Intent;
 import android.support.design.widget.TabLayout;
@@ -12,8 +12,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import org.localareadelivery.distributorapp.DeliveryGuyAccounts.EditProfile.EditDelivery;
-import org.localareadelivery.distributorapp.DeliveryGuyAccounts.EditProfile.EditDeliveryFragment;
+import org.localareadelivery.distributorapp.DeliveryAccounts.EditProfile.EditDelivery;
+import org.localareadelivery.distributorapp.DeliveryAccounts.EditProfile.EditDeliveryFragment;
 import org.localareadelivery.distributorapp.HomeDeliveryInventory.Interface.NotifyTitleChanged;
 import org.localareadelivery.distributorapp.R;
 

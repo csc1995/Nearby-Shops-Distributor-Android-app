@@ -1,13 +1,9 @@
-package org.localareadelivery.distributorapp.DeliveryGuyAccounts.DeliveryGuySelection;
+package org.localareadelivery.distributorapp.DeliveryAccounts.DeliveryGuySelection;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 
-import org.localareadelivery.distributorapp.DeliveryGuyAccounts.AccountsFragment;
 import org.localareadelivery.distributorapp.R;
 
 public class DeliveryGuySelection extends AppCompatActivity {

@@ -123,7 +123,7 @@ class AdapterPendingReturnCancelledByShop extends RecyclerView.Adapter<AdapterPe
 /*
         void onClickConfirmButton(View view)
         {
-            notifications.notifyCancelHandover(dataset.get(getLayoutPosition()));
+            notifications.notifyMarkDelivered(dataset.get(getLayoutPosition()));
         }
 */
 

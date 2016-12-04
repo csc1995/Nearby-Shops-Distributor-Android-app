@@ -313,9 +313,17 @@ public class ItemCategoriesFragment extends Fragment
     public void makeRequestRetrofit(final boolean notifyItemCategoryChanged, final boolean backPressed)
     {
 
-        Call<ItemCategoryEndPoint> endPointCall = itemCategoryService.getItemCategories(
-                null,currentCategory.getItemCategoryID(),
-                null,null,null,null,null,null,"id",limit,offset,false);
+//        Call<ItemCategoryEndPoint> endPointCallDeprecated = itemCategoryService.getItemCategories(
+//                null,currentCategory.getItemCategoryID(),
+//                null,null,null,null,null,null,"id",limit,offset,false);
+
+
+        Call<ItemCategoryEndPoint> endPointCall = itemCategoryService.getItemCategoriesQuerySimple(
+                currentCategory.getItemCategoryID(),
+                null,"id",limit,offset
+        );
+
+
 
         Log.d("applog","DetachedTabs: Network call made !");
 

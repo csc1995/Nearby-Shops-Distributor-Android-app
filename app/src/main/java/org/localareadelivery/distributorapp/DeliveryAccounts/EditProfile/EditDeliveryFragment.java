@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.HomeShopAdmin.EditProfile;
+package org.localareadelivery.distributorapp.DeliveryAccounts.EditProfile;
 
 
 import android.Manifest;
@@ -28,12 +28,10 @@ import com.yalantis.ucrop.UCrop;
 import com.yalantis.ucrop.UCropActivity;
 
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
-import org.localareadelivery.distributorapp.Model.Image;
 import org.localareadelivery.distributorapp.ModelRoles.DeliveryGuySelf;
-import org.localareadelivery.distributorapp.ModelRoles.ShopAdmin;
+import org.localareadelivery.distributorapp.Model.Image;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.DeliveryGuySelfService;
-import org.localareadelivery.distributorapp.RetrofitRESTContract.ShopAdminService;
 import org.localareadelivery.distributorapp.ShopHome.UtilityShopHome;
 import org.localareadelivery.distributorapp.Utility.ImageCropUtility;
 import org.localareadelivery.distributorapp.Utility.UtilityGeneral;
@@ -59,7 +57,7 @@ import retrofit2.Response;
 import static android.app.Activity.RESULT_OK;
 
 
-public class EditShopAdminFragment extends Fragment {
+public class EditDeliveryFragment extends Fragment {
 
     public static int PICK_IMAGE_REQUEST = 21;
     // Upload the image after picked up
@@ -69,12 +67,8 @@ public class EditShopAdminFragment extends Fragment {
 //    Validator validator;
 
 
-//    @Inject
-//    DeliveryGuySelfService deliveryService;
-
     @Inject
-    ShopAdminService shopAdminService;
-
+    DeliveryGuySelfService deliveryService;
 
     // flag for knowing whether the image is changed or not
     boolean isImageChanged = false;
@@ -93,13 +87,12 @@ public class EditShopAdminFragment extends Fragment {
     @Bind(R.id.about) EditText about;
 
     @Bind(R.id.phone_number) EditText phone;
-    @Bind(R.id.designation) EditText designation;
-//    @Bind(R.id.switch_enable) Switch aSwitch;
+    @Bind(R.id.switch_enable) Switch aSwitch;
 
     @Bind(R.id.saveButton) Button buttonUpdateItem;
 
 
-    public static final String SHOP_ADMIN_INTENT_KEY = "delivery_guy_intent_key";
+    public static final String DELIVERY_GUY_INTENT_KEY = "delivery_guy_intent_key";
     public static final String EDIT_MODE_INTENT_KEY = "edit_mode";
 
     public static final int MODE_UPDATE = 52;
@@ -107,11 +100,10 @@ public class EditShopAdminFragment extends Fragment {
 
     int current_mode = MODE_ADD;
 
-//    DeliveryGuySelf deliveryGuySelf = new DeliveryGuySelf();
-    ShopAdmin shopAdmin = new ShopAdmin();
+    DeliveryGuySelf deliveryGuySelf = new DeliveryGuySelf();
 
 
-    public EditShopAdminFragment() {
+    public EditDeliveryFragment() {
 
         DaggerComponentBuilder.getInstance()
                 .getNetComponent().Inject(this);
@@ -126,23 +118,16 @@ public class EditShopAdminFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
 
         setRetainInstance(true);
-        View rootView = inflater.inflate(R.layout.content_edit_shop_admin, container, false);
+        View rootView = inflater.inflate(R.layout.content_edit_delivery_guy, container, false);
 
         ButterKnife.bind(this,rootView);
 
         if(savedInstanceState==null)
         {
-//            shopAdmin = getActivity().getIntent().getParcelableExtra(SHOP_ADMIN_INTENT_KEY);
-
+            deliveryGuySelf = getActivity().getIntent().getParcelableExtra(DELIVERY_GUY_INTENT_KEY);
             current_mode = getActivity().getIntent().getIntExtra(EDIT_MODE_INTENT_KEY,MODE_ADD);
 
-            if(current_mode == MODE_UPDATE)
-            {
-                shopAdmin = UtilityLogin.getShopAdmin(getContext());
-            }
-
-
-            if(shopAdmin!=null) {
+            if(deliveryGuySelf!=null) {
                 bindDataToViews();
             }
 
@@ -161,8 +146,8 @@ public class EditShopAdminFragment extends Fragment {
         updateIDFieldVisibility();
 
 
-        if(shopAdmin!=null) {
-            loadImage(shopAdmin.getProfileImageURL());
+        if(deliveryGuySelf!=null) {
+            loadImage(deliveryGuySelf.getProfileImageURL());
             showLogMessage("Inside OnCreateView : DeliveryGUySelf : Not Null !");
         }
 
@@ -177,13 +162,11 @@ public class EditShopAdminFragment extends Fragment {
 
         if(current_mode==MODE_ADD)
         {
-            buttonUpdateItem.setText("Sign Up");
             item_id.setVisibility(View.GONE);
         }
         else if(current_mode== MODE_UPDATE)
         {
             item_id.setVisibility(View.VISIBLE);
-            buttonUpdateItem.setText("Save");
         }
     }
 
@@ -200,7 +183,7 @@ public class EditShopAdminFragment extends Fragment {
 
     void loadImage(String imagePath) {
 
-        String iamgepath = UtilityGeneral.getServiceURL(getContext()) + "/api/ShopAdmin/Image/" + imagePath;
+        String iamgepath = UtilityGeneral.getServiceURL(getContext()) + "/api/DeliveryGuySelf/Image/" + imagePath;
 
         Picasso.with(getContext())
                 .load(iamgepath)
@@ -222,7 +205,7 @@ public class EditShopAdminFragment extends Fragment {
 
         if(current_mode == MODE_ADD)
         {
-            shopAdmin = new ShopAdmin();
+            deliveryGuySelf = new DeliveryGuySelf();
             addAccount();
         }
         else if(current_mode == MODE_UPDATE)
@@ -280,16 +263,16 @@ public class EditShopAdminFragment extends Fragment {
     {
 
 
-        if(shopAdmin!=null && shopAdmin.getUsername()!=null
+        if(deliveryGuySelf!=null && deliveryGuySelf.getUsername()!=null
                 &&
-                username.getText().toString().equals(shopAdmin.getUsername()))
+                username.getText().toString().equals(deliveryGuySelf.getUsername()))
         {
             username.setTextColor(ContextCompat.getColor(getContext(),R.color.gplus_color_1));
             return;
         }
 
 
-        Call<ResponseBody> call = shopAdminService.checkUsernameExist(username.getText().toString());
+        Call<ResponseBody> call = deliveryService.checkUsernameExist(username.getText().toString());
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -350,7 +333,7 @@ public class EditShopAdminFragment extends Fragment {
 
 
             // delete previous Image from the Server
-            deleteImage(shopAdmin.getProfileImageURL());
+            deleteImage(deliveryGuySelf.getProfileImageURL());
 
             /*ImageCalls.getInstance()
                     .deleteImage(
@@ -362,7 +345,7 @@ public class EditShopAdminFragment extends Fragment {
             if(isImageRemoved)
             {
 
-                shopAdmin.setProfileImageURL(null);
+                deliveryGuySelf.setProfileImageURL(null);
                 retrofitPUTRequest();
 
             }else
@@ -386,26 +369,26 @@ public class EditShopAdminFragment extends Fragment {
 
     void bindDataToViews()
     {
-        if(shopAdmin!=null) {
+        if(deliveryGuySelf!=null) {
 
-            item_id.setText(String.valueOf(shopAdmin.getShopAdminID()));
-            name.setText(shopAdmin.getName());
-            username.setText(shopAdmin.getUsername());
-            password.setText(shopAdmin.getPassword());
-            about.setText(shopAdmin.getAbout());
-            phone.setText(shopAdmin.getPhoneNumber());
-            designation.setText(shopAdmin.getDesignation());
+            item_id.setText(String.valueOf(deliveryGuySelf.getDeliveryGuyID()));
+            name.setText(deliveryGuySelf.getName());
+            username.setText(deliveryGuySelf.getUsername());
+            password.setText(deliveryGuySelf.getPassword());
+            about.setText(deliveryGuySelf.getAbout());
+            phone.setText(deliveryGuySelf.getPhoneNumber());
+            aSwitch.setChecked(deliveryGuySelf.getEnabled());
         }
     }
 
 
     void getDataFromViews()
     {
-        if(shopAdmin==null)
+        if(deliveryGuySelf==null)
         {
             if(current_mode == MODE_ADD)
             {
-                shopAdmin = new ShopAdmin();
+                deliveryGuySelf = new DeliveryGuySelf();
             }
             else
             {
@@ -413,18 +396,18 @@ public class EditShopAdminFragment extends Fragment {
             }
         }
 
-//        if(current_mode == MODE_ADD)
-//        {
-//            deliveryGuySelf.setShopID(UtilityShopHome.getShop(getContext()).getShopID());
-//        }
+        if(current_mode == MODE_ADD)
+        {
+            deliveryGuySelf.setShopID(UtilityShopHome.getShop(getContext()).getShopID());
+        }
 
-        shopAdmin.setName(name.getText().toString());
-        shopAdmin.setUsername(username.getText().toString());
-        shopAdmin.setPassword(password.getText().toString());
-        shopAdmin.setAbout(about.getText().toString());
-        shopAdmin.setPhoneNumber(phone.getText().toString());
-        shopAdmin.setDesignation(designation.getText().toString());
+        deliveryGuySelf.setName(name.getText().toString());
+        deliveryGuySelf.setUsername(username.getText().toString());
+        deliveryGuySelf.setPassword(password.getText().toString());
+        deliveryGuySelf.setAbout(about.getText().toString());
+        deliveryGuySelf.setPhoneNumber(phone.getText().toString());
 
+        deliveryGuySelf.setEnabled(aSwitch.isChecked());
     }
 
 
@@ -435,8 +418,8 @@ public class EditShopAdminFragment extends Fragment {
         getDataFromViews();
 
         // update Item Call
-        Call<ResponseBody> call = shopAdminService.putShopAdmin(UtilityLogin.getAuthorizationHeaders(getContext()),
-                shopAdmin,shopAdmin.getShopAdminID());
+        Call<ResponseBody> call = deliveryService.putVehicle(UtilityLogin.getAuthorizationHeaders(getContext()),
+                deliveryGuySelf,deliveryGuySelf.getDeliveryGuyID());
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -446,21 +429,17 @@ public class EditShopAdminFragment extends Fragment {
                 {
                     showToastMessage("Update Successful !");
 
-                    UtilityLogin.saveShopAdmin(shopAdmin,getContext());
-                    UtilityLogin.saveCredentials(
-                            getContext(),shopAdmin.getUsername(),
-                            shopAdmin.getPassword());
                 }
                 else
                 {
                     showToastMessage("Update Failed !");
                 }
 
+
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-
                 showToastMessage("Update Failed !");
             }
         });
@@ -472,13 +451,12 @@ public class EditShopAdminFragment extends Fragment {
     {
         getDataFromViews();
 
+        Call<DeliveryGuySelf> call = deliveryService.postVehicle(UtilityLogin.getAuthorizationHeaders(getContext()),
+                deliveryGuySelf);
 
-        Call<ShopAdmin> call = shopAdminService.postShopAdmin(UtilityLogin.getAuthorizationHeaders(getContext()),
-                shopAdmin);
-
-        call.enqueue(new Callback<ShopAdmin>() {
+        call.enqueue(new Callback<DeliveryGuySelf>() {
             @Override
-            public void onResponse(Call<ShopAdmin> call, Response<ShopAdmin> response) {
+            public void onResponse(Call<DeliveryGuySelf> call, Response<DeliveryGuySelf> response) {
 
                 if(response.code()==201)
                 {
@@ -486,28 +464,23 @@ public class EditShopAdminFragment extends Fragment {
 
                     current_mode = MODE_UPDATE;
                     updateIDFieldVisibility();
-                    shopAdmin = response.body();
+                    deliveryGuySelf = response.body();
                     bindDataToViews();
-
-                    UtilityLogin.saveCredentials(
-                            getContext(),shopAdmin.getUsername(),
-                            shopAdmin.getPassword());
                 }
                 else
                 {
                     showToastMessage("Add failed !");
                 }
 
+
             }
 
             @Override
-            public void onFailure(Call<ShopAdmin> call, Throwable t) {
+            public void onFailure(Call<DeliveryGuySelf> call, Throwable t) {
 
                 showToastMessage("Add failed !");
             }
         });
-
-
     }
 
 
@@ -769,7 +742,7 @@ public class EditShopAdminFragment extends Fragment {
 
 
 
-        Call<Image> imageCall = shopAdminService.uploadImage(UtilityLogin.getAuthorizationHeaders(getContext()),
+        Call<Image> imageCall = deliveryService.uploadImage(UtilityLogin.getAuthorizationHeaders(getContext()),
                 requestBodyBinary);
 
 
@@ -779,27 +752,27 @@ public class EditShopAdminFragment extends Fragment {
 
                 if(response.code()==201)
                 {
-//                    showToastMessage("Image UPload Success !");
+                    showToastMessage("Image UPload Success !");
 
                     Image image = response.body();
                     // check if needed or not . If not needed then remove this line
 //                    loadImage(image.getPath());
 
 
-                    shopAdmin.setProfileImageURL(image.getPath());
+                    deliveryGuySelf.setProfileImageURL(image.getPath());
 
                 }
                 else if(response.code()==417)
                 {
                     showToastMessage("Cant Upload Image. Image Size should not exceed 2 MB.");
 
-                    shopAdmin.setProfileImageURL(null);
+                    deliveryGuySelf.setProfileImageURL(null);
 
                 }
                 else
                 {
                     showToastMessage("Image Upload failed !");
-                    shopAdmin.setProfileImageURL(null);
+                    deliveryGuySelf.setProfileImageURL(null);
 
                 }
 
@@ -819,7 +792,7 @@ public class EditShopAdminFragment extends Fragment {
             public void onFailure(Call<Image> call, Throwable t) {
 
                 showToastMessage("Image Upload failed !");
-                shopAdmin.setProfileImageURL(null);
+                deliveryGuySelf.setProfileImageURL(null);
 
                 if(isModeEdit)
                 {
@@ -838,29 +811,26 @@ public class EditShopAdminFragment extends Fragment {
 
     void deleteImage(String filename)
     {
-        Call<ResponseBody> call = shopAdminService.deleteImage(UtilityLogin.getAuthorizationHeaders(getContext()),filename);
+        Call<ResponseBody> call = deliveryService.deleteImage(UtilityLogin.getAuthorizationHeaders(getContext()),filename);
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
 
-
-                    if(response.code()==200)
-                    {
-                        showToastMessage("Image Removed !");
-                    }
-                    else
-                    {
-//                        showToastMessage("Image Delete failed");
-                    }
-
-
+                if(response.code()==200)
+                {
+                    showToastMessage("Image Delete successful !");
+                }
+                else
+                {
+                    showToastMessage("Image Delete failed");
+                }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
 
-//                showToastMessage("Image Delete failed");
+                showToastMessage("Image Delete failed");
             }
         });
     }

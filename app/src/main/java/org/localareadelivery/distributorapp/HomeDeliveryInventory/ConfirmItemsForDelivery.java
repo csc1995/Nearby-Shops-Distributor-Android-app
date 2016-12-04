@@ -12,13 +12,15 @@ import android.widget.Toast;
 
 import org.localareadelivery.distributorapp.ApplicationState.ApplicationState;
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
-import org.localareadelivery.distributorapp.DeliveryGuyAccounts.DeliveryGuySelection.AccountsSelectionFragment;
-import org.localareadelivery.distributorapp.DeliveryGuyAccounts.DeliveryGuySelection.DeliveryGuySelection;
+import org.localareadelivery.distributorapp.DeliveryAccounts.DeliveryGuySelection.AccountsSelectionFragment;
+import org.localareadelivery.distributorapp.DeliveryAccounts.DeliveryGuySelection.DeliveryGuySelection;
 import org.localareadelivery.distributorapp.Model.Order;
 import org.localareadelivery.distributorapp.ModelRoles.DeliveryGuySelf;
 import org.localareadelivery.distributorapp.ModelStatusCodes.OrderStatusHomeDelivery;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderService;
+import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderServiceShopStaff;
+import org.localareadelivery.distributorapp.Utility.UtilityLogin;
 
 
 import java.util.List;
@@ -37,6 +39,9 @@ public class ConfirmItemsForDelivery extends AppCompatActivity implements Callba
 
 
 
+
+    @Inject
+    OrderServiceShopStaff orderServiceShopStaff;
 
 
     @Bind(R.id.selectDeliveryVehicle)
@@ -138,6 +143,7 @@ public class ConfirmItemsForDelivery extends AppCompatActivity implements Callba
 
 
 
+
     @OnClick(R.id.handoverToDeliveryVehicle)
     void clickHandoverToVehicle(View view)
     {
@@ -152,17 +158,22 @@ public class ConfirmItemsForDelivery extends AppCompatActivity implements Callba
 
         List<Order> orderList = ApplicationState.getInstance().getSelectedOrdersForDelivery();
 
-        for(Order order: orderList)
-        {
-            Log.d("datalog","Order ID" + String.valueOf(order.getOrderID()));
+//        for(Order order: orderList)
+//        {
+//            Log.d("datalog","Order ID" + String.valueOf(order.getOrderID()));
+//
+//            order.setDeliveryGuySelfID(selectedVehicle.getDeliveryGuyID());
+//            order.setStatusHomeDelivery(OrderStatusHomeDelivery.PENDING_HANDOVER);
+//
+//        }
 
-            order.setDeliveryVehicleSelfID(selectedVehicle.getDeliveryGuyID());
-            order.setStatusHomeDelivery(OrderStatusHomeDelivery.PENDING_HANDOVER);
+        Call<ResponseBody> call
+                = orderServiceShopStaff.handoverToDelivery(
+                                            UtilityLogin.getAuthorizationHeaders(this),
+                                            selectedVehicle.getDeliveryGuyID(),
+                                            orderList);
 
-        }
-
-
-        Call<ResponseBody> call = orderService.putOrderBulk(orderList);
+//        Call<ResponseBody> call = orderService.putOrderBulk(orderList);
 
         call.enqueue(this);
 
@@ -180,7 +191,7 @@ public class ConfirmItemsForDelivery extends AppCompatActivity implements Callba
         }
         else
         {
-            showToastMessage("Not Updated");
+            showToastMessage("Not Updated Code : " + String.valueOf(response.code()));
         }
 
     }

@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.DeliveryGuyAccounts;
+package org.localareadelivery.distributorapp.DeliveryAccounts;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

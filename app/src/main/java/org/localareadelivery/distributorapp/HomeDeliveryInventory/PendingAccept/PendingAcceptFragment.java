@@ -215,7 +215,7 @@ public class PendingAcceptFragment extends Fragment implements SwipeRefreshLayou
 
 
         order.setStatusHomeDelivery(OrderStatusHomeDelivery.ORDER_PACKED);
-        order.setDeliveryVehicleSelfID(0);
+        order.setDeliveryGuySelfID(0);
 
         Call<ResponseBody> call = orderService.putOrder(order.getOrderID(),order);
 

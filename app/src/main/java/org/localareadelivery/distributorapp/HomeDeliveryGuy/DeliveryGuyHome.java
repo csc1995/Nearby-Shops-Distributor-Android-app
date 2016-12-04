@@ -5,8 +5,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
-import org.localareadelivery.distributorapp.DeliveryGuyAccounts.EditProfile.EditDelivery;
-import org.localareadelivery.distributorapp.DeliveryGuyAccounts.EditProfile.EditDeliveryFragment;
+import org.localareadelivery.distributorapp.DeliveryAccounts.EditProfile.EditDelivery;
+import org.localareadelivery.distributorapp.DeliveryAccounts.EditProfile.EditDeliveryFragment;
 import org.localareadelivery.distributorapp.DeliveryGuyDashboard.DeliveryGuyDashboard;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.Utility.UtilityLogin;

@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.DeliveryGuyAccounts.DeliveryGuySelection;
+package org.localareadelivery.distributorapp.DeliveryAccounts;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,8 +13,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
-import org.localareadelivery.distributorapp.DeliveryGuyDashboard.DeliveryGuyDashboard;
-import org.localareadelivery.distributorapp.DeliveryGuyInventory.DeliveryGuyInventory;
+import org.localareadelivery.distributorapp.DeliveryAccounts.EditProfile.EditDelivery;
+import org.localareadelivery.distributorapp.DeliveryAccounts.EditProfile.EditDeliveryFragment;
 import org.localareadelivery.distributorapp.HomeDeliveryInventory.Interface.NotifyTitleChanged;
 import org.localareadelivery.distributorapp.HomeDeliveryInventory.Interface.RefreshFragment;
 import org.localareadelivery.distributorapp.ModelRoles.DeliveryGuySelf;
@@ -39,7 +39,7 @@ import retrofit2.Response;
  */
 
 
-public class AccountsSelectionFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, Adapter.Notifications {
+public class AccountsFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, Adapter.NotifyConfirmOrder, RefreshFragment{
 
 
     @Inject
@@ -61,7 +61,7 @@ public class AccountsSelectionFragment extends Fragment implements SwipeRefreshL
     public static final String MODE_ACCOUNTS_DISABLED = "accounts_disabled";
 
 
-    public AccountsSelectionFragment() {
+    public AccountsFragment() {
 
         DaggerComponentBuilder.getInstance()
                 .getNetComponent()
@@ -70,19 +70,18 @@ public class AccountsSelectionFragment extends Fragment implements SwipeRefreshL
 
 
 
-    public final static String INTENT_REQUEST_CODE_KEY = "request_code_key";
+//    public final static String INTENT_REQUEST_CODE_KEY = "request_code_key";
 
-    public final static int INTENT_CODE_SELECT_DELIVERY_GUY = 1;
-    public final static int INTENT_CODE_DELIVERY_GUY_INVENTORY = 2;
-    public final static int INTENT_CODE_DELIVERY_GUY_DASHBOARD = 3;
+//    public final static int INTENT_CODE_DELIVERY_GUY_INVENTORY = 2;
+//    public final static int INTENT_CODE_DELIVERY_GUY_DASHBOARD = 3;
 
-    int requestCode;
-
+//    int requestCode;
 
 
 
-    public static AccountsSelectionFragment newInstance(boolean isEnabled) {
-        AccountsSelectionFragment fragment = new AccountsSelectionFragment();
+
+    public static AccountsFragment newInstance(boolean isEnabled) {
+        AccountsFragment fragment = new AccountsFragment();
         Bundle args = new Bundle();
         args.putBoolean(ARG_ACCOUNTS_MODE, isEnabled);
         fragment.setArguments(args);
@@ -91,8 +90,11 @@ public class AccountsSelectionFragment extends Fragment implements SwipeRefreshL
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_delivery_guy_accounts_selection, container, false);
+                             Bundle savedInstanceState)
+    {
+
+
+        View rootView = inflater.inflate(R.layout.fragment_delivery_guy_accounts, container, false);
         setRetainInstance(true);
 
 
@@ -126,7 +128,7 @@ public class AccountsSelectionFragment extends Fragment implements SwipeRefreshL
         layoutManager = new GridLayoutManager(getActivity(),1);
         recyclerView.setLayoutManager(layoutManager);
 
-        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.HORIZONTAL_LIST));
+//        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.HORIZONTAL_LIST));
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL_LIST));
 
         DisplayMetrics metrics = new DisplayMetrics();
@@ -207,23 +209,21 @@ public class AccountsSelectionFragment extends Fragment implements SwipeRefreshL
                 }
 
 
-                if(response.code()==200)
+                if(clearDataset)
                 {
-
-                    if(clearDataset)
-                    {
-                        dataset.clear();
-                    }
-
-                    if(response.code()==200 && response.body()!=null)
-                    {
-                        dataset.addAll(response.body());
-                    }
-
-                    adapter.notifyDataSetChanged();
-                    notifyTitleChanged();
+                    dataset.clear();
                 }
 
+                if(response.code()==200 && response.body()!=null)
+                {
+                    dataset.addAll(response.body());
+                }
+
+                notifyTitleChanged();
+                adapter.notifyDataSetChanged();
+
+
+//                notifyRefresh();
 
                 swipeContainer.setRefreshing(false);
             }
@@ -283,14 +283,14 @@ public class AccountsSelectionFragment extends Fragment implements SwipeRefreshL
             {
                 ((NotifyTitleChanged)getActivity())
                         .NotifyTitleChanged(
-                                "Enabled ( " + String.valueOf(dataset.size())+ " )",0);
+                                "Enabled (" + String.valueOf(dataset.size())+ ")",0);
 
             }
             else
             {
                 ((NotifyTitleChanged)getActivity())
                         .NotifyTitleChanged(
-                                "Disabled ( " + String.valueOf(dataset.size())+ " )",1);
+                                "Disabled (" + String.valueOf(dataset.size())+ ")",1);
             }
 
 
@@ -306,10 +306,21 @@ public class AccountsSelectionFragment extends Fragment implements SwipeRefreshL
     }
 
 
-    void refreshConfirmedFragment()
+    void notifyRefresh()
     {
-        Fragment fragment = getActivity().getSupportFragmentManager()
-                .findFragmentByTag(makeFragmentName(R.id.container,1));
+        Fragment fragment = null;
+
+        if(getTag().equals(makeFragmentName(R.id.container,0)))
+        {
+            fragment = getActivity().getSupportFragmentManager()
+                    .findFragmentByTag(makeFragmentName(R.id.container,1));
+        }
+        else if(getTag().equals(makeFragmentName(R.id.container,1)))
+        {
+            fragment = getActivity().getSupportFragmentManager()
+                    .findFragmentByTag(makeFragmentName(R.id.container,0));
+        }
+
 
         if(fragment instanceof RefreshFragment)
         {
@@ -317,38 +328,45 @@ public class AccountsSelectionFragment extends Fragment implements SwipeRefreshL
         }
     }
 
-
-
     @Override
+    public void notifyEditClick(DeliveryGuySelf deliveryGuySelf) {
+
+        Intent intent = new Intent(getContext(), EditDelivery.class);
+        intent.putExtra(EditDeliveryFragment.DELIVERY_GUY_INTENT_KEY,deliveryGuySelf);
+        intent.putExtra(EditDeliveryFragment.EDIT_MODE_INTENT_KEY,EditDeliveryFragment.MODE_UPDATE);
+        startActivity(intent);
+
+        showToastMessage("Edit Delivery !");
+
+    }
+
+
     public void notifyListItemClick(DeliveryGuySelf deliveryGuySelf) {
 
-        requestCode = getActivity().getIntent().getIntExtra(INTENT_REQUEST_CODE_KEY,-1);
+        showToastMessage("List Item Click !");
 
+//        requestCode = getActivity().getIntent().getIntExtra(INTENT_REQUEST_CODE_KEY,-1);
+//
+//        if(requestCode == INTENT_CODE_DELIVERY_GUY_INVENTORY)
+//        {
+//
+//            Intent vehicleDashboardIntent = new Intent(getContext(),DeliveryGuyInventory.class);
+//            vehicleDashboardIntent.putExtra(DeliveryGuyInventory.DELIVERY_VEHICLE_INTENT_KEY, deliveryGuySelf);
+//            startActivity(vehicleDashboardIntent);
+//        }
+//        else if(requestCode == INTENT_CODE_DELIVERY_GUY_DASHBOARD)
+//        {
+//            Intent vehicleDashboardIntent = new Intent(getContext(),DeliveryGuyDashboard.class);
+//            vehicleDashboardIntent.putExtra(DeliveryGuyDashboard.DELIVERY_VEHICLE_INTENT_KEY, deliveryGuySelf);
+//            startActivity(vehicleDashboardIntent);
+//
+//        }
 
-        if(requestCode == INTENT_CODE_SELECT_DELIVERY_GUY)
-        {
+    }
 
-            Intent output = new Intent();
-            output.putExtra("output", deliveryGuySelf);
-            getActivity().setResult(2,output);
-            getActivity().finish();
-
-        }
-        else if(requestCode == INTENT_CODE_DELIVERY_GUY_INVENTORY)
-        {
-
-            Intent vehicleDashboardIntent = new Intent(getContext(),DeliveryGuyInventory.class);
-            vehicleDashboardIntent.putExtra(DeliveryGuyInventory.DELIVERY_VEHICLE_INTENT_KEY, deliveryGuySelf);
-            startActivity(vehicleDashboardIntent);
-        }
-        else if(requestCode == INTENT_CODE_DELIVERY_GUY_DASHBOARD)
-        {
-            Intent vehicleDashboardIntent = new Intent(getContext(),DeliveryGuyDashboard.class);
-            vehicleDashboardIntent.putExtra(DeliveryGuyDashboard.DELIVERY_VEHICLE_INTENT_KEY, deliveryGuySelf);
-            startActivity(vehicleDashboardIntent);
-
-        }
-
+    @Override
+    public void refreshFragment() {
+        onRefresh();
     }
 }
 

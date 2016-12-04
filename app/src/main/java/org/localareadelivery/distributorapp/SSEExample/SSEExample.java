@@ -86,8 +86,8 @@ public class SSEExample extends AppCompatActivity {
                     // connection has been closed
                     break;
                 }
-//                System.out.println(inboundEvent.getName() + "; "
-//                        + inboundEvent.readData(String.class));
+                System.out.println(inboundEvent.getName() + "; "
+                        + inboundEvent.readData(String.class));
 
                 publishProgress(inboundEvent.getName() + "; "
                         + inboundEvent.readData(String.class));

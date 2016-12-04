@@ -303,7 +303,7 @@ public class PendingDeliveryApprovalDGD extends Fragment
 
 
         order.setStatusHomeDelivery(OrderStatusHomeDelivery.ORDER_PACKED);
-        order.setDeliveryVehicleSelfID(null);
+        order.setDeliveryGuySelfID(null);
 
         Call<ResponseBody> call = orderService.putOrder(order.getOrderID(),order);
 

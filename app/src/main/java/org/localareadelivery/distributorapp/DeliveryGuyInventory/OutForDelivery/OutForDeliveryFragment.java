@@ -22,7 +22,9 @@ import org.localareadelivery.distributorapp.ModelRoles.DeliveryGuySelf;
 import org.localareadelivery.distributorapp.ModelStatusCodes.OrderStatusHomeDelivery;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderService;
+import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderServiceShopStaff;
 import org.localareadelivery.distributorapp.ShopHome.UtilityShopHome;
+import org.localareadelivery.distributorapp.Utility.UtilityLogin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +44,8 @@ import retrofit2.Response;
 
 public class OutForDeliveryFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, AdapterOutForDelivery.NotifyCancelOrder{
 
+    @Inject
+    OrderServiceShopStaff orderServiceShopStaff;
 
     @Inject
     OrderService orderService;
@@ -310,7 +314,7 @@ public class OutForDeliveryFragment extends Fragment implements SwipeRefreshLayo
 
 
         order.setStatusHomeDelivery(OrderStatusHomeDelivery.ORDER_PACKED);
-        order.setDeliveryVehicleSelfID(0);
+        order.setDeliveryGuySelfID(0);
 
         Call<ResponseBody> call = orderService.putOrder(order.getOrderID(),order);
 
@@ -405,7 +409,13 @@ public class OutForDeliveryFragment extends Fragment implements SwipeRefreshLayo
 
     private void cancelOrder(Order order) {
 
-        Call<ResponseBody> call = orderService.cancelOrderByShop(order.getOrderID());
+//        Call<ResponseBody> call = orderService.cancelOrderByShop(order.getOrderID());
+
+        Call<ResponseBody> call = orderServiceShopStaff.cancelledByShop(
+                UtilityLogin.getAuthorizationHeaders(getActivity()),
+                order.getOrderID()
+        );
+
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -422,7 +432,7 @@ public class OutForDeliveryFragment extends Fragment implements SwipeRefreshLayo
                 }
                 else
                 {
-                    showToastMessage("Server Error");
+                    showToastMessage("Server Error Code : " + String.valueOf(response.code()));
                 }
             }
 

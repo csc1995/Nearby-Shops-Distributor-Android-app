@@ -22,7 +22,9 @@ import org.localareadelivery.distributorapp.ModelRoles.DeliveryGuySelf;
 import org.localareadelivery.distributorapp.ModelStatusCodes.OrderStatusHomeDelivery;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderService;
+import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderServiceShopStaff;
 import org.localareadelivery.distributorapp.ShopHome.UtilityShopHome;
+import org.localareadelivery.distributorapp.Utility.UtilityLogin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +47,9 @@ import static org.localareadelivery.distributorapp.DeliveryGuyInventory.Delivery
 public class PendingHandoverFragment extends Fragment
         implements SwipeRefreshLayout.OnRefreshListener,AdapterPendingHandover.NotifyCancelHandover {
 
+
+    @Inject
+    OrderServiceShopStaff orderServiceShopStaff;
 
     @Inject
     OrderService orderService;
@@ -318,10 +323,17 @@ public class PendingHandoverFragment extends Fragment
     public void notifyCancelHandover(Order order) {
 
 
-        order.setStatusHomeDelivery(OrderStatusHomeDelivery.ORDER_PACKED);
-        order.setDeliveryVehicleSelfID(null);
+//        order.setStatusHomeDelivery(OrderStatusHomeDelivery.ORDER_PACKED);
+//        order.setDeliveryGuySelfID(null);
 
-        Call<ResponseBody> call = orderService.putOrder(order.getOrderID(),order);
+//        Call<ResponseBody> call = orderService.putOrder(order.getOrderID(),order);
+
+        Call<ResponseBody> call = orderServiceShopStaff.undoHandover(
+                UtilityLogin.getAuthorizationHeaders(getActivity()),
+                order.getOrderID()
+        );
+
+
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -331,6 +343,10 @@ public class PendingHandoverFragment extends Fragment
                 {
                     showToastMessage("Handover cancelled !");
                     makeRefreshNetworkCall();
+                }
+                else
+                {
+                    showToastMessage("Failed Code : " + String.valueOf(response.code()));
                 }
 
             }
@@ -377,7 +393,12 @@ public class PendingHandoverFragment extends Fragment
 
     private void cancelOrder(Order order) {
 
-        Call<ResponseBody> call = orderService.cancelOrderByShop(order.getOrderID());
+//        Call<ResponseBody> call = orderService.cancelOrderByShop(order.getOrderID());
+
+        Call<ResponseBody> call = orderServiceShopStaff.cancelledByShop(
+                UtilityLogin.getAuthorizationHeaders(getActivity()),
+                order.getOrderID()
+        );
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override

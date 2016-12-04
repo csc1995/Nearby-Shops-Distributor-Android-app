@@ -18,6 +18,8 @@ import com.google.common.io.BaseEncoding;
 
 import org.localareadelivery.distributorapp.HomeDeliveryGuy.DeliveryGuyHome;
 import org.localareadelivery.distributorapp.HomeDistributor.DistributorHome;
+import org.localareadelivery.distributorapp.HomeShopAdmin.EditProfile.EditShopAdmin;
+import org.localareadelivery.distributorapp.HomeShopAdmin.EditProfile.EditShopAdminFragment;
 import org.localareadelivery.distributorapp.HomeShopAdmin.ShopAdminHome;
 import org.localareadelivery.distributorapp.ModelRoles.DeliveryGuySelf;
 import org.localareadelivery.distributorapp.ModelRoles.Distributor;
@@ -25,6 +27,7 @@ import org.localareadelivery.distributorapp.ModelRoles.ShopAdmin;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.DeliveryGuySelfService;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.DistributorService;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ShopAdminService;
+import org.localareadelivery.distributorapp.ShopHome.UtilityShopHome;
 import org.localareadelivery.distributorapp.ShopList.ShopList;
 import org.localareadelivery.distributorapp.Utility.UtilityGeneral;
 import org.localareadelivery.distributorapp.Utility.UtilityLogin;
@@ -125,8 +128,24 @@ public class DistributorLogin extends AppCompatActivity implements View.OnClickL
 
             }
         });
+
+
+
     }
 
+
+
+    void clearShopHome()
+    {
+        UtilityShopHome.saveShop(null,this);
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        clearShopHome();
+    }
 
 
 
@@ -178,6 +197,14 @@ public class DistributorLogin extends AppCompatActivity implements View.OnClickL
 //        startActivity(new Intent(this,ShopList.class));
     }*/
 
+
+    @OnClick(R.id.signUpButton)
+    void signUpClick()
+    {
+        Intent intent = new Intent(this, EditShopAdmin.class);
+        intent.putExtra(EditShopAdminFragment.EDIT_MODE_INTENT_KEY,EditShopAdminFragment.MODE_ADD);
+        startActivity(intent);
+    }
 
 
     @OnClick(R.id.loginButton)

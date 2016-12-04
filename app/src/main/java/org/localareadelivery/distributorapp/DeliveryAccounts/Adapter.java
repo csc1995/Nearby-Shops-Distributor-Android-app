@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.DeliveryGuyAccounts.DeliveryGuySelection;
+package org.localareadelivery.distributorapp.DeliveryAccounts;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -20,6 +20,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by sumeet on 13/6/16.
@@ -27,12 +28,12 @@ import butterknife.ButterKnife;
 class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>{
 
     private List<DeliveryGuySelf> dataset = null;
-    private Notifications notifications;
+    private NotifyConfirmOrder notifyConfirmOrder;
     private  Context context;
 
-    Adapter(List<DeliveryGuySelf> dataset, Notifications notifications, Context context) {
+    Adapter(List<DeliveryGuySelf> dataset, NotifyConfirmOrder notifyConfirmOrder, Context context) {
         this.dataset = dataset;
-        this.notifications = notifications;
+        this.notifyConfirmOrder = notifyConfirmOrder;
         this.context = context;
     }
 
@@ -40,7 +41,7 @@ class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>{
     public Adapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_item_delivery_guy_self_selection,parent,false);
+                .inflate(R.layout.list_item_delivery_guy_self,parent,false);
 
         return new ViewHolder(view);
     }
@@ -52,8 +53,8 @@ class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>{
 
         holder.deliveryGuyName.setText(deliveryGuy.getName());
         holder.phoneNumber.setText(deliveryGuy.getPhoneNumber());
+        holder.username.setText("username : " + deliveryGuy.getUsername());
         holder.about.setText(deliveryGuy.getAbout());
-
 
 
         Drawable drawable = ContextCompat.getDrawable(context,R.drawable.ic_nature_people_white_48px);
@@ -81,11 +82,17 @@ class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>{
         @Bind(R.id.phone_number)
         TextView phoneNumber;
 
+        @Bind(R.id.username)
+        TextView username;
+
         @Bind(R.id.about)
         TextView about;
 
         @Bind(R.id.profile_image)
         ImageView profileImage;
+
+//        @Bind(R.id.edit_icon)
+//        ImageView editIcon;
 
 
 
@@ -93,21 +100,29 @@ class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>{
             super(itemView);
 
             ButterKnife.bind(this,itemView);
-            itemView.setOnClickListener(this);
+//            itemView.setOnClickListener(this);
+        }
+
+        @OnClick({R.id.edit_icon,R.id.edit_text})
+        void editClick()
+        {
+            notifyConfirmOrder.notifyEditClick(dataset.get(getLayoutPosition()));
         }
 
 
         @Override
         public void onClick(View v) {
-            notifications.notifyListItemClick(dataset.get(getLayoutPosition()));
+//            notifyConfirmOrder.notifyListItemClick(dataset.get(getLayoutPosition()));
         }
     }
 
 
 
 
-    interface Notifications {
-        void notifyListItemClick(DeliveryGuySelf deliveryGuySelf);
+    interface NotifyConfirmOrder{
+
+        void notifyEditClick(DeliveryGuySelf deliveryGuySelf);
+//        void notifyListItemClick(DeliveryGuySelf deliveryGuySelf);
     }
 
 }

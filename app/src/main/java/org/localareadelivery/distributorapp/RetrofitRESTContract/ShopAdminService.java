@@ -67,6 +67,8 @@ public interface ShopAdminService {
 
 
 
+    // Image Calls
+
     @POST("/api/ShopAdmin/Image")
     Call<Image> uploadImage(@Header("Authorization") String headers,
                             @Body RequestBody image);

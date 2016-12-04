@@ -23,7 +23,9 @@ import org.localareadelivery.distributorapp.HomeDeliveryInventory.Interface.Noti
 import org.localareadelivery.distributorapp.HomeDeliveryInventory.Interface.RefreshFragment;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderService;
+import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderServiceShopStaff;
 import org.localareadelivery.distributorapp.ShopHome.UtilityShopHome;
+import org.localareadelivery.distributorapp.Utility.UtilityLogin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +44,9 @@ public class PlacedOrdersFragment extends Fragment implements AdapterPlacedOrder
 
     @Inject
     OrderService orderService;
+
+    @Inject
+    OrderServiceShopStaff orderServiceShopStaff;
 
     RecyclerView recyclerView;
     AdapterPlacedOrders adapter;
@@ -330,9 +335,10 @@ public class PlacedOrdersFragment extends Fragment implements AdapterPlacedOrder
     public void notifyConfirmOrder(Order order) {
 
 
-        order.setStatusHomeDelivery(OrderStatusHomeDelivery.ORDER_CONFIRMED);
+//        order.setStatusHomeDelivery(OrderStatusHomeDelivery.ORDER_CONFIRMED);
+//        Call<ResponseBody> call = orderService.putOrder(order.getOrderID(),order);
 
-        Call<ResponseBody> call = orderService.putOrder(order.getOrderID(),order);
+        Call<ResponseBody> call = orderServiceShopStaff.confirmOrder(UtilityLogin.getAuthorizationHeaders(getActivity()),order.getOrderID());
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -347,6 +353,10 @@ public class PlacedOrdersFragment extends Fragment implements AdapterPlacedOrder
                     makeRefreshNetworkCall();
 
                     refreshConfirmedFragment();
+                }
+                else
+                {
+                    showToastMessage("Failed Status : " + String.valueOf(response.code()));
                 }
 
             }
@@ -389,7 +399,14 @@ public class PlacedOrdersFragment extends Fragment implements AdapterPlacedOrder
 
     private void cancelOrder(Order order) {
 
-        Call<ResponseBody> call = orderService.cancelOrderByShop(order.getOrderID());
+
+//        Call<ResponseBody> call = orderService.cancelOrderByShop(order.getOrderID());
+
+        Call<ResponseBody> call = orderServiceShopStaff.cancelledByShop(
+                UtilityLogin.getAuthorizationHeaders(getActivity()),
+                order.getOrderID()
+        );
+
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override

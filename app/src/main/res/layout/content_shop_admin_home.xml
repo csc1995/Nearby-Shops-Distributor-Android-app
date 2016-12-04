@@ -20,7 +20,7 @@
 
         <android.support.constraint.Guideline
             android:layout_width="0dp"
-            android:layout_height="321dp"
+            android:layout_height="375dp"
             android:id="@+id/guideline"
             android:orientation="vertical"
             tools:layout_editor_absoluteY="0dp"
@@ -41,13 +41,26 @@
             android:layout_height="wrap_content" />
 
 
+        <TextView
+            android:visibility="gone"
+            android:textColor="@color/white"
+            android:padding="5dp"
+            android:background="#cd201f"
+            android:layout_marginTop="10dp"
+            android:id="@+id/notice"
+            app:layout_constraintTop_toBottomOf="@id/header"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:text="@string/notice_account_deactivated"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
 
 
 
         <TextView
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/header"
+            app:layout_constraintTop_toBottomOf="@+id/notice"
             android:background="#88000000"
             android:layout_marginTop="10dp"
             android:id="@+id/border_one"
@@ -114,7 +127,7 @@
             android:background="@color/blueGrey800"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/image_edit_profile"
+            app:layout_constraintTop_toBottomOf="@+id/image_edit_profile"
             android:layout_width="0dp"
             android:layout_height="150dp" />
 

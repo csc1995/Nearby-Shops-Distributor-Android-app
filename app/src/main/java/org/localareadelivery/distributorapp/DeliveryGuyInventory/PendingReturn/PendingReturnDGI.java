@@ -20,7 +20,9 @@ import org.localareadelivery.distributorapp.ModelRoles.DeliveryGuySelf;
 import org.localareadelivery.distributorapp.ModelStatusCodes.OrderStatusHomeDelivery;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderService;
+import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderServiceShopStaff;
 import org.localareadelivery.distributorapp.ShopHome.UtilityShopHome;
+import org.localareadelivery.distributorapp.Utility.UtilityLogin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -329,13 +331,21 @@ public class PendingReturnDGI extends Fragment implements SwipeRefreshLayout.OnR
     }
 
 
+    @Inject
+    OrderServiceShopStaff orderServiceShopStaff;
+
+
     @Override
     public void notifyAcceptReturn(Order order) {
 
 
-        order.setStatusHomeDelivery(OrderStatusHomeDelivery.RETURNED);
+//        order.setStatusHomeDelivery(OrderStatusHomeDelivery.RETURNED);
+//        Call<ResponseBody> call = orderService.putOrder(order.getOrderID(),order);
 
-        Call<ResponseBody> call = orderService.putOrder(order.getOrderID(),order);
+        Call<ResponseBody> call = orderServiceShopStaff.acceptReturn(
+                UtilityLogin.getAuthorizationHeaders(getActivity()),
+                order.getOrderID()
+        );
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -352,7 +362,7 @@ public class PendingReturnDGI extends Fragment implements SwipeRefreshLayout.OnR
                 }
                 else
                 {
-                    showToastMessage("Server Error !");
+                    showToastMessage("Server Error Code : " + String.valueOf(response.code()));
                 }
 
             }

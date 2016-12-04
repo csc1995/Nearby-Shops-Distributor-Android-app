@@ -34,8 +34,8 @@ class AdapterOrderDetail extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     private List<Object> dataset = null;
 //    private NotifyConfirmOrder notifyConfirmOrder;
 
-    private static final int TAG_VIEW_HOLDER_ORDER = 1;
-    private static final int TAG_VIEW_HOLDER_ORDER_ITEM = 2;
+    public static final int TAG_VIEW_HOLDER_ORDER = 1;
+    public static final int TAG_VIEW_HOLDER_ORDER_ITEM = 2;
 
     private Context context;
 

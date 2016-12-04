@@ -23,11 +23,30 @@ import retrofit2.http.Query;
 
 public interface ItemCategoryService {
 
-    @GET("/api/v1/ItemCategory/Deprecated")
-    Call<List<ItemCategory>> getItemCategories(@Query("ParentID")int parentID,@Query("ShopID")int shopID);
 
-    @GET("/api/v1/ItemCategory/Deprecated")
-    Call<List<ItemCategory>> getItemCategories(@Query("ParentID")int parentID);
+
+    @POST("/api/v1/ItemCategory")
+    Call<ItemCategory> insertItemCategory(@Body ItemCategory itemCategory);
+
+    @PUT("/api/v1/ItemCategory/{id}")
+    Call<ResponseBody> updateItemCategory(@Body ItemCategory itemCategory, @Path("id") int id);
+
+    @DELETE("/api/v1/ItemCategory/{id}")
+    Call<ResponseBody> deleteItemCategory(@Path("id") int id);
+
+
+    @PUT("/api/v1/ItemCategory/")
+    Call<ResponseBody> updateItemCategoryBulk(@Body List<ItemCategory> itemCategoryList);
+
+
+
+
+    @GET("api/v1/ItemCategory/QuerySimple")
+    Call<ItemCategoryEndPoint> getItemCategoriesQuerySimple(
+            @Query("ParentID")Integer parentID,@Query("IsDetached")Boolean parentIsNull,
+            @Query("SortBy") String sortBy,
+            @Query("Limit") Integer limit, @Query("Offset") Integer offset
+    );
 
 
     @GET("api/v1/ItemCategory")
@@ -51,17 +70,14 @@ public interface ItemCategoryService {
 
 
 
-    @POST("/api/v1/ItemCategory")
-    Call<ItemCategory> insertItemCategory(@Body ItemCategory itemCategory);
+    // Deprecated
 
-    @PUT("/api/v1/ItemCategory/{id}")
-    Call<ResponseBody> updateItemCategory(@Body ItemCategory itemCategory, @Path("id") int id);
+    @GET("/api/v1/ItemCategory/Deprecated")
+    Call<List<ItemCategory>> getItemCategories(@Query("ParentID")int parentID,@Query("ShopID")int shopID);
 
-    @DELETE("/api/v1/ItemCategory/{id}")
-    Call<ResponseBody> deleteItemCategory(@Path("id") int id);
+    @GET("/api/v1/ItemCategory/Deprecated")
+    Call<List<ItemCategory>> getItemCategories(@Query("ParentID")int parentID);
 
 
-    @PUT("/api/v1/ItemCategory/")
-    Call<ResponseBody> updateItemCategoryBulk(@Body List<ItemCategory> itemCategoryList);
 
 }

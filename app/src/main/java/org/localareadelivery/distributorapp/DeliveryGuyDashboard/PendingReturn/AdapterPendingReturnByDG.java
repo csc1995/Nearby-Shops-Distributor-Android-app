@@ -123,7 +123,7 @@ class AdapterPendingReturnByDG extends RecyclerView.Adapter<AdapterPendingReturn
 /*
         void onClickConfirmButton(View view)
         {
-            notifications.notifyCancelHandover(dataset.get(getLayoutPosition()));
+            notifications.notifyMarkDelivered(dataset.get(getLayoutPosition()));
         }
 */
 

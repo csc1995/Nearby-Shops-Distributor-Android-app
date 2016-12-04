@@ -26,7 +26,9 @@ import org.localareadelivery.distributorapp.OrderDetail.OrderDetail;
 import org.localareadelivery.distributorapp.OrderDetail.UtilityOrderDetail;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderService;
+import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderServiceShopStaff;
 import org.localareadelivery.distributorapp.ShopHome.UtilityShopHome;
+import org.localareadelivery.distributorapp.Utility.UtilityLogin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +53,11 @@ public class ConfirmedOrdersFragment extends Fragment implements SwipeRefreshLay
 
 
     @Inject
+    OrderServiceShopStaff orderServiceShopStaff;
+
+    @Inject
     OrderService orderService;
+
     RecyclerView recyclerView;
     AdapterConfirmedOrders adapter;
 
@@ -336,13 +342,16 @@ public class ConfirmedOrdersFragment extends Fragment implements SwipeRefreshLay
         getActivity().startActivity(new Intent(getActivity(),OrderDetail.class));
     }
 
+
+
     @Override
     public void notifyOrderPacked(Order order) {
 
 
-        order.setStatusHomeDelivery(OrderStatusHomeDelivery.ORDER_PACKED);
+//        order.setStatusHomeDelivery(OrderStatusHomeDelivery.ORDER_PACKED);
+//        Call<ResponseBody> call = orderService.putOrder(order.getOrderID(),order);
 
-        Call<ResponseBody> call = orderService.putOrder(order.getOrderID(),order);
+        Call<ResponseBody> call = orderServiceShopStaff.setOrderPacked(UtilityLogin.getAuthorizationHeaders(getActivity()),order.getOrderID());
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -354,6 +363,10 @@ public class ConfirmedOrdersFragment extends Fragment implements SwipeRefreshLay
                     makeRefreshNetworkCall();
 
                     refreshPackedFragment();
+                }
+                else
+                {
+                    showToastMessage("Failed Code : " + String.valueOf(response.code()));
                 }
 
             }
@@ -395,7 +408,13 @@ public class ConfirmedOrdersFragment extends Fragment implements SwipeRefreshLay
 
     private void cancelOrder(Order order) {
 
-        Call<ResponseBody> call = orderService.cancelOrderByShop(order.getOrderID());
+//        Call<ResponseBody> call = orderService.cancelOrderByShop(order.getOrderID());
+
+        Call<ResponseBody> call = orderServiceShopStaff.cancelledByShop(
+                UtilityLogin.getAuthorizationHeaders(getActivity()),
+                order.getOrderID()
+        );
+
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override

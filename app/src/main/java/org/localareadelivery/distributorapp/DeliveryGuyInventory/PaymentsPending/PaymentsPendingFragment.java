@@ -23,7 +23,9 @@ import org.localareadelivery.distributorapp.ModelRoles.DeliveryGuySelf;
 import org.localareadelivery.distributorapp.ModelStatusCodes.OrderStatusHomeDelivery;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderService;
+import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderServiceShopStaff;
 import org.localareadelivery.distributorapp.ShopHome.UtilityShopHome;
+import org.localareadelivery.distributorapp.Utility.UtilityLogin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +53,10 @@ public class PaymentsPendingFragment extends Fragment implements SwipeRefreshLay
 
     @Inject
     OrderService orderService;
+
+    @Inject
+    OrderServiceShopStaff orderServiceShopStaff;
+
 
     RecyclerView recyclerView;
     AdapterPaymentsPending adapter;
@@ -396,12 +402,17 @@ public class PaymentsPendingFragment extends Fragment implements SwipeRefreshLay
 
     void updatePaymentReceived()
     {
-        for(Order order : dataset)
-        {
-            order.setPaymentReceived(true);
-        }
+//        for(Order order : dataset)
+//        {
+//            order.setPaymentReceived(true);
+//        }
 
-        Call<ResponseBody> call = orderService.putOrderBulk(dataset);
+//        Call<ResponseBody> call = orderService.putOrderBulk(dataset);
+
+        Call<ResponseBody> call = orderServiceShopStaff.paymentReceivedBulk(
+          UtilityLogin.getAuthorizationHeaders(getActivity()),dataset
+        );
+
 
         call.enqueue(new Callback<ResponseBody>() {
 
@@ -438,9 +449,15 @@ public class PaymentsPendingFragment extends Fragment implements SwipeRefreshLay
     @Override
     public void notifyPaymentReceived(Order order) {
 
-        order.setPaymentReceived(true);
+//        order.setPaymentReceived(true);
 
-        Call<ResponseBody> call = orderService.putOrder(order.getOrderID(),order);
+//        Call<ResponseBody> call = orderService.putOrder(order.getOrderID(),order);
+
+        Call<ResponseBody> call = orderServiceShopStaff.paymentReceived(
+                UtilityLogin.getAuthorizationHeaders(getActivity()),
+                order.getOrderID()
+        );
+
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -450,6 +467,10 @@ public class PaymentsPendingFragment extends Fragment implements SwipeRefreshLay
                 {
                     showToastMessage("Update Successful !");
                     makeRefreshNetworkCall();
+                }
+                else
+                {
+                    showToastMessage("Failed code : " + String.valueOf(response.code()));
                 }
 
             }

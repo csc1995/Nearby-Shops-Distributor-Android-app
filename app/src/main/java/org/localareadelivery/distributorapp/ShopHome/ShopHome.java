@@ -7,7 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.RelativeLayout;
 
-import org.localareadelivery.distributorapp.DeliveryGuyAccounts.DeliveryGuyAccounts;
+import org.localareadelivery.distributorapp.DeliveryAccounts.DeliveryGuyAccounts;
 import org.localareadelivery.distributorapp.EditStock.EditStock;
 import org.localareadelivery.distributorapp.ItemCategoriesTabs.ItemCategoriesTabs;
 import org.localareadelivery.distributorapp.OrdersHome.OrdersHome;
@@ -49,8 +49,6 @@ public class ShopHome extends AppCompatActivity implements View.OnClickListener 
 
 //        addEditStockButton = (RelativeLayout) findViewById(R.id.option_edit_stock);
 //        addEditStockButton.setOnClickListener(this);
-
-
     }
 
 
@@ -90,7 +88,6 @@ public class ShopHome extends AppCompatActivity implements View.OnClickListener 
 
 
 
-
     @Override
     public void onClick(View v) {
 
@@ -113,10 +110,12 @@ public class ShopHome extends AppCompatActivity implements View.OnClickListener 
     }
 
 
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
 
         ButterKnife.unbind(this);
     }
+
 }

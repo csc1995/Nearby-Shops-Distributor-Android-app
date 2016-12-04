@@ -20,15 +20,15 @@ import butterknife.OnClick;
 /**
  * Created by sumeet on 13/6/16.
  */
-public class AdapterPendingHandover extends RecyclerView.Adapter<AdapterPendingHandover.ViewHolder>{
+public class AdapterDeliveryApproval extends RecyclerView.Adapter<AdapterDeliveryApproval.ViewHolder>{
 
 
     private List<Order> dataset = null;
 //    private Context context;
-    private NotifyCancelHandover notifications;
+    private NotifyMarkDelivered notifications;
 
 
-    public AdapterPendingHandover(List<Order> dataset, NotifyCancelHandover notifications) {
+    public AdapterDeliveryApproval(List<Order> dataset, NotifyMarkDelivered notifications) {
         this.dataset = dataset;
 //        this.context = context;
         this.notifications = notifications;
@@ -36,7 +36,7 @@ public class AdapterPendingHandover extends RecyclerView.Adapter<AdapterPendingH
     }
 
     @Override
-    public AdapterPendingHandover.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public AdapterDeliveryApproval.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item_pending_delivery_approval_dgi,parent,false);
@@ -45,7 +45,7 @@ public class AdapterPendingHandover extends RecyclerView.Adapter<AdapterPendingH
     }
 
     @Override
-    public void onBindViewHolder(AdapterPendingHandover.ViewHolder holder, int position) {
+    public void onBindViewHolder(AdapterDeliveryApproval.ViewHolder holder, int position) {
 
         if(dataset!=null)
         {
@@ -127,14 +127,14 @@ public class AdapterPendingHandover extends RecyclerView.Adapter<AdapterPendingH
         @OnClick(R.id.cancelHandoverButton)
         void onClickConfirmButton(View view)
         {
-            notifications.notifyCancelHandover(dataset.get(getLayoutPosition()));
+            notifications.notifyMarkDelivered(dataset.get(getLayoutPosition()));
         }
 
     }
 
 
-    interface NotifyCancelHandover {
-        void notifyCancelHandover(Order order);
+    interface NotifyMarkDelivered {
+        void notifyMarkDelivered(Order order);
     }
 
 }

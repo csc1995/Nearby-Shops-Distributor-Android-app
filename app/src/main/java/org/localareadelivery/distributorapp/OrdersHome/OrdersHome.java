@@ -8,8 +8,8 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import org.localareadelivery.distributorapp.CancelledOrders.CancelledOrdersHomeDelivery;
-import org.localareadelivery.distributorapp.DeliveryGuyAccounts.AccountsFragment;
-import org.localareadelivery.distributorapp.DeliveryGuyAccounts.DeliveryGuySelection.DeliveryGuySelection;
+import org.localareadelivery.distributorapp.DeliveryAccounts.DeliveryGuySelection.AccountsSelectionFragment;
+import org.localareadelivery.distributorapp.DeliveryAccounts.DeliveryGuySelection.DeliveryGuySelection;
 import org.localareadelivery.distributorapp.HomeDeliveryInventory.HomeDelivery;
 import org.localareadelivery.distributorapp.R;
 
@@ -52,7 +52,7 @@ public class OrdersHome extends AppCompatActivity {
 
 
         Intent intent = new Intent(this, DeliveryGuySelection.class);
-        intent.putExtra(AccountsFragment.INTENT_REQUEST_CODE_KEY,AccountsFragment.INTENT_CODE_DELIVERY_GUY_INVENTORY);
+        intent.putExtra(AccountsSelectionFragment.INTENT_REQUEST_CODE_KEY,AccountsSelectionFragment.INTENT_CODE_DELIVERY_GUY_INVENTORY);
         startActivity(intent);
 
     }
@@ -66,7 +66,7 @@ public class OrdersHome extends AppCompatActivity {
 //        startActivity(intent);
 
         Intent intent = new Intent(this, DeliveryGuySelection.class);
-        intent.putExtra(AccountsFragment.INTENT_REQUEST_CODE_KEY,AccountsFragment.INTENT_CODE_DELIVERY_GUY_DASHBOARD);
+        intent.putExtra(AccountsSelectionFragment.INTENT_REQUEST_CODE_KEY,AccountsSelectionFragment.INTENT_CODE_DELIVERY_GUY_DASHBOARD);
         startActivity(intent);
     }
 

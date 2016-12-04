@@ -20,7 +20,9 @@ import org.localareadelivery.distributorapp.ModelRoles.DeliveryGuySelf;
 import org.localareadelivery.distributorapp.ModelStatusCodes.OrderStatusHomeDelivery;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderService;
+import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderServiceShopStaff;
 import org.localareadelivery.distributorapp.ShopHome.UtilityShopHome;
+import org.localareadelivery.distributorapp.Utility.UtilityLogin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,14 +41,17 @@ import retrofit2.Response;
 
 
 public class PendingDeliveryApproval extends Fragment
-        implements SwipeRefreshLayout.OnRefreshListener,AdapterPendingHandover.NotifyCancelHandover {
+        implements SwipeRefreshLayout.OnRefreshListener,AdapterDeliveryApproval.NotifyMarkDelivered {
 
 
     @Inject
     OrderService orderService;
 
+    @Inject
+    OrderServiceShopStaff orderServiceShopStaff;
+
     RecyclerView recyclerView;
-    AdapterPendingHandover adapter;
+    AdapterDeliveryApproval adapter;
 
     public List<Order> dataset = new ArrayList<>();
 
@@ -138,7 +143,7 @@ public class PendingDeliveryApproval extends Fragment
     void setupRecyclerView()
     {
 
-        adapter = new AdapterPendingHandover(dataset,this);
+        adapter = new AdapterDeliveryApproval(dataset,this);
 
         recyclerView.setAdapter(adapter);
 
@@ -304,13 +309,19 @@ public class PendingDeliveryApproval extends Fragment
 
 
     @Override
-    public void notifyCancelHandover(Order order) {
+    public void notifyMarkDelivered(Order order) {
 
 
-        order.setStatusHomeDelivery(OrderStatusHomeDelivery.ORDER_PACKED);
-        order.setDeliveryVehicleSelfID(null);
+//        order.setStatusHomeDelivery(OrderStatusHomeDelivery.ORDER_PACKED);
+//        order.setDeliveryGuySelfID(null);
 
-        Call<ResponseBody> call = orderService.putOrder(order.getOrderID(),order);
+//        Call<ResponseBody> call = orderService.putOrder(order.getOrderID(),order);
+
+        Call<ResponseBody> call = orderServiceShopStaff.markDelivered(
+                UtilityLogin.getAuthorizationHeaders(getActivity()),
+                order.getOrderID()
+        );
+
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -320,6 +331,10 @@ public class PendingDeliveryApproval extends Fragment
                 {
                     showToastMessage("Handover cancelled !");
                     makeRefreshNetworkCall();
+                }
+                else
+                {
+                    showToastMessage("Failed code : " + String.valueOf(response.code()));
                 }
 
             }

@@ -12,9 +12,9 @@ import org.localareadelivery.distributorapp.CancelledOrders.CancelledByShop.Frag
 import org.localareadelivery.distributorapp.CancelledOrders.ReturnedByDeliveryGuy.FragmentReturnedByDG;
 import org.localareadelivery.distributorapp.DaggerModules.AppModule;
 import org.localareadelivery.distributorapp.DaggerModules.NetModule;
-import org.localareadelivery.distributorapp.DeliveryGuyAccounts.AccountsFragment;
-import org.localareadelivery.distributorapp.DeliveryGuyAccounts.DeliveryGuySelection.AccountsSelectionFragment;
-import org.localareadelivery.distributorapp.DeliveryGuyAccounts.EditProfile.EditDeliveryFragment;
+import org.localareadelivery.distributorapp.DeliveryAccounts.AccountsFragment;
+import org.localareadelivery.distributorapp.DeliveryAccounts.DeliveryGuySelection.AccountsSelectionFragment;
+import org.localareadelivery.distributorapp.DeliveryAccounts.EditProfile.EditDeliveryFragment;
 import org.localareadelivery.distributorapp.DeliveryGuyDashboard.PendingDeliveryApproval.PendingDeliveryApprovalDGD;
 import org.localareadelivery.distributorapp.DeliveryGuyDashboard.PendingHandover.PendingHandoverFragment;
 import org.localareadelivery.distributorapp.DeliveryGuyDashboard.PendingReturn.PendingReturnByDG;
@@ -28,6 +28,8 @@ import org.localareadelivery.distributorapp.EditStock.ItemCategories.ItemCategor
 import org.localareadelivery.distributorapp.EditStock.ItemCategories.ItemCategoriesFragmentEditStock;
 import org.localareadelivery.distributorapp.EditStock.Items.FragmentItemsEditor;
 import org.localareadelivery.distributorapp.HomeShopAdmin.EditProfile.EditShopAdminFragment;
+import org.localareadelivery.distributorapp.HomeShopAdmin.EditShop.EditShopFragment;
+import org.localareadelivery.distributorapp.HomeShopAdmin.ShopAdminHome;
 import org.localareadelivery.distributorapp.ItemCategoriesTabs.ItemCategories.EditItemCategory;
 import org.localareadelivery.distributorapp.ItemCategoriesTabs.ItemCategories.ItemCategoriesAdapter;
 import org.localareadelivery.distributorapp.ItemCategoriesTabs.ItemCategories.ItemCategoriesFragment;
@@ -166,4 +168,8 @@ public interface NetComponent {
     void Inject(AccountsSelectionFragment accountsSelectionFragment);
 
     void Inject(EditShopAdminFragment editShopAdminFragment);
+
+    void Inject(EditShopFragment editShopFragment);
+
+    void Inject(ShopAdminHome shopAdminHome);
 }

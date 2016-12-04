@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.DeliveryGuyAccounts.EditProfile;
+package org.localareadelivery.distributorapp.HomeShopAdmin.EditShop;
 
 
 import android.Manifest;
@@ -17,9 +17,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,12 +28,11 @@ import com.yalantis.ucrop.UCrop;
 import com.yalantis.ucrop.UCropActivity;
 
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
-import org.localareadelivery.distributorapp.ModelRoles.DeliveryGuySelf;
 import org.localareadelivery.distributorapp.Model.Image;
+import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.R;
-import org.localareadelivery.distributorapp.RetrofitRESTContract.DeliveryGuySelfService;
+import org.localareadelivery.distributorapp.RetrofitRESTContract.ShopService;
 import org.localareadelivery.distributorapp.ShopHome.UtilityShopHome;
-import org.localareadelivery.distributorapp.Utility.ImageCropUtility;
 import org.localareadelivery.distributorapp.Utility.UtilityGeneral;
 import org.localareadelivery.distributorapp.Utility.UtilityLogin;
 
@@ -46,7 +45,6 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.OnTextChanged;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
@@ -57,7 +55,7 @@ import retrofit2.Response;
 import static android.app.Activity.RESULT_OK;
 
 
-public class EditDeliveryFragment extends Fragment {
+public class EditShopFragment extends Fragment {
 
     public static int PICK_IMAGE_REQUEST = 21;
     // Upload the image after picked up
@@ -67,8 +65,12 @@ public class EditDeliveryFragment extends Fragment {
 //    Validator validator;
 
 
+//    @Inject
+//    DeliveryGuySelfService deliveryService;
+
     @Inject
-    DeliveryGuySelfService deliveryService;
+    ShopService shopService;
+
 
     // flag for knowing whether the image is changed or not
     boolean isImageChanged = false;
@@ -80,19 +82,50 @@ public class EditDeliveryFragment extends Fragment {
     ImageView resultView;
 
 
-    @Bind(R.id.item_id) EditText item_id;
-    @Bind(R.id.name) EditText name;
-    @Bind(R.id.username) EditText username;
-    @Bind(R.id.password) EditText password;
-    @Bind(R.id.about) EditText about;
+    @Bind(R.id.shop_open) CheckBox shopOpen;
+//    @Bind(R.id.shop_id) EditText shopID;
 
-    @Bind(R.id.phone_number) EditText phone;
-    @Bind(R.id.switch_enable) Switch aSwitch;
+    @Bind(R.id.enter_shop_id) EditText shopIDEnter;
+    @Bind(R.id.shopName) EditText shopName;
+
+    @Bind(R.id.shopAddress) EditText shopAddress;
+    @Bind(R.id.shopCity) EditText city;
+    @Bind(R.id.shopPincode) EditText pincode;
+    @Bind(R.id.shopLandmark) EditText landmark;
+
+    @Bind(R.id.customerHelplineNumber) EditText customerHelplineNumber;
+    @Bind(R.id.deliveryHelplineNumber) EditText deliveryHelplineNumber;
+
+    @Bind(R.id.shopShortDescription) EditText shopDescriptionShort;
+    @Bind(R.id.shopLongDescription) EditText shopDescriptionLong;
+
+    @Bind(R.id.latitude) EditText latitude;
+    @Bind(R.id.longitude) EditText longitude;
+    @Bind(R.id.pick_location_button) TextView pickLocationButton;
+    @Bind(R.id.rangeOfDelivery) EditText rangeOfDelivery;
+
+    @Bind(R.id.deliveryCharges) EditText deliveryCharge;
+    @Bind(R.id.billAmountForFreeDelivery) EditText billAmountForFreeDelivery;
+
+    @Bind(R.id.pick_from_shop_available) CheckBox pickFromShopAvailable;
+    @Bind(R.id.home_delivery_available) CheckBox homeDeliveryAvailable;
+
+
+
+//    @Bind(R.id.item_id) EditText item_id;
+//    @Bind(R.id.name) EditText name;
+//    @Bind(R.id.username) EditText username;
+//    @Bind(R.id.password) EditText password;
+//    @Bind(R.id.about) EditText about;
+
+//    @Bind(R.id.phone_number) EditText phone;
+//    @Bind(R.id.designation) EditText designation;
+//    @Bind(R.id.switch_enable) Switch aSwitch;
 
     @Bind(R.id.saveButton) Button buttonUpdateItem;
 
 
-    public static final String DELIVERY_GUY_INTENT_KEY = "delivery_guy_intent_key";
+    public static final String SHOP_INTENT_KEY = "shop_intent_key";
     public static final String EDIT_MODE_INTENT_KEY = "edit_mode";
 
     public static final int MODE_UPDATE = 52;
@@ -100,10 +133,11 @@ public class EditDeliveryFragment extends Fragment {
 
     int current_mode = MODE_ADD;
 
-    DeliveryGuySelf deliveryGuySelf = new DeliveryGuySelf();
+//    DeliveryGuySelf deliveryGuySelf = new DeliveryGuySelf();
+//    ShopAdmin shopAdmin = new ShopAdmin();
+        Shop shop = new Shop();
 
-
-    public EditDeliveryFragment() {
+    public EditShopFragment() {
 
         DaggerComponentBuilder.getInstance()
                 .getNetComponent().Inject(this);
@@ -118,16 +152,23 @@ public class EditDeliveryFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
 
         setRetainInstance(true);
-        View rootView = inflater.inflate(R.layout.content_edit_delivery_guy, container, false);
+        View rootView = inflater.inflate(R.layout.content_edit_shop_fragment, container, false);
 
         ButterKnife.bind(this,rootView);
 
         if(savedInstanceState==null)
         {
-            deliveryGuySelf = getActivity().getIntent().getParcelableExtra(DELIVERY_GUY_INTENT_KEY);
+//            shopAdmin = getActivity().getIntent().getParcelableExtra(SHOP_ADMIN_INTENT_KEY);
+
             current_mode = getActivity().getIntent().getIntExtra(EDIT_MODE_INTENT_KEY,MODE_ADD);
 
-            if(deliveryGuySelf!=null) {
+            if(current_mode == MODE_UPDATE)
+            {
+                shop = UtilityShopHome.getShop(getContext());
+            }
+
+
+            if(shop!=null) {
                 bindDataToViews();
             }
 
@@ -146,8 +187,8 @@ public class EditDeliveryFragment extends Fragment {
         updateIDFieldVisibility();
 
 
-        if(deliveryGuySelf!=null) {
-            loadImage(deliveryGuySelf.getProfileImageURL());
+        if(shop!=null) {
+            loadImage(shop.getLogoImagePath());
             showLogMessage("Inside OnCreateView : DeliveryGUySelf : Not Null !");
         }
 
@@ -162,11 +203,13 @@ public class EditDeliveryFragment extends Fragment {
 
         if(current_mode==MODE_ADD)
         {
-            item_id.setVisibility(View.GONE);
+            buttonUpdateItem.setText("Add Shop");
+            shopIDEnter.setVisibility(View.GONE);
         }
         else if(current_mode== MODE_UPDATE)
         {
-            item_id.setVisibility(View.VISIBLE);
+            shopIDEnter.setVisibility(View.VISIBLE);
+            buttonUpdateItem.setText("Save");
         }
     }
 
@@ -183,7 +226,7 @@ public class EditDeliveryFragment extends Fragment {
 
     void loadImage(String imagePath) {
 
-        String iamgepath = UtilityGeneral.getServiceURL(getContext()) + "/api/DeliveryGuySelf/Image/" + imagePath;
+        String iamgepath = UtilityGeneral.getServiceURL(getContext()) + "/api/v1/Shop/Image/" + imagePath;
 
         Picasso.with(getContext())
                 .load(iamgepath)
@@ -205,7 +248,7 @@ public class EditDeliveryFragment extends Fragment {
 
         if(current_mode == MODE_ADD)
         {
-            deliveryGuySelf = new DeliveryGuySelf();
+            shop = new Shop();
             addAccount();
         }
         else if(current_mode == MODE_UPDATE)
@@ -219,82 +262,78 @@ public class EditDeliveryFragment extends Fragment {
     {
         boolean isValid = true;
 
-
-        if(phone.getText().toString().length()==0)
+        if(shopName.getText().toString().length()==0)
         {
-            phone.setError("Please enter Phone Number");
-            phone.requestFocus();
+            shopName.setError("Please enter Phone Number");
+            shopName.requestFocus();
             isValid= false;
         }
 
 
-        if(password.getText().toString().length()==0)
+        if(!homeDeliveryAvailable.isChecked() && !pickFromShopAvailable.isChecked())
         {
-            password.requestFocus();
-            password.setError("Password cannot be empty");
+            homeDeliveryAvailable.setError("You must pick at least one delivery Option");
+            pickFromShopAvailable.setError("You must pick at least one delivery Option");
+            homeDeliveryAvailable.requestFocus();
+            pickFromShopAvailable.requestFocus();
+
             isValid = false;
         }
 
 
-        if(username.getText().toString().length()==0)
+        if(latitude.getText().toString().length()==0)
         {
-            username.requestFocus();
-            username.setError("Username cannot be empty");
+            latitude.setError("Latitude cant be empty !");
+            latitude.requestFocus();
+            isValid = false;
+        }
+        else
+        {
+            double lat = Double.parseDouble(latitude.getText().toString());
+
+            if(lat >90 || lat <- 90)
+            {
+                latitude.setError("Invalid Latitude !");
+                isValid  = false;
+            }
+        }
+
+
+        if(longitude.getText().toString().length()==0)
+        {
+            longitude.setError("Longitude cant be empty !");
+            longitude.requestFocus();
             isValid= false;
         }
-
-
-        if(name.getText().toString().length()==0)
+        else
         {
+            double lon = Double.parseDouble(longitude.getText().toString());
 
-//            Drawable drawable = ContextCompat.getDrawable(getContext(),R.drawable.ic_close_black_24dp);
-            name.requestFocus();
-            name.setError("Name cannot be empty");
+            if(lon >180 || lon < -180)
+            {
+                longitude.setError("Invalid Longitude !");
+                isValid = false;
+            }
+
+        }
+
+        if(rangeOfDelivery.getText().toString().length()==0)
+        {
+            rangeOfDelivery.setError("Range of Delivery cant be empty !");
+            rangeOfDelivery.requestFocus();
             isValid = false;
         }
+
+        if(shopDescriptionShort.getText().toString().length()>100)
+        {
+            shopDescriptionShort.setError("Should not be more than 100 characters !");
+            shopDescriptionShort.requestFocus();
+            isValid = false;
+        }
+
 
 
         return isValid;
-    }
-
-
-    @OnTextChanged(R.id.username)
-    void usernameCheck()
-    {
-
-
-        if(deliveryGuySelf!=null && deliveryGuySelf.getUsername()!=null
-                &&
-                username.getText().toString().equals(deliveryGuySelf.getUsername()))
-        {
-            username.setTextColor(ContextCompat.getColor(getContext(),R.color.gplus_color_1));
-            return;
-        }
-
-
-        Call<ResponseBody> call = deliveryService.checkUsernameExist(username.getText().toString());
-
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-
-                if(response.code()==200)
-                {
-                    //username already exists
-                    username.setTextColor(ContextCompat.getColor(getContext(),R.color.gplus_color_4));
-                    username.setError("Username already exist !");
-                }
-                else if(response.code() == 204)
-                {
-                    username.setTextColor(ContextCompat.getColor(getContext(),R.color.gplus_color_1));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-
-            }
-        });
     }
 
 
@@ -333,7 +372,7 @@ public class EditDeliveryFragment extends Fragment {
 
 
             // delete previous Image from the Server
-            deleteImage(deliveryGuySelf.getProfileImageURL());
+            deleteImage(shop.getLogoImagePath());
 
             /*ImageCalls.getInstance()
                     .deleteImage(
@@ -345,7 +384,7 @@ public class EditDeliveryFragment extends Fragment {
             if(isImageRemoved)
             {
 
-                deliveryGuySelf.setProfileImageURL(null);
+                shop.setLogoImagePath(null);
                 retrofitPUTRequest();
 
             }else
@@ -369,26 +408,45 @@ public class EditDeliveryFragment extends Fragment {
 
     void bindDataToViews()
     {
-        if(deliveryGuySelf!=null) {
+        if(shop!=null) {
 
-            item_id.setText(String.valueOf(deliveryGuySelf.getDeliveryGuyID()));
-            name.setText(deliveryGuySelf.getName());
-            username.setText(deliveryGuySelf.getUsername());
-            password.setText(deliveryGuySelf.getPassword());
-            about.setText(deliveryGuySelf.getAbout());
-            phone.setText(deliveryGuySelf.getPhoneNumber());
-            aSwitch.setChecked(deliveryGuySelf.getEnabled());
+            shopOpen.setChecked(shop.isOpen());
+            shopIDEnter.setText(String.valueOf(shop.getShopID()));
+            shopName.setText(shop.getShopName());
+            shopAddress.setText(shop.getShopAddress());
+
+            city.setText(shop.getCity());
+            pincode.setText(String.valueOf(shop.getPincode()));
+            landmark.setText(shop.getLandmark());
+            customerHelplineNumber.setText(shop.getCustomerHelplineNumber());
+
+            deliveryHelplineNumber.setText(shop.getDeliveryHelplineNumber());
+            shopDescriptionShort.setText(shop.getShortDescription());
+            shopDescriptionLong.setText(shop.getLongDescription());
+            latitude.setText(String.valueOf(shop.getLatCenter()));
+
+            longitude.setText(String.valueOf(shop.getLonCenter()));
+            rangeOfDelivery.setText(String.valueOf(shop.getDeliveryRange()));
+            deliveryCharge.setText(String.valueOf(shop.getDeliveryCharges()));
+            billAmountForFreeDelivery.setText(String.valueOf(shop.getBillAmountForFreeDelivery()));
+
+            pickFromShopAvailable.setChecked(shop.getPickFromShopAvailable());
+            homeDeliveryAvailable.setChecked(shop.getHomeDeliveryAvailable());
+
         }
     }
 
 
+
+
+
     void getDataFromViews()
     {
-        if(deliveryGuySelf==null)
+        if(shop==null)
         {
             if(current_mode == MODE_ADD)
             {
-                deliveryGuySelf = new DeliveryGuySelf();
+                shop = new Shop();
             }
             else
             {
@@ -396,18 +454,33 @@ public class EditDeliveryFragment extends Fragment {
             }
         }
 
-        if(current_mode == MODE_ADD)
-        {
-            deliveryGuySelf.setShopID(UtilityShopHome.getShop(getContext()).getShopID());
-        }
+//        if(current_mode == MODE_ADD)
+//        {
+//            deliveryGuySelf.setShopID(UtilityShopHome.getShop(getContext()).getShopID());
+//        }
 
-        deliveryGuySelf.setName(name.getText().toString());
-        deliveryGuySelf.setUsername(username.getText().toString());
-        deliveryGuySelf.setPassword(password.getText().toString());
-        deliveryGuySelf.setAbout(about.getText().toString());
-        deliveryGuySelf.setPhoneNumber(phone.getText().toString());
+        shop.setOpen(shopOpen.isChecked());
+        shop.setShopName(shopName.getText().toString());
+        shop.setShopAddress(shopAddress.getText().toString());
 
-        deliveryGuySelf.setEnabled(aSwitch.isChecked());
+        shop.setCity(city.getText().toString());
+        shop.setPincode(Long.parseLong(pincode.getText().toString()));
+        shop.setLandmark(landmark.getText().toString());
+        shop.setCustomerHelplineNumber(customerHelplineNumber.getText().toString());
+
+        shop.setDeliveryHelplineNumber(deliveryHelplineNumber.getText().toString());
+        shop.setShortDescription(shopDescriptionShort.getText().toString());
+        shop.setLongDescription(shopDescriptionLong.getText().toString());
+        shop.setLatCenter(Double.parseDouble(latitude.getText().toString()));
+
+        shop.setLonCenter(Double.parseDouble(longitude.getText().toString()));
+        shop.setDeliveryRange(Double.parseDouble(rangeOfDelivery.getText().toString()));
+        shop.setDeliveryCharges(Double.parseDouble(deliveryCharge.getText().toString()));
+        shop.setBillAmountForFreeDelivery(Integer.parseInt(billAmountForFreeDelivery.getText().toString()));
+
+        shop.setPickFromShopAvailable(pickFromShopAvailable.isChecked());
+        shop.setHomeDeliveryAvailable(homeDeliveryAvailable.isChecked());
+
     }
 
 
@@ -417,9 +490,12 @@ public class EditDeliveryFragment extends Fragment {
 
         getDataFromViews();
 
-        // update Item Call
-        Call<ResponseBody> call = deliveryService.putVehicle(UtilityLogin.getAuthorizationHeaders(getContext()),
-                deliveryGuySelf,deliveryGuySelf.getDeliveryGuyID());
+
+        Call<ResponseBody> call = shopService.updateBySelf(
+                UtilityLogin.getAuthorizationHeaders(getContext()),
+                shop
+        );
+
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -428,19 +504,17 @@ public class EditDeliveryFragment extends Fragment {
                 if(response.code()==200)
                 {
                     showToastMessage("Update Successful !");
-
+                    UtilityShopHome.saveShop(shop,getContext());
                 }
                 else
                 {
-                    showToastMessage("Update Failed !");
+                    showToastMessage("Update Failed Code : " + response.code());
                 }
-
-
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                showToastMessage("Update Failed !");
+
             }
         });
 
@@ -451,12 +525,11 @@ public class EditDeliveryFragment extends Fragment {
     {
         getDataFromViews();
 
-        Call<DeliveryGuySelf> call = deliveryService.postVehicle(UtilityLogin.getAuthorizationHeaders(getContext()),
-                deliveryGuySelf);
+        Call<Shop> call = shopService.postShop(UtilityLogin.getAuthorizationHeaders(getContext()),shop);
 
-        call.enqueue(new Callback<DeliveryGuySelf>() {
+        call.enqueue(new Callback<Shop>() {
             @Override
-            public void onResponse(Call<DeliveryGuySelf> call, Response<DeliveryGuySelf> response) {
+            public void onResponse(Call<Shop> call, Response<Shop> response) {
 
                 if(response.code()==201)
                 {
@@ -464,24 +537,28 @@ public class EditDeliveryFragment extends Fragment {
 
                     current_mode = MODE_UPDATE;
                     updateIDFieldVisibility();
-                    deliveryGuySelf = response.body();
+                    shop = response.body();
                     bindDataToViews();
+
+                    UtilityShopHome.saveShop(shop,getContext());
+
                 }
                 else
                 {
-                    showToastMessage("Add failed !");
+                    showToastMessage("Add failed Code : " + response.code());
                 }
-
 
             }
 
             @Override
-            public void onFailure(Call<DeliveryGuySelf> call, Throwable t) {
-
+            public void onFailure(Call<Shop> call, Throwable t) {
                 showToastMessage("Add failed !");
             }
         });
+
     }
+
+
 
 
     @Override
@@ -583,7 +660,7 @@ public class EditDeliveryFragment extends Fragment {
 
 
 
-        if (requestCode == ImageCropUtility.PICK_IMAGE_REQUEST && resultCode == RESULT_OK
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
                 && result != null
                 && result.getData() != null) {
 
@@ -742,7 +819,7 @@ public class EditDeliveryFragment extends Fragment {
 
 
 
-        Call<Image> imageCall = deliveryService.uploadImage(UtilityLogin.getAuthorizationHeaders(getContext()),
+        Call<Image> imageCall = shopService.uploadImage(UtilityLogin.getAuthorizationHeaders(getContext()),
                 requestBodyBinary);
 
 
@@ -752,27 +829,27 @@ public class EditDeliveryFragment extends Fragment {
 
                 if(response.code()==201)
                 {
-                    showToastMessage("Image UPload Success !");
+//                    showToastMessage("Image UPload Success !");
 
                     Image image = response.body();
                     // check if needed or not . If not needed then remove this line
 //                    loadImage(image.getPath());
 
 
-                    deliveryGuySelf.setProfileImageURL(image.getPath());
+                    shop.setLogoImagePath(image.getPath());
 
                 }
                 else if(response.code()==417)
                 {
                     showToastMessage("Cant Upload Image. Image Size should not exceed 2 MB.");
 
-                    deliveryGuySelf.setProfileImageURL(null);
+                    shop.setLogoImagePath(null);
 
                 }
                 else
                 {
                     showToastMessage("Image Upload failed !");
-                    deliveryGuySelf.setProfileImageURL(null);
+                    shop.setLogoImagePath(null);
 
                 }
 
@@ -792,7 +869,8 @@ public class EditDeliveryFragment extends Fragment {
             public void onFailure(Call<Image> call, Throwable t) {
 
                 showToastMessage("Image Upload failed !");
-                deliveryGuySelf.setProfileImageURL(null);
+                shop.setLogoImagePath(null);
+
 
                 if(isModeEdit)
                 {
@@ -811,26 +889,33 @@ public class EditDeliveryFragment extends Fragment {
 
     void deleteImage(String filename)
     {
-        Call<ResponseBody> call = deliveryService.deleteImage(UtilityLogin.getAuthorizationHeaders(getContext()),filename);
+        Call<ResponseBody> call = shopService.deleteImage(
+                UtilityLogin.getAuthorizationHeaders(getContext()),
+                filename);
+
+
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
 
-                if(response.code()==200)
-                {
-                    showToastMessage("Image Delete successful !");
-                }
-                else
-                {
-                    showToastMessage("Image Delete failed");
-                }
+
+                    if(response.code()==200)
+                    {
+                        showToastMessage("Image Removed !");
+                    }
+                    else
+                    {
+//                        showToastMessage("Image Delete failed");
+                    }
+
+
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
 
-                showToastMessage("Image Delete failed");
+//                showToastMessage("Image Delete failed");
             }
         });
     }

@@ -17,8 +17,8 @@ import static android.content.Context.MODE_PRIVATE;
 
 
 
-
 public class UtilityShopHome {
+
 
     public static void saveShop(Shop shop, Context context)
     {
@@ -61,6 +61,7 @@ public class UtilityShopHome {
         {
             return gson.fromJson(json, Shop.class);
         }
-
     }
+
+
 }

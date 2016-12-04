@@ -26,7 +26,9 @@ import org.localareadelivery.distributorapp.HomeDeliveryInventory.Interface.Noti
 import org.localareadelivery.distributorapp.HomeDeliveryInventory.Interface.RefreshFragment;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderService;
+import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderServiceShopStaff;
 import org.localareadelivery.distributorapp.ShopHome.UtilityShopHome;
+import org.localareadelivery.distributorapp.Utility.UtilityLogin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,9 +53,14 @@ import retrofit2.Response;
  */
 public class PackedOrdersFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, ConfirmOrdersClicked, RefreshFragment, AdapterPackedOrders.NotifyCancelHandover{
 
+    @Inject
+    OrderServiceShopStaff orderServiceShopStaff;
 
     @Inject
     OrderService orderService;
+
+
+
     RecyclerView recyclerView;
     AdapterPackedOrders adapter;
     public List<Order> dataset = new ArrayList<>();
@@ -402,7 +409,13 @@ public class PackedOrdersFragment extends Fragment implements SwipeRefreshLayout
 
     private void cancelOrder(Order order) {
 
-        Call<ResponseBody> call = orderService.cancelOrderByShop(order.getOrderID());
+//        Call<ResponseBody> call = orderService.cancelOrderByShop(order.getOrderID());
+        Call<ResponseBody> call = orderServiceShopStaff.cancelledByShop(
+                UtilityLogin.getAuthorizationHeaders(getActivity()),
+                order.getOrderID()
+        );
+
+
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override

@@ -280,7 +280,7 @@
             android:exported="false" />
 
         <activity
-            android:name=".DeliveryGuyAccounts.DeliveryGuyAccounts"
+            android:name=".DeliveryAccounts.DeliveryGuyAccounts"
             android:label="@string/title_activity_delivery_guy_accounts"
             android:parentActivityName=".ShopHome.ShopHome"
             android:theme="@style/AppTheme.NoActionBar">
@@ -289,16 +289,16 @@
                 android:value="org.localareadelivery.distributorapp.ShopHome.ShopHome" />
         </activity>
         <activity
-            android:name=".DeliveryGuyAccounts.EditProfile.EditDelivery"
+            android:name=".DeliveryAccounts.EditProfile.EditDelivery"
             android:label="Edit Delivery Account"
-            android:parentActivityName=".DeliveryGuyAccounts.DeliveryGuyAccounts"
+            android:parentActivityName=".DeliveryAccounts.DeliveryGuyAccounts"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".DeliveryGuyAccounts.DeliveryGuyAccounts" />
+                android:value=".DeliveryAccounts.DeliveryGuyAccounts" />
         </activity>
         <activity
-            android:name=".DeliveryGuyAccounts.DeliveryGuySelection.DeliveryGuySelection"
+            android:name=".DeliveryAccounts.DeliveryGuySelection.DeliveryGuySelection"
             android:label="@string/title_activity_delivery_guy_selection"
             android:parentActivityName=".OrdersHome.OrdersHome"
             android:theme="@style/AppTheme.NoActionBar">
@@ -319,6 +319,18 @@
         <activity
             android:name=".HomeShopAdmin.EditProfile.EditShopAdmin"
             android:label="Edit Shop Admin"
+            android:parentActivityName=".HomeShopAdmin.ShopAdminHome"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".HomeShopAdmin.ShopAdminHome" />
+        </activity>
+
+
+
+        <activity
+            android:name=".HomeShopAdmin.EditShop.EditShop"
+            android:label="Edit Shop"
             android:parentActivityName=".HomeShopAdmin.ShopAdminHome"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data

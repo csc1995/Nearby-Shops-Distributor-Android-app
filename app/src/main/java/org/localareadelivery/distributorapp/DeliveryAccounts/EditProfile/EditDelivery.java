@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.DeliveryGuyAccounts.EditProfile;
+package org.localareadelivery.distributorapp.DeliveryAccounts.EditProfile;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
