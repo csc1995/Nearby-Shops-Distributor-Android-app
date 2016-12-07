@@ -35,7 +35,26 @@
         android:paddingTop="@dimen/activity_vertical_margin">
 
 
+        <TextView
+            android:background="#88000000"
+            android:layout_width="match_parent"
+            android:layout_height="1dp" />
+
+
+        <TextView
+            android:padding="5dp"
+            android:layout_marginTop="10dp"
+            android:id="@+id/header_items"
+            android:text="Items"
+            android:textSize="17sp"
+            android:background="@color/light_grey"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
         <LinearLayout
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/header_items"
             android:weightSum="2"
             android:id="@+id/row_zero"
             android:layout_width="match_parent"
@@ -108,16 +127,27 @@
             android:orientation="horizontal"
             android:id="@+id/borderOne"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
             android:layout_below="@id/row_zero"
             android:background="#88000000"
             android:layout_width="match_parent"
             android:layout_height="1dp"/>
 
+        <TextView
+            android:layout_below="@id/borderOne"
+            android:padding="5dp"
+            android:layout_marginTop="10dp"
+            android:id="@+id/header_stock_items"
+            android:text="Items in Stock"
+            android:textSize="17sp"
+            android:background="@color/light_grey"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
 
         <LinearLayout
+            android:layout_marginTop="10dp"
             android:id="@+id/row_one"
-            android:layout_below="@id/borderOne"
+            android:layout_below="@id/header_stock_items"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -127,7 +157,7 @@
                 android:layout_weight="1"
                 android:layout_below="@id/borderOne"
                 android:id="@+id/option_edit_stock"
-                android:background="@color/gplus_color_1"
+                android:background="@color/blueGrey800Alpha55"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/menu_item_width">
 
@@ -140,6 +170,7 @@
                     android:layout_height="match_parent" />
 
 
+                <!--android:text="Edit Stock"-->
                 <TextView
                     android:padding="10dp"
                     android:id="@+id/text_add_stock"
@@ -148,17 +179,62 @@
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentBottom="true"
                     android:textColor="#ffffff"
-                    android:text="Edit Stock"
+                    android:text="Stock Items by Category"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </RelativeLayout>
 
 
+            <RelativeLayout
+                android:layout_marginStart="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:layout_below="@id/borderOne"
+                android:id="@+id/option_stock_items"
+                android:background="@color/blueGrey800"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/menu_item_width">
+
+                <ImageView
+                    android:scaleType="centerCrop"
+                    android:tint="#ffffff"
+                    android:padding="10dp"
+                    android:layout_above="@+id/text_stock_items"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+
+                <!--android:text="Edit Stock"-->
+                <TextView
+                    android:padding="10dp"
+                    android:id="@+id/text_stock_items"
+                    android:textSize="@dimen/menu_item_text_size"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentBottom="true"
+                    android:textColor="#ffffff"
+                    android:text="Stock Items"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:id="@+id/row_one_one"
+            android:weightSum="2"
+            android:layout_below="@id/row_one"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
 
             <RelativeLayout
-                android:layout_marginLeft="5dp"
-                android:layout_marginStart="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginEnd="5dp"
                 android:id="@+id/shop_home_quick_stock_editor"
                 android:background="@color/gplus_color_2"
                 android:layout_weight="1"
@@ -182,14 +258,66 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </RelativeLayout>
+
+
+
+            <RelativeLayout
+                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
+                android:id="@+id/option_orders_"
+                android:background="@color/cyan900"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/menu_item_width">
+
+                <ImageView
+                    android:tint="#ffffff"
+                    android:padding="10dp"
+                    android:layout_above="@+id/text_notifications"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <TextView
+                    android:padding="10dp"
+                    android:id="@+id/text_notifications"
+                    android:textSize="@dimen/menu_item_text_size"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:textColor="#ffffff"
+                    android:text="Settings and Preferences"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
         </LinearLayout>
+
+        
+        <TextView
+            android:layout_marginTop="10dp"
+            android:id="@+id/border_delivery"
+            android:layout_below="@id/row_one_one"
+            android:background="@color/grey800"
+            android:layout_width="match_parent"
+            android:layout_height="1dp" />
+
+        
+        <TextView
+            android:padding="5dp"
+            android:layout_marginTop="10dp"
+            android:id="@+id/header_delivery"
+            android:layout_below="@id/border_delivery"
+            android:text="Orders and Delivery"
+            android:textSize="17sp"
+            android:background="@color/light_grey"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
 
         <LinearLayout
             android:id="@+id/row_two"
             android:weightSum="2"
             android:layout_marginTop="10dp"
-            android:layout_below="@id/row_one"
+            android:layout_below="@id/header_delivery"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -260,7 +388,6 @@
             android:orientation="horizontal"
             android:id="@+id/bordertwo"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
             android:layout_below="@id/row_two"
             android:background="#88000000"
             android:layout_width="match_parent"
@@ -268,6 +395,19 @@
 
 
 
+        <TextView
+            android:padding="5dp"
+            android:layout_marginTop="10dp"
+            android:id="@+id/header_accounts"
+            android:layout_below="@id/bordertwo"
+            android:text="Accounts"
+            android:textSize="17sp"
+            android:background="@color/light_grey"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+<!--
         <LinearLayout
             android:id="@+id/row_three"
             android:weightSum="2"
@@ -277,46 +417,16 @@
             android:layout_height="wrap_content">
 
 
-            <RelativeLayout
-                android:layout_marginRight="5dp"
-                android:layout_marginEnd="5dp"
-                android:id="@+id/option_orders_"
-                android:background="@color/gplus_color_2"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/menu_item_width">
-
-                <ImageView
-                    android:tint="#ffffff"
-                    android:padding="10dp"
-                    android:layout_above="@+id/text_notifications"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-                <TextView
-                    android:padding="10dp"
-                    android:id="@+id/text_notifications"
-                    android:textSize="@dimen/menu_item_text_size"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentBottom="true"
-                    android:textColor="#ffffff"
-                    android:text="Settings and Preferences"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </RelativeLayout>
-
-
-
         </LinearLayout>
 
+-->
 
 
         <LinearLayout
             android:id="@+id/row_four"
             android:weightSum="2"
             android:layout_marginTop="10dp"
-            android:layout_below="@id/row_three"
+            android:layout_below="@id/header_accounts"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -341,8 +451,6 @@
                     android:padding="10dp"
                     android:id="@+id/text_staff"
                     android:textSize="@dimen/menu_item_text_size"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true"
                     android:layout_alignParentBottom="true"
                     android:textColor="#ffffff"
                     android:text="Staff Accounts"
@@ -372,10 +480,9 @@
                     android:padding="10dp"
                     android:id="@+id/text_delivery_guy_account"
                     android:textSize="@dimen/menu_item_text_size"
-                    android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
                     android:textColor="#ffffff"
-                    android:text="Delivery Guy Accounts"
+                    android:text="Delivery Accounts"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </RelativeLayout>
@@ -387,16 +494,30 @@
             android:orientation="horizontal"
             android:id="@+id/borderthree"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
             android:layout_below="@id/row_four"
             android:background="#88000000"
             android:layout_width="match_parent"
             android:layout_height="1dp"/>
 
 
-        <LinearLayout
-            android:id="@+id/row_six"
+
+        <TextView
             android:layout_below="@id/borderthree"
+            android:padding="5dp"
+            android:layout_marginTop="10dp"
+            android:id="@+id/header_stats_billing"
+            android:text="Stats and Billing"
+            android:textSize="17sp"
+            android:background="@color/light_grey"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:id="@+id/row_six"
+            android:layout_below="@id/header_stats_billing"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 

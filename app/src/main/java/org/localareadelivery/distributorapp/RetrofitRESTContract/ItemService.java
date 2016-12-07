@@ -5,6 +5,8 @@ import org.localareadelivery.distributorapp.ModelEndpoints.ItemEndPoint;
 
 import java.util.List;
 
+import javax.ws.rs.QueryParam;
+
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -21,11 +23,18 @@ import retrofit2.http.Query;
 public interface ItemService
 {
 
-    @GET("/api/v1/Item/Deprecated")
-    Call<List<Item>> getItems(@Query("ItemCategoryID")int itemCategoryID,@Query("ShopID")int shopID);
+    @POST("/api/v1/Item")
+    Call<Item> insertItem(@Body Item item);
 
-    @GET("/api/v1/Item/Deprecated")
-    Call<List<Item>> getItems(@Query("ItemCategoryID")int itemCategoryID);
+    @PUT("/api/v1/Item/{id}")
+    Call<ResponseBody> updateItem(@Body Item item, @Path("id") int id);
+
+    @DELETE("/api/v1/Item/{id}")
+    Call<ResponseBody> deleteItem(@Path("id") int id);
+
+
+    @PUT("/api/v1/Item/")
+    Call<ResponseBody> updateItemBulk(@Body List<Item> itemList);
 
 
     @GET("/api/v1/Item")
@@ -46,6 +55,7 @@ public interface ItemService
     @GET("/api/v1/Item/OuterJoin")
     Call<ItemEndPoint> getItemsOuterJoin(
             @Query("ItemCategoryID")Integer itemCategoryID,
+            @Query("SearchString") String searchString,
             @Query("SortBy") String sortBy,
             @Query("Limit")Integer limit, @Query("Offset")Integer offset,
             @Query("metadata_only")Boolean metaonly
@@ -54,17 +64,16 @@ public interface ItemService
     @GET("/api/v1/Item/{id}")
     Call<Item> getItem(@Path("id")int ItemID);
 
-    @POST("/api/v1/Item")
-    Call<Item> insertItem(@Body Item item);
-
-    @PUT("/api/v1/Item/{id}")
-    Call<ResponseBody> updateItem(@Body Item item, @Path("id") int id);
-
-    @DELETE("/api/v1/Item/{id}")
-    Call<ResponseBody> deleteItem(@Path("id") int id);
 
 
-    @PUT("/api/v1/Item/")
-    Call<ResponseBody> updateItemBulk(@Body List<Item> itemList);
+
+    // Deprecated Calls
+
+    @GET("/api/v1/Item/Deprecated")
+    Call<List<Item>> getItems(@Query("ItemCategoryID")int itemCategoryID,@Query("ShopID")int shopID);
+
+    @GET("/api/v1/Item/Deprecated")
+    Call<List<Item>> getItems(@Query("ItemCategoryID")int itemCategoryID);
+
 
 }

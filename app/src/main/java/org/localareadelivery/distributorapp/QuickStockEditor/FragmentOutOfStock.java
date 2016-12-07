@@ -16,12 +16,14 @@ import android.widget.Toast;
 
 import org.localareadelivery.distributorapp.ApplicationState.ApplicationState;
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
+import org.localareadelivery.distributorapp.HomeDeliveryInventory.Interface.NotifyTitleChanged;
 import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.Model.ShopItem;
 import org.localareadelivery.distributorapp.ModelEndpoints.ShopItemEndPoint;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ShopItemService;
 import org.localareadelivery.distributorapp.ShopHome.UtilityShopHome;
+import org.localareadelivery.distributorapp.Utility.UtilityLogin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,20 +52,15 @@ public class FragmentOutOfStock extends Fragment implements SwipeRefreshLayout.O
 
     @Inject
     ShopItemService shopItemService;
-
     RecyclerView recyclerView;
-
     AdapterOutOfStock adapter;
 
     public ArrayList<ShopItem> dataset = new ArrayList<>();
 
     GridLayoutManager layoutManager;
-
     SwipeRefreshLayout swipeContainer;
 
-
     NotificationReceiverPager notificationReceiverPager;
-
 
     public static String ARG_MODE_KEY = "mode_key";
 
@@ -99,15 +96,11 @@ public class FragmentOutOfStock extends Fragment implements SwipeRefreshLayout.O
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_quick_stock_out_of_stock, container, false);
-
-
-        recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
-
-        setupRecyclerView();
+        setRetainInstance(true);
 
         swipeContainer = (SwipeRefreshLayout)rootView.findViewById(R.id.swipeContainer);
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
 
-        setupSwipeContainer();
 
 
         if(savedInstanceState == null)
@@ -134,6 +127,9 @@ public class FragmentOutOfStock extends Fragment implements SwipeRefreshLayout.O
             });
         }
 
+
+        setupRecyclerView();
+        setupSwipeContainer();
 
         return rootView;
     }
@@ -231,7 +227,10 @@ public class FragmentOutOfStock extends Fragment implements SwipeRefreshLayout.O
 
             call = shopItemService.getShopItemEndpoint(null,
                     currentShop.getShopID(),null,null,null,
-                    null,null,null,null,null,true,null,null,null,"item_id",limit,offset,false);
+                    null,null,null,null,null,true,null,null,null,null,"LAST_UPDATE_DATE_TIME",
+                    limit,offset,false,
+                    true
+            );
 
 
         } else if (mode == MODE_LOW_STOCK)
@@ -241,7 +240,10 @@ public class FragmentOutOfStock extends Fragment implements SwipeRefreshLayout.O
 
             call = shopItemService.getShopItemEndpoint(null,
                     currentShop.getShopID(),null,null,null,null,null,null,null,null,null,
-                    null,null,null,"available_item_quantity",limit,offset,false);
+                    null,null,null,null,"available_item_quantity",
+                    limit,offset,false,
+                    true
+            );
 
         }
         else if (mode == MODE_RECENTLY_ADDED)
@@ -251,7 +253,11 @@ public class FragmentOutOfStock extends Fragment implements SwipeRefreshLayout.O
 
             call = shopItemService.getShopItemEndpoint(null,
                     currentShop.getShopID(),null,null,null,null,null,null,null,null,null,
-                    null,null,null,"date_time_added desc",limit,offset,false);
+                    null,null,null,
+                    null,"date_time_added desc",
+                    limit,offset,false,
+                    true
+            );
 
 
         }else if (mode == MODE_RECENTLY_UPDATED)
@@ -260,13 +266,20 @@ public class FragmentOutOfStock extends Fragment implements SwipeRefreshLayout.O
 
             call = shopItemService.getShopItemEndpoint(null,
                     currentShop.getShopID(),null,null,null,null,null,null,null,null,null,
-                    null,null,null,"last_update_date_time desc",limit,offset,false);
+                    null,null,null,
+                    null,"last_update_date_time desc",
+                    limit,offset,false,true
+            );
         }
         else if (mode == MODE_PRICE_NOT_SET)
         {
             call = shopItemService.getShopItemEndpoint(null,
                     currentShop.getShopID(),null,null,null,
-                    null,null,null,null,null,null,true,null,null,"item_id",limit,offset,false);
+                    null,null,null,null,null,null,true,null,null,
+                    null,"LAST_UPDATE_DATE_TIME",
+                    limit,offset,false,
+                    true
+            );
         }
 
 
@@ -295,7 +308,10 @@ public class FragmentOutOfStock extends Fragment implements SwipeRefreshLayout.O
     public void notifyShopItemUpdated(final ShopItem shopItem) {
 
 
-        Call<ResponseBody> call = shopItemService.putShopItem(shopItem);
+        Call<ResponseBody> call = shopItemService.putShopItem(
+                UtilityLogin.getAuthorizationHeaders(getActivity()),
+                shopItem
+        );
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -315,6 +331,14 @@ public class FragmentOutOfStock extends Fragment implements SwipeRefreshLayout.O
                     }
 
                     //makeNetworkCall();
+                }
+                else if(response.code() == 403)
+                {
+                    showToastMessage("Not permitted !");
+                }
+                else if(response.code() == 401)
+                {
+                    showToastMessage("We are not able to identify you !");
                 }
 
             }
@@ -366,7 +390,11 @@ public class FragmentOutOfStock extends Fragment implements SwipeRefreshLayout.O
     void removeShopItem(final ShopItem shopItem)
     {
 
-        Call<ResponseBody> responseBodyCall = shopItemService.deleteShopItem(shopItem.getShopID(),shopItem.getItemID());
+        Call<ResponseBody> responseBodyCall = shopItemService.deleteShopItem(
+                UtilityLogin.getAuthorizationHeaders(getActivity()),
+                shopItem.getShopID(),
+                shopItem.getItemID()
+        );
 
         responseBodyCall.enqueue(new Callback<ResponseBody>() {
 
@@ -388,6 +416,14 @@ public class FragmentOutOfStock extends Fragment implements SwipeRefreshLayout.O
 
                     showToastMessage("Not removed !");
 
+                }
+                else if(response.code() == 403)
+                {
+                    showToastMessage("Not permitted !");
+                }
+                else if(response.code() == 401)
+                {
+                    showToastMessage("We are not able to identify you !");
                 }
                 else
                 {
@@ -430,6 +466,7 @@ public class FragmentOutOfStock extends Fragment implements SwipeRefreshLayout.O
             notificationReceiverPager.OutOfStockChanged();
         }
 
+        notifyTitleChanged();
         adapter.notifyDataSetChanged();
         swipeContainer.setRefreshing(false);
     }
@@ -453,35 +490,98 @@ public class FragmentOutOfStock extends Fragment implements SwipeRefreshLayout.O
 
 
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
+//    @Override
+//    public void onSaveInstanceState(Bundle outState) {
+//        super.onSaveInstanceState(outState);
+//        Icepick.saveInstanceState(this, outState);
+//        outState.putParcelableArrayList("dataset",dataset);
+//    }
 
 
-        Icepick.saveInstanceState(this, outState);
+//    @Override
+//    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+//        super.onViewStateRestored(savedInstanceState);
 
 
-        outState.putParcelableArrayList("dataset",dataset);
+//        Icepick.restoreInstanceState(this, savedInstanceState);
+//
+//        if (savedInstanceState != null) {
+//
+//            ArrayList<ShopItem> tempList = savedInstanceState.getParcelableArrayList("dataset");
+//
+//            dataset.clear();
+//            dataset.addAll(tempList);
+//            adapter.notifyDataSetChanged();
+//        }
+//
+//    }
 
-    }
-
-    @Override
-    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-        super.onViewStateRestored(savedInstanceState);
 
 
-        Icepick.restoreInstanceState(this, savedInstanceState);
 
-        if (savedInstanceState != null) {
+    void notifyTitleChanged()
+    {
 
-            ArrayList<ShopItem> tempList = savedInstanceState.getParcelableArrayList("dataset");
+        if(getActivity() instanceof NotifyTitleChanged)
+        {
 
-            dataset.clear();
-            dataset.addAll(tempList);
-            adapter.notifyDataSetChanged();
+            int mode = getArguments().getInt(ARG_MODE_KEY);
+
+
+            if (mode == MODE_OUT_OF_STOCK) {
+
+//            call = shopItemService.getShopItems(currentShop.getShopID(), null, null, true, null);
+
+                ((NotifyTitleChanged)getActivity())
+                        .NotifyTitleChanged(
+                                "Out of Stock (" + String.valueOf(dataset.size())
+                                        + "/" + String.valueOf(item_count) + ")",1);
+
+
+
+
+            } else if (mode == MODE_LOW_STOCK)
+            {
+                ((NotifyTitleChanged)getActivity())
+                        .NotifyTitleChanged(
+                                "Low Stock (" + String.valueOf(dataset.size())
+                                        + "/" + String.valueOf(item_count) + ")",0);
+
+
+            }
+            else if (mode == MODE_RECENTLY_ADDED)
+            {
+                ((NotifyTitleChanged)getActivity())
+                        .NotifyTitleChanged(
+                                "Recently Added (" + String.valueOf(dataset.size())
+                                        + "/" + String.valueOf(item_count) + ")",3);
+
+
+
+            }else if (mode == MODE_RECENTLY_UPDATED)
+            {
+
+
+                ((NotifyTitleChanged)getActivity())
+                        .NotifyTitleChanged(
+                                "Recently Updated (" + String.valueOf(dataset.size())
+                                        + "/" + String.valueOf(item_count) + ")",4);
+
+            }
+            else if (mode == MODE_PRICE_NOT_SET)
+            {
+                ((NotifyTitleChanged)getActivity())
+                        .NotifyTitleChanged(
+                                "Price not Set (" + String.valueOf(dataset.size())
+                                        + "/" + String.valueOf(item_count) + ")",2);
+
+            }
+
+
+
         }
-
     }
+
 
 
 }

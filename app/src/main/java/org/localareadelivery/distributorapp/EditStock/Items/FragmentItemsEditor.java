@@ -27,6 +27,7 @@ import org.localareadelivery.distributorapp.QuickStockEditor.AdapterOutOfStock;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ShopItemService;
 import org.localareadelivery.distributorapp.ShopHome.UtilityShopHome;
+import org.localareadelivery.distributorapp.Utility.UtilityLogin;
 
 import java.util.ArrayList;
 
@@ -244,7 +245,11 @@ public class FragmentItemsEditor extends Fragment
 
             call = shopItemService.getShopItemEndpoint(null,
                     currentShop.getShopID(),null,null,null,
-                    null,null,null,null,null,true,null,null,null,"item_id",limit,offset,false);
+                    null,null,null,null,null,true,null,null,null,
+                    null,"item_id",
+                    limit,offset,false,
+                    true
+            );
 
 
         } else if (mode == MODE_LOW_STOCK)
@@ -254,7 +259,11 @@ public class FragmentItemsEditor extends Fragment
 
             call = shopItemService.getShopItemEndpoint(null,
                     currentShop.getShopID(),null,null,null,null,null,null,null,null,null,
-                    null,null,null,"available_item_quantity",limit,offset,false);
+                    null,null,null,null,
+                    "available_item_quantity",
+                    limit,offset,false,
+                    true
+            );
 
         }
         else if (mode == MODE_RECENTLY_ADDED)
@@ -264,7 +273,9 @@ public class FragmentItemsEditor extends Fragment
 
             call = shopItemService.getShopItemEndpoint(notifiedCurrentCategory.getItemCategoryID(),
                     currentShop.getShopID(),null,null,null,null,null,null,null,null,null,
-                    null,null,null,"date_time_added desc",limit,offset,false);
+                    null,null,null,null,"date_time_added desc",
+                    limit,offset,false,
+                    true);
 
 
         }else if (mode == MODE_RECENTLY_UPDATED)
@@ -273,13 +284,20 @@ public class FragmentItemsEditor extends Fragment
 
             call = shopItemService.getShopItemEndpoint(null,
                     currentShop.getShopID(),null,null,null,null,null,null,null,null,null,
-                    null,null,null,"last_update_date_time desc",limit,offset,false);
+                    null,null,null,
+                    null,"last_update_date_time desc",
+                    limit,offset,false,
+                    true);
         }
         else if (mode == MODE_PRICE_NOT_SET)
         {
             call = shopItemService.getShopItemEndpoint(null,
                     currentShop.getShopID(),null,null,null,
-                    null,null,null,null,null,null,true,null,null,"item_id",limit,offset,false);
+                    null,null,null,null,null,null,true,null,null,
+                    null,"item_id",
+                    limit,offset,false,
+                    null
+            );
         }
 
 
@@ -308,7 +326,10 @@ public class FragmentItemsEditor extends Fragment
     public void notifyShopItemUpdated(final ShopItem shopItem) {
 
 
-        Call<ResponseBody> call = shopItemService.putShopItem(shopItem);
+        Call<ResponseBody> call = shopItemService.putShopItem(
+                UtilityLogin.getAuthorizationHeaders(getActivity()),
+                shopItem
+        );
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -379,7 +400,11 @@ public class FragmentItemsEditor extends Fragment
     void removeShopItem(final ShopItem shopItem)
     {
 
-        Call<ResponseBody> responseBodyCall = shopItemService.deleteShopItem(shopItem.getShopID(),shopItem.getItemID());
+        Call<ResponseBody> responseBodyCall = shopItemService.deleteShopItem(
+                UtilityLogin.getAuthorizationHeaders(getActivity()),
+                shopItem.getShopID(),
+                shopItem.getItemID()
+        );
 
         responseBodyCall.enqueue(new Callback<ResponseBody>() {
 

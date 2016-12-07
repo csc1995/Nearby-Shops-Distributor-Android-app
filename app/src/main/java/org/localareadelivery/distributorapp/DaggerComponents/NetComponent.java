@@ -37,6 +37,7 @@ import org.localareadelivery.distributorapp.ItemCategoriesTabs.Items.AddItem;
 import org.localareadelivery.distributorapp.ItemCategoriesTabs.Items.EditItem;
 import org.localareadelivery.distributorapp.ItemCategoriesTabs.Items.ItemAdapterTwo;
 import org.localareadelivery.distributorapp.ItemCategoriesTabs.Items.ItemRemakeFragment;
+import org.localareadelivery.distributorapp.ItemCategoriesTypeSimple.ItemCategoriesFragmentSimple;
 import org.localareadelivery.distributorapp.OrderDetail.FragmentOrderDetail;
 import org.localareadelivery.distributorapp.ShopList.ShopList;
 import org.localareadelivery.distributorapp.aaDeprecated_DeliveryGuy.AddVehicleSelfActivity;
@@ -172,4 +173,6 @@ public interface NetComponent {
     void Inject(EditShopFragment editShopFragment);
 
     void Inject(ShopAdminHome shopAdminHome);
+
+    void Inject(ItemCategoriesFragmentSimple itemCategoriesFragmentSimple);
 }

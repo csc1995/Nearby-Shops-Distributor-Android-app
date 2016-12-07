@@ -5,6 +5,8 @@ import org.localareadelivery.distributorapp.ModelEndpoints.ItemCategoryEndPoint;
 
 import java.util.List;
 
+import javax.ws.rs.QueryParam;
+
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -43,7 +45,9 @@ public interface ItemCategoryService {
 
     @GET("api/v1/ItemCategory/QuerySimple")
     Call<ItemCategoryEndPoint> getItemCategoriesQuerySimple(
-            @Query("ParentID")Integer parentID,@Query("IsDetached")Boolean parentIsNull,
+            @Query("ParentID")Integer parentID,
+            @Query("IsDetached")Boolean parentIsNull,
+            @Query("SearchString") String searchString,
             @Query("SortBy") String sortBy,
             @Query("Limit") Integer limit, @Query("Offset") Integer offset
     );

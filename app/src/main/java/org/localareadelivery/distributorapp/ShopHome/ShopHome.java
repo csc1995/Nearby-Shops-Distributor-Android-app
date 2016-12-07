@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 import org.localareadelivery.distributorapp.DeliveryAccounts.DeliveryGuyAccounts;
 import org.localareadelivery.distributorapp.EditStock.EditStock;
 import org.localareadelivery.distributorapp.ItemCategoriesTabs.ItemCategoriesTabs;
+import org.localareadelivery.distributorapp.ItemCategoriesTypeSimple.ItemCategoriesSimple;
 import org.localareadelivery.distributorapp.OrdersHome.OrdersHome;
 import org.localareadelivery.distributorapp.QuickStockEditor.QuickStockEditor;
 import org.localareadelivery.distributorapp.R;
@@ -18,14 +19,9 @@ import org.localareadelivery.distributorapp.SSEExample.SSEExample;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ShopHome extends AppCompatActivity implements View.OnClickListener {
+public class ShopHome extends AppCompatActivity {
 
     public static final String SHOP_ID_INTENT_KEY = "shop_id_key";
-
-    RelativeLayout addRemoveItemsButton,addEditStockButton;
-
-    RelativeLayout optionEditStock;
-
 
 
     @Override
@@ -44,8 +40,8 @@ public class ShopHome extends AppCompatActivity implements View.OnClickListener 
         //Toast.makeText(this,String.valueOf(getIntent().getIntExtra(SHOP_ID_INTENT_KEY,0)),Toast.LENGTH_SHORT).show();
 
 
-        addRemoveItemsButton = (RelativeLayout) findViewById(R.id.option_add_items);
-        addRemoveItemsButton.setOnClickListener(this);
+//        addRemoveItemsButton = (RelativeLayout) findViewById(R.id.option_add_items);
+//        addRemoveItemsButton.setOnClickListener(this);
 
 //        addEditStockButton = (RelativeLayout) findViewById(R.id.option_edit_stock);
 //        addEditStockButton.setOnClickListener(this);
@@ -87,6 +83,20 @@ public class ShopHome extends AppCompatActivity implements View.OnClickListener 
     }
 
 
+    @OnClick(R.id.option_items)
+    void optionItems()
+    {
+
+    }
+
+    @OnClick(R.id.option_add_items)
+    void optionItemsByCategory()
+    {
+        startActivity(new Intent(this, ItemCategoriesSimple.class));
+    }
+
+
+/*
 
     @Override
     public void onClick(View v) {
@@ -109,6 +119,7 @@ public class ShopHome extends AppCompatActivity implements View.OnClickListener 
 
     }
 
+*/
 
 
     @Override

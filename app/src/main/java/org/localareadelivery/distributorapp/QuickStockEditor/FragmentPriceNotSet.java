@@ -20,6 +20,7 @@ import org.localareadelivery.distributorapp.Model.ShopItem;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ShopItemService;
 import org.localareadelivery.distributorapp.ShopHome.UtilityShopHome;
+import org.localareadelivery.distributorapp.Utility.UtilityLogin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -202,7 +203,10 @@ public class FragmentPriceNotSet extends Fragment implements SwipeRefreshLayout.
     public void notifyShopItemUpdated(final ShopItem shopItem) {
 
 
-        Call<ResponseBody> call = shopItemService.putShopItem(shopItem);
+        Call<ResponseBody> call = shopItemService.putShopItem(
+                UtilityLogin.getAuthorizationHeaders(getActivity()),
+                shopItem
+        );
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -273,7 +277,11 @@ public class FragmentPriceNotSet extends Fragment implements SwipeRefreshLayout.
     void removeShopItem(final ShopItem shopItem)
     {
 
-        Call<ResponseBody> responseBodyCall = shopItemService.deleteShopItem(shopItem.getShopID(),shopItem.getItemID());
+        Call<ResponseBody> responseBodyCall = shopItemService.deleteShopItem(
+                UtilityLogin.getAuthorizationHeaders(getActivity()),
+                shopItem.getShopID(),
+                shopItem.getItemID()
+        );
 
         responseBodyCall.enqueue(new Callback<ResponseBody>() {
 

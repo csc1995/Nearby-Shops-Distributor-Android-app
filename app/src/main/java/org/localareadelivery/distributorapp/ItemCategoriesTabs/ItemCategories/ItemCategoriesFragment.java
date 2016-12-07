@@ -320,7 +320,8 @@ public class ItemCategoriesFragment extends Fragment
 
         Call<ItemCategoryEndPoint> endPointCall = itemCategoryService.getItemCategoriesQuerySimple(
                 currentCategory.getItemCategoryID(),
-                null,"id",limit,offset
+                null, null,
+                "id",limit,offset
         );
 
 

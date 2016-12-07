@@ -18,6 +18,7 @@ import org.localareadelivery.distributorapp.Model.ShopItem;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ShopItemService;
 import org.localareadelivery.distributorapp.ShopHome.UtilityShopHome;
+import org.localareadelivery.distributorapp.Utility.UtilityLogin;
 
 import java.util.List;
 
@@ -116,7 +117,10 @@ public class AddStock extends AppCompatActivity {
         ShopItemService shopItemService = retrofit.create(ShopItemService.class);
 
 
-        Call<ResponseBody> shopItemCall = shopItemService.putShopItem(shopDetails);
+        Call<ResponseBody> shopItemCall = shopItemService.putShopItem(
+                UtilityLogin.getAuthorizationHeaders(this),
+                shopDetails
+        );
 
         shopItemCall.enqueue(new Callback<ResponseBody>() {
 

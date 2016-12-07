@@ -9,12 +9,13 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import org.localareadelivery.distributorapp.HomeDeliveryInventory.Interface.NotifyTitleChanged;
 import org.localareadelivery.distributorapp.R;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class QuickStockEditor extends AppCompatActivity {
+public class QuickStockEditor extends AppCompatActivity implements NotifyTitleChanged {
 
 
     private PagerAdapter mPagerAdapter;
@@ -79,4 +80,11 @@ public class QuickStockEditor extends AppCompatActivity {
 
         ButterKnife.unbind(this);
     }
+
+    @Override
+    public void NotifyTitleChanged(String title, int tabPosition) {
+
+        mPagerAdapter.setTitle(title,tabPosition);
+    }
+
 }

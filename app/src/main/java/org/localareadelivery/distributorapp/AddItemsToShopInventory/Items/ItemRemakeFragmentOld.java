@@ -31,6 +31,7 @@ import org.localareadelivery.distributorapp.RetrofitRESTContract.ItemService;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ShopItemService;
 import org.localareadelivery.distributorapp.SelectParent.ItemCategoriesParent;
 import org.localareadelivery.distributorapp.ShopHome.UtilityShopHome;
+import org.localareadelivery.distributorapp.Utility.UtilityLogin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -787,7 +788,11 @@ public class ItemRemakeFragmentOld extends Fragment
     private void makeShopItemCreateBulkRequest(List<ShopItem> tempShopItemList) {
 
 
-        Call<ResponseBody> call = shopItemService.createShopItemBulk(tempShopItemList);
+        Call<ResponseBody> call = shopItemService
+                .createShopItemBulk(
+                        UtilityLogin.getAuthorizationHeaders(getActivity()),
+                        tempShopItemList
+                );
 
 
         call.enqueue(new Callback<ResponseBody>() {
@@ -866,7 +871,10 @@ public class ItemRemakeFragmentOld extends Fragment
 
     private void makeShopItemDeleteBulkRequest(List<ShopItem> tempShopItemList) {
 
-        Call<ResponseBody> call = shopItemService.deleteShopItemBulk(tempShopItemList);
+        Call<ResponseBody> call = shopItemService.deleteShopItemBulk(
+                UtilityLogin.getAuthorizationHeaders(getActivity()),
+                tempShopItemList
+        );
 
 
         call.enqueue(new Callback<ResponseBody>() {
@@ -929,8 +937,15 @@ public class ItemRemakeFragmentOld extends Fragment
             return;
         }
 
-        Call<ShopItemEndPoint> call = shopItemService.getShopItemEndpoint(notifiedCurrentCategory.getItemCategoryID(),
-                currentShopID,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,false);
+        Call<ShopItemEndPoint> call = shopItemService.getShopItemEndpoint(
+                notifiedCurrentCategory.getItemCategoryID(),
+                currentShopID,
+                null,null,null,null,null,null,null,null,
+                null,null,null,null,
+                null,
+                null,null,null,
+                false,false
+        );
 
 
 
