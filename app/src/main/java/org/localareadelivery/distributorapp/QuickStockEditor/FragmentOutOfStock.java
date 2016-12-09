@@ -70,6 +70,13 @@ public class FragmentOutOfStock extends Fragment implements SwipeRefreshLayout.O
 
 
 
+    private int limit = 10;
+    @State int offset = 0;
+    @State int item_count = 0;
+
+
+
+
     public FragmentOutOfStock() {
 
         DaggerComponentBuilder.getInstance()
@@ -99,13 +106,10 @@ public class FragmentOutOfStock extends Fragment implements SwipeRefreshLayout.O
         swipeContainer = (SwipeRefreshLayout)rootView.findViewById(R.id.swipeContainer);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
 
-
-
         if(savedInstanceState == null)
         {
             makeRefreshNetworkCall();
         }
-
 
         setupRecyclerView();
         setupSwipeContainer();
@@ -129,14 +133,10 @@ public class FragmentOutOfStock extends Fragment implements SwipeRefreshLayout.O
 
 
 
-    private int limit = 30;
-    @State int offset = 0;
-    @State int item_count = 0;
-
     void setupRecyclerView()
     {
 
-        adapter = new AdapterOutOfStock(dataset,getActivity(),this);
+        adapter = new AdapterOutOfStock(dataset,getActivity(),this,this);
 
         recyclerView.setAdapter(adapter);
 
@@ -162,8 +162,12 @@ public class FragmentOutOfStock extends Fragment implements SwipeRefreshLayout.O
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
 
+                if(offset + limit > layoutManager.findLastVisibleItemPosition())
+                {
+                    return;
+                }
 
-                if(layoutManager.findLastVisibleItemPosition()==dataset.size()-1)
+                if(layoutManager.findLastVisibleItemPosition()==dataset.size())
                 {
                     // trigger fetch next page
 

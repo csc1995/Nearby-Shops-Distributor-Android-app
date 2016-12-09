@@ -219,13 +219,10 @@ public class ItemsInStockByCatFragment extends Fragment implements SwipeRefreshL
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
 
-
                 if(offset_item + limit_item > layoutManager.findLastVisibleItemPosition())
                 {
                     return;
                 }
-
-
 
                 if(layoutManager.findLastVisibleItemPosition()==dataset.size())
                 {
@@ -859,10 +856,6 @@ public class ItemsInStockByCatFragment extends Fragment implements SwipeRefreshL
         System.out.println("Notify Sort Clicked !");
         makeRefreshNetworkCall();
     }
-
-
-
-
 
 
     // display shop Item Status

@@ -188,7 +188,7 @@ public class AdapterItemsInStock extends RecyclerView.Adapter<RecyclerView.ViewH
             ButterKnife.bind(this,itemView);
         }
 
-    }// ViewHolder Class declaration ends
+    }// ViewHolderShopItem Class declaration ends
 
 
 

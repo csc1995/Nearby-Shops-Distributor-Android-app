@@ -57,7 +57,12 @@ public class AdapterItemsInStock extends RecyclerView.Adapter<RecyclerView.ViewH
 
 
 
-    public AdapterItemsInStock(List<Object> dataset, Context context, NotificationsFromAdapter notificationReceiver, Fragment fragment) {
+    public AdapterItemsInStock(List<Object> dataset,
+                               Context context,
+                               NotificationsFromAdapter notificationReceiver,
+                               Fragment fragment
+    )
+    {
 
 
 //        DaggerComponentBuilder.getInstance()
@@ -221,7 +226,7 @@ public class AdapterItemsInStock extends RecyclerView.Adapter<RecyclerView.ViewH
             ButterKnife.bind(this,itemView);
         }
 
-    }// ViewHolder Class declaration ends
+    }// ViewHolderShopItem Class declaration ends
 
 
 
@@ -279,7 +284,7 @@ public class AdapterItemsInStock extends RecyclerView.Adapter<RecyclerView.ViewH
         }
 
 
-    }// ViewHolder Class declaration ends
+    }// ViewHolderShopItem Class declaration ends
 
 
 

@@ -172,7 +172,7 @@ public class FragmentItemsEditor extends Fragment
     void setupRecyclerView()
     {
 
-        adapter = new AdapterOutOfStock(dataset,getActivity(),this);
+        adapter = new AdapterOutOfStock(dataset,getActivity(),this,this);
 
         recyclerView.setAdapter(adapter);
 

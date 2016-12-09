@@ -221,7 +221,7 @@ public class AdapterSimple extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             ButterKnife.bind(this,itemView);
         }
 
-    }// ViewHolder Class declaration ends
+    }// ViewHolderShopItem Class declaration ends
 
 
 
@@ -279,7 +279,7 @@ public class AdapterSimple extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
 
 
-    }// ViewHolder Class declaration ends
+    }// ViewHolderShopItem Class declaration ends
 
 
 
@@ -408,7 +408,7 @@ public class AdapterSimple extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
             }// item click Ends
 
-    }// ViewHolder Class declaration ends
+    }// ViewHolderShopItem Class declaration ends
 
 
 
