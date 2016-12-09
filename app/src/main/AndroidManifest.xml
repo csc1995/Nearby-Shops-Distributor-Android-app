@@ -407,6 +407,28 @@
         </activity>
 
 
+
+        <activity
+            android:name=".Items.ItemsTypeSimple"
+            android:label="Items In Stock"
+            android:launchMode="singleTop"
+            android:parentActivityName=".ShopHome.ShopHome"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ShopHome.ShopHome" />
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+        </activity>
+
+
     </application>
 
 </manifest>

@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import org.localareadelivery.distributorapp.DeliveryAccounts.DeliveryGuyAccounts;
+import org.localareadelivery.distributorapp.Items.ItemsTypeSimple;
 import org.localareadelivery.distributorapp.ItemsByCategoryTypeSimple.ItemsByCatSimple;
 import org.localareadelivery.distributorapp.ItemsInStock.ItemsInStock;
 import org.localareadelivery.distributorapp.ItemsInStockByCat.ItemsInStockByCat;
@@ -86,8 +87,10 @@ public class ShopHome extends AppCompatActivity {
     @OnClick(R.id.option_items)
     void optionItems()
     {
-
+        startActivity(new Intent(this, ItemsTypeSimple.class));
     }
+
+
 
     @OnClick(R.id.option_add_items)
     void optionItemsByCategory()

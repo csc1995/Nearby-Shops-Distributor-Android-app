@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.ItemsByCategoryTypeSimple;
+package org.localareadelivery.distributorapp.Items;
 
 import android.app.SearchManager;
 import android.content.Intent;
@@ -33,7 +33,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class ItemsByCatSimple extends AppCompatActivity implements NotifyIndicatorChanged,NotifySort ,ToggleFab{
+public class ItemsTypeSimple extends AppCompatActivity implements NotifyIndicatorChanged,NotifySort ,ToggleFab{
 
     public static final String TAG_FRAGMENT = "item_categories_simple";
     public static final String TAG_SLIDING = "sort_items_sliding";
@@ -55,7 +55,7 @@ public class ItemsByCatSimple extends AppCompatActivity implements NotifyIndicat
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_items_by_category_simple);
+        setContentView(R.layout.activity_items_simple);
         ButterKnife.bind(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -77,7 +77,7 @@ public class ItemsByCatSimple extends AppCompatActivity implements NotifyIndicat
         {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(R.id.fragment_container,new ItemsByCatFragmentSimple(),TAG_FRAGMENT)
+                    .add(R.id.fragment_container,new ItemsFragmentSimple(),TAG_FRAGMENT)
                     .commit();
         }
 

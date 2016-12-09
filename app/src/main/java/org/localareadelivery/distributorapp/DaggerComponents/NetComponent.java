@@ -24,6 +24,7 @@ import org.localareadelivery.distributorapp.DeliveryGuyInventory.PendingDelivery
 import org.localareadelivery.distributorapp.DeliveryGuyInventory.PendingReturn.PendingReturnDGI;
 import org.localareadelivery.distributorapp.DeliveryGuyInventory.PendingReturnCancelledByShop.PendingReturnCancelledByShopDGI;
 import org.localareadelivery.distributorapp.DistributorLogin;
+import org.localareadelivery.distributorapp.Items.ItemsFragmentSimple;
 import org.localareadelivery.distributorapp.ItemsByCategoryTypeSimple.ItemsByCatFragmentSimple;
 import org.localareadelivery.distributorapp.ItemsInStock.ItemsInStockFragment;
 import org.localareadelivery.distributorapp.ItemsInStockOld.ItemCategories.ItemCategoriesAdapterEditStock;
@@ -181,4 +182,6 @@ public interface NetComponent {
     void Inject(ItemsInStockByCatFragment itemsInStockByCatFragment);
 
     void Inject(ItemsInStockFragment itemsInStockFragment);
+
+    void Inject(ItemsFragmentSimple itemsFragmentSimple);
 }

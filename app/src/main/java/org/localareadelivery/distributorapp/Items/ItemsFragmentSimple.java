@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.ItemsByCategoryTypeSimple;
+package org.localareadelivery.distributorapp.Items;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,7 +13,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
 import org.localareadelivery.distributorapp.ItemsByCategoryTabsOld.Interfaces.NotifySort;
@@ -56,7 +55,7 @@ import retrofit2.Response;
  * Created by sumeet on 2/12/16.
  */
 
-public class ItemsByCatFragmentSimple extends Fragment implements SwipeRefreshLayout.OnRefreshListener, AdapterSimple.NotificationsFromAdapter , NotifyBackPressed, NotifySort , NotifyFABClick, NotifySearch{
+public class ItemsFragmentSimple extends Fragment implements SwipeRefreshLayout.OnRefreshListener, AdapterItems.NotificationsFromAdapter , NotifySort , NotifyFABClick, NotifySearch{
 
 
     Map<Integer,ShopItem> shopItemMapTemp = new HashMap<>();
@@ -77,17 +76,17 @@ public class ItemsByCatFragmentSimple extends Fragment implements SwipeRefreshLa
     RecyclerView itemCategoriesList;
 
     ArrayList<Object> dataset = new ArrayList<>();
-    ArrayList<ItemCategory> datasetCategory = new ArrayList<>();
+//    ArrayList<ItemCategory> datasetCategory = new ArrayList<>();
     ArrayList<Item> datasetItems = new ArrayList<>();
 
 
     GridLayoutManager layoutManager;
 
-    AdapterSimple listAdapter;
+    AdapterItems listAdapter;
 
 
-    @Inject
-    ItemCategoryService itemCategoryService;
+//    @Inject
+//    ItemCategoryService itemCategoryService;
 
 
     @Inject
@@ -97,20 +96,13 @@ public class ItemsByCatFragmentSimple extends Fragment implements SwipeRefreshLa
     ItemService itemService;
 
 
-    ItemCategory currentCategory = null;
+//    ItemCategory currentCategory = null;
 
 
-    public ItemsByCatFragmentSimple() {
-
+    public ItemsFragmentSimple() {
         super();
-
         DaggerComponentBuilder.getInstance()
                 .getNetComponent().Inject(this);
-
-        currentCategory = new ItemCategory();
-        currentCategory.setItemCategoryID(1);
-        currentCategory.setCategoryName("");
-        currentCategory.setParentCategoryID(-1);
     }
 
     @Nullable
@@ -119,7 +111,7 @@ public class ItemsByCatFragmentSimple extends Fragment implements SwipeRefreshLa
         super.onCreateView(inflater, container, savedInstanceState);
 
         setRetainInstance(true);
-        View rootView = inflater.inflate(R.layout.fragment_item_categories_simple, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_items_simple, container, false);
 
         ButterKnife.bind(this,rootView);
 
@@ -167,7 +159,7 @@ public class ItemsByCatFragmentSimple extends Fragment implements SwipeRefreshLa
     {
 
 
-        listAdapter = new AdapterSimple(dataset,getActivity(),this,this);
+        listAdapter = new AdapterItems(dataset,getActivity(),this,this);
         itemCategoriesList.setAdapter(listAdapter);
 
         layoutManager = new GridLayoutManager(getActivity(),6, LinearLayoutManager.VERTICAL,false);
@@ -362,7 +354,7 @@ public class ItemsByCatFragmentSimple extends Fragment implements SwipeRefreshLa
     @Override
     public void onRefresh() {
 
-        makeRequestItemCategory();
+//        makeRequestItemCategory();
         makeRequestItem(true,true);
 
         makeNetworkCallShopItem();
@@ -409,157 +401,9 @@ public class ItemsByCatFragmentSimple extends Fragment implements SwipeRefreshLa
 
 
 
-    boolean isFirst = true;
+//    boolean isFirst = true;
 
 
-    void makeRequestItemCategory()
-    {
-
-
-
-
-        /*Call<ItemCategoryEndPoint> endPointCall = itemCategoryService.getItemCategoriesEndPoint(
-                null,
-                currentCategory.getItemCategoryID(),
-                null,
-                null,
-                null,
-                null,null,null,
-                "ITEM_CATEGORY_NAME",null,null,false);*/
-
-        Call<ItemCategoryEndPoint> endPointCall = null;
-
-        if(searchQuery == null)
-        {
-            endPointCall = itemCategoryService.getItemCategoriesQuerySimple(
-                    currentCategory.getItemCategoryID(),
-                    null,
-                    null,
-                    "id",null,null
-            );
-        }
-        else
-        {
-            endPointCall = itemCategoryService.getItemCategoriesQuerySimple(
-                    null,
-                    null,
-                    searchQuery,
-                    "id",null,null
-            );
-        }
-
-
-
-        endPointCall.enqueue(new Callback<ItemCategoryEndPoint>() {
-            @Override
-            public void onResponse(Call<ItemCategoryEndPoint> call, Response<ItemCategoryEndPoint> response) {
-
-                if(isDestroyed)
-                {
-                    return;
-                }
-
-                if(response.body()!=null)
-                {
-
-                    ItemCategoryEndPoint endPoint = response.body();
-                    item_count_item_category = endPoint.getItemCount();
-
-                    datasetCategory.clear();
-                    datasetCategory.addAll(endPoint.getResults());
-                }
-
-
-                if(isFirst)
-                {
-                    isFirst = false;
-                }
-                else
-                {
-                    // is last
-                    refreshAdapter();
-                    isFirst = true;// reset the flag
-                }
-
-
-//                swipeContainer.setRefreshing(false);
-            }
-
-            @Override
-            public void onFailure(Call<ItemCategoryEndPoint> call, Throwable t) {
-
-
-                if(isDestroyed)
-                {
-                    return;
-                }
-
-                showToastMessage("Network request failed. Please check your connection !");
-
-
-                if(isFirst)
-                {
-                    isFirst = false;
-                }
-                else
-                {
-                    // is last
-                    refreshAdapter();
-                    isFirst = true;// reset the flag
-                }
-
-
-
-//                if(swipeContainer!=null)
-//                {
-//                    swipeContainer.setRefreshing(false);
-//                }
-
-            }
-        });
-    }
-
-
-
-    void refreshAdapter()
-    {
-        dataset.clear();
-
-        HeaderItemsList headerItemCategory = new HeaderItemsList();
-
-        if(searchQuery==null)
-        {
-            headerItemCategory.setHeading(currentCategory.getCategoryName() + " Subcategories");
-        }
-        else
-        {
-            headerItemCategory.setHeading( "Search Results (Subcategories)");
-        }
-
-        dataset.add(headerItemCategory);
-
-        dataset.addAll(datasetCategory);
-
-        HeaderItemsList headerItem = new HeaderItemsList();
-
-        if(searchQuery==null)
-        {
-            headerItem.setHeading(currentCategory.getCategoryName() + " Items");
-        }
-        else
-        {
-            headerItem.setHeading("Search Results (Items)");
-        }
-
-
-        dataset.add(headerItem);
-
-        dataset.addAll(datasetItems);
-
-        listAdapter.notifyDataSetChanged();
-
-        swipeContainer.setRefreshing(false);
-    }
 
 
 
@@ -606,7 +450,7 @@ public class ItemsByCatFragmentSimple extends Fragment implements SwipeRefreshLa
         if(searchQuery==null)
         {
             endPointCall = itemService.getItemsOuterJoin(
-                    currentCategory.getItemCategoryID(),
+                    null,
                     null,
                     current_sort,
                     limit_item,offset_item, null);
@@ -631,51 +475,34 @@ public class ItemsByCatFragmentSimple extends Fragment implements SwipeRefreshLa
                     return;
                 }
 
-
-                if(clearDataset)
+                if(response.body()!=null)
                 {
 
-                    if(response.body()!=null)
+                    if(clearDataset)
                     {
+                        fetched_items_count = 0;
+                        dataset.clear();
 
-                        datasetItems.clear();
-                        datasetItems.addAll(response.body().getResults());
-                        item_count_item = response.body().getItemCount();
-                        fetched_items_count = datasetItems.size();
+                        HeaderItemsList headerItem = new HeaderItemsList();
 
-//                        if(response.body().getItemCount()!=null)
-//                        {
-//
-//                        }
+                        if(searchQuery==null)
+                        {
+                            headerItem.setHeading("Items");
+                        }
+                        else
+                        {
+                            headerItem.setHeading("Search Results : Items");
+                        }
+
+                        dataset.add(headerItem);
                     }
-
-
-                    if(isFirst)
-                    {
-                        isFirst = false;
-                    }
-                    else
-                    {
-                        // is last
-                        refreshAdapter();
-                        isFirst = true;// reset the flag
-                    }
-
-                }
-                else
-                {
-                    if(response.body()!=null)
-                    {
-
-                        dataset.addAll(response.body().getResults());
-                        fetched_items_count = fetched_items_count + response.body().getResults().size();
-                        item_count_item = response.body().getItemCount();
-                        listAdapter.notifyDataSetChanged();
-                    }
-
-                    swipeContainer.setRefreshing(false);
+                    dataset.addAll(response.body().getResults());
+                    fetched_items_count = fetched_items_count + response.body().getResults().size();
+                    item_count_item = response.body().getItemCount();
+                    listAdapter.notifyDataSetChanged();
                 }
 
+                swipeContainer.setRefreshing(false);
 
                 notifyItemHeaderChanged();
 
@@ -690,27 +517,7 @@ public class ItemsByCatFragmentSimple extends Fragment implements SwipeRefreshLa
                     return;
                 }
 
-
-                if(clearDataset)
-                {
-
-                    if(isFirst)
-                    {
-                        isFirst = false;
-                    }
-                    else
-                    {
-                        // is last
-                        refreshAdapter();
-                        isFirst = true;// reset the flag
-                    }
-                }
-                else
-                {
-                    swipeContainer.setRefreshing(false);
-                }
-
-
+                swipeContainer.setRefreshing(false);
                 showToastMessage("Items: Network request failed. Please check your connection !");
 
             }
@@ -722,23 +529,6 @@ public class ItemsByCatFragmentSimple extends Fragment implements SwipeRefreshLa
 
 
     @Override
-    public void notifyRequestSubCategory(ItemCategory itemCategory) {
-
-        ItemCategory temp = currentCategory;
-        currentCategory = itemCategory;
-        currentCategory.setParentCategory(temp);
-
-        makeRefreshNetworkCall();
-
-        // End Search Mode
-        searchQuery = null;
-
-        // reset previous flag
-//        resetPreviousPosition();
-
-    }
-
-    @Override
     public void notifyItemSelected() {
         if(getActivity() instanceof ToggleFab)
         {
@@ -748,44 +538,20 @@ public class ItemsByCatFragmentSimple extends Fragment implements SwipeRefreshLa
     }
 
 
-    @Override
-    public boolean backPressed() {
-
-        // reset previous flag
-//        resetPreviousPosition();
-
-        int currentCategoryID = 1; // the ID of root category is always supposed to be 1
-
-        // clear selected items
-        listAdapter.selectedItems.clear();
-
-        if(currentCategory!=null) {
-
-
-            if (currentCategory.getParentCategory() != null) {
-
-                currentCategory = currentCategory.getParentCategory();
-                currentCategoryID = currentCategory.getItemCategoryID();
-
-            } else {
-                currentCategoryID = currentCategory.getParentCategoryID();
-            }
-
-
-            if (currentCategoryID != -1) {
-                makeRefreshNetworkCall();
-            }
-        }
-
-        return currentCategoryID == -1;
-    }
 
 
     void notifyItemHeaderChanged()
     {
         if(getActivity() instanceof NotifyIndicatorChanged)
         {
-            ((NotifyIndicatorChanged) getActivity()).notifyItemIndicatorChanged(String.valueOf(fetched_items_count) + " out of " + String.valueOf(item_count_item) + " " + currentCategory.getCategoryName() + " Items");
+            ((NotifyIndicatorChanged) getActivity())
+                    .notifyItemIndicatorChanged(
+                            String.valueOf(fetched_items_count)
+                                    + " out of "
+                                    + String.valueOf(item_count_item)
+                                    + " "
+                                    + " Items"
+                    );
         }
     }
 
@@ -810,13 +576,6 @@ public class ItemsByCatFragmentSimple extends Fragment implements SwipeRefreshLa
 
         int currentShopID = UtilityShopHome.getShop(getContext()).getShopID();
 
-        if(currentCategory==null)
-        {
-
-            swipeContainer.setRefreshing(false);
-
-            return;
-        }
 
         Call<ShopItemEndPoint> call;
 
@@ -854,7 +613,7 @@ public class ItemsByCatFragmentSimple extends Fragment implements SwipeRefreshLa
 
 
             call = shopItemService.getShopItemsForShop(
-                    currentCategory.getItemCategoryID(),
+                    null,
                     currentShopID,null,
                     null,
                     null,null,0

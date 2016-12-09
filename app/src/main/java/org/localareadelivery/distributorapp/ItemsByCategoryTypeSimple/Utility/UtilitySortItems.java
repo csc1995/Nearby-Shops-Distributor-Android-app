@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 
-import org.localareadelivery.distributorapp.ItemsByCategoryTypeSimple.SlidingLayerSortItems;
 import org.localareadelivery.distributorapp.R;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -13,7 +12,7 @@ import static android.content.Context.MODE_PRIVATE;
  * Created by sumeet on 29/9/16.
  */
 
-public class UtilitySortItemsByCategory {
+public class UtilitySortItems {
 
 
 
