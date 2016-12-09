@@ -1,8 +1,11 @@
-package org.localareadelivery.distributorapp.ItemsInStockOld;
+package org.localareadelivery.distributorapp.ItemsByCategoryTabsOld;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
+
 import android.support.design.widget.TabLayout;
+import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -14,13 +17,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 import com.wunderlist.slidinglayer.SlidingLayer;
 
 import org.localareadelivery.distributorapp.ItemsByCategoryTabsOld.Interfaces.NotifyBackPressed;
 import org.localareadelivery.distributorapp.ItemsByCategoryTabsOld.Interfaces.NotifyCategoryChanged;
+import org.localareadelivery.distributorapp.ItemsByCategoryTabsOld.Interfaces.NotifyFabClick_Item;
+import org.localareadelivery.distributorapp.ItemsByCategoryTabsOld.Interfaces.NotifyFabClick_ItemCategories;
 import org.localareadelivery.distributorapp.ItemsByCategoryTabsOld.Interfaces.NotifyGeneral;
 import org.localareadelivery.distributorapp.ItemsByCategoryTabsOld.Interfaces.NotifySort;
 import org.localareadelivery.distributorapp.ItemsByCategoryTabsOld.Interfaces.NotifyTitleChanged;
+import org.localareadelivery.distributorapp.ItemsByCategoryTabsOld.Interfaces.ToggleFab;
 import org.localareadelivery.distributorapp.Model.ItemCategory;
 import org.localareadelivery.distributorapp.R;
 
@@ -28,19 +36,39 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class EditStock extends AppCompatActivity implements NotifyGeneral,
-        NotifyTitleChanged, ViewPager.OnPageChangeListener, NotifyCategoryChanged, NotifySort {
+public class ItemCategoriesTabs extends AppCompatActivity implements NotifyGeneral,
+        NotifyTitleChanged, ToggleFab, ViewPager.OnPageChangeListener, NotifyCategoryChanged, NotifySort {
 
+    // Fab Variables
+    @Bind(R.id.fab_menu)
+    FloatingActionMenu fab_menu;
+
+    @Bind(R.id.fab_detach)
+    FloatingActionButton fab_detach;
+
+    @Bind(R.id.fab_add)
+    FloatingActionButton fab_add;
+
+    @Bind(R.id.fab_change_parent)
+    FloatingActionButton fab_change_parent;
+
+    @Bind(R.id.fab_add_from_global)
+    FloatingActionButton fab_add_from_global;
 
     @Bind(R.id.slidinglayerfragment)
     FrameLayout slidingFragmentContainer;
 
 
-    private PagerAdapterEditStock mPagerAdapterEditStock;
+    public NotifyFabClick_ItemCategories notifyFabClickItemCategories;
+    public NotifyFabClick_Item notifyFabClick_item;
+    // Fab Variables Ends
+
+
+    private PagerAdapter mPagerAdapter;
     private ViewPager mViewPager;
 
-//    public NotifyBackPressed notifyBackPressed;
-//    public NotifyCategoryChanged notifyCategoryChanged;
+    public NotifyBackPressed notifyBackPressed;
+    public NotifyCategoryChanged notifyCategoryChanged;
 
 
     @Bind(R.id.appbar)
@@ -60,7 +88,7 @@ public class EditStock extends AppCompatActivity implements NotifyGeneral,
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_stock);
+        setContentView(R.layout.activity_item_categories_tabs);
         ButterKnife.bind(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -68,15 +96,16 @@ public class EditStock extends AppCompatActivity implements NotifyGeneral,
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
-        mPagerAdapterEditStock = new PagerAdapterEditStock(getSupportFragmentManager(),this);
+        mPagerAdapter = new PagerAdapter(getSupportFragmentManager(),this);
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
-        mViewPager.setAdapter(mPagerAdapterEditStock);
+        mViewPager.setAdapter(mPagerAdapter);
         tabLayoutPager.setupWithViewPager(mViewPager);
 
         mViewPager.addOnPageChangeListener(this);
 
+        setFabBackground();
         setupSlidingLayer();
 
         insertTab("Root");
@@ -110,13 +139,26 @@ public class EditStock extends AppCompatActivity implements NotifyGeneral,
 
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.slidinglayerfragment,new SlidingLayerEditStock())
+                    .replace(R.id.slidinglayerfragment,new SlidingLayerItemSort())
                     .commit();
 
         }
 
     }
 
+
+    private void setFabBackground() {
+        // assign background to the FAB's
+        fab_add.setImageResource(R.drawable.fab_add);
+        Drawable drawable = VectorDrawableCompat.create(getResources(), R.drawable.ic_low_priority_black_24px, getTheme());
+        fab_change_parent.setImageDrawable(drawable);
+
+        Drawable drawable_add = VectorDrawableCompat.create(getResources(), R.drawable.ic_playlist_add_from_global, getTheme());
+        fab_add_from_global.setImageDrawable(drawable_add);
+
+        Drawable drawable_detach = VectorDrawableCompat.create(getResources(), R.drawable.ic_detach, getTheme());
+        fab_detach.setImageDrawable(drawable_detach);
+    }
 
 
     @Override
@@ -145,7 +187,7 @@ public class EditStock extends AppCompatActivity implements NotifyGeneral,
     @Override
     public void NotifyTitleChanged(String title, int tabPosition) {
 
-        mPagerAdapterEditStock.setTitle(title,tabPosition);
+        mPagerAdapter.setTitle(title,tabPosition);
     }
 
 
@@ -156,12 +198,9 @@ public class EditStock extends AppCompatActivity implements NotifyGeneral,
     @Override
     public void onBackPressed() {
 
-        Fragment fragment = (Fragment)mPagerAdapterEditStock.instantiateItem(mViewPager,0);
-
-        if(fragment instanceof NotifyBackPressed)
+        if(notifyBackPressed !=null)
         {
-
-            if(((NotifyBackPressed)fragment).backPressed())
+            if(notifyBackPressed.backPressed())
             {
                 super.onBackPressed();
             }else
@@ -169,9 +208,11 @@ public class EditStock extends AppCompatActivity implements NotifyGeneral,
 //                mViewPager.setCurrentItem(0,true);
                 mViewPager.setCurrentItem(0);
             }
-
         }
-
+        else
+        {
+            super.onBackPressed();
+        }
     }
 
 
@@ -188,12 +229,13 @@ public class EditStock extends AppCompatActivity implements NotifyGeneral,
 
         Log.d("applog","Item Category Changed : " + currentCategory.getCategoryName() + " : " + String.valueOf(currentCategory.getItemCategoryID()));
 
-        Fragment fragment = (Fragment)mPagerAdapterEditStock.instantiateItem(mViewPager,1);
+        showFab();
 
-        if(fragment instanceof NotifyCategoryChanged)
+        if(notifyCategoryChanged !=null)
         {
-            ((NotifyCategoryChanged)fragment).itemCategoryChanged(currentCategory,isBackPressed);
+            notifyCategoryChanged.itemCategoryChanged(currentCategory,isBackPressed);
         }
+
 
     }
 
@@ -233,7 +275,100 @@ public class EditStock extends AppCompatActivity implements NotifyGeneral,
         mViewPager.setCurrentItem(1);
     }
 
+    @Override
+    public void showFab() {
+        fab_menu.animate().translationY(0);
+    }
 
+    @Override
+    public void hideFab() {
+        fab_menu.animate().translationY(120);
+    }
+
+
+
+
+    // Click Listeners for Fab Buttons
+
+
+    @OnClick(R.id.fab_detach)
+    void fabDetachClick()
+    {
+        if(mViewPager.getCurrentItem()==0)
+        {
+            if(notifyFabClickItemCategories!=null)
+            {
+                notifyFabClickItemCategories.detachSelectedClick();
+            }
+        }
+        else if(mViewPager.getCurrentItem()==1)
+        {
+            if(notifyFabClick_item!=null)
+            {
+                notifyFabClick_item.detachSelectedClick();
+            }
+        }
+    }
+
+    @OnClick(R.id.fab_change_parent)
+    void fabChangeParentClick()
+    {
+        if(mViewPager.getCurrentItem()==0)
+        {
+            if(notifyFabClickItemCategories!=null)
+            {
+                notifyFabClickItemCategories.changeParentForSelected();
+            }
+        }
+        else if(mViewPager.getCurrentItem()==1)
+        {
+            if(notifyFabClick_item!=null)
+            {
+                notifyFabClick_item.changeParentForSelected();
+            }
+        }
+    }
+
+    @OnClick(R.id.fab_add)
+    void fabAddClick()
+    {
+        if(mViewPager.getCurrentItem()==0)
+        {
+            if(notifyFabClickItemCategories!=null)
+            {
+                notifyFabClickItemCategories.addItemCategory();
+            }
+        }
+        else if (mViewPager.getCurrentItem()==1)
+        {
+            if(notifyFabClick_item!=null)
+            {
+                notifyFabClick_item.addItem();
+            }
+        }
+
+
+    }
+
+
+    @OnClick(R.id.fab_add_from_global)
+    void fabAddFromGlobal()
+    {
+        if(mViewPager.getCurrentItem()==0)
+        {
+            if(notifyFabClickItemCategories!=null)
+            {
+                notifyFabClickItemCategories.addfromGlobal();
+            }
+        }
+        else if(mViewPager.getCurrentItem()==1)
+        {
+            if(notifyFabClick_item!=null)
+            {
+                notifyFabClick_item.addfromGlobal();
+            }
+        }
+    }
 
 
     @Override
@@ -247,11 +382,32 @@ public class EditStock extends AppCompatActivity implements NotifyGeneral,
 
         if(position==0)
         {
+            showFab();
+//            fab_detach.setLabelText(getString(R.string.fab_label_detach_item_category));
+//            fab_change_parent.setLabelText(getString(R.string.fab_label_change_parent_categories));
+
+            fab_detach.setVisibility(View.GONE);
+            fab_change_parent.setVisibility(View.GONE);
+
+            fab_add.setLabelText(getString(R.string.fab_label_add_item_category));
+            fab_add_from_global.setLabelText(getString(R.string.fab_label_add_from_global_item_cat));
+            fab_menu.setMenuButtonColorNormal(getResources().getColor(R.color.phonographyBlue));
 
         }else if(position == 1)
         {
+            showFab();
+//            fab_detach.setLabelText(getString(R.string.fab_label_detach_item));
+//            fab_change_parent.setLabelText(getString(R.string.fab_label_change_parent_item));
 
+            fab_detach.setVisibility(View.VISIBLE);
+            fab_change_parent.setVisibility(View.VISIBLE);
 
+            fab_detach.setLabelText("Remove Selected Items from Shop");
+            fab_change_parent.setLabelText("Add Selected Items to Shop");
+
+            fab_add.setLabelText(getString(R.string.fab_label_add_Item));
+            fab_add_from_global.setLabelText(getString(R.string.fab_label_add_from_global_item));
+            fab_menu.setMenuButtonColorNormal(getResources().getColor(R.color.orangeDark));
         }
     }
 
@@ -275,7 +431,7 @@ public class EditStock extends AppCompatActivity implements NotifyGeneral,
 
         if(mViewPager.getCurrentItem()==1)
         {
-            Fragment fragment = (Fragment) mPagerAdapterEditStock.instantiateItem(mViewPager,mViewPager.getCurrentItem());
+            Fragment fragment = (Fragment)mPagerAdapter.instantiateItem(mViewPager,mViewPager.getCurrentItem());
 
             if(fragment instanceof NotifySort)
             {

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.constraint.ConstraintLayout;
 import android.support.graphics.drawable.VectorDrawableCompat;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -13,12 +14,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
-import org.localareadelivery.distributorapp.ItemCategoriesTypeSimple.Utility.HeaderItemsList;
+import org.localareadelivery.distributorapp.ItemsByCategoryTypeSimple.Utility.HeaderItemsList;
 import org.localareadelivery.distributorapp.Model.Item;
 import org.localareadelivery.distributorapp.Model.ItemCategory;
 import org.localareadelivery.distributorapp.Model.ShopItem;
@@ -48,10 +50,14 @@ public class AdapterItemsInStock extends RecyclerView.Adapter<RecyclerView.ViewH
     public static final int VIEW_TYPE_ITEM_CATEGORY = 1;
     public static final int VIEW_TYPE_SHOP_ITEM = 2;
     public static final int VIEW_TYPE_HEADER = 3;
+    public static final int VIEW_TYPE_SCROLL_PROGRESS_BAR = 4;
+
+
+    private Fragment fragment;
 
 
 
-    public AdapterItemsInStock(List<Object> dataset, Context context, NotificationsFromAdapter notificationReceiver) {
+    public AdapterItemsInStock(List<Object> dataset, Context context, NotificationsFromAdapter notificationReceiver, Fragment fragment) {
 
 
 //        DaggerComponentBuilder.getInstance()
@@ -60,6 +66,7 @@ public class AdapterItemsInStock extends RecyclerView.Adapter<RecyclerView.ViewH
         this.notificationReceiver = notificationReceiver;
         this.dataset = dataset;
         this.context = context;
+        this.fragment = fragment;
     }
 
     @Override
@@ -83,6 +90,16 @@ public class AdapterItemsInStock extends RecyclerView.Adapter<RecyclerView.ViewH
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_header_type_simple,parent,false);
             return new ViewHolderHeader(view);
         }
+        else if(viewType == VIEW_TYPE_SCROLL_PROGRESS_BAR)
+        {
+
+            view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.list_item_progress_bar,parent,false);
+
+            return new LoadingViewHolder(view);
+
+        }
+
 
 //        else
 //        {
@@ -115,6 +132,30 @@ public class AdapterItemsInStock extends RecyclerView.Adapter<RecyclerView.ViewH
             }
 
         }
+        else if(holder instanceof LoadingViewHolder)
+        {
+
+
+            LoadingViewHolder viewHolder = (LoadingViewHolder) holder;
+
+            if(fragment instanceof ItemsInStockByCatFragment)
+            {
+                int fetched_count  = ((ItemsInStockByCatFragment) fragment).fetched_items_count;
+                int items_count = ((ItemsInStockByCatFragment) fragment).item_count_item;
+
+                if(fetched_count == items_count)
+                {
+                    viewHolder.progressBar.setVisibility(View.GONE);
+                }
+                else
+                {
+                    viewHolder.progressBar.setVisibility(View.VISIBLE);
+                    viewHolder.progressBar.setIndeterminate(true);
+
+                }
+            }
+        }
+
 
     }
 
@@ -124,7 +165,11 @@ public class AdapterItemsInStock extends RecyclerView.Adapter<RecyclerView.ViewH
 
         super.getItemViewType(position);
 
-        if(dataset.get(position) instanceof ItemCategory)
+        if(position == dataset.size())
+        {
+            return VIEW_TYPE_SCROLL_PROGRESS_BAR;
+        }
+        else if(dataset.get(position) instanceof ItemCategory)
         {
             return VIEW_TYPE_ITEM_CATEGORY;
         }
@@ -144,7 +189,21 @@ public class AdapterItemsInStock extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public int getItemCount() {
 
-        return dataset.size();
+        return (dataset.size()+1);
+    }
+
+
+
+
+    public class LoadingViewHolder extends  RecyclerView.ViewHolder{
+
+        @Bind(R.id.progress_bar)
+        ProgressBar progressBar;
+
+        public LoadingViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this,itemView);
+        }
     }
 
 

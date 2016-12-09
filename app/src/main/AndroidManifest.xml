@@ -223,7 +223,7 @@
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ItemCategoriesTabs.ItemCategoriesTabs"
+            android:name=".ItemsByCategoryTabsOld.ItemCategoriesTabs"
             android:label="@string/title_activity_item_categories_tabs"
             android:parentActivityName=".ShopHome.ShopHome"
             android:theme="@style/AppTheme.NoActionBar">
@@ -232,7 +232,7 @@
                 android:value=".ShopHome.ShopHome" />
         </activity>
         <activity
-            android:name=".ItemCategoriesTabs.ItemCategories.AddItemCategory"
+            android:name=".ItemsByCategoryTabsOld.ItemCategories.AddItemCategory"
             android:label="Add Item Category"
             android:parentActivityName=".ShopHome.ShopHome"
             android:theme="@style/AppTheme.NoActionBar">
@@ -241,7 +241,7 @@
                 android:value=".ShopHome.ShopHome" />
         </activity>
         <activity
-            android:name=".ItemCategoriesTabs.ItemCategories.EditItemCategory"
+            android:name=".ItemsByCategoryTabsOld.ItemCategories.EditItemCategory"
             android:label="Edit Item Category"
             android:parentActivityName=".ShopHome.ShopHome"
             android:theme="@style/AppTheme.NoActionBar">
@@ -343,7 +343,7 @@
 
 
         <activity
-            android:name=".ItemCategoriesTypeSimple.ItemCategoriesSimple"
+            android:name=".ItemsByCategoryTypeSimple.ItemsByCatSimple"
             android:label="Items by Category"
             android:launchMode="singleTop"
             android:parentActivityName=".ShopHome.ShopHome"

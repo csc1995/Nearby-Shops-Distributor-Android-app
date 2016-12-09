@@ -15,9 +15,9 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
-import org.localareadelivery.distributorapp.ItemCategoriesTabs.Interfaces.NotifyCategoryChanged;
-import org.localareadelivery.distributorapp.ItemCategoriesTabs.Interfaces.NotifyGeneral;
-import org.localareadelivery.distributorapp.ItemCategoriesTabs.Interfaces.NotifyTitleChanged;
+import org.localareadelivery.distributorapp.ItemsByCategoryTabsOld.Interfaces.NotifyCategoryChanged;
+import org.localareadelivery.distributorapp.ItemsByCategoryTabsOld.Interfaces.NotifyGeneral;
+import org.localareadelivery.distributorapp.ItemsByCategoryTabsOld.Interfaces.NotifyTitleChanged;
 import org.localareadelivery.distributorapp.Model.ItemCategory;
 import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.Model.ShopItem;

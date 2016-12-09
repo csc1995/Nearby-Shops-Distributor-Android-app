@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.ItemsInStockOld;
+package org.localareadelivery.distributorapp.ItemsByCategoryTypeSimple;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,10 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+
 import org.localareadelivery.distributorapp.ItemsByCategoryTabsOld.Interfaces.NotifySort;
-import org.localareadelivery.distributorapp.Model.Item;
+import org.localareadelivery.distributorapp.ItemsByCategoryTypeSimple.Utility.UtilitySortItemsByCategory;
 import org.localareadelivery.distributorapp.R;
-import org.localareadelivery.distributorapp.Utility.UtilitySortItem;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -22,25 +22,22 @@ import butterknife.OnClick;
  * Created by sumeet on 15/9/16.
  */
 
-public class SlidingLayerEditStock extends Fragment {
+public class SlidingLayerSortItems extends Fragment {
 
-    @Bind(R.id.sort_by_name)
-    TextView sort_by_name;
+    @Bind(R.id.sort_rating)
+    TextView sort_by_rating;
 
-//    @Bind(R.id.sort_by_username)
-//    TextView sort_by_username;
+    @Bind(R.id.sort_popularity)
+    TextView sort_by_popularity;
 
-    @Bind(R.id.sort_by_created)
-    TextView sort_by_created;
-
-//    @Bind(R.id.sort_by_updated)
-//    TextView sort_by_updated;
+    @Bind(R.id.shop_count)
+    TextView sort_by_shop_count;
 
     @Bind(R.id.item_price)
     TextView sort_by_price_avg;
 
-    @Bind(R.id.item_total)
-    TextView sort_by_shop_count;
+
+
 
     @Bind(R.id.sort_ascending)
     TextView sort_ascending;
@@ -48,27 +45,27 @@ public class SlidingLayerEditStock extends Fragment {
     @Bind(R.id.sort_descending)
     TextView sort_descending;
 
-    String currentSort = SORT_BY_CREATED;
-    String currentAscending = SORT_ASCENDING;
+    String currentSort = SORT_BY_ITEM_RATING;
+    String currentAscending = SORT_DESCENDING;
 
-    int colorSelected = R.color.colorPrimary;
-    int colorSelectedAscending = R.color.colorAccent;
+    int colorSelected = R.color.blueGrey800;
+    int colorSelectedAscending = R.color.gplus_color_2;
 
 
-    public static String SORT_BY_NAME = Item.ITEM_NAME;
-    public static String SORT_BY_CREATED = Item.DATE_TIME_CREATED;
+    public static String SORT_BY_ITEM_RATING = "avg_rating";
+    public static String SORT_BY_POPULARITY = "popularity";
     public static String SORT_BY_SHOP_COUNT = "shop_count";
     public static String SORT_BY_AVG_PRICE = "avg_price";
 
-    public static String SORT_DESCENDING = "DESC";
-    public static String SORT_ASCENDING = "ASC";
+    public static String SORT_DESCENDING = "DESC NULLS LAST";
+    public static String SORT_ASCENDING = "ASC NULLS LAST";
 
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View view = inflater.inflate(R.layout.fragment_sliding_item_sort,container,false);
+        View view = inflater.inflate(R.layout.fragment_sliding_sort_items_by_category,container,false);
         ButterKnife.bind(this,view);
 
         loadDefaultSort();
@@ -85,23 +82,23 @@ public class SlidingLayerEditStock extends Fragment {
 
 
     void loadDefaultSort() {
-//        String[] sort_options = UtilitySortItem.getSort(getActivity());
+//        String[] sort_options = UtilitySortShops.getSort(getActivity());
 
-        currentSort = UtilitySortItem.getSort(getActivity());
-        currentAscending = UtilitySortItem.getAscending(getActivity());
+        currentSort = UtilitySortItemsByCategory.getSort(getActivity());
+        currentAscending = UtilitySortItemsByCategory.getAscending(getActivity());
 
         clearSelectionSort();
         clearSelectionAscending();
 
-        if (currentSort.equals(SORT_BY_NAME))
+        if (currentSort.equals(SORT_BY_ITEM_RATING))
         {
-            sort_by_name.setTextColor(ContextCompat.getColor(getActivity(), R.color.white));
-            sort_by_name.setBackgroundColor(ContextCompat.getColor(getActivity(), colorSelected));
+            sort_by_rating.setTextColor(ContextCompat.getColor(getActivity(), R.color.white));
+            sort_by_rating.setBackgroundColor(ContextCompat.getColor(getActivity(), colorSelected));
         }
-        else if (currentSort.equals(SORT_BY_CREATED))
+        else if (currentSort.equals(SORT_BY_POPULARITY))
         {
-            sort_by_created.setTextColor(ContextCompat.getColor(getActivity(),R.color.white));
-            sort_by_created.setBackgroundColor(ContextCompat.getColor(getActivity(),colorSelected));
+            sort_by_popularity.setTextColor(ContextCompat.getColor(getActivity(),R.color.white));
+            sort_by_popularity.setBackgroundColor(ContextCompat.getColor(getActivity(),colorSelected));
         }
         else if(currentSort.equals(SORT_BY_AVG_PRICE))
         {
@@ -132,14 +129,14 @@ public class SlidingLayerEditStock extends Fragment {
 
 
 
-    @OnClick(R.id.sort_by_name)
+    @OnClick(R.id.sort_rating)
     void sortByNameClick(View view)
     {
         clearSelectionSort();
-        sort_by_name.setTextColor(ContextCompat.getColor(getActivity(),R.color.white));
-        sort_by_name.setBackgroundColor(ContextCompat.getColor(getActivity(),colorSelected));
+        sort_by_rating.setTextColor(ContextCompat.getColor(getActivity(),R.color.white));
+        sort_by_rating.setBackgroundColor(ContextCompat.getColor(getActivity(),colorSelected));
 
-        UtilitySortItem.saveSort(getActivity(),SORT_BY_NAME);
+        UtilitySortItemsByCategory.saveSort(getActivity(),SORT_BY_ITEM_RATING);
 
         if(getActivity() instanceof NotifySort)
         {
@@ -150,14 +147,14 @@ public class SlidingLayerEditStock extends Fragment {
 
 
 
-    @OnClick(R.id.sort_by_created)
+    @OnClick(R.id.sort_popularity)
     void sortByCreated(View view)
     {
         clearSelectionSort();
-        sort_by_created.setTextColor(ContextCompat.getColor(getActivity(),R.color.white));
-        sort_by_created.setBackgroundColor(ContextCompat.getColor(getActivity(),colorSelected));
+        sort_by_popularity.setTextColor(ContextCompat.getColor(getActivity(),R.color.white));
+        sort_by_popularity.setBackgroundColor(ContextCompat.getColor(getActivity(),colorSelected));
 
-        UtilitySortItem.saveSort(getActivity(),SORT_BY_CREATED);
+        UtilitySortItemsByCategory.saveSort(getActivity(),SORT_BY_POPULARITY);
 
         if(getActivity() instanceof NotifySort)
         {
@@ -168,20 +165,21 @@ public class SlidingLayerEditStock extends Fragment {
 
 
 
-    @OnClick(R.id.item_total)
+    @OnClick(R.id.shop_count)
     void sortByShopCount(View view)
     {
         clearSelectionSort();
         sort_by_shop_count.setTextColor(ContextCompat.getColor(getActivity(),R.color.white));
         sort_by_shop_count.setBackgroundColor(ContextCompat.getColor(getActivity(),colorSelected));
 
-        UtilitySortItem.saveSort(getActivity(),SORT_BY_SHOP_COUNT);
+        UtilitySortItemsByCategory.saveSort(getActivity(),SORT_BY_SHOP_COUNT);
 
         if(getActivity() instanceof NotifySort)
         {
             ((NotifySort)getActivity()).notifySortChanged();
         }
     }
+
 
 
     @OnClick(R.id.item_price)
@@ -191,7 +189,7 @@ public class SlidingLayerEditStock extends Fragment {
         sort_by_price_avg.setTextColor(ContextCompat.getColor(getActivity(),R.color.white));
         sort_by_price_avg.setBackgroundColor(ContextCompat.getColor(getActivity(),colorSelected));
 
-        UtilitySortItem.saveSort(getActivity(),SORT_BY_AVG_PRICE);
+        UtilitySortItemsByCategory.saveSort(getActivity(),SORT_BY_AVG_PRICE);
 
         if(getActivity() instanceof NotifySort)
         {
@@ -212,7 +210,7 @@ public class SlidingLayerEditStock extends Fragment {
         sort_ascending.setBackgroundColor(ContextCompat.getColor(getActivity(),colorSelectedAscending));
 
 
-        UtilitySortItem.saveAscending(getActivity(),SORT_ASCENDING);
+        UtilitySortItemsByCategory.saveAscending(getActivity(),SORT_ASCENDING);
 
         if(getActivity() instanceof NotifySort)
         {
@@ -230,7 +228,7 @@ public class SlidingLayerEditStock extends Fragment {
         sort_descending.setBackgroundColor(ContextCompat.getColor(getActivity(),colorSelectedAscending));
 
 
-        UtilitySortItem.saveAscending(getActivity(),SORT_DESCENDING);
+        UtilitySortItemsByCategory.saveAscending(getActivity(),SORT_DESCENDING);
 
         if(getActivity() instanceof NotifySort)
         {
@@ -242,13 +240,13 @@ public class SlidingLayerEditStock extends Fragment {
 
     void clearSelectionSort()
     {
-        sort_by_name.setTextColor(ContextCompat.getColor(getActivity(),R.color.blueGrey800));
-        sort_by_created.setTextColor(ContextCompat.getColor(getActivity(),R.color.blueGrey800));
+        sort_by_rating.setTextColor(ContextCompat.getColor(getActivity(),R.color.blueGrey800));
+        sort_by_popularity.setTextColor(ContextCompat.getColor(getActivity(),R.color.blueGrey800));
         sort_by_shop_count.setTextColor(ContextCompat.getColor(getActivity(),R.color.blueGrey800));
         sort_by_price_avg.setTextColor(ContextCompat.getColor(getActivity(),R.color.blueGrey800));
 
-        sort_by_name.setBackgroundColor(ContextCompat.getColor(getActivity(),R.color.light_grey));
-        sort_by_created.setBackgroundColor(ContextCompat.getColor(getActivity(),R.color.light_grey));
+        sort_by_rating.setBackgroundColor(ContextCompat.getColor(getActivity(),R.color.light_grey));
+        sort_by_popularity.setBackgroundColor(ContextCompat.getColor(getActivity(),R.color.light_grey));
         sort_by_shop_count.setBackgroundColor(ContextCompat.getColor(getActivity(),R.color.light_grey));
         sort_by_price_avg.setBackgroundColor(ContextCompat.getColor(getActivity(),R.color.light_grey));
 

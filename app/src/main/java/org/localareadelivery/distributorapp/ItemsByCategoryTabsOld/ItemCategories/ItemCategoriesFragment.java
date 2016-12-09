@@ -1,10 +1,13 @@
-package org.localareadelivery.distributorapp.ItemsInStockOld.ItemCategories;
+package org.localareadelivery.distributorapp.ItemsByCategoryTabsOld.ItemCategories;
 
-
+import android.app.Activity;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,17 +21,21 @@ import android.widget.Toast;
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
 import org.localareadelivery.distributorapp.ItemsByCategoryTabsOld.Interfaces.NotifyBackPressed;
 import org.localareadelivery.distributorapp.ItemsByCategoryTabsOld.Interfaces.NotifyCategoryChanged;
+import org.localareadelivery.distributorapp.ItemsByCategoryTabsOld.Interfaces.NotifyFabClick_ItemCategories;
 import org.localareadelivery.distributorapp.ItemsByCategoryTabsOld.Interfaces.NotifyGeneral;
+import org.localareadelivery.distributorapp.ItemsByCategoryTabsOld.Interfaces.NotifySort;
 import org.localareadelivery.distributorapp.ItemsByCategoryTabsOld.Interfaces.NotifyTitleChanged;
 import org.localareadelivery.distributorapp.ItemsByCategoryTabsOld.Interfaces.ToggleFab;
+import org.localareadelivery.distributorapp.ItemsByCategoryTabsOld.ItemCategoriesTabs;
 import org.localareadelivery.distributorapp.Model.ItemCategory;
-import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.ModelEndpoints.ItemCategoryEndPoint;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ItemCategoryService;
-import org.localareadelivery.distributorapp.ShopHome.UtilityShopHome;
+import org.localareadelivery.distributorapp.SelectParent.ItemCategoriesParent;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -36,14 +43,15 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import icepick.Icepick;
 import icepick.State;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ItemCategoriesFragmentEditStock extends Fragment
-        implements ItemCategoriesAdapterEditStock.ReceiveNotificationsFromAdapter,
-        SwipeRefreshLayout.OnRefreshListener,
-        NotifyBackPressed{
+public class ItemCategoriesFragment extends Fragment
+        implements ItemCategoriesAdapter.ReceiveNotificationsFromAdapter, SwipeRefreshLayout.OnRefreshListener,
+        NotifyBackPressed,
+        NotifyFabClick_ItemCategories, NotifySort {
 
 
 
@@ -51,7 +59,7 @@ public class ItemCategoriesFragmentEditStock extends Fragment
     ArrayList<ItemCategory> dataset = new ArrayList<>();
 
     RecyclerView itemCategoriesList;
-    ItemCategoriesAdapterEditStock listAdapter;
+    ItemCategoriesAdapter listAdapter;
     GridLayoutManager layoutManager;
 
     @State boolean show = true;
@@ -59,24 +67,13 @@ public class ItemCategoriesFragmentEditStock extends Fragment
     @Inject
     ItemCategoryService itemCategoryService;
 
+    NotifyGeneral notificationReceiverFragment;
+
     @State
     ItemCategory currentCategory = null;
 
 
-
-    private int limit = 30;
-    @State int offset = 0;
-    @State int item_count = 0;
-
-
-    @Bind(R.id.swipeContainer)
-    SwipeRefreshLayout swipeContainer;
-
-
-
-
-
-    public ItemCategoriesFragmentEditStock() {
+    public ItemCategoriesFragment() {
         super();
 
         // Inject the dependencies using Dependency Injection
@@ -99,7 +96,7 @@ public class ItemCategoriesFragmentEditStock extends Fragment
         super.onCreateView(inflater, container, savedInstanceState);
 
 
-        View rootView = inflater.inflate(R.layout.fragment_edit_stock, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_item_categories, container, false);
 
         ButterKnife.bind(this,rootView);
 
@@ -108,6 +105,25 @@ public class ItemCategoriesFragmentEditStock extends Fragment
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         itemCategoriesList = (RecyclerView)rootView.findViewById(R.id.recyclerViewItemCategories);
+
+
+
+
+        if(getActivity() instanceof ItemCategoriesTabs)
+        {
+            ItemCategoriesTabs activity = (ItemCategoriesTabs)getActivity();
+//            Log.d("applog","DetachedItemFragment: PlaceHolderFragment Recreated");
+            activity.notifyFabClickItemCategories = this;
+            activity.notifyBackPressed = this;
+        }
+
+
+        if(getActivity() instanceof NotifyGeneral)
+        {
+            ItemCategoriesTabs activity = (ItemCategoriesTabs)getActivity();
+            this.notificationReceiverFragment = (NotifyGeneral) activity;
+        }
+
 
 
         if(savedInstanceState==null)
@@ -157,10 +173,17 @@ public class ItemCategoriesFragmentEditStock extends Fragment
     }
 
 
+
+    private int limit = 30;
+    @State int offset = 0;
+    @State int item_count = 0;
+
+
+
     void setupRecyclerView()
     {
 
-        listAdapter = new ItemCategoriesAdapterEditStock(dataset,getActivity(),this,this);
+        listAdapter = new ItemCategoriesAdapter(dataset,getActivity(),this,this);
         itemCategoriesList.setAdapter(listAdapter);
         layoutManager = new GridLayoutManager(getActivity(),1, LinearLayoutManager.VERTICAL,false);
         itemCategoriesList.setLayoutManager(layoutManager);
@@ -181,6 +204,8 @@ public class ItemCategoriesFragmentEditStock extends Fragment
 
 //        layoutManager.setSpanCount(metrics.widthPixels/350);
 
+
+
         int spanCount = (int) (metrics.widthPixels/(230 * metrics.density));
 
         if(spanCount==0){
@@ -188,6 +213,7 @@ public class ItemCategoriesFragmentEditStock extends Fragment
         }
 
         layoutManager.setSpanCount(spanCount);
+
 
 
 
@@ -262,6 +288,11 @@ public class ItemCategoriesFragmentEditStock extends Fragment
 
 
 
+
+    @Bind(R.id.swipeContainer)
+    SwipeRefreshLayout swipeContainer;
+
+
     void setupSwipeContainer()
     {
 
@@ -282,12 +313,18 @@ public class ItemCategoriesFragmentEditStock extends Fragment
     public void makeRequestRetrofit(final boolean notifyItemCategoryChanged, final boolean backPressed)
     {
 
-        Shop currentShop = UtilityShopHome.getShop(getContext());
+//        Call<ItemCategoryEndPoint> endPointCallDeprecated = itemCategoryService.getItemCategories(
+//                null,currentCategory.getItemCategoryID(),
+//                null,null,null,null,null,null,"id",limit,offset,false);
 
 
-        Call<ItemCategoryEndPoint> endPointCall = itemCategoryService.getItemCategories(
-                currentShop.getShopID(),currentCategory.getItemCategoryID(),
-                null,null,null,null,null,null,"id",limit,offset,false);
+        Call<ItemCategoryEndPoint> endPointCall = itemCategoryService.getItemCategoriesQuerySimple(
+                currentCategory.getItemCategoryID(),
+                null, null,
+                "id",limit,offset
+        );
+
+
 
         Log.d("applog","DetachedTabs: Network call made !");
 
@@ -308,8 +345,7 @@ public class ItemCategoriesFragmentEditStock extends Fragment
                         if(currentCategory!=null)
                         {
 
-                            ((NotifyCategoryChanged)getActivity())
-                                    .itemCategoryChanged(currentCategory,backPressed);
+                            ((NotifyCategoryChanged)getActivity()).itemCategoryChanged(currentCategory,backPressed);
                         }
                     }
 
@@ -348,8 +384,19 @@ public class ItemCategoriesFragmentEditStock extends Fragment
 
 
 
+    void notifyDelete()
+    {
+        dataset.clear();
+        offset = 0 ; // reset the offset
+        makeRequestRetrofit(false,false);
+    }
 
-/*
+
+
+
+
+
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -393,11 +440,9 @@ public class ItemCategoriesFragmentEditStock extends Fragment
             }
         }
     }
-*/
 
 
 
-/*
     void makeRequestUpdate(ItemCategory itemCategory)
     {
         Call<ResponseBody> call = itemCategoryService.updateItemCategory(itemCategory,itemCategory.getItemCategoryID());
@@ -431,11 +476,10 @@ public class ItemCategoriesFragmentEditStock extends Fragment
             }
         });
     }
-*/
 
 
 
-/*
+
     void makeRequestUpdateBulk(final List<ItemCategory> list)
     {
         Call<ResponseBody> call = itemCategoryService.updateItemCategoryBulk(list);
@@ -467,6 +511,9 @@ public class ItemCategoriesFragmentEditStock extends Fragment
                 }
 
 
+                /*dataset.clear();
+                offset = 0 ; // reset the offset
+                makeRequestRetrofit(false);*/
                 onRefresh();
 
             }
@@ -480,7 +527,7 @@ public class ItemCategoriesFragmentEditStock extends Fragment
             }
         });
 
-    }*/
+    }
 
 
     void clearSelectedItems()
@@ -488,6 +535,8 @@ public class ItemCategoriesFragmentEditStock extends Fragment
         // clear the selected items
         listAdapter.selectedItems.clear();
     }
+
+
 
 
 
@@ -500,6 +549,8 @@ public class ItemCategoriesFragmentEditStock extends Fragment
             ((ToggleFab)getActivity()).showFab();
         }
     }
+
+
 
 
 
@@ -521,6 +572,11 @@ public class ItemCategoriesFragmentEditStock extends Fragment
     }
 
 
+//    private boolean isRootCategory = true;
+//
+//    private ArrayList<String> categoryTree = new ArrayList<>();
+
+
 
     @Override
     public void notifyRequestSubCategory(ItemCategory itemCategory) {
@@ -530,14 +586,22 @@ public class ItemCategoriesFragmentEditStock extends Fragment
         currentCategory.setParentCategory(temp);
 
 
-        if(getActivity() instanceof NotifyGeneral)
+        if(notificationReceiverFragment!=null)
         {
-            ((NotifyGeneral)getActivity()).insertTab(currentCategory.getCategoryName());
+            notificationReceiverFragment.insertTab(currentCategory.getCategoryName());
         }
+
 
         dataset.clear();
         offset = 0 ; // reset the offset
         makeRequestRetrofit(true,false);
+
+/*
+        if(!currentCategory.getAbstractNode())
+        {
+            notificationReceiverFragment.notifySwipeToright();
+        }*/
+
     }
 
 
@@ -551,12 +615,9 @@ public class ItemCategoriesFragmentEditStock extends Fragment
 
         if(currentCategory!=null) {
 
-
-            if(getActivity() instanceof NotifyGeneral)
-            {
-                ((NotifyGeneral)getActivity()).removeLastTab();
+            if (notificationReceiverFragment != null) {
+                notificationReceiverFragment.removeLastTab();
             }
-
 
             if (currentCategory.getParentCategory() != null) {
 
@@ -569,6 +630,11 @@ public class ItemCategoriesFragmentEditStock extends Fragment
 
 
             if (currentCategoryID != -1) {
+//                options.setVisibility(View.VISIBLE);
+//                appBar.setVisibility(View.VISIBLE);
+//                notificationReceiverFragment.showAppBar();
+
+//                exitFullscreen();
 
                 dataset.clear();
                 offset =0; // reset the offset
@@ -593,19 +659,30 @@ public class ItemCategoriesFragmentEditStock extends Fragment
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+
         Icepick.saveInstanceState(this, outState);
+//        outState.putParcelableArrayList("dataset",dataset);
+//        outState.putParcelable("currentCat",currentCategory);
     }
 
 
 
     void notifyTitleChanged()
     {
+
+        /*String name = "";
+
+        if(currentCategory.getCategoryName()!=null)
+        {
+            name = currentCategory.getCategoryName();
+        }*/
+
         if(getActivity() instanceof NotifyTitleChanged)
         {
             ((NotifyTitleChanged) getActivity())
                     .NotifyTitleChanged(currentCategory.getCategoryName()
                              + " Subcategories ("
-                            + String.valueOf(dataset.size()) + ")",0
+                            + String.valueOf(dataset.size()) + "/" + String.valueOf(item_count )+ ")",0
                     );
         }
     }
@@ -617,7 +694,133 @@ public class ItemCategoriesFragmentEditStock extends Fragment
 
         Icepick.restoreInstanceState(this, savedInstanceState);
         notifyTitleChanged();
+
+        /*
+        if (savedInstanceState != null) {
+
+            ArrayList<ItemCategory> tempList = savedInstanceState.getParcelableArrayList("dataset");
+
+            dataset.clear();
+            dataset.addAll(tempList);
+
+
+
+            listAdapter.notifyDataSetChanged();
+//
+//            currentCategory = savedInstanceState.getParcelable("currentCat");
+        }*/
+
     }
 
 
+    void detachedSelectedDialog()
+    {
+
+        if(listAdapter.selectedItems.size()==0)
+        {
+            showToastMessage("No item selected. Please make a selection !");
+
+            return;
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        builder.setTitle("Confirm Detach Item Categories !")
+                .setMessage("Do you want to remove / detach parent for the selected Categories ? ")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        detachSelected();
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        showToastMessage("Cancelled !");
+                    }
+                })
+                .show();
+    }
+
+
+
+
+    void detachSelected()
+    {
+
+        /*if(listAdapter.selectedItems.size()==0)
+        {
+            showToastMessage("No item selected. Please make a selection !");
+
+            return;
+        }*/
+
+        List<ItemCategory> tempList = new ArrayList<>();
+
+        for(Map.Entry<Integer,ItemCategory> entry : listAdapter.selectedItems.entrySet())
+        {
+            entry.getValue().setParentCategoryID(-1);
+            tempList.add(entry.getValue());
+        }
+
+        makeRequestUpdateBulk(tempList);
+    }
+
+
+
+    void addItemCategoryClick()
+    {
+        Intent addIntent = new Intent(getActivity(), AddItemCategory.class);
+        addIntent.putExtra(AddItemCategory.ADD_ITEM_CATEGORY_INTENT_KEY,currentCategory);
+        startActivity(addIntent);
+    }
+
+
+
+    void changeParentBulk()
+    {
+
+        if(listAdapter.selectedItems.size()==0)
+        {
+            showToastMessage("No item selected. Please make a selection !");
+
+            return;
+        }
+
+        // make an exclude list. Put selected items to an exclude list. This is done to preven a category to make itself or its
+        // children its parent. This is logically incorrect and should not happen.
+
+        ItemCategoriesParent.clearExcludeList();
+        ItemCategoriesParent.excludeList.putAll(listAdapter.selectedItems);
+
+        Intent intentParent = new Intent(getActivity(), ItemCategoriesParent.class);
+        startActivityForResult(intentParent,2,null);
+    }
+
+
+
+    @Override
+    public void detachSelectedClick() {
+        detachedSelectedDialog();
+    }
+
+    @Override
+    public void changeParentForSelected() {
+        changeParentBulk();
+    }
+
+    @Override
+    public void addItemCategory() {
+        addItemCategoryClick();
+    }
+
+    @Override
+    public void addfromGlobal() {
+
+    }
+
+    @Override
+    public void notifySortChanged() {
+        onRefresh();
+    }
 }

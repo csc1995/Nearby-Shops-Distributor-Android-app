@@ -1,10 +1,10 @@
-package org.localareadelivery.distributorapp.Utility;
+package org.localareadelivery.distributorapp.ItemsByCategoryTypeSimple.Utility;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import org.localareadelivery.distributorapp.ItemsByCategoryTabsOld.SlidingLayerItemSort;
-import org.localareadelivery.distributorapp.MyApplication;
+
+import org.localareadelivery.distributorapp.ItemsByCategoryTypeSimple.SlidingLayerSortItems;
 import org.localareadelivery.distributorapp.R;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -13,18 +13,12 @@ import static android.content.Context.MODE_PRIVATE;
  * Created by sumeet on 29/9/16.
  */
 
-public class UtilitySortItem {
+public class UtilitySortItemsByCategory {
 
 
 
     public static void saveSort(Context context, String sort_by)
     {
-
-        if(context==null)
-        {
-            context = MyApplication.getAppContext();
-        }
-
         // get a handle to shared Preference
         SharedPreferences sharedPref;
 
@@ -34,21 +28,15 @@ public class UtilitySortItem {
 
         // write to the shared preference
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString("sort_item", sort_by);
+        editor.putString("sort_items_by_category_simple", sort_by);
         editor.apply();
     }
 
 
     public static String getSort(Context context)
     {
-
-        if(context==null)
-        {
-            context = MyApplication.getAppContext();
-        }
-
         SharedPreferences sharedPref = context.getSharedPreferences(context.getString(R.string.preference_file_name), MODE_PRIVATE);
-        String sort_by = sharedPref.getString("sort_item", SlidingLayerItemSort.SORT_BY_NAME);
+        String sort_by = sharedPref.getString("sort_items_by_category_simple", SlidingLayerSortItems.SORT_BY_ITEM_RATING);
 
         return sort_by;
     }
@@ -58,12 +46,6 @@ public class UtilitySortItem {
     public static void saveAscending(Context context, String descending)
     {
 
-        if(context==null)
-        {
-            context = MyApplication.getAppContext();
-        }
-
-
         // get a handle to shared Preference
         SharedPreferences sharedPref;
 
@@ -73,7 +55,7 @@ public class UtilitySortItem {
 
         // write to the shared preference
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString("sort_descending_item",descending);
+        editor.putString("sort_descending_items_by_category_simple",descending);
         editor.apply();
     }
 
@@ -82,13 +64,8 @@ public class UtilitySortItem {
     public static String getAscending(Context context)
     {
 
-        if(context==null)
-        {
-            context = MyApplication.getAppContext();
-        }
-
         SharedPreferences sharedPref = context.getSharedPreferences(context.getString(R.string.preference_file_name), MODE_PRIVATE);
-        String descending = sharedPref.getString("sort_descending_item", SlidingLayerItemSort.SORT_DESCENDING);
+        String descending = sharedPref.getString("sort_descending_items_by_category_simple", SlidingLayerSortItems.SORT_DESCENDING);
 
         return descending;
     }

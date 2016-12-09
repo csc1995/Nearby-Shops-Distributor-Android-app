@@ -2,10 +2,8 @@ package org.localareadelivery.distributorapp.ItemsInStock;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.support.constraint.ConstraintLayout;
 import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -20,9 +18,8 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
-import org.localareadelivery.distributorapp.ItemCategoriesTypeSimple.Utility.HeaderItemsList;
+import org.localareadelivery.distributorapp.ItemsByCategoryTypeSimple.Utility.HeaderItemsList;
 import org.localareadelivery.distributorapp.Model.Item;
-import org.localareadelivery.distributorapp.Model.ItemCategory;
 import org.localareadelivery.distributorapp.Model.ShopItem;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.Utility.UtilityGeneral;

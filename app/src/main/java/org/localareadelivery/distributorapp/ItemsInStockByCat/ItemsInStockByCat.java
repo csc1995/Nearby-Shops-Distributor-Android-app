@@ -17,10 +17,10 @@ import android.widget.TextView;
 import com.wunderlist.slidinglayer.SlidingLayer;
 
 import org.localareadelivery.distributorapp.ItemsInStockByCat.SlidingLayerSort.SlidingLayerSortItemsInStock;
-import org.localareadelivery.distributorapp.ItemCategoriesTabs.Interfaces.NotifySort;
-import org.localareadelivery.distributorapp.ItemCategoriesTypeSimple.Interfaces.NotifyBackPressed;
-import org.localareadelivery.distributorapp.ItemCategoriesTypeSimple.Interfaces.NotifyIndicatorChanged;
-import org.localareadelivery.distributorapp.ItemCategoriesTypeSimple.Interfaces.NotifySearch;
+import org.localareadelivery.distributorapp.ItemsByCategoryTabsOld.Interfaces.NotifySort;
+import org.localareadelivery.distributorapp.ItemsByCategoryTypeSimple.Interfaces.NotifyBackPressed;
+import org.localareadelivery.distributorapp.ItemsByCategoryTypeSimple.Interfaces.NotifyIndicatorChanged;
+import org.localareadelivery.distributorapp.ItemsByCategoryTypeSimple.Interfaces.NotifySearch;
 import org.localareadelivery.distributorapp.R;
 
 import butterknife.Bind;

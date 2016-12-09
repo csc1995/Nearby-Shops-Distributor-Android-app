@@ -9,7 +9,7 @@
     android:layout_height="match_parent"
 
     android:fitsSystemWindows="true"
-    tools:context=".ItemCategoriesTabs.ItemCategoriesTabs">
+    tools:context=".ItemsByCategoryTabsOld.ItemCategoriesTabs">
 
     <!--android:background="#22000000"-->
 

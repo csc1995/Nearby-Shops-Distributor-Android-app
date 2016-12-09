@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.ItemsInStockOld;
+package org.localareadelivery.distributorapp.ItemsByCategoryTabsOld;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -22,7 +22,7 @@ import butterknife.OnClick;
  * Created by sumeet on 15/9/16.
  */
 
-public class SlidingLayerEditStock extends Fragment {
+public class SlidingLayerItemSort extends Fragment {
 
     @Bind(R.id.sort_by_name)
     TextView sort_by_name;

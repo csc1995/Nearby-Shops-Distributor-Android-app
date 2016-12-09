@@ -24,6 +24,7 @@ import org.localareadelivery.distributorapp.DeliveryGuyInventory.PendingDelivery
 import org.localareadelivery.distributorapp.DeliveryGuyInventory.PendingReturn.PendingReturnDGI;
 import org.localareadelivery.distributorapp.DeliveryGuyInventory.PendingReturnCancelledByShop.PendingReturnCancelledByShopDGI;
 import org.localareadelivery.distributorapp.DistributorLogin;
+import org.localareadelivery.distributorapp.ItemsByCategoryTypeSimple.ItemsByCatFragmentSimple;
 import org.localareadelivery.distributorapp.ItemsInStock.ItemsInStockFragment;
 import org.localareadelivery.distributorapp.ItemsInStockOld.ItemCategories.ItemCategoriesAdapterEditStock;
 import org.localareadelivery.distributorapp.ItemsInStockOld.ItemCategories.ItemCategoriesFragmentEditStock;
@@ -32,14 +33,13 @@ import org.localareadelivery.distributorapp.ItemsInStockByCat.ItemsInStockByCatF
 import org.localareadelivery.distributorapp.HomeShopAdmin.EditProfile.EditShopAdminFragment;
 import org.localareadelivery.distributorapp.HomeShopAdmin.EditShop.EditShopFragment;
 import org.localareadelivery.distributorapp.HomeShopAdmin.ShopAdminHome;
-import org.localareadelivery.distributorapp.ItemCategoriesTabs.ItemCategories.EditItemCategory;
-import org.localareadelivery.distributorapp.ItemCategoriesTabs.ItemCategories.ItemCategoriesAdapter;
-import org.localareadelivery.distributorapp.ItemCategoriesTabs.ItemCategories.ItemCategoriesFragment;
-import org.localareadelivery.distributorapp.ItemCategoriesTabs.Items.AddItem;
-import org.localareadelivery.distributorapp.ItemCategoriesTabs.Items.EditItem;
-import org.localareadelivery.distributorapp.ItemCategoriesTabs.Items.ItemAdapterTwo;
-import org.localareadelivery.distributorapp.ItemCategoriesTabs.Items.ItemRemakeFragment;
-import org.localareadelivery.distributorapp.ItemCategoriesTypeSimple.ItemCategoriesFragmentSimple;
+import org.localareadelivery.distributorapp.ItemsByCategoryTabsOld.ItemCategories.EditItemCategory;
+import org.localareadelivery.distributorapp.ItemsByCategoryTabsOld.ItemCategories.ItemCategoriesAdapter;
+import org.localareadelivery.distributorapp.ItemsByCategoryTabsOld.ItemCategories.ItemCategoriesFragment;
+import org.localareadelivery.distributorapp.ItemsByCategoryTabsOld.Items.AddItem;
+import org.localareadelivery.distributorapp.ItemsByCategoryTabsOld.Items.EditItem;
+import org.localareadelivery.distributorapp.ItemsByCategoryTabsOld.Items.ItemAdapterTwo;
+import org.localareadelivery.distributorapp.ItemsByCategoryTabsOld.Items.ItemRemakeFragment;
 import org.localareadelivery.distributorapp.OrderDetail.FragmentOrderDetail;
 import org.localareadelivery.distributorapp.ShopList.ShopList;
 import org.localareadelivery.distributorapp.aaDeprecated_DeliveryGuy.AddVehicleSelfActivity;
@@ -176,7 +176,7 @@ public interface NetComponent {
 
     void Inject(ShopAdminHome shopAdminHome);
 
-    void Inject(ItemCategoriesFragmentSimple itemCategoriesFragmentSimple);
+    void Inject(ItemsByCatFragmentSimple itemsByCatFragmentSimple);
 
     void Inject(ItemsInStockByCatFragment itemsInStockByCatFragment);
 
