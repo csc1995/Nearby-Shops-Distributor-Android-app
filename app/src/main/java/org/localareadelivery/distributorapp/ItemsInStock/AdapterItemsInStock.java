@@ -563,7 +563,11 @@ public class AdapterItemsInStock extends RecyclerView.Adapter<RecyclerView.ViewH
             if(!itemPrice.getText().toString().equals(""))
             {
 
+
+
                 String priceLocal = String.valueOf(Integer.parseInt(itemPrice.getText().toString())+1);
+
+
 
                 itemPrice.setText(priceLocal);
 
@@ -643,9 +647,6 @@ public class AdapterItemsInStock extends RecyclerView.Adapter<RecyclerView.ViewH
 
     interface NotificationsFromAdapter
     {
-        // method for notifying the list object to request sub category
-//        void notifyRequestSubCategory(ItemCategory itemCategory);
-//        void notifyItemSelected();
         void notifyShopItemUpdated(ShopItem shopItem);
         void notifyShopItemRemoved(ShopItem shopItem);
     }

@@ -560,6 +560,17 @@ public class ItemsInStockFragment extends Fragment implements SwipeRefreshLayout
                         showToastMessage("Successful !");
                     }
 
+
+                    int removedPosition = dataset.indexOf(shopItem);
+                    dataset.remove(shopItem);
+                    listAdapter.notifyItemRemoved(removedPosition);
+
+                    offset_item = offset_item -1;
+                    fetched_items_count = fetched_items_count -1;
+                    item_count_item = item_count_item -1;
+                    notifyItemIndicatorChanged();
+
+
                 }else if(response.code() == 304) {
 
                     showToastMessage("Not removed !");
@@ -580,7 +591,7 @@ public class ItemsInStockFragment extends Fragment implements SwipeRefreshLayout
 
 
 
-                makeRefreshNetworkCall();
+//                makeRefreshNetworkCall();
             }
 
             @Override

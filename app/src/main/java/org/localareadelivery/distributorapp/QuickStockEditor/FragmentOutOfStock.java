@@ -45,7 +45,7 @@ import retrofit2.Response;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class FragmentOutOfStock extends Fragment implements SwipeRefreshLayout.OnRefreshListener,AdapterOutOfStock.NotificationReceiver, Callback<ShopItemEndPoint> {
+public class FragmentOutOfStock extends Fragment implements SwipeRefreshLayout.OnRefreshListener,AdapterOutOfStock.NotificationReceiver{
 
 
     @Inject
@@ -103,26 +103,7 @@ public class FragmentOutOfStock extends Fragment implements SwipeRefreshLayout.O
 
         if(savedInstanceState == null)
         {
-
-            swipeContainer.post(new Runnable() {
-                @Override
-                public void run() {
-                    swipeContainer.setRefreshing(true);
-
-                    try {
-
-
-                        offset = 0; // reset the offset
-                        dataset.clear();
-                        makeNetworkCall();
-
-                    } catch (IllegalArgumentException ex)
-                    {
-                        ex.printStackTrace();
-
-                    }
-                }
-            });
+            makeRefreshNetworkCall();
         }
 
 
@@ -189,7 +170,7 @@ public class FragmentOutOfStock extends Fragment implements SwipeRefreshLayout.O
                     if((offset+limit)<=item_count)
                     {
                         offset = offset + limit;
-                        makeNetworkCall();
+                        makeNetworkCall(false,false);
                     }
 
                 }
@@ -202,16 +183,34 @@ public class FragmentOutOfStock extends Fragment implements SwipeRefreshLayout.O
 
     @Override
     public void onRefresh() {
+        makeNetworkCall(true,true);
+    }
 
-        dataset.clear();
-        offset=0; // reset the offset
-        makeNetworkCall();
+
+    void makeRefreshNetworkCall()
+    {
+        swipeContainer.post(new Runnable() {
+            @Override
+            public void run() {
+
+                swipeContainer.setRefreshing(true);
+                onRefresh();
+            }
+        });
     }
 
 
 
 
-    void makeNetworkCall() {
+
+
+    void makeNetworkCall(final boolean clearDataset, boolean resetOffset) {
+
+        if(resetOffset) {
+            offset = 0;
+        }
+
+
         int mode = getArguments().getInt(ARG_MODE_KEY);
 
         Shop currentShop = UtilityShopHome.getShop(getContext());
@@ -281,12 +280,47 @@ public class FragmentOutOfStock extends Fragment implements SwipeRefreshLayout.O
         }
 
 
-        if(call!=null)
+        if(call == null)
         {
-            call.enqueue(this);
+            return;
         }
 
+
+        call.enqueue(new Callback<ShopItemEndPoint>() {
+            @Override
+            public void onResponse(Call<ShopItemEndPoint> call, Response<ShopItemEndPoint> response) {
+
+                if(response.body()!= null)
+                {
+                    if(clearDataset)
+                    {
+                        dataset.clear();
+                    }
+                    dataset.addAll(response.body().getResults());
+                    item_count = response.body().getItemCount();
+                }
+
+                if(notificationReceiverPager!=null)
+                {
+                    notificationReceiverPager.OutOfStockChanged();
+                }
+
+                notifyTitleChanged();
+                adapter.notifyDataSetChanged();
+                swipeContainer.setRefreshing(false);
+            }
+
+            @Override
+            public void onFailure(Call<ShopItemEndPoint> call, Throwable t) {
+
+
+                showToastMessage("Network Request failed !");
+                swipeContainer.setRefreshing(false);
+            }
+        });
     }
+
+
 
 
 
@@ -327,8 +361,6 @@ public class FragmentOutOfStock extends Fragment implements SwipeRefreshLayout.O
                     {
                         showToastMessage("Update Successful !");
                     }
-
-                    //makeNetworkCall();
                 }
                 else if(response.code() == 403)
                 {
@@ -410,7 +442,16 @@ public class FragmentOutOfStock extends Fragment implements SwipeRefreshLayout.O
                         showToastMessage("Successful !");
                     }
 
-                }else if(response.code() == 304) {
+
+                    int removedPosition = dataset.indexOf(shopItem);
+                    dataset.remove(shopItem);
+                    adapter.notifyItemRemoved(removedPosition);
+
+                    offset = offset - 1;
+                    item_count = item_count -1;
+                    notifyTitleChanged();
+                }
+                else if(response.code() == 304) {
 
                     showToastMessage("Not removed !");
 
@@ -429,10 +470,7 @@ public class FragmentOutOfStock extends Fragment implements SwipeRefreshLayout.O
                 }
 
 
-
-                dataset.clear();
-                offset = 0;
-                makeNetworkCall();
+//                makeRefreshNetworkCall();
             }
 
             @Override
@@ -447,34 +485,6 @@ public class FragmentOutOfStock extends Fragment implements SwipeRefreshLayout.O
 
     }
 
-
-
-    @Override
-    public void onResponse(Call<ShopItemEndPoint> call, Response<ShopItemEndPoint> response) {
-
-
-        if(response.body()!= null)
-        {
-            dataset.addAll(response.body().getResults());
-            item_count = response.body().getItemCount();
-        }
-
-        if(notificationReceiverPager!=null)
-        {
-            notificationReceiverPager.OutOfStockChanged();
-        }
-
-        notifyTitleChanged();
-        adapter.notifyDataSetChanged();
-        swipeContainer.setRefreshing(false);
-    }
-
-    @Override
-    public void onFailure(Call<ShopItemEndPoint> call, Throwable t) {
-
-        showToastMessage("Network Request failed !");
-        swipeContainer.setRefreshing(false);
-    }
 
 
     interface NotificationReceiverPager
