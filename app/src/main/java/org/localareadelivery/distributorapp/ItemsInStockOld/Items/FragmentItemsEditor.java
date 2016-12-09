@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.EditStock.Items;
+package org.localareadelivery.distributorapp.ItemsInStockOld.Items;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import org.localareadelivery.distributorapp.ApplicationState.ApplicationState;
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
 import org.localareadelivery.distributorapp.ItemCategoriesTabs.Interfaces.NotifyCategoryChanged;
 import org.localareadelivery.distributorapp.ItemCategoriesTabs.Interfaces.NotifyGeneral;

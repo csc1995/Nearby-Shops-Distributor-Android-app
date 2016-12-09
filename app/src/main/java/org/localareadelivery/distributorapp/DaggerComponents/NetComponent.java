@@ -24,9 +24,11 @@ import org.localareadelivery.distributorapp.DeliveryGuyInventory.PendingDelivery
 import org.localareadelivery.distributorapp.DeliveryGuyInventory.PendingReturn.PendingReturnDGI;
 import org.localareadelivery.distributorapp.DeliveryGuyInventory.PendingReturnCancelledByShop.PendingReturnCancelledByShopDGI;
 import org.localareadelivery.distributorapp.DistributorLogin;
-import org.localareadelivery.distributorapp.EditStock.ItemCategories.ItemCategoriesAdapterEditStock;
-import org.localareadelivery.distributorapp.EditStock.ItemCategories.ItemCategoriesFragmentEditStock;
-import org.localareadelivery.distributorapp.EditStock.Items.FragmentItemsEditor;
+import org.localareadelivery.distributorapp.ItemsInStock.ItemsInStockFragment;
+import org.localareadelivery.distributorapp.ItemsInStockOld.ItemCategories.ItemCategoriesAdapterEditStock;
+import org.localareadelivery.distributorapp.ItemsInStockOld.ItemCategories.ItemCategoriesFragmentEditStock;
+import org.localareadelivery.distributorapp.ItemsInStockOld.Items.FragmentItemsEditor;
+import org.localareadelivery.distributorapp.ItemsInStockByCat.ItemsInStockByCatFragment;
 import org.localareadelivery.distributorapp.HomeShopAdmin.EditProfile.EditShopAdminFragment;
 import org.localareadelivery.distributorapp.HomeShopAdmin.EditShop.EditShopFragment;
 import org.localareadelivery.distributorapp.HomeShopAdmin.ShopAdminHome;
@@ -49,7 +51,7 @@ import org.localareadelivery.distributorapp.HomeDeliveryInventory.Packed.PackedO
 import org.localareadelivery.distributorapp.HomeDeliveryInventory.PendingAccept.PendingAcceptFragment;
 import org.localareadelivery.distributorapp.HomeDeliveryInventory.Placed.PlacedOrdersFragment;
 import org.localareadelivery.distributorapp.QuickStockEditor.FragmentOutOfStock;
-import org.localareadelivery.distributorapp.QuickStockEditor.FragmentPriceNotSet;
+import org.localareadelivery.distributorapp.QuickStockEditor.Unused.FragmentPriceNotSet;
 import org.localareadelivery.distributorapp.SelectParent.ItemCategoriesParent;
 import org.localareadelivery.distributorapp.SelectParent.ItemCategoriesParentAdapter;
 import org.localareadelivery.distributorapp.DeliveryGuyDashboard.PendingPayments.PaymentsPendingFragment;
@@ -175,4 +177,8 @@ public interface NetComponent {
     void Inject(ShopAdminHome shopAdminHome);
 
     void Inject(ItemCategoriesFragmentSimple itemCategoriesFragmentSimple);
+
+    void Inject(ItemsInStockByCatFragment itemsInStockByCatFragment);
+
+    void Inject(ItemsInStockFragment itemsInStockFragment);
 }

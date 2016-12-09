@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.EditStock.Items;
+package org.localareadelivery.distributorapp.ItemsInStockOld.Items;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;

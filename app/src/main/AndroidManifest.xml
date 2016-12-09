@@ -81,9 +81,12 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.localareadelivery.distributorapp.addStock.Items" />
         </activity>
-        <activity
+
+        <!--<activity
             android:name=".Intro"
-            android:theme="@style/Theme.Intro" />
+            android:theme="@style/Theme.Intro" />-->
+
+
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
@@ -247,7 +250,7 @@
                 android:value=".ShopHome.ShopHome" />
         </activity>
         <activity
-            android:name=".EditStock.EditStock"
+            android:name=".ItemsInStockOld.EditStock"
             android:label="@string/title_activity_item_categories_tabs"
             android:parentActivityName=".ShopHome.ShopHome"
             android:theme="@style/AppTheme.NoActionBar">
@@ -358,6 +361,51 @@
             </intent-filter>
 
         </activity>
+
+
+
+        <activity
+            android:name=".ItemsInStockByCat.ItemsInStockByCat"
+            android:label="Items In Stock"
+            android:launchMode="singleTop"
+            android:parentActivityName=".ShopHome.ShopHome"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ShopHome.ShopHome" />
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+        </activity>
+
+
+
+        <activity
+            android:name=".ItemsInStock.ItemsInStock"
+            android:label="Items In Stock"
+            android:launchMode="singleTop"
+            android:parentActivityName=".ShopHome.ShopHome"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ShopHome.ShopHome" />
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+        </activity>
+
 
     </application>
 

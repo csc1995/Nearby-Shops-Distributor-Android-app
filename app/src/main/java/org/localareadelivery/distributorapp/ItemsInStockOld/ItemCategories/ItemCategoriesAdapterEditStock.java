@@ -1,11 +1,8 @@
-package org.localareadelivery.distributorapp.EditStock.ItemCategories;
+package org.localareadelivery.distributorapp.ItemsInStockOld.ItemCategories;
 
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.graphics.drawable.VectorDrawableCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -22,11 +19,9 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
-import org.localareadelivery.distributorapp.ItemCategoriesTabs.ItemCategories.EditItemCategory;
 import org.localareadelivery.distributorapp.Model.ItemCategory;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ItemCategoryService;
-import org.localareadelivery.distributorapp.SelectParent.ItemCategoriesParent;
 import org.localareadelivery.distributorapp.Utility.UtilityGeneral;
 
 import java.util.ArrayList;
@@ -39,11 +34,6 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.OnLongClick;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Created by sumeet on 19/12/15.

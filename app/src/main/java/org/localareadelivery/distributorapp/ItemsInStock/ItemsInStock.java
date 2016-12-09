@@ -1,10 +1,9 @@
-package org.localareadelivery.distributorapp.ItemCategoriesTypeSimple;
+package org.localareadelivery.distributorapp.ItemsInStock;
 
 import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
@@ -15,16 +14,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import com.github.clans.fab.FloatingActionButton;
-import com.github.clans.fab.FloatingActionMenu;
 import com.wunderlist.slidinglayer.SlidingLayer;
 
 import org.localareadelivery.distributorapp.ItemCategoriesTabs.Interfaces.NotifySort;
-import org.localareadelivery.distributorapp.ItemCategoriesTabs.Interfaces.ToggleFab;
 import org.localareadelivery.distributorapp.ItemCategoriesTypeSimple.Interfaces.NotifyBackPressed;
-import org.localareadelivery.distributorapp.ItemCategoriesTypeSimple.Interfaces.NotifyFABClick;
 import org.localareadelivery.distributorapp.ItemCategoriesTypeSimple.Interfaces.NotifyIndicatorChanged;
 import org.localareadelivery.distributorapp.ItemCategoriesTypeSimple.Interfaces.NotifySearch;
+import org.localareadelivery.distributorapp.ItemsInStockByCat.SlidingLayerSort.SlidingLayerSortItemsInStock;
 import org.localareadelivery.distributorapp.R;
 
 import butterknife.Bind;
@@ -32,19 +28,19 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class ItemCategoriesSimple extends AppCompatActivity implements NotifyIndicatorChanged,NotifySort ,ToggleFab{
+public class ItemsInStock extends AppCompatActivity implements NotifyIndicatorChanged,NotifySort{
 
-    public static final String TAG_FRAGMENT = "item_categories_simple";
-    public static final String TAG_SLIDING = "sort_items_sliding";
+    public static final String TAG_FRAGMENT = "items_in_stock";
+    public static final String TAG_SLIDING = "sort_items_in_stock";
 
-    @Bind(R.id.fab_menu)
-    FloatingActionMenu fab_menu;
+//    @Bind(R.id.fab_menu)
+//    FloatingActionMenu fab_menu;
 
-    @Bind(R.id.fab_remove_selected_from_shop)
-    FloatingActionButton fab_remove_selected;
+//    @Bind(R.id.fab_remove_selected_from_shop)
+//    FloatingActionButton fab_remove_selected;
 
-    @Bind(R.id.fab_add_selected_to_shop)
-    FloatingActionButton fab_add_selected;
+//    @Bind(R.id.fab_add_selected_to_shop)
+//    FloatingActionButton fab_add_selected;
 
     @Bind(R.id.text_sub)
     TextView itemHeader;
@@ -54,7 +50,7 @@ public class ItemCategoriesSimple extends AppCompatActivity implements NotifyInd
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_item_categories_simple);
+        setContentView(R.layout.activity_items_in_stock);
         ButterKnife.bind(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -76,13 +72,12 @@ public class ItemCategoriesSimple extends AppCompatActivity implements NotifyInd
         {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(R.id.fragment_container,new ItemCategoriesFragmentSimple(),TAG_FRAGMENT)
+                    .add(R.id.fragment_container,new ItemsInStockFragment(),TAG_FRAGMENT)
                     .commit();
         }
 
 
         setupSlidingLayer();
-        setFabBackground();
     }
 
 
@@ -116,36 +111,12 @@ public class ItemCategoriesSimple extends AppCompatActivity implements NotifyInd
                 System.out.println("Item Cat Simple : New Sliding Layer Loaded !");
                 getSupportFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.slidinglayerfragment,new SlidingLayerSortItems(),TAG_SLIDING)
+                        .replace(R.id.slidinglayerfragment,new SlidingLayerSortItemsInStock(),TAG_SLIDING)
                         .commit();
             }
         }
 
     }
-
-
-
-
-    private void setFabBackground() {
-        // assign background to the FAB's
-        fab_remove_selected.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ic_remove_white_24px));
-        fab_add_selected.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ic_add_white_24px));
-    }
-
-
-
-
-
-    @Override
-    public void showFab() {
-        fab_menu.animate().translationY(0);
-    }
-
-    @Override
-    public void hideFab() {
-        fab_menu.animate().translationY(fab_menu.getHeight());
-    }
-
 
 
 
@@ -207,34 +178,6 @@ public class ItemCategoriesSimple extends AppCompatActivity implements NotifyInd
         }
     }
 
-
-    // fab click buttons
-
-
-    @OnClick(R.id.fab_remove_selected_from_shop)
-    void fabRemoveSelectedClick()
-    {
-        Fragment fragment = getSupportFragmentManager()
-                .findFragmentByTag(TAG_FRAGMENT);
-
-        if(fragment instanceof NotifyFABClick)
-        {
-            ((NotifyFABClick) fragment).removeSelectedFromShop();
-        }
-    }
-
-
-    @OnClick(R.id.fab_add_selected_to_shop)
-    void fabAddSelectedClick()
-    {
-        Fragment fragment = getSupportFragmentManager()
-                .findFragmentByTag(TAG_FRAGMENT);
-
-        if(fragment instanceof NotifyFABClick)
-        {
-            ((NotifyFABClick) fragment).addSelectedToShop();
-        }
-    }
 
 
 

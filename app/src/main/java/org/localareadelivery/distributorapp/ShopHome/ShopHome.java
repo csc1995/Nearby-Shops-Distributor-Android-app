@@ -5,11 +5,10 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.RelativeLayout;
 
 import org.localareadelivery.distributorapp.DeliveryAccounts.DeliveryGuyAccounts;
-import org.localareadelivery.distributorapp.EditStock.EditStock;
-import org.localareadelivery.distributorapp.ItemCategoriesTabs.ItemCategoriesTabs;
+import org.localareadelivery.distributorapp.ItemsInStock.ItemsInStock;
+import org.localareadelivery.distributorapp.ItemsInStockByCat.ItemsInStockByCat;
 import org.localareadelivery.distributorapp.ItemCategoriesTypeSimple.ItemCategoriesSimple;
 import org.localareadelivery.distributorapp.OrdersHome.OrdersHome;
 import org.localareadelivery.distributorapp.QuickStockEditor.QuickStockEditor;
@@ -66,7 +65,8 @@ public class ShopHome extends AppCompatActivity {
     @OnClick(R.id.option_edit_stock)
     void editStockClick(View view)
     {
-        startActivity(new Intent(this, EditStock.class));
+//        startActivity(new Intent(this, EditStock.class));
+        startActivity(new Intent(this, ItemsInStockByCat.class));
     }
 
     @OnClick(R.id.option_billing)
@@ -94,6 +94,19 @@ public class ShopHome extends AppCompatActivity {
     {
         startActivity(new Intent(this, ItemCategoriesSimple.class));
     }
+
+
+
+    @OnClick(R.id.option_items_in_stock)
+    void optionItemsInStock()
+    {
+        startActivity(new Intent(this, ItemsInStock.class));
+    }
+
+
+
+
+
 
 
 /*

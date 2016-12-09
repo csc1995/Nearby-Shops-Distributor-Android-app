@@ -4,7 +4,7 @@ package org.localareadelivery.distributorapp.ItemCategoriesTypeSimple.Interfaces
  * Created by sumeet on 22/9/16.
  */
 
-public interface NotifyHeaderChanged {
+public interface NotifyIndicatorChanged {
 
-    void notifyItemHeaderChanged(String header);
+    void notifyItemIndicatorChanged(String header);
 }

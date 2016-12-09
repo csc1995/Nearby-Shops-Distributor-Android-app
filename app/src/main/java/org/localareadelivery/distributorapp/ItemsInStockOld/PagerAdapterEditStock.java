@@ -1,14 +1,12 @@
-package org.localareadelivery.distributorapp.EditStock;
+package org.localareadelivery.distributorapp.ItemsInStockOld;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import org.localareadelivery.distributorapp.EditStock.ItemCategories.ItemCategoriesFragmentEditStock;
-import org.localareadelivery.distributorapp.EditStock.Items.FragmentItemsEditor;
-import org.localareadelivery.distributorapp.ItemCategoriesTabs.ItemCategories.ItemCategoriesFragment;
-import org.localareadelivery.distributorapp.ItemCategoriesTabs.Items.ItemRemakeFragment;
+import org.localareadelivery.distributorapp.ItemsInStockOld.ItemCategories.ItemCategoriesFragmentEditStock;
+import org.localareadelivery.distributorapp.ItemsInStockOld.Items.FragmentItemsEditor;
 
 /**
  * Created by sumeet on 27/6/16.

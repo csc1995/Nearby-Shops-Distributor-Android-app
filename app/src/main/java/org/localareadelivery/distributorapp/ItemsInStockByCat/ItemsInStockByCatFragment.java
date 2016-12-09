@@ -1,9 +1,11 @@
-package org.localareadelivery.distributorapp.ItemCategoriesTypeSimple;
+package org.localareadelivery.distributorapp.ItemsInStockByCat;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,33 +16,26 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
+import org.localareadelivery.distributorapp.ItemsInStockByCat.SlidingLayerSort.UtilitySortItemsInStock;
 import org.localareadelivery.distributorapp.ItemCategoriesTabs.Interfaces.NotifySort;
-import org.localareadelivery.distributorapp.ItemCategoriesTabs.Interfaces.ToggleFab;
 import org.localareadelivery.distributorapp.ItemCategoriesTypeSimple.Interfaces.NotifyBackPressed;
-import org.localareadelivery.distributorapp.ItemCategoriesTypeSimple.Interfaces.NotifyFABClick;
 import org.localareadelivery.distributorapp.ItemCategoriesTypeSimple.Interfaces.NotifyIndicatorChanged;
 import org.localareadelivery.distributorapp.ItemCategoriesTypeSimple.Interfaces.NotifySearch;
 import org.localareadelivery.distributorapp.ItemCategoriesTypeSimple.Utility.HeaderItemsList;
-import org.localareadelivery.distributorapp.ItemCategoriesTypeSimple.Utility.UtilitySortItemsByCategory;
 import org.localareadelivery.distributorapp.Model.Item;
 import org.localareadelivery.distributorapp.Model.ItemCategory;
+import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.Model.ShopItem;
 import org.localareadelivery.distributorapp.ModelEndpoints.ItemCategoryEndPoint;
-import org.localareadelivery.distributorapp.ModelEndpoints.ItemEndPoint;
 import org.localareadelivery.distributorapp.ModelEndpoints.ShopItemEndPoint;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ItemCategoryService;
-import org.localareadelivery.distributorapp.RetrofitRESTContract.ItemService;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ShopItemService;
 import org.localareadelivery.distributorapp.ShopHome.UtilityShopHome;
 import org.localareadelivery.distributorapp.Utility.UtilityLogin;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -56,10 +51,10 @@ import retrofit2.Response;
  * Created by sumeet on 2/12/16.
  */
 
-public class ItemCategoriesFragmentSimple extends Fragment implements SwipeRefreshLayout.OnRefreshListener, AdapterSimple.NotificationsFromAdapter , NotifyBackPressed, NotifySort , NotifyFABClick, NotifySearch{
+public class ItemsInStockByCatFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, AdapterItemsInStock.NotificationsFromAdapter , NotifyBackPressed, NotifySort, NotifySearch{
 
 
-    Map<Integer,ShopItem> shopItemMapTemp = new HashMap<>();
+//    Map<Integer,ShopItem> shopItemMapTemp = new HashMap<>();
 
     boolean isDestroyed = false;
     @State boolean show = true;
@@ -78,29 +73,28 @@ public class ItemCategoriesFragmentSimple extends Fragment implements SwipeRefre
 
     ArrayList<Object> dataset = new ArrayList<>();
     ArrayList<ItemCategory> datasetCategory = new ArrayList<>();
-    ArrayList<Item> datasetItems = new ArrayList<>();
+    ArrayList<ShopItem> datasetShopItems = new ArrayList<>();
 
 
     GridLayoutManager layoutManager;
 
-    AdapterSimple listAdapter;
+    AdapterItemsInStock listAdapter;
 
 
     @Inject
     ItemCategoryService itemCategoryService;
 
-
     @Inject
     ShopItemService shopItemService;
 
-    @Inject
-    ItemService itemService;
+//    @Inject
+//    ItemService itemService;
 
 
     ItemCategory currentCategory = null;
 
 
-    public ItemCategoriesFragmentSimple() {
+    public ItemsInStockByCatFragment() {
 
         super();
 
@@ -119,7 +113,7 @@ public class ItemCategoriesFragmentSimple extends Fragment implements SwipeRefre
         super.onCreateView(inflater, container, savedInstanceState);
 
         setRetainInstance(true);
-        View rootView = inflater.inflate(R.layout.fragment_item_categories_simple, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_items_in_stock_by_cat, container, false);
 
         ButterKnife.bind(this,rootView);
 
@@ -135,7 +129,7 @@ public class ItemCategoriesFragmentSimple extends Fragment implements SwipeRefre
         else
         {
             // add this at every rotation
-            listAdapter.shopItemMap.putAll(shopItemMapTemp);
+//            listAdapter.shopItemMap.putAll(shopItemMapTemp);
         }
 
 
@@ -167,7 +161,7 @@ public class ItemCategoriesFragmentSimple extends Fragment implements SwipeRefre
     {
 
 
-        listAdapter = new AdapterSimple(dataset,getActivity(),this);
+        listAdapter = new AdapterItemsInStock(dataset,getActivity(),this);
         itemCategoriesList.setAdapter(listAdapter);
 
         layoutManager = new GridLayoutManager(getActivity(),6, LinearLayoutManager.VERTICAL,false);
@@ -291,59 +285,13 @@ public class ItemCategoriesFragmentSimple extends Fragment implements SwipeRefre
                     {
                         offset_item = offset_item + limit_item;
 
-                        makeRequestItem(false,false);
+                        makeRequestShopItem(false,false);
                     }
 
                     previous_position = layoutManager.findLastVisibleItemPosition();
 
                 }
             }
-
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-
-
-                if(dy > 20)
-                {
-
-                    boolean previous = show;
-
-                    show = false ;
-
-                    if(show!=previous)
-                    {
-                        // changed
-                        Log.d("scrolllog","show");
-
-                        if(getActivity() instanceof ToggleFab)
-                        {
-                            ((ToggleFab)getActivity()).hideFab();
-                        }
-                    }
-
-                }else if(dy < -20)
-                {
-
-                    boolean previous = show;
-
-                    show = true;
-
-                    if(show!=previous)
-                    {
-                        Log.d("scrolllog","hide");
-
-                        if(getActivity() instanceof ToggleFab)
-                        {
-                            ((ToggleFab)getActivity()).showFab();
-                        }
-                    }
-                }
-
-
-            }
-
 
         });
 
@@ -358,9 +306,7 @@ public class ItemCategoriesFragmentSimple extends Fragment implements SwipeRefre
     public void onRefresh() {
 
         makeRequestItemCategory();
-        makeRequestItem(true,true);
-
-        makeNetworkCallShopItem();
+        makeRequestShopItem(true,true);
     }
 
 
@@ -410,9 +356,6 @@ public class ItemCategoriesFragmentSimple extends Fragment implements SwipeRefre
     void makeRequestItemCategory()
     {
 
-
-
-
         /*Call<ItemCategoryEndPoint> endPointCall = itemCategoryService.getItemCategoriesEndPoint(
                 null,
                 currentCategory.getItemCategoryID(),
@@ -424,23 +367,45 @@ public class ItemCategoriesFragmentSimple extends Fragment implements SwipeRefre
 
         Call<ItemCategoryEndPoint> endPointCall = null;
 
+        Shop currentShop = UtilityShopHome.getShop(getContext());
+
         if(searchQuery == null)
         {
-            endPointCall = itemCategoryService.getItemCategoriesQuerySimple(
+//            /endPointCall = itemCategoryService.getItemCategoriesQuerySimple(
+//                    currentCategory.getItemCategoryID(),
+//                    null,
+//                    null,
+//                    "id",null,null
+//            );
+
+            endPointCall = itemCategoryService.getItemCategories(
+                    currentShop.getShopID(),
                     currentCategory.getItemCategoryID(),
-                    null,
-                    null,
-                    "id",null,null
+                    null,null,null,null,null,null,
+                    "id", null,null,
+                    false
             );
+
         }
         else
         {
-            endPointCall = itemCategoryService.getItemCategoriesQuerySimple(
+
+//            endPointCall = itemCategoryService.getItemCategoriesQuerySimple(
+//                    null,
+//                    null,
+//                    searchQuery,
+//                    "id",null,null
+//            );
+
+
+            endPointCall = itemCategoryService.getItemCategories(
+                    currentShop.getShopID(),
                     null,
-                    null,
-                    searchQuery,
-                    "id",null,null
+                    null,null,null,null,null,null,
+                    "id", null,null,
+                    false
             );
+
         }
 
 
@@ -548,11 +513,8 @@ public class ItemCategoriesFragmentSimple extends Fragment implements SwipeRefre
 
 
         dataset.add(headerItem);
-
-        dataset.addAll(datasetItems);
-
+        dataset.addAll(datasetShopItems);
         listAdapter.notifyDataSetChanged();
-
         swipeContainer.setRefreshing(false);
     }
 
@@ -574,7 +536,8 @@ public class ItemCategoriesFragmentSimple extends Fragment implements SwipeRefre
 
 
 
-    void makeRequestItem(final boolean clearDataset, boolean resetOffset)
+
+    void makeRequestShopItem(final boolean clearDataset, boolean resetOffset)
     {
 
         if(resetOffset)
@@ -585,40 +548,48 @@ public class ItemCategoriesFragmentSimple extends Fragment implements SwipeRefre
 
         String current_sort = "";
 
-        current_sort = UtilitySortItemsByCategory.getSort(getContext()) + " " + UtilitySortItemsByCategory.getAscending(getContext());
-/*
-        Call<ItemEndPoint> endPointCall = itemService.getItemsEndpoint(currentCategory.getItemCategoryID(),
-                null,
-                null,
-                null,
-                null,null, null, null,
-                current_sort, limit_item,offset_item,null);*/
+        current_sort = UtilitySortItemsInStock.getSort(getContext()) + " " + UtilitySortItemsInStock.getAscending(getContext());
 
-        Call<ItemEndPoint> endPointCall = null;
 
+        Call<ShopItemEndPoint> endPointCall = null;
+
+        Shop currentShop = UtilityShopHome.getShop(getContext());
 
 
         if(searchQuery==null)
         {
-            endPointCall = itemService.getItemsOuterJoin(
+
+
+
+            endPointCall = shopItemService.getShopItemEndpoint(
                     currentCategory.getItemCategoryID(),
-                    null,
-                    current_sort,
-                    limit_item,offset_item, null);
+                    currentShop.getShopID(),
+                    null,null,null,null,null,null,null,
+                    null,null,
+                    null,null,null,
+                    null,current_sort,
+                    limit_item,offset_item,false,
+                    true);
+
         }
         else
         {
-            endPointCall = itemService.getItemsOuterJoin(
+
+
+            endPointCall = shopItemService.getShopItemEndpoint(
                     null,
-                    searchQuery,
-                    current_sort,
-                    limit_item,offset_item, null);
+                    currentShop.getShopID(),
+                    null,null,null,null,null,null,null,null,null,
+                    null,null,null,
+                    searchQuery,current_sort,
+                    limit_item,offset_item,false,
+                    true);
         }
 
 
-        endPointCall.enqueue(new Callback<ItemEndPoint>() {
+        endPointCall.enqueue(new Callback<ShopItemEndPoint>() {
             @Override
-            public void onResponse(Call<ItemEndPoint> call, Response<ItemEndPoint> response) {
+            public void onResponse(Call<ShopItemEndPoint> call, Response<ShopItemEndPoint> response) {
 
 
                 if(isDestroyed)
@@ -633,10 +604,10 @@ public class ItemCategoriesFragmentSimple extends Fragment implements SwipeRefre
                     if(response.body()!=null)
                     {
 
-                        datasetItems.clear();
-                        datasetItems.addAll(response.body().getResults());
+                        datasetShopItems.clear();
+                        datasetShopItems.addAll(response.body().getResults());
                         item_count_item = response.body().getItemCount();
-                        fetched_items_count = datasetItems.size();
+                        fetched_items_count = datasetShopItems.size();
 
 //                        if(response.body().getItemCount()!=null)
 //                        {
@@ -678,7 +649,7 @@ public class ItemCategoriesFragmentSimple extends Fragment implements SwipeRefre
             }
 
             @Override
-            public void onFailure(Call<ItemEndPoint> call, Throwable t) {
+            public void onFailure(Call<ShopItemEndPoint> call, Throwable t) {
 
                 if(isDestroyed)
                 {
@@ -708,10 +679,12 @@ public class ItemCategoriesFragmentSimple extends Fragment implements SwipeRefre
 
                 showToastMessage("Items: Network request failed. Please check your connection !");
 
+
             }
         });
 
     }
+
 
 
 
@@ -738,14 +711,149 @@ public class ItemCategoriesFragmentSimple extends Fragment implements SwipeRefre
 
     }
 
+
+
+
     @Override
-    public void notifyItemSelected() {
-        if(getActivity() instanceof ToggleFab)
-        {
-            ((ToggleFab)getActivity()).showFab();
-            show=true;
-        }
+    public void notifyShopItemUpdated(final ShopItem shopItem) {
+
+
+        Call<ResponseBody> call = shopItemService.putShopItem(
+                UtilityLogin.getAuthorizationHeaders(getActivity()),
+                shopItem
+        );
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                if(response.code()==200)
+                {
+
+
+                    if(shopItem.getItem()!=null)
+                    {
+                        showToastMessage(shopItem.getItem().getItemName() + " Updated !");
+
+                    }else
+                    {
+                        showToastMessage("Update Successful !");
+                    }
+
+                    //makeNetworkCall();
+                }
+                else if(response.code() == 403)
+                {
+                    showToastMessage("Not permitted !");
+                }
+                else if(response.code() == 401)
+                {
+                    showToastMessage("We are not able to identify you !");
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                showToastMessage("Network Request Failed. Try again !");
+
+            }
+        });
+
     }
+
+    @Override
+    public void notifyShopItemRemoved(final ShopItem shopItem) {
+
+
+        AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+
+        dialog.setTitle("Confirm Remove Item !")
+                .setMessage("Do you want to remove this item from your shop !")
+                .setPositiveButton("Yes",new DialogInterface.OnClickListener(){
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        removeShopItem(shopItem);
+
+                    }
+                })
+                .setNegativeButton("No",new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        showToastMessage("Cancelled !");
+                    }
+                })
+                .show();
+
+    }
+
+
+
+    void removeShopItem(final ShopItem shopItem)
+    {
+
+        Call<ResponseBody> responseBodyCall = shopItemService.deleteShopItem(
+                UtilityLogin.getAuthorizationHeaders(getActivity()),
+                shopItem.getShopID(),
+                shopItem.getItemID()
+        );
+
+        responseBodyCall.enqueue(new Callback<ResponseBody>() {
+
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                if(response.code()==200)
+                {
+                    if(shopItem.getItem()!=null)
+                    {
+                        showToastMessage(shopItem.getItem().getItemName() + " Removed !");
+
+                    }else
+                    {
+                        showToastMessage("Successful !");
+                    }
+
+                }else if(response.code() == 304) {
+
+                    showToastMessage("Not removed !");
+
+                }
+                else if(response.code() == 403)
+                {
+                    showToastMessage("Not permitted !");
+                }
+                else if(response.code() == 401)
+                {
+                    showToastMessage("We are not able to identify you !");
+                }
+                else
+                {
+                    showToastMessage("Server Error !");
+                }
+
+
+
+                makeRefreshNetworkCall();
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+
+                showToastMessage("Network request failed !");
+
+            }
+        });
+
+
+    }
+
+
 
 
     @Override
@@ -757,7 +865,7 @@ public class ItemCategoriesFragmentSimple extends Fragment implements SwipeRefre
         int currentCategoryID = 1; // the ID of root category is always supposed to be 1
 
         // clear selected items
-        listAdapter.selectedItems.clear();
+//        listAdapter.selectedItems.clear();
 
         if(currentCategory!=null) {
 
@@ -803,278 +911,5 @@ public class ItemCategoriesFragmentSimple extends Fragment implements SwipeRefre
 
 
     // display shop Item Status
-
-
-    void makeNetworkCallShopItem()
-    {
-
-        int currentShopID = UtilityShopHome.getShop(getContext()).getShopID();
-
-        if(currentCategory==null)
-        {
-
-            swipeContainer.setRefreshing(false);
-
-            return;
-        }
-
-        Call<ShopItemEndPoint> call;
-
-
-        if(searchQuery!=null)
-        {
-            /*call = shopItemService.getShopItemEndpoint(
-                    null,
-                    currentShopID,
-                    null,null,null,null,null,null,null,null,null,null,null,null,
-                    searchQuery,
-                    null,null,null,
-                    false,false
-            );*/
-
-            call = shopItemService.getShopItemsForShop(
-                    null,
-                    currentShopID,null,
-                    searchQuery,
-                    null,null,0
-            );
-
-        }
-        else
-        {
-
-            /*call = shopItemService.getShopItemEndpoint(
-                    currentCategory.getItemCategoryID(),
-                    currentShopID,
-                    null,null,null,null,null,null,null,null,null,null,null,null,
-                    null,
-                    null,null,null,
-                    false,false
-            );*/
-
-
-            call = shopItemService.getShopItemsForShop(
-                    currentCategory.getItemCategoryID(),
-                    currentShopID,null,
-                    null,
-                    null,null,0
-            );
-        }
-
-
-
-        call.enqueue(new Callback<ShopItemEndPoint>() {
-            @Override
-            public void onResponse(Call<ShopItemEndPoint> call, Response<ShopItemEndPoint> response) {
-
-
-                listAdapter.shopItemMap.clear();
-
-                for(ShopItem shopItem: response.body().getResults())
-                {
-                    listAdapter.shopItemMap.put(shopItem.getItemID(),shopItem);
-                }
-
-                // add this map into the temporary variable to save shopItems after rotation
-                shopItemMapTemp.putAll(listAdapter.shopItemMap);
-
-                listAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onFailure(Call<ShopItemEndPoint> call, Throwable t) {
-
-                showToastMessage("Network request failed. Please check your network !");
-            }
-        });
-    }
-
-
-
-
-
-
-    void addSelectedToShopClick()
-    {
-
-        if(listAdapter.selectedItems.size()==0)
-        {
-            showToastMessage("No item selected. Please make a selection !");
-
-            return;
-        }
-
-        List<ShopItem> tempShopItemList = new ArrayList<>();
-
-        for(Map.Entry<Integer,Item> entry : listAdapter.selectedItems.entrySet())
-        {
-//            entry.getValue().setItemCategoryID(parentCategory.getItemCategoryID());
-
-
-            ShopItem shopItem = new ShopItem();
-            shopItem.setShopID(UtilityShopHome.getShop(getContext()).getShopID());
-            shopItem.setItemID(entry.getValue().getItemID());
-
-            tempShopItemList.add(shopItem);
-        }
-
-        makeShopItemCreateBulkRequest(tempShopItemList);
-
-    }
-
-
-    private void makeShopItemCreateBulkRequest(List<ShopItem> tempShopItemList) {
-
-
-        Call<ResponseBody> call = shopItemService.createShopItemBulk(
-                UtilityLogin.getAuthorizationHeaders(getActivity()),
-                tempShopItemList
-        );
-
-
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if(response.code() == 200)
-                {
-                    showToastMessage("Update Successful !");
-
-                    clearSelectedItems();
-
-                }else if (response.code() == 206)
-                {
-                    showToastMessage("Partially Updated. Check data changes !");
-
-                    clearSelectedItems();
-
-                }else if(response.code() == 304)
-                {
-
-                    showToastMessage("No item updated !");
-
-                }else
-                {
-                    showToastMessage("Unknown server error or response !");
-                }
-
-                makeNetworkCallShopItem();
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-
-
-                showToastMessage("Network Request failed. Check your internet / network connection !");
-
-            }
-        });
-
-    }
-
-
-
-
-    void removeSeletedShopItemClick(){
-
-
-
-        if(listAdapter.selectedItems.size()==0)
-        {
-            showToastMessage("No item selected. Please make a selection !");
-
-            return;
-        }
-
-        List<ShopItem> tempShopItemList = new ArrayList<>();
-
-        for(Map.Entry<Integer,Item> entry : listAdapter.selectedItems.entrySet())
-        {
-//            entry.getValue().setItemCategoryID(parentCategory.getItemCategoryID());
-
-
-            ShopItem shopItem = new ShopItem();
-            shopItem.setShopID(UtilityShopHome.getShop(getContext()).getShopID());
-            shopItem.setItemID(entry.getValue().getItemID());
-
-            tempShopItemList.add(shopItem);
-        }
-
-        makeShopItemDeleteBulkRequest(tempShopItemList);
-    }
-
-
-
-
-    private void makeShopItemDeleteBulkRequest(List<ShopItem> tempShopItemList) {
-
-        Call<ResponseBody> call = shopItemService.deleteShopItemBulk(
-                UtilityLogin.getAuthorizationHeaders(getActivity()),
-                tempShopItemList
-        );
-
-
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if(response.code() == 200)
-                {
-                    showToastMessage("Update Successful !");
-
-                    clearSelectedItems();
-
-                }else if (response.code() == 206)
-                {
-                    showToastMessage("Partially Updated. Check data changes !");
-
-                    clearSelectedItems();
-
-                }else if(response.code() == 304)
-                {
-
-                    showToastMessage("No item updated !");
-
-                }else
-                {
-                    showToastMessage("Unknown server error or response !");
-                }
-
-                makeNetworkCallShopItem();
-
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-
-
-                showToastMessage("Network Request failed. Check your internet / network connection !");
-
-            }
-        });
-
-    }
-
-
-
-    void clearSelectedItems()
-    {
-        // clear the selected items
-        listAdapter.selectedItems.clear();
-    }
-
-
-    @Override
-    public void removeSelectedFromShop() {
-//        showToastMessage("Remove Selected");
-
-        removeSeletedShopItemClick();
-    }
-
-    @Override
-    public void addSelectedToShop() {
-
-//        showToastMessage("Add Selected !");
-        addSelectedToShopClick();
-    }
-
 
 }

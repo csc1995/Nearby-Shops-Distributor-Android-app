@@ -20,6 +20,26 @@ public class ShopItem implements Parcelable{
 
 
 
+	// Table Name
+	public static final String TABLE_NAME = "SHOP_ITEM";
+
+	// column Names
+	public static final String SHOP_ID = "SHOP_ID";
+	public static final String ITEM_ID = "ITEM_ID";
+	public static final String AVAILABLE_ITEM_QUANTITY = "AVAILABLE_ITEM_QUANTITY";
+	public static final String ITEM_PRICE = "ITEM_PRICE";
+
+
+//	public static final String MIN_QUANTITY_PER_ORDER = "MIN_QUANTITY_PER_ORDER";
+//	public static final String MAX_QUANTITY_PER_ORDER = "MAX_QUANTITY_PER_ORDER";
+
+	public static final String DATE_TIME_ADDED = "DATE_TIME_ADDED";
+	public static final String LAST_UPDATE_DATE_TIME = "LAST_UPDATE_DATE_TIME";
+	public static final String EXTRA_DELIVERY_CHARGE = "EXTRA_DELIVERY_CHARGE";
+
+
+
+
 	Shop shop;
 	Item item;
 

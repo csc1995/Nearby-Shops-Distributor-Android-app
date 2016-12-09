@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.QuickStockEditor;
+package org.localareadelivery.distributorapp.QuickStockEditor.Unused;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import org.localareadelivery.distributorapp.ApplicationState.ApplicationState;
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
 import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.Model.ShopItem;

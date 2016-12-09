@@ -5,7 +5,11 @@ import org.localareadelivery.distributorapp.ModelEndpoints.ShopItemEndPoint;
 
 import java.util.List;
 
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -55,6 +59,16 @@ public interface ShopItemService {
     );
 
 
+
+
+    @GET("/api/v1/ShopItem/ForShop")
+    Call<ShopItemEndPoint> getShopItemsForShop(
+            @Query("ItemCategoryID")Integer ItemCategoryID,
+            @Query("ShopID")Integer ShopID, @Query("ItemID") Integer itemID,
+            @Query("SearchString") String searchString,
+            @Query("SortBy") String sortBy,
+            @Query("Limit") Integer limit, @Query("Offset") int offset
+    );
 
 
     // bulk update methods

@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.QuickStockEditor;
+package org.localareadelivery.distributorapp.QuickStockEditor.Unused;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

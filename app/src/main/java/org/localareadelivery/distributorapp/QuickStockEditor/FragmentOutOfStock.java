@@ -48,8 +48,6 @@ import retrofit2.Response;
 public class FragmentOutOfStock extends Fragment implements SwipeRefreshLayout.OnRefreshListener,AdapterOutOfStock.NotificationReceiver, Callback<ShopItemEndPoint> {
 
 
-
-
     @Inject
     ShopItemService shopItemService;
     RecyclerView recyclerView;

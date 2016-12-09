@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.EditStock;
+package org.localareadelivery.distributorapp.ItemsInStockOld;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

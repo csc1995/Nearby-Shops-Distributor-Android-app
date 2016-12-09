@@ -4,6 +4,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import org.localareadelivery.distributorapp.QuickStockEditor.Unused.FragmentPriceNotSet;
+
 /**
  * Created by sumeet on 16/6/16.
  */

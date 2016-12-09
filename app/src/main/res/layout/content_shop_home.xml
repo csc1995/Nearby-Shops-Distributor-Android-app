@@ -157,7 +157,7 @@
                 android:layout_weight="1"
                 android:layout_below="@id/borderOne"
                 android:id="@+id/option_edit_stock"
-                android:background="@color/blueGrey800Alpha55"
+                android:background="@color/slate_grey"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/menu_item_width">
 
@@ -179,7 +179,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentBottom="true"
                     android:textColor="#ffffff"
-                    android:text="Stock Items by Category"
+                    android:text="Items in Stock\nby Category"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </RelativeLayout>
@@ -190,7 +190,7 @@
                 android:layout_marginLeft="5dp"
                 android:layout_weight="1"
                 android:layout_below="@id/borderOne"
-                android:id="@+id/option_stock_items"
+                android:id="@+id/option_items_in_stock"
                 android:background="@color/blueGrey800"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/menu_item_width">
@@ -213,7 +213,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentBottom="true"
                     android:textColor="#ffffff"
-                    android:text="Stock Items"
+                    android:text="Items in Stock"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </RelativeLayout>

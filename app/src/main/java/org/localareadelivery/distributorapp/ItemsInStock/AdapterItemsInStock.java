@@ -1,8 +1,11 @@
-package org.localareadelivery.distributorapp.QuickStockEditor;
+package org.localareadelivery.distributorapp.ItemsInStock;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.support.constraint.ConstraintLayout;
 import android.support.graphics.drawable.VectorDrawableCompat;
+import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -11,14 +14,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
+import org.localareadelivery.distributorapp.ItemCategoriesTypeSimple.Utility.HeaderItemsList;
 import org.localareadelivery.distributorapp.Model.Item;
+import org.localareadelivery.distributorapp.Model.ItemCategory;
 import org.localareadelivery.distributorapp.Model.ShopItem;
-import org.localareadelivery.distributorapp.MyApplication;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.Utility.UtilityGeneral;
 
@@ -29,48 +34,199 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * Created by sumeet on 13/6/16.
+ * Created by sumeet on 19/12/15.
  */
-public class AdapterOutOfStock extends RecyclerView.Adapter<AdapterOutOfStock.ViewHolder>{
 
 
-    private List<ShopItem> dataset = null;
+public class AdapterItemsInStock extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+
+//    Map<Integer,ShopItem> shopItemMap = new HashMap<>();
+//    Map<Integer,Item> selectedItems = new HashMap<>();
+
+    private List<Object> dataset;
     private Context context;
-    private NotificationReceiver notificationReceiver;
+    private NotificationsFromAdapter notificationReceiver;
+
+//    public static final int VIEW_TYPE_ITEM_CATEGORY = 1;
+    public static final int VIEW_TYPE_SHOP_ITEM = 2;
+    public static final int VIEW_TYPE_HEADER = 3;
+    public static final int VIEW_TYPE_SCROLL_PROGRESS_BAR = 4;
 
 
-    public AdapterOutOfStock(List<ShopItem> dataset, Context context, NotificationReceiver notifications) {
+    Fragment fragment;
+
+
+    public AdapterItemsInStock(List<Object> dataset, Context context, NotificationsFromAdapter notificationReceiver, Fragment fragment) {
+
+
+//        DaggerComponentBuilder.getInstance()
+//                .getNetComponent().Inject(this);
+
+        this.notificationReceiver = notificationReceiver;
         this.dataset = dataset;
         this.context = context;
-        this.notificationReceiver = notifications;
-
+        this.fragment = fragment;
     }
 
     @Override
-    public AdapterOutOfStock.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        //R.layout.list_item_stock_item
+        View view = null;
 
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_item_shop_item_experimental,parent,false);
-
-        return new ViewHolder(view);
-    }
-
-
-
-
-    @Override
-    public void onBindViewHolder(AdapterOutOfStock.ViewHolder holder, int position) {
-
-        if(dataset!=null)
+        if(viewType == VIEW_TYPE_SHOP_ITEM)
         {
-            if(dataset.size() <= position)
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_shop_item_experimental,parent,false);
+            return new ViewHolderShopItems(view);
+
+        }
+        else if(viewType == VIEW_TYPE_HEADER)
+        {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_header_type_simple,parent,false);
+            return new ViewHolderHeader(view);
+        }
+        else if(viewType == VIEW_TYPE_SCROLL_PROGRESS_BAR)
+        {
+
+                view = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.list_item_progress_bar,parent,false);
+
+                return new LoadingViewHolder(view);
+
+        }
+
+//        else
+//        {
+//            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_item_guide,parent,false);
+//            return new ViewHolderItemSimple(view);
+//        }
+
+        return null;
+    }
+
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+
+        if(holder instanceof ViewHolderShopItems)
+        {
+            bindShopItem((ViewHolderShopItems) holder,position);
+        }
+        else if(holder instanceof ViewHolderHeader)
+        {
+            if(dataset.get(position) instanceof HeaderItemsList)
             {
-                return;
+                HeaderItemsList header = (HeaderItemsList) dataset.get(position);
+
+                ((ViewHolderHeader) holder).header.setText(header.getHeading());
             }
 
-            ShopItem shopItem = dataset.get(position);
+        }
+        else if(holder instanceof LoadingViewHolder)
+        {
+
+
+            LoadingViewHolder viewHolder = (LoadingViewHolder) holder;
+
+            if(fragment instanceof ItemsInStockFragment)
+            {
+                int fetched_count  = ((ItemsInStockFragment) fragment).fetched_items_count;
+                int items_count = ((ItemsInStockFragment) fragment).item_count_item;
+
+                if(fetched_count == items_count)
+                {
+                    viewHolder.progressBar.setVisibility(View.GONE);
+                }
+                else
+                {
+                    viewHolder.progressBar.setVisibility(View.VISIBLE);
+                    viewHolder.progressBar.setIndeterminate(true);
+
+                }
+            }
+        }
+
+    }
+
+
+    @Override
+    public int getItemViewType(int position) {
+
+        super.getItemViewType(position);
+
+        if(position == dataset.size())
+        {
+            return VIEW_TYPE_SCROLL_PROGRESS_BAR;
+        }
+        if (dataset.get(position) instanceof ShopItem)
+        {
+            return VIEW_TYPE_SHOP_ITEM;
+        }
+        else if(dataset.get(position) instanceof HeaderItemsList)
+        {
+            return VIEW_TYPE_HEADER;
+        }
+
+
+        return -1;
+    }
+
+    @Override
+    public int getItemCount() {
+
+        return (dataset.size()+1);
+    }
+
+
+
+
+
+    class ViewHolderHeader extends RecyclerView.ViewHolder{
+
+
+        @Bind(R.id.header)
+        TextView header;
+
+        public ViewHolderHeader(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this,itemView);
+        }
+
+    }// ViewHolder Class declaration ends
+
+
+
+
+
+
+    public class LoadingViewHolder extends  RecyclerView.ViewHolder{
+
+        @Bind(R.id.progress_bar)
+        ProgressBar progressBar;
+
+        public LoadingViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this,itemView);
+        }
+    }
+
+
+
+
+
+
+
+
+    void bindShopItem(ViewHolderShopItems holder,int position)
+    {
+
+        if(dataset.get(position) instanceof ShopItem)
+        {
+//            if(dataset.size() <= position)
+//            {
+//                return;
+//            }
+
+            ShopItem shopItem = (ShopItem) dataset.get(position);
 
             Item item  = shopItem.getItem();
 
@@ -115,15 +271,14 @@ public class AdapterOutOfStock extends RecyclerView.Adapter<AdapterOutOfStock.Vi
 
 
         }
-    }
 
-    @Override
-    public int getItemCount() {
-        return dataset.size();
+
     }
 
 
-    class ViewHolder extends RecyclerView.ViewHolder{
+
+
+    class ViewHolderShopItems extends RecyclerView.ViewHolder{
 
 
         @Bind(R.id.itemName)
@@ -166,7 +321,7 @@ public class AdapterOutOfStock extends RecyclerView.Adapter<AdapterOutOfStock.Vi
         TextView updateButton;
 
 
-        public ViewHolder(View itemView) {
+        public ViewHolderShopItems(View itemView) {
             super(itemView);
 
             ButterKnife.bind(this,itemView);
@@ -179,7 +334,7 @@ public class AdapterOutOfStock extends RecyclerView.Adapter<AdapterOutOfStock.Vi
         }
 
 
-        class QuantityTextWatcher implements TextWatcher{
+        class QuantityTextWatcher implements TextWatcher {
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -190,7 +345,9 @@ public class AdapterOutOfStock extends RecyclerView.Adapter<AdapterOutOfStock.Vi
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                Item item = dataset.get(getLayoutPosition()).getItem();
+                ShopItem shopItem = (ShopItem) dataset.get(getLayoutPosition());
+
+                Item item = shopItem.getItem();
 
 
                 if(!itemQuantity.getText().toString().equals(""))
@@ -229,7 +386,8 @@ public class AdapterOutOfStock extends RecyclerView.Adapter<AdapterOutOfStock.Vi
         @OnClick(R.id.reduceQuantity)
         void reduceQuantityClick(View view)
         {
-            Item item = dataset.get(getLayoutPosition()).getItem();
+            ShopItem shopItem = (ShopItem) dataset.get(getLayoutPosition());
+            Item item = shopItem.getItem();
 
             if(!itemQuantity.getText().toString().equals(""))
             {
@@ -266,7 +424,8 @@ public class AdapterOutOfStock extends RecyclerView.Adapter<AdapterOutOfStock.Vi
         @OnClick(R.id.increaseQuantity)
         void increaseQuantityClick(View view)
         {
-            Item item = dataset.get(getLayoutPosition()).getItem();
+            ShopItem shopItem = (ShopItem) dataset.get(getLayoutPosition());
+            Item item = shopItem.getItem();
 
             if(!itemQuantity.getText().toString().equals(""))
             {
@@ -309,7 +468,8 @@ public class AdapterOutOfStock extends RecyclerView.Adapter<AdapterOutOfStock.Vi
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                Item item = dataset.get(getLayoutPosition()).getItem();
+                ShopItem shopItem = (ShopItem) dataset.get(getLayoutPosition());
+                Item item = shopItem.getItem();
 
                 if(!itemPrice.getText().toString().equals(""))
                 {
@@ -355,7 +515,8 @@ public class AdapterOutOfStock extends RecyclerView.Adapter<AdapterOutOfStock.Vi
         @OnClick(R.id.reducePrice)
         void reducePriceClick(View view)
         {
-            Item item = dataset.get(getLayoutPosition()).getItem();
+            ShopItem shopItem = (ShopItem) dataset.get(getLayoutPosition());
+            Item item = shopItem.getItem();
 
             if(!itemPrice.getText().toString().equals(""))
             {
@@ -396,7 +557,8 @@ public class AdapterOutOfStock extends RecyclerView.Adapter<AdapterOutOfStock.Vi
         @OnClick(R.id.increasePrice)
         void increasePriceClick(View view)
         {
-            Item item = dataset.get(getLayoutPosition()).getItem();
+            ShopItem shopItem = (ShopItem) dataset.get(getLayoutPosition());
+            Item item = shopItem.getItem();
 
             if(!itemPrice.getText().toString().equals(""))
             {
@@ -450,10 +612,12 @@ public class AdapterOutOfStock extends RecyclerView.Adapter<AdapterOutOfStock.Vi
                 }
                 */
 
-                dataset.get(getLayoutPosition()).setAvailableItemQuantity(quantityLocal);
-                dataset.get(getLayoutPosition()).setItemPrice(priceLocal);
+                ShopItem shopItem = (ShopItem) dataset.get(getLayoutPosition());
 
-                notificationReceiver.notifyShopItemUpdated(dataset.get(getLayoutPosition()));
+                shopItem.setAvailableItemQuantity(quantityLocal);
+                shopItem.setItemPrice(priceLocal);
+
+                notificationReceiver.notifyShopItemUpdated((ShopItem) dataset.get(getLayoutPosition()));
 
             }
             else
@@ -469,32 +633,28 @@ public class AdapterOutOfStock extends RecyclerView.Adapter<AdapterOutOfStock.Vi
         void removeClick(View view)
         {
 
-            notificationReceiver.notifyShopItemRemoved(dataset.get(getLayoutPosition()));
+            notificationReceiver.notifyShopItemRemoved((ShopItem) dataset.get(getLayoutPosition()));
         }
 
-    }
+    }// View Holder Class Ends
 
 
 
-    void showToastMessage(String message)
+
+    interface NotificationsFromAdapter
     {
-        if(context!=null)
-        {
-            Toast.makeText(context,message,Toast.LENGTH_SHORT).show();
-        }
-
-    }
-
-
-
-
-
-
-    public interface NotificationReceiver{
-
+        // method for notifying the list object to request sub category
+//        void notifyRequestSubCategory(ItemCategory itemCategory);
+//        void notifyItemSelected();
         void notifyShopItemUpdated(ShopItem shopItem);
         void notifyShopItemRemoved(ShopItem shopItem);
+    }
 
+
+
+    private void showToastMessage(String message)
+    {
+        Toast.makeText(context,message, Toast.LENGTH_SHORT).show();
     }
 
 }

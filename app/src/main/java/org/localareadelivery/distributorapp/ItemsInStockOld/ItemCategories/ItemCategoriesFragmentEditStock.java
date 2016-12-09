@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.EditStock.ItemCategories;
+package org.localareadelivery.distributorapp.ItemsInStockOld.ItemCategories;
 
 
 import android.os.Bundle;
@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import org.localareadelivery.distributorapp.ApplicationState.ApplicationState;
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
 import org.localareadelivery.distributorapp.ItemCategoriesTabs.Interfaces.NotifyBackPressed;
 import org.localareadelivery.distributorapp.ItemCategoriesTabs.Interfaces.NotifyCategoryChanged;
@@ -30,8 +29,6 @@ import org.localareadelivery.distributorapp.RetrofitRESTContract.ItemCategorySer
 import org.localareadelivery.distributorapp.ShopHome.UtilityShopHome;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -39,7 +36,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import icepick.Icepick;
 import icepick.State;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

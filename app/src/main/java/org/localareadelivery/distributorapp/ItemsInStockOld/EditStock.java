@@ -1,10 +1,8 @@
-package org.localareadelivery.distributorapp.EditStock;
+package org.localareadelivery.distributorapp.ItemsInStockOld;
 
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
-import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -16,18 +14,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 
-import com.github.clans.fab.FloatingActionButton;
-import com.github.clans.fab.FloatingActionMenu;
 import com.wunderlist.slidinglayer.SlidingLayer;
 
 import org.localareadelivery.distributorapp.ItemCategoriesTabs.Interfaces.NotifyBackPressed;
 import org.localareadelivery.distributorapp.ItemCategoriesTabs.Interfaces.NotifyCategoryChanged;
-import org.localareadelivery.distributorapp.ItemCategoriesTabs.Interfaces.NotifyFabClick_Item;
-import org.localareadelivery.distributorapp.ItemCategoriesTabs.Interfaces.NotifyFabClick_ItemCategories;
 import org.localareadelivery.distributorapp.ItemCategoriesTabs.Interfaces.NotifyGeneral;
 import org.localareadelivery.distributorapp.ItemCategoriesTabs.Interfaces.NotifySort;
 import org.localareadelivery.distributorapp.ItemCategoriesTabs.Interfaces.NotifyTitleChanged;
-import org.localareadelivery.distributorapp.ItemCategoriesTabs.Interfaces.ToggleFab;
 import org.localareadelivery.distributorapp.Model.ItemCategory;
 import org.localareadelivery.distributorapp.R;
 

@@ -95,7 +95,7 @@
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.45"
             tools:layout_editor_absoluteY="0dp"
-            tools:layout_editor_absoluteX="143dp" />
+            tools:layout_editor_absoluteX="160dp" />
 
         <TextView
             android:layout_marginTop="5dp"
