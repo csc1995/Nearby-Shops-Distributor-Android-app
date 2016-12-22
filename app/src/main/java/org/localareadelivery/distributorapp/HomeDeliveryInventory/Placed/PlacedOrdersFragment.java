@@ -13,13 +13,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import org.localareadelivery.distributorapp.ApplicationState.ApplicationState;
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
 import org.localareadelivery.distributorapp.Model.Order;
 import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.ModelEndpoints.OrderEndPoint;
 import org.localareadelivery.distributorapp.ModelStatusCodes.OrderStatusHomeDelivery;
-import org.localareadelivery.distributorapp.HomeDeliveryInventory.Interface.NotifyTitleChanged;
+import org.localareadelivery.distributorapp.CommonInterfaces.NotifyTitleChanged;
 import org.localareadelivery.distributorapp.HomeDeliveryInventory.Interface.RefreshFragment;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderService;
@@ -309,7 +308,7 @@ public class PlacedOrdersFragment extends Fragment implements AdapterPlacedOrder
 
 
 
-    // Refresh the Confirmed PlaceHolderFragment
+    // Refresh the Confirmed PlaceholderFragment
 
     private static String makeFragmentName(int viewId, int index) {
         return "android:switcher:" + viewId + ":" + index;

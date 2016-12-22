@@ -2,7 +2,6 @@ package org.localareadelivery.distributorapp.QuickStockEditor;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
@@ -14,9 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import org.localareadelivery.distributorapp.ApplicationState.ApplicationState;
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
-import org.localareadelivery.distributorapp.HomeDeliveryInventory.Interface.NotifyTitleChanged;
+import org.localareadelivery.distributorapp.CommonInterfaces.NotifyTitleChanged;
 import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.Model.ShopItem;
 import org.localareadelivery.distributorapp.ModelEndpoints.ShopItemEndPoint;
@@ -26,11 +24,9 @@ import org.localareadelivery.distributorapp.ShopHome.UtilityShopHome;
 import org.localareadelivery.distributorapp.Utility.UtilityLogin;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
 
-import icepick.Icepick;
 import icepick.State;
 import okhttp3.ResponseBody;
 import retrofit2.Call;

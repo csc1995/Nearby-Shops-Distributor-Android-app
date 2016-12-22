@@ -37,7 +37,6 @@
     -->
 
 
-
     <!-- for text -->
     <!--original size : 12sp-->
     <style name="AppTabTextAppearance" parent="TextAppearance.Design.Tab">

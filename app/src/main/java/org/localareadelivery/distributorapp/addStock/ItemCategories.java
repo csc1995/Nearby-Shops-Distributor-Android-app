@@ -90,7 +90,7 @@ public class ItemCategories extends AppCompatActivity implements  ItemCategories
         layoutManager = new GridLayoutManager(this,1);
         itemCategoriesList.setLayoutManager(layoutManager);
 
-        //itemCategoriesList.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL_LIST));
+        //itemCategoriesList.addItemDecoration(new DividerItemDecorationCustom(this,DividerItemDecorationCustom.VERTICAL_LIST));
 
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);

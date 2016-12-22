@@ -7,7 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.widget.ImageView;
 
 import org.localareadelivery.distributorapp.R;
-import org.localareadelivery.distributorapp.ShopList.ShopList;
+import org.localareadelivery.distributorapp.zDeprecatedCode.ShopList.ShopList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

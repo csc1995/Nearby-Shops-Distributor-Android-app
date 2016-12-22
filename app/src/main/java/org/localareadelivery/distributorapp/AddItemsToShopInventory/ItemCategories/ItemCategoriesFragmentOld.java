@@ -131,7 +131,7 @@ public class ItemCategoriesFragmentOld extends Fragment
         {
             ItemCategoriesTabs activity = (ItemCategoriesTabs)getActivity();
             activity.setNotificationReceiver(this);
-//            Log.d("applog","DetachedItemFragment: PlaceHolderFragment Recreated");
+//            Log.d("applog","DetachedItemFragment: PlaceholderFragment Recreated");
         }
 
 

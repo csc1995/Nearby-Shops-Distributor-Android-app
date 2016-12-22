@@ -14,21 +14,22 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.common.io.BaseEncoding;
-
 import org.localareadelivery.distributorapp.HomeDeliveryGuy.DeliveryGuyHome;
 import org.localareadelivery.distributorapp.HomeDistributor.DistributorHome;
 import org.localareadelivery.distributorapp.HomeShopAdmin.EditProfile.EditShopAdmin;
 import org.localareadelivery.distributorapp.HomeShopAdmin.EditProfile.EditShopAdminFragment;
 import org.localareadelivery.distributorapp.HomeShopAdmin.ShopAdminHome;
 import org.localareadelivery.distributorapp.ModelRoles.DeliveryGuySelf;
-import org.localareadelivery.distributorapp.ModelRoles.Distributor;
+import org.localareadelivery.distributorapp.ModelRoles.Deprecated.Distributor;
 import org.localareadelivery.distributorapp.ModelRoles.ShopAdmin;
+import org.localareadelivery.distributorapp.ModelRoles.ShopStaff;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.DeliveryGuySelfService;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.DistributorService;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ShopAdminService;
+import org.localareadelivery.distributorapp.RetrofitRESTContract.ShopStaffService;
 import org.localareadelivery.distributorapp.ShopHome.UtilityShopHome;
-import org.localareadelivery.distributorapp.ShopList.ShopList;
+import org.localareadelivery.distributorapp.ShopStaffHome.ShopStaffHome;
+import org.localareadelivery.distributorapp.zDeprecatedCode.ShopList.ShopList;
 import org.localareadelivery.distributorapp.Utility.UtilityGeneral;
 import org.localareadelivery.distributorapp.Utility.UtilityLogin;
 
@@ -77,6 +78,9 @@ public class DistributorLogin extends AppCompatActivity implements View.OnClickL
 
     @Inject
     ShopAdminService shopAdminService;
+
+    @Inject
+    ShopStaffService shopStaffService;
 
     @Inject
     DeliveryGuySelfService deliveryRetrofitService;
@@ -291,6 +295,58 @@ public class DistributorLogin extends AppCompatActivity implements View.OnClickL
 
 
     private void networkCallLoginStaff() {
+
+
+        String username = this.username.getText().toString();
+        String password = this.password.getText().toString();
+
+
+        Call<ShopStaff> call = shopStaffService.getLogin(
+                UtilityLogin.baseEncoding(username,password)
+        );
+
+
+        call.enqueue(new Callback<ShopStaff>() {
+            @Override
+            public void onResponse(Call<ShopStaff> call, Response<ShopStaff> response) {
+
+                if(response.body()!=null && response.code() ==200)
+                {
+
+                    UtilityLogin.saveCredentials(DistributorLogin.this,
+                            DistributorLogin.this.username.getText().toString(),
+                            DistributorLogin.this.password.getText().toString());
+
+                    UtilityLogin.saveShopStaff(response.body(),DistributorLogin.this);
+                    startActivity(new Intent(DistributorLogin.this,ShopStaffHome.class));
+
+                }
+                else if(response.code() ==401)
+                {
+                    showSnackBar("We are not able to identify you !");
+                }
+                else if(response.code()==403)
+                {
+                    showSnackBar("Your account is disabled. Please contact administrator for more information !");
+                }
+                else
+                {
+                    showSnackBar("Server Error ! Code : " + String.valueOf(response.code()));
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ShopStaff> call, Throwable t) {
+
+                showSnackBar("Network Failed. Please Check your Internet Connection !");
+
+            }
+        });
+
+
+
+
     }
 
 
@@ -348,69 +404,69 @@ public class DistributorLogin extends AppCompatActivity implements View.OnClickL
 
 
 
-    private void networkCallLoginDistributor() {
-
-
-        String username = this.username.getText().toString();
-        String password = this.password.getText().toString();
+//    private void networkCallLoginDistributor() {
+//
+//
+//        String username = this.username.getText().toString();
+//        String password = this.password.getText().toString();
 
 //        if(username.length()==0 || password.length()==0)
 //        {
 //            showSnackBar("Please enter password and Username");
 //            return;
 //        }
-
-
+//
+//
 //        setProgressBar(true);
 
 
-        Call<Distributor> call = service.loginDistributor(UtilityLogin.baseEncoding(username,password));
-
-        call.enqueue(new Callback<Distributor>() {
-            @Override
-            public void onResponse(Call<Distributor> call, Response<Distributor> response) {
-
-
-                if(response.body()!=null && response.code()==200)
-                {
-//                    Gson gson = new Gson();
-//                    Log.d("login", gson.toJson(admin));
-
-                    UtilityLogin.saveCredentials(DistributorLogin.this,
-                            DistributorLogin.this.username.getText().toString(),
-                            DistributorLogin.this.password.getText().toString());
-
-                    UtilityLogin.saveDistributor(response.body(),DistributorLogin.this);
-
-                    startActivity(new Intent(DistributorLogin.this,DistributorHome.class));
-
-                }
-
-                if(response.code()==200)
-                {
-
-                }
-                else if(response.code()==403 || response.code() ==401)
-                {
-                    showSnackBar("Unable to login. Username or password is incorrect !");
-                }
-                else
-                {
-                    showSnackBar("Server Error !");
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<Distributor> call, Throwable t) {
-
-                    showSnackBar("No Internet. Please Check your Internet Connection !");
-
-            }
-        });
-
-
-    }
+//        Call<Distributor> call = service.loginDistributor(UtilityLogin.baseEncoding(username,password));
+//
+//        call.enqueue(new Callback<Distributor>() {
+//            @Override
+//            public void onResponse(Call<Distributor> call, Response<Distributor> response) {
+//
+//
+//                if(response.body()!=null && response.code()==200)
+//                {
+////                    Gson gson = new Gson();
+////                    Log.d("login", gson.toJson(admin));
+//
+//                    UtilityLogin.saveCredentials(DistributorLogin.this,
+//                            DistributorLogin.this.username.getText().toString(),
+//                            DistributorLogin.this.password.getText().toString());
+//
+//                    UtilityLogin.saveDistributor(response.body(),DistributorLogin.this);
+//
+//                    startActivity(new Intent(DistributorLogin.this,DistributorHome.class));
+//
+//                }
+//
+//                if(response.code()==200)
+//                {
+//
+//                }
+//                else if(response.code()==403 || response.code() ==401)
+//                {
+//                    showSnackBar("Unable to login. Username or password is incorrect !");
+//                }
+//                else
+//                {
+//                    showSnackBar("Server Error !");
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onFailure(Call<Distributor> call, Throwable t) {
+//
+//                    showSnackBar("No Internet. Please Check your Internet Connection !");
+//
+//            }
+//        });
+//
+//
+//    }
 
 
     @OnClick(R.id.role_distributor)

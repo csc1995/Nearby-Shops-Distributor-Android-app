@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ShopList.ShopList"
+            android:name=".zDeprecatedCode.ShopList.ShopList"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -30,11 +30,11 @@
         <activity
             android:name=".ShopHome.ShopHome"
             android:label="@string/title_activity_shop_home"
-            android:parentActivityName=".ShopList.ShopList"
+            android:parentActivityName=".zDeprecatedCode.ShopList.ShopList"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.localareadelivery.distributorapp.ShopList.ShopList" />
+                android:value="org.localareadelivery.distributorapp.zDeprecatedCode.ShopList.ShopList" />
         </activity>
         <activity
             android:name=".addStock.ItemCategories"
@@ -55,22 +55,22 @@
                 android:value="org.localareadelivery.distributorapp.ShopHome.ShopHome" />
         </activity>
         <activity
-            android:name=".ShopList.AddShop"
+            android:name=".zDeprecatedCode.ShopList.AddShop"
             android:label="@string/title_activity_add_shop"
-            android:parentActivityName=".ShopList.ShopList"
+            android:parentActivityName=".zDeprecatedCode.ShopList.ShopList"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.localareadelivery.distributorapp.ShopList.ShopList" />
+                android:value="org.localareadelivery.distributorapp.zDeprecatedCode.ShopList.ShopList" />
         </activity>
         <activity
-            android:name=".ShopList.EditShop"
+            android:name=".zDeprecatedCode.ShopList.EditShop"
             android:label="@string/title_activity_edit_shop"
-            android:parentActivityName=".ShopList.ShopList"
+            android:parentActivityName=".zDeprecatedCode.ShopList.ShopList"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.localareadelivery.distributorapp.ShopList.ShopList" />
+                android:value="org.localareadelivery.distributorapp.zDeprecatedCode.ShopList.ShopList" />
         </activity>
         <activity
             android:name=".addStock.AddStock"
@@ -82,10 +82,11 @@
                 android:value="org.localareadelivery.distributorapp.addStock.Items" />
         </activity>
 
-        <!--<activity
+        <!--
+            <activity
             android:name=".Intro"
-            android:theme="@style/Theme.Intro" />-->
-
+            android:theme="@style/Theme.Intro" />
+        -->
 
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
@@ -250,7 +251,7 @@
                 android:value=".ShopHome.ShopHome" />
         </activity>
         <activity
-            android:name=".ItemsInStockOld.EditStock"
+            android:name=".ItemsInShopOld.EditStock"
             android:label="@string/title_activity_item_categories_tabs"
             android:parentActivityName=".ShopHome.ShopHome"
             android:theme="@style/AppTheme.NoActionBar">
@@ -316,9 +317,7 @@
         <activity
             android:name=".HomeShopAdmin.ShopAdminHome"
             android:label="@string/title_activity_shop_admin_home"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-
-
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".HomeShopAdmin.EditProfile.EditShopAdmin"
             android:label="Edit Shop Admin"
@@ -328,9 +327,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".HomeShopAdmin.ShopAdminHome" />
         </activity>
-
-
-
         <activity
             android:name=".HomeShopAdmin.EditShop.EditShop"
             android:label="Edit Shop"
@@ -340,8 +336,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".HomeShopAdmin.ShopAdminHome" />
         </activity>
-
-
         <activity
             android:name=".ItemsByCategoryTypeSimple.ItemsByCatSimple"
             android:label="Items by Category"
@@ -351,7 +345,6 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ShopHome.ShopHome" />
-
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
@@ -359,13 +352,9 @@
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
-
         </activity>
-
-
-
         <activity
-            android:name=".ItemsInStockByCat.ItemsInStockByCat"
+            android:name=".ItemsInShopByCat.ItemsInStockByCat"
             android:label="Items In Stock"
             android:launchMode="singleTop"
             android:parentActivityName=".ShopHome.ShopHome"
@@ -373,7 +362,6 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ShopHome.ShopHome" />
-
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
@@ -381,13 +369,9 @@
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
-
         </activity>
-
-
-
         <activity
-            android:name=".ItemsInStock.ItemsInStock"
+            android:name=".ItemsInShop.ItemsInStock"
             android:label="Items In Stock"
             android:launchMode="singleTop"
             android:parentActivityName=".ShopHome.ShopHome"
@@ -395,7 +379,6 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ShopHome.ShopHome" />
-
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
@@ -403,11 +386,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
-
         </activity>
-
-
-
         <activity
             android:name=".Items.ItemsTypeSimple"
             android:label="Items In Stock"
@@ -417,7 +396,6 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ShopHome.ShopHome" />
-
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
@@ -425,7 +403,75 @@
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
+        </activity>
 
+        <!-- Google Maps Key -->
+
+
+        <!--
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/.
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyB_BpmVLbrXdFzz1JyaYl21F2EDoU1EreM" />
+
+        <activity
+            android:name=".HomeShopAdmin.EditShop.Utility.PickLocationActivity"
+            android:label="Pick Location"
+            android:parentActivityName=".HomeShopAdmin.ShopAdminHome"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".HomeShopAdmin.ShopAdminHome" />
+        </activity>
+        <activity
+            android:name=".ShopStaffAccounts.ShopStaffAccounts"
+            android:label="@string/title_activity_shop_staff_accounts"
+            android:parentActivityName=".ShopHome.ShopHome"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.localareadelivery.distributorapp.ShopHome.ShopHome" />
+        </activity>
+        <activity
+            android:name=".ShopStaffAccounts.EditShopStaff.EditStaff"
+            android:label="Edit Shop Staff"
+            android:parentActivityName=".ShopStaffAccounts.ShopStaffAccounts"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ShopStaffAccounts.ShopStaffAccounts" />
+        </activity>
+        <activity
+            android:name=".ShopStaffHome.ShopStaffHome"
+            android:label="@string/title_activity_shop_staff_home"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+
+
+        <activity
+            android:name=".ShopStaffHome.EditStaffSelf.EditStaffSelf"
+            android:label="Edit Shop Staff"
+            android:parentActivityName=".ShopStaffHome.ShopStaffHome"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ShopStaffHome.ShopStaffHome" />
+        </activity>
+
+        <activity
+            android:name=".ShopStaffHome.ShopStaffDashboard"
+            android:label="Edit Shop Staff"
+            android:parentActivityName=".ShopStaffHome.ShopStaffHome"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ShopStaffHome.ShopStaffHome" />
         </activity>
 
 

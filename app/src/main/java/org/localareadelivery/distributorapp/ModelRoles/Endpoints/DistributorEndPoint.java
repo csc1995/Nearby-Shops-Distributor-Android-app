@@ -1,7 +1,7 @@
 package org.localareadelivery.distributorapp.ModelRoles.Endpoints;
 
 
-import org.localareadelivery.distributorapp.ModelRoles.Distributor;
+import org.localareadelivery.distributorapp.ModelRoles.Deprecated.Distributor;
 
 import java.util.List;
 

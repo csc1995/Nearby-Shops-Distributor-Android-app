@@ -63,21 +63,19 @@ public class ItemsFragmentSimple extends Fragment implements SwipeRefreshLayout.
     boolean isDestroyed = false;
     @State boolean show = true;
 
-    int item_count_item_category = 0;
+//    int item_count_item_category = 0;
 
     private int limit_item = 10;
     int offset_item = 0;
-    int item_count_item;
+    int item_count_item = 0;
     int fetched_items_count = 0;
 
-    @Bind(R.id.swipe_container)
-    SwipeRefreshLayout swipeContainer;
-    @Bind(R.id.recycler_view)
-    RecyclerView itemCategoriesList;
+    @Bind(R.id.swipe_container) SwipeRefreshLayout swipeContainer;
+    @Bind(R.id.recycler_view) RecyclerView itemCategoriesList;
 
     ArrayList<Object> dataset = new ArrayList<>();
 //    ArrayList<ItemCategory> datasetCategory = new ArrayList<>();
-    ArrayList<Item> datasetItems = new ArrayList<>();
+//    ArrayList<Item> datasetItems = new ArrayList<>();
 
 
     GridLayoutManager layoutManager;
@@ -356,7 +354,6 @@ public class ItemsFragmentSimple extends Fragment implements SwipeRefreshLayout.
 
 //        makeRequestItemCategory();
         makeRequestItem(true,true);
-
         makeNetworkCallShopItem();
     }
 
@@ -446,6 +443,8 @@ public class ItemsFragmentSimple extends Fragment implements SwipeRefreshLayout.
         Call<ItemEndPoint> endPointCall = null;
 
 
+
+        //"ITEM_ID"
 
         if(searchQuery==null)
         {
@@ -626,9 +625,7 @@ public class ItemsFragmentSimple extends Fragment implements SwipeRefreshLayout.
             @Override
             public void onResponse(Call<ShopItemEndPoint> call, Response<ShopItemEndPoint> response) {
 
-
                 listAdapter.shopItemMap.clear();
-
                 for(ShopItem shopItem: response.body().getResults())
                 {
                     listAdapter.shopItemMap.put(shopItem.getItemID(),shopItem);

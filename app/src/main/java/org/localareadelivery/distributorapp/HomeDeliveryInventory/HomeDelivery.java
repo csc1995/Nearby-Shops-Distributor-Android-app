@@ -13,7 +13,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import org.localareadelivery.distributorapp.HomeDeliveryInventory.Interface.ConfirmOrdersClicked;
-import org.localareadelivery.distributorapp.HomeDeliveryInventory.Interface.NotifyTitleChanged;
+import org.localareadelivery.distributorapp.CommonInterfaces.NotifyTitleChanged;
 import org.localareadelivery.distributorapp.R;
 
 import butterknife.Bind;
@@ -85,7 +85,7 @@ public class HomeDelivery extends AppCompatActivity implements NotifyTitleChange
 
     // methods for getting fragment reference
 
-    /*public PlaceHolderFragment getActiveFragment(ViewPager container, int position) {
+    /*public PlaceholderFragment getActiveFragment(ViewPager container, int position) {
         String name = makeFragmentName(container.getId(), position);
         return  getSupportFragmentManager().findFragmentByTag(name);
     }*/

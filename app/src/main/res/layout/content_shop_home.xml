@@ -137,7 +137,7 @@
             android:padding="5dp"
             android:layout_marginTop="10dp"
             android:id="@+id/header_stock_items"
-            android:text="Items in Stock"
+            android:text="Items in Shop"
             android:textSize="17sp"
             android:background="@color/light_grey"
             android:layout_width="match_parent"
@@ -179,7 +179,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentBottom="true"
                     android:textColor="#ffffff"
-                    android:text="Items in Stock\nby Category"
+                    android:text="Items in Shop\nby Category"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </RelativeLayout>
@@ -213,7 +213,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentBottom="true"
                     android:textColor="#ffffff"
-                    android:text="Items in Stock"
+                    android:text="Items in Shop"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </RelativeLayout>

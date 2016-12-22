@@ -7,6 +7,9 @@
     <string name="preference_distributor_id_key">distributor_id_key</string>
     <string name="title_activity_shop_home">Shop Home</string>
 
+    <string name="usage_instructions_select_location">Long Click To select Location.</string>
+    <string name="toast_location_not_selected">Location not selected !</string>
+
 
     <string name="title_activity_item_categories">Item Categories</string>
     <string name="title_activity_add_item_category">Add Item Category</string>
@@ -69,6 +72,8 @@
     <string name="title_activity_delivery_guy_home">Home</string>
     <string name="title_activity_shop_admin_home">Home</string>
     <string name="notice_account_deactivated">Notice :\nYour account is not activated. If this is a new account please wait for activation.\nIf this is an old account please contact service administrator for knowing the reason for account deactivation.</string>
+    <string name="title_activity_shop_staff_accounts">Shop Staff Accounts</string>
+    <string name="title_activity_shop_staff_home">Staff Home</string>
 
 
 </resources>

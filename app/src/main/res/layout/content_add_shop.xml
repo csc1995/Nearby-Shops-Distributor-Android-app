@@ -8,7 +8,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
-    tools:context="org.localareadelivery.distributorapp.ShopList.AddShop"
+    tools:context="org.localareadelivery.distributorapp.zDeprecatedCode.ShopList.AddShop"
     tools:showIn="@layout/activity_add_shop">
 
     <LinearLayout

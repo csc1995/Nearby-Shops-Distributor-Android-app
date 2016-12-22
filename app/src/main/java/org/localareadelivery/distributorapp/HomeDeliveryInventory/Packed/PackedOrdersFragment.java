@@ -22,7 +22,7 @@ import org.localareadelivery.distributorapp.ModelEndpoints.OrderEndPoint;
 import org.localareadelivery.distributorapp.ModelStatusCodes.OrderStatusHomeDelivery;
 import org.localareadelivery.distributorapp.HomeDeliveryInventory.ConfirmItemsForDelivery;
 import org.localareadelivery.distributorapp.HomeDeliveryInventory.Interface.ConfirmOrdersClicked;
-import org.localareadelivery.distributorapp.HomeDeliveryInventory.Interface.NotifyTitleChanged;
+import org.localareadelivery.distributorapp.CommonInterfaces.NotifyTitleChanged;
 import org.localareadelivery.distributorapp.HomeDeliveryInventory.Interface.RefreshFragment;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderService;

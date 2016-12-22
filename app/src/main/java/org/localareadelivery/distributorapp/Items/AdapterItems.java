@@ -220,7 +220,7 @@ public class AdapterItems extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
         Item item = (Item) dataset.get(position);
 
-        holder.categoryName.setText(item.getItemName());
+        holder.categoryName.setText(String.valueOf(position) + " : " + String.valueOf(item.getItemID()) + " : " + item.getItemName());
 
         ItemStats itemStats = item.getItemStats();
 
@@ -277,31 +277,18 @@ public class AdapterItems extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     class ViewHolderItemSimple extends RecyclerView.ViewHolder {
 
 
-        @Bind(R.id.in_shop_color)
-        ImageView inShopColor;
-
-        @Bind(R.id.in_shop_text)
-        TextView inShopText;
-
-
-        @Bind(R.id.itemName)
-        TextView categoryName;
+        @Bind(R.id.in_shop_color) ImageView inShopColor;
+        @Bind(R.id.in_shop_text) TextView inShopText;
+        @Bind(R.id.itemName) TextView categoryName;
 //        TextView categoryDescription;
 
-        @Bind(R.id.items_list_item)
-        CardView itemCategoryListItem;
-        @Bind(R.id.itemImage)
-        ImageView categoryImage;
-        @Bind(R.id.price_range)
-        TextView priceRange;
-        @Bind(R.id.price_average)
-        TextView priceAverage;
-        @Bind(R.id.shop_count)
-        TextView shopCount;
-        @Bind(R.id.item_rating)
-        TextView itemRating;
-        @Bind(R.id.rating_count)
-        TextView ratingCount;
+        @Bind(R.id.items_list_item) CardView itemCategoryListItem;
+        @Bind(R.id.itemImage) ImageView categoryImage;
+        @Bind(R.id.price_range) TextView priceRange;
+        @Bind(R.id.price_average) TextView priceAverage;
+        @Bind(R.id.shop_count) TextView shopCount;
+        @Bind(R.id.item_rating) TextView itemRating;
+        @Bind(R.id.rating_count) TextView ratingCount;
 
 
 
@@ -317,7 +304,7 @@ public class AdapterItems extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
             {
 
 
-                if(dataset.get(getLayoutPosition())instanceof Item)
+                if(dataset.get(getLayoutPosition()) instanceof Item)
                 {
                     Item item = (Item) dataset.get(getLayoutPosition());
 

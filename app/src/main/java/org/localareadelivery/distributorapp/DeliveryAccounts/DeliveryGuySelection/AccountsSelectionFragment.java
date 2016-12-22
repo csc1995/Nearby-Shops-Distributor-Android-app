@@ -15,14 +15,14 @@ import android.widget.Toast;
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
 import org.localareadelivery.distributorapp.DeliveryGuyDashboard.DeliveryGuyDashboard;
 import org.localareadelivery.distributorapp.DeliveryGuyInventory.DeliveryGuyInventory;
-import org.localareadelivery.distributorapp.HomeDeliveryInventory.Interface.NotifyTitleChanged;
+import org.localareadelivery.distributorapp.CommonInterfaces.NotifyTitleChanged;
 import org.localareadelivery.distributorapp.HomeDeliveryInventory.Interface.RefreshFragment;
 import org.localareadelivery.distributorapp.ModelRoles.DeliveryGuySelf;
 import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.DeliveryGuySelfService;
 import org.localareadelivery.distributorapp.ShopHome.UtilityShopHome;
-import org.localareadelivery.distributorapp.Utility.DividerItemDecoration;
+import org.localareadelivery.distributorapp.Utility.DividerItemDecorationCustom;
 import org.localareadelivery.distributorapp.Utility.UtilityLogin;
 
 import java.util.ArrayList;
@@ -126,8 +126,8 @@ public class AccountsSelectionFragment extends Fragment implements SwipeRefreshL
         layoutManager = new GridLayoutManager(getActivity(),1);
         recyclerView.setLayoutManager(layoutManager);
 
-        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.HORIZONTAL_LIST));
-        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL_LIST));
+        recyclerView.addItemDecoration(new DividerItemDecorationCustom(getContext(), DividerItemDecorationCustom.HORIZONTAL_LIST));
+        recyclerView.addItemDecoration(new DividerItemDecorationCustom(getContext(), DividerItemDecorationCustom.VERTICAL_LIST));
 
         DisplayMetrics metrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
@@ -299,7 +299,7 @@ public class AccountsSelectionFragment extends Fragment implements SwipeRefreshL
     }
 
 
-    // Refresh the Confirmed PlaceHolderFragment
+    // Refresh the Confirmed PlaceholderFragment
 
     private static String makeFragmentName(int viewId, int index) {
         return "android:switcher:" + viewId + ":" + index;

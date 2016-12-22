@@ -23,6 +23,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.jakewharton.rxbinding.widget.RxTextView;
 import com.squareup.picasso.Picasso;
 import com.yalantis.ucrop.UCrop;
 import com.yalantis.ucrop.UCropActivity;
@@ -40,6 +41,7 @@ import org.localareadelivery.distributorapp.Utility.UtilityLogin;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -53,6 +55,10 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.functions.Func1;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -110,6 +116,8 @@ public class EditDeliveryFragment extends Fragment {
     }
 
 
+    Subscription editTextSub;
+
 
 
     @Nullable
@@ -152,6 +160,28 @@ public class EditDeliveryFragment extends Fragment {
         }
 
 
+
+        editTextSub = RxTextView
+                .textChanges(username)
+                .debounce(700, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<CharSequence>() {
+                    @Override
+                    public void call(CharSequence value) {
+                        // do some work with new text
+                        usernameCheck();
+
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+
+                        System.out.println(throwable.toString());
+
+                    }
+                });
+
+
         showLogMessage("Inside On Create View !");
 
         return rootView;
@@ -162,11 +192,13 @@ public class EditDeliveryFragment extends Fragment {
 
         if(current_mode==MODE_ADD)
         {
+            buttonUpdateItem.setText("Create Account");
             item_id.setVisibility(View.GONE);
         }
         else if(current_mode== MODE_UPDATE)
         {
             item_id.setVisibility(View.VISIBLE);
+            buttonUpdateItem.setText("Save");
         }
     }
 
@@ -258,7 +290,7 @@ public class EditDeliveryFragment extends Fragment {
     }
 
 
-    @OnTextChanged(R.id.username)
+//    @OnTextChanged(R.id.username)
     void usernameCheck()
     {
 
@@ -602,6 +634,7 @@ public class EditDeliveryFragment extends Fragment {
 
         if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
 
+            resultView.setImageURI(null);
             resultView.setImageURI(UCrop.getOutput(result));
 
             isImageChanged = true;

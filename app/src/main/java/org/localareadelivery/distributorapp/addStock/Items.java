@@ -84,7 +84,7 @@ public class Items extends AppCompatActivity {
 
         layoutManager.setSpanCount(metrics.widthPixels/350);
 
-        //itemsList.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL_LIST));
+        //itemsList.addItemDecoration(new DividerItemDecorationCustom(this,DividerItemDecorationCustom.VERTICAL_LIST));
 
         itemCategoryName = (TextView) findViewById(R.id.categoryName);
         itemCategoryName.setText("// " + itemCategory.getCategoryName());

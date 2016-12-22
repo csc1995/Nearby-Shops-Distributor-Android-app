@@ -7,8 +7,9 @@ import android.util.Base64;
 import com.google.gson.Gson;
 
 import org.localareadelivery.distributorapp.ModelRoles.DeliveryGuySelf;
-import org.localareadelivery.distributorapp.ModelRoles.Distributor;
+import org.localareadelivery.distributorapp.ModelRoles.Deprecated.Distributor;
 import org.localareadelivery.distributorapp.ModelRoles.ShopAdmin;
+import org.localareadelivery.distributorapp.ModelRoles.ShopStaff;
 import org.localareadelivery.distributorapp.MyApplication;
 import org.localareadelivery.distributorapp.R;
 
@@ -129,43 +130,43 @@ public class UtilityLogin {
 
 
 
-    public static void saveDistributor(Distributor endUser, Context context)
-    {
-
-        if(context == null)
-        {
-            return;
-        }
-
-        //Creating a shared preference
-
-        SharedPreferences sharedPref = context.getSharedPreferences(context.getString(R.string.preference_file_name), MODE_PRIVATE);
-
-        SharedPreferences.Editor prefsEditor = sharedPref.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(endUser);
-        prefsEditor.putString("distributor", json);
-        prefsEditor.apply();
-    }
-
-
-    public static Distributor getDistributor(Context context)
-    {
-        SharedPreferences sharedPref = context.getSharedPreferences(context.getString(R.string.preference_file_name), MODE_PRIVATE);
-
-        Gson gson = new Gson();
-        String json = sharedPref.getString("distributor", "null");
-
-        if(json.equals("null"))
-        {
-
-            return null;
-
-        }else
-        {
-            return gson.fromJson(json, Distributor.class);
-        }
-    }
+//    public static void saveDistributor(Distributor endUser, Context context)
+//    {
+//
+//        if(context == null)
+//        {
+//            return;
+//        }
+//
+//        //Creating a shared preference
+//
+//        SharedPreferences sharedPref = context.getSharedPreferences(context.getString(R.string.preference_file_name), MODE_PRIVATE);
+//
+//        SharedPreferences.Editor prefsEditor = sharedPref.edit();
+//        Gson gson = new Gson();
+//        String json = gson.toJson(endUser);
+//        prefsEditor.putString("distributor", json);
+//        prefsEditor.apply();
+//    }
+//
+//
+//    public static Distributor getDistributor(Context context)
+//    {
+//        SharedPreferences sharedPref = context.getSharedPreferences(context.getString(R.string.preference_file_name), MODE_PRIVATE);
+//
+//        Gson gson = new Gson();
+//        String json = sharedPref.getString("distributor", "null");
+//
+//        if(json.equals("null"))
+//        {
+//
+//            return null;
+//
+//        }else
+//        {
+//            return gson.fromJson(json, Distributor.class);
+//        }
+//    }
 
 
     public static void saveDeliveryGuySelf(DeliveryGuySelf deliveryGuySelf, Context context)
@@ -235,6 +236,41 @@ public class UtilityLogin {
             return gson.fromJson(json, ShopAdmin.class);
         }
     }
+
+
+    public static void saveShopStaff(ShopStaff shopStaff, Context context)
+    {
+
+        //Creating a shared preference
+
+        SharedPreferences sharedPref = context.getSharedPreferences(context.getString(R.string.preference_file_name), MODE_PRIVATE);
+
+        SharedPreferences.Editor prefsEditor = sharedPref.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(shopStaff);
+        prefsEditor.putString("shopStaff", json);
+        prefsEditor.apply();
+    }
+
+
+    public static ShopStaff getShopStaff(Context context)
+    {
+        SharedPreferences sharedPref = context.getSharedPreferences(context.getString(R.string.preference_file_name), MODE_PRIVATE);
+
+        Gson gson = new Gson();
+        String json = sharedPref.getString("shopStaff", "null");
+
+        if(json.equals("null"))
+        {
+
+            return null;
+
+        }else
+        {
+            return gson.fromJson(json, ShopStaff.class);
+        }
+    }
+
 
 
 }

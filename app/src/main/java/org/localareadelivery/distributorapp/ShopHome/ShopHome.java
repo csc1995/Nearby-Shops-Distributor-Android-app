@@ -9,12 +9,13 @@ import android.view.View;
 import org.localareadelivery.distributorapp.DeliveryAccounts.DeliveryGuyAccounts;
 import org.localareadelivery.distributorapp.Items.ItemsTypeSimple;
 import org.localareadelivery.distributorapp.ItemsByCategoryTypeSimple.ItemsByCatSimple;
-import org.localareadelivery.distributorapp.ItemsInStock.ItemsInStock;
-import org.localareadelivery.distributorapp.ItemsInStockByCat.ItemsInStockByCat;
+import org.localareadelivery.distributorapp.ItemsInShop.ItemsInStock;
+import org.localareadelivery.distributorapp.ItemsInShopByCat.ItemsInStockByCat;
 import org.localareadelivery.distributorapp.OrdersHome.OrdersHome;
 import org.localareadelivery.distributorapp.QuickStockEditor.QuickStockEditor;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.SSEExample.SSEExample;
+import org.localareadelivery.distributorapp.ShopStaffAccounts.ShopStaffAccounts;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -107,6 +108,12 @@ public class ShopHome extends AppCompatActivity {
     }
 
 
+
+    @OnClick(R.id.option_staff_accounts)
+    void optionStaffAccounts()
+    {
+        startActivity(new Intent(this, ShopStaffAccounts.class));
+    }
 
 
 

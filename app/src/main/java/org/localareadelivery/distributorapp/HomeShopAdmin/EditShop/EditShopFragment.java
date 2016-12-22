@@ -28,8 +28,10 @@ import com.yalantis.ucrop.UCrop;
 import com.yalantis.ucrop.UCropActivity;
 
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
+import org.localareadelivery.distributorapp.HomeShopAdmin.EditShop.Utility.PickLocationActivity;
 import org.localareadelivery.distributorapp.Model.Image;
 import org.localareadelivery.distributorapp.Model.Shop;
+
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ShopService;
 import org.localareadelivery.distributorapp.ShopHome.UtilityShopHome;
@@ -659,6 +661,12 @@ public class EditShopFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, result);
 
 
+        if(resultCode == RESULT_OK && requestCode == REQUEST_CODE_PICK_LAT_LON)
+        {
+            latitude.setText(String.valueOf(result.getDoubleExtra("latitude",0)));
+            longitude.setText(String.valueOf(result.getDoubleExtra("longitude",0)));
+        }
+
 
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
                 && result != null
@@ -918,6 +926,21 @@ public class EditShopFragment extends Fragment {
 //                showToastMessage("Image Delete failed");
             }
         });
+    }
+
+
+
+    // code for picking up location
+
+
+
+    private int REQUEST_CODE_PICK_LAT_LON = 23;
+
+    @OnClick(R.id.pick_location_button)
+    void pickLocationClick()
+    {
+        Intent intent = new Intent(getActivity(),PickLocationActivity.class);
+        startActivityForResult(intent,REQUEST_CODE_PICK_LAT_LON);
     }
 
 

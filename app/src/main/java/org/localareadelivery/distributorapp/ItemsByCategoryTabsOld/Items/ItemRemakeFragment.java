@@ -16,13 +16,12 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 
-
+import org.localareadelivery.distributorapp.CommonInterfaces.NotifyTitleChanged;
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
 import org.localareadelivery.distributorapp.ItemsByCategoryTabsOld.Interfaces.NotifyCategoryChanged;
 import org.localareadelivery.distributorapp.ItemsByCategoryTabsOld.Interfaces.NotifyFabClick_Item;
 import org.localareadelivery.distributorapp.ItemsByCategoryTabsOld.Interfaces.NotifyGeneral;
 import org.localareadelivery.distributorapp.ItemsByCategoryTabsOld.Interfaces.NotifySort;
-import org.localareadelivery.distributorapp.ItemsByCategoryTabsOld.Interfaces.NotifyTitleChanged;
 import org.localareadelivery.distributorapp.ItemsByCategoryTabsOld.Interfaces.ToggleFab;
 import org.localareadelivery.distributorapp.ItemsByCategoryTabsOld.ItemCategoriesTabs;
 import org.localareadelivery.distributorapp.Model.Item;

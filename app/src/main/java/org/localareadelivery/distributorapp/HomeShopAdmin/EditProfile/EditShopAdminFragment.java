@@ -629,6 +629,7 @@ public class EditShopAdminFragment extends Fragment {
 
         if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
 
+            resultView.setImageURI(null);
             resultView.setImageURI(UCrop.getOutput(result));
 
             isImageChanged = true;

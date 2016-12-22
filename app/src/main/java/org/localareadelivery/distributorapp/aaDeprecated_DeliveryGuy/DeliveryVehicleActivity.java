@@ -127,12 +127,12 @@ public class DeliveryVehicleActivity extends AppCompatActivity implements SwipeR
         recyclerView.setLayoutManager(layoutManager);
 
         //recyclerView.addItemDecoration(
-        //        new DividerItemDecoration(this,DividerItemDecoration.VERTICAL_LIST)
+        //        new DividerItemDecorationCustom(this,DividerItemDecorationCustom.VERTICAL_LIST)
         //);
 
-        //recyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.HORIZONTAL_LIST));
+        //recyclerView.addItemDecoration(new DividerItemDecorationCustom(this,DividerItemDecorationCustom.HORIZONTAL_LIST));
 
-        //itemCategoriesList.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL_LIST));
+        //itemCategoriesList.addItemDecoration(new DividerItemDecorationCustom(this,DividerItemDecorationCustom.VERTICAL_LIST));
 
         DisplayMetrics metrics = new DisplayMetrics();
         this.getWindowManager().getDefaultDisplay().getMetrics(metrics);

@@ -14,7 +14,7 @@ import android.view.View;
 
 import org.localareadelivery.distributorapp.DeliveryAccounts.EditProfile.EditDelivery;
 import org.localareadelivery.distributorapp.DeliveryAccounts.EditProfile.EditDeliveryFragment;
-import org.localareadelivery.distributorapp.HomeDeliveryInventory.Interface.NotifyTitleChanged;
+import org.localareadelivery.distributorapp.CommonInterfaces.NotifyTitleChanged;
 import org.localareadelivery.distributorapp.R;
 
 public class DeliveryGuyAccounts extends AppCompatActivity implements NotifyTitleChanged {
