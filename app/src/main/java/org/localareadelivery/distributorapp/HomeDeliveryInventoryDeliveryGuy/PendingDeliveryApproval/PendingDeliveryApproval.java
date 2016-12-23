@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.HomeDeliveryDeliveryGuyInventory.PendingReturn;
+package org.localareadelivery.distributorapp.HomeDeliveryInventoryDeliveryGuy.PendingDeliveryApproval;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -40,20 +40,30 @@ import retrofit2.Response;
  */
 
 
-public class PendingReturnDGI extends Fragment implements SwipeRefreshLayout.OnRefreshListener, AdapterPendingReturnDGI.NotifyAcceptReturn {
+public class PendingDeliveryApproval extends Fragment
+        implements SwipeRefreshLayout.OnRefreshListener,AdapterDeliveryApproval.NotifyMarkDelivered {
 
 
     @Inject
     OrderService orderService;
+
+    @Inject
+    OrderServiceShopStaff orderServiceShopStaff;
+
     RecyclerView recyclerView;
+    AdapterDeliveryApproval adapter;
 
-    AdapterPendingReturnDGI adapter;
     public List<Order> dataset = new ArrayList<>();
-    GridLayoutManager layoutManager;
 
+    GridLayoutManager layoutManager;
     SwipeRefreshLayout swipeContainer;
 
+
+
+//    NotificationReceiver notificationReceiver;
+
     DeliveryGuySelf deliveryGuySelf;
+
 
 
     final private int limit = 5;
@@ -63,7 +73,8 @@ public class PendingReturnDGI extends Fragment implements SwipeRefreshLayout.OnR
 
 
 
-    public PendingReturnDGI() {
+
+    public PendingDeliveryApproval() {
 
         DaggerComponentBuilder.getInstance()
                 .getNetComponent()
@@ -75,8 +86,8 @@ public class PendingReturnDGI extends Fragment implements SwipeRefreshLayout.OnR
      * Returns a new instance of this fragment for the given section
      * number.
      */
-    public static PendingReturnDGI newInstance() {
-        PendingReturnDGI fragment = new PendingReturnDGI();
+    public static PendingDeliveryApproval newInstance() {
+        PendingDeliveryApproval fragment = new PendingDeliveryApproval();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -85,11 +96,14 @@ public class PendingReturnDGI extends Fragment implements SwipeRefreshLayout.OnR
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_pending_return_dgi, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_pending_delivery_approval_dgi, container, false);
+
+
         setRetainInstance(true);
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
         swipeContainer = (SwipeRefreshLayout)rootView.findViewById(R.id.swipeContainer);
+
 
 
 
@@ -104,9 +118,9 @@ public class PendingReturnDGI extends Fragment implements SwipeRefreshLayout.OnR
         }
 
 
+
         setupRecyclerView();
         setupSwipeContainer();
-
 
         return rootView;
     }
@@ -129,7 +143,7 @@ public class PendingReturnDGI extends Fragment implements SwipeRefreshLayout.OnR
     void setupRecyclerView()
     {
 
-        adapter = new AdapterPendingReturnDGI(dataset,this);
+        adapter = new AdapterDeliveryApproval(dataset,this);
 
         recyclerView.setAdapter(adapter);
 
@@ -138,6 +152,7 @@ public class PendingReturnDGI extends Fragment implements SwipeRefreshLayout.OnR
 
         DisplayMetrics metrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
+
 //        layoutManager.setSpanCount(metrics.widthPixels/400);
 
 
@@ -149,8 +164,6 @@ public class PendingReturnDGI extends Fragment implements SwipeRefreshLayout.OnR
         }
 
         layoutManager.setSpanCount(spanCount);
-
-
 
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -191,25 +204,15 @@ public class PendingReturnDGI extends Fragment implements SwipeRefreshLayout.OnR
         });
     }
 
+
     int previous_position = -1;
-
-
-
-
 
     @Override
     public void onRefresh() {
-
         offset = 0;
         makeNetworkCall(true);
     }
 
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        notifyTitleChanged();
-    }
 
     void makeRefreshNetworkCall()
     {
@@ -226,6 +229,12 @@ public class PendingReturnDGI extends Fragment implements SwipeRefreshLayout.OnR
 
 
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        notifyTitleChanged();
+    }
+
 
     void makeNetworkCall(final boolean clearDataset)
     {
@@ -237,55 +246,54 @@ public class PendingReturnDGI extends Fragment implements SwipeRefreshLayout.OnR
 
         Shop currentShop = UtilityShopHome.getShop(getContext());
 
-        Call<OrderEndPoint> call = orderService
-                .getOrders(null, currentShop.getShopID(),false,
-                        OrderStatusHomeDelivery.RETURN_PENDING,
-                        null, deliveryGuySelf.getDeliveryGuyID(),null,null,true,true,
-                        null,limit,offset,null);
+            Call<OrderEndPoint> call = orderService
+                    .getOrders(null, currentShop.getShopID(),false,
+                            OrderStatusHomeDelivery.PENDING_DELIVERY,
+                            null, deliveryGuySelf.getDeliveryGuyID(),null,false,true,true,
+                            null,limit,offset,null);
 
 
-        call.enqueue(new Callback<OrderEndPoint>() {
-            @Override
-            public void onResponse(Call<OrderEndPoint> call, Response<OrderEndPoint> response) {
+            call.enqueue(new Callback<OrderEndPoint>() {
+                @Override
+                public void onResponse(Call<OrderEndPoint> call, Response<OrderEndPoint> response) {
 
-                if(isDestroyed)
-                {
-                    return;
-                }
-
-                if(response.body()!= null)
-                {
-                    item_count = response.body().getItemCount();
-
-                    if(clearDataset)
+                    if(isDestroyed)
                     {
-                        dataset.clear();
+                        return;
                     }
 
-                    dataset.addAll(response.body().getResults());
-                    adapter.notifyDataSetChanged();
-                    notifyTitleChanged();
+                    if(response.body()!= null)
+                    {
+                        item_count = response.body().getItemCount();
+
+                        if(clearDataset)
+                        {
+                            dataset.clear();
+                        }
+
+                        dataset.addAll(response.body().getResults());
+                        adapter.notifyDataSetChanged();
+                        notifyTitleChanged();
+
+                    }
+
+                    swipeContainer.setRefreshing(false);
 
                 }
 
-                swipeContainer.setRefreshing(false);
+                @Override
+                public void onFailure(Call<OrderEndPoint> call, Throwable t) {
+                    if(isDestroyed)
+                    {
+                        return;
+                    }
 
-            }
-
-            @Override
-            public void onFailure(Call<OrderEndPoint> call, Throwable t) {
-                if(isDestroyed)
-                {
-                    return;
+                    showToastMessage("Network Request failed !");
+                    swipeContainer.setRefreshing(false);
                 }
-
-                showToastMessage("Network Request failed !");
-                swipeContainer.setRefreshing(false);
-            }
-        });
+            });
 
     }
-
 
 
 
@@ -300,52 +308,20 @@ public class PendingReturnDGI extends Fragment implements SwipeRefreshLayout.OnR
 
 
 
-    public DeliveryGuySelf getDeliveryGuySelf() {
-        return deliveryGuySelf;
-    }
-
-    public void setDeliveryGuySelf(DeliveryGuySelf deliveryGuySelf) {
-        this.deliveryGuySelf = deliveryGuySelf;
-    }
-
-
     @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putParcelable("savedVehicle", deliveryGuySelf);
-    }
+    public void notifyMarkDelivered(Order order) {
 
 
+//        order.setStatusHomeDelivery(OrderStatusHomeDelivery.ORDER_PACKED);
+//        order.setDeliveryGuySelfID(null);
 
-    void notifyTitleChanged()
-    {
-
-        if(getActivity() instanceof NotifyTitleChanged)
-        {
-            ((NotifyTitleChanged)getActivity())
-                    .NotifyTitleChanged(
-                            "Pending Return ( " + String.valueOf(dataset.size())
-                                    + "/" + String.valueOf(item_count) + " )",4);
-
-        }
-    }
-
-
-    @Inject
-    OrderServiceShopStaff orderServiceShopStaff;
-
-
-    @Override
-    public void notifyAcceptReturn(Order order) {
-
-
-//        order.setStatusHomeDelivery(OrderStatusHomeDelivery.RETURNED);
 //        Call<ResponseBody> call = orderService.putOrder(order.getOrderID(),order);
 
-        Call<ResponseBody> call = orderServiceShopStaff.acceptReturn(
+        Call<ResponseBody> call = orderServiceShopStaff.markDelivered(
                 UtilityLogin.getAuthorizationHeaders(getActivity()),
                 order.getOrderID()
         );
+
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -353,16 +329,12 @@ public class PendingReturnDGI extends Fragment implements SwipeRefreshLayout.OnR
 
                 if(response.code()==200)
                 {
-                    showToastMessage("Update Successful !");
+                    showToastMessage("Handover cancelled !");
                     makeRefreshNetworkCall();
-                }
-                else if(response.code()==304)
-                {
-                    showToastMessage("Update failed !");
                 }
                 else
                 {
-                    showToastMessage("Server Error Code : " + String.valueOf(response.code()));
+                    showToastMessage("Failed code : " + String.valueOf(response.code()));
                 }
 
             }
@@ -374,6 +346,51 @@ public class PendingReturnDGI extends Fragment implements SwipeRefreshLayout.OnR
 
             }
         });
-
     }
+
+
+    public DeliveryGuySelf getDeliveryGuySelf() {
+        return deliveryGuySelf;
+    }
+
+    public void setDeliveryGuySelf(DeliveryGuySelf deliveryGuySelf) {
+        this.deliveryGuySelf = deliveryGuySelf;
+    }
+
+    /*public interface NotificationReceiver
+    {
+        void notifyPendingAcceptChanged();
+    }
+    */
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable("savedVehicle", deliveryGuySelf);
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        isDestroyed = true;
+    }
+
+
+
+    void notifyTitleChanged()
+    {
+
+        if(getActivity() instanceof NotifyTitleChanged)
+        {
+            ((NotifyTitleChanged)getActivity())
+                    .NotifyTitleChanged(
+                            "Pending Delivery Approval ( " + String.valueOf(dataset.size())
+                                    + "/" + String.valueOf(item_count) + " )",2);
+
+
+        }
+    }
+
+
 }

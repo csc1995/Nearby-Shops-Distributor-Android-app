@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
 import org.localareadelivery.distributorapp.DeliveryGuyDashboard.DeliveryGuyDashboard;
-import org.localareadelivery.distributorapp.HomeDeliveryDeliveryGuyInventory.DeliveryGuyInventory;
+import org.localareadelivery.distributorapp.HomeDeliveryInventoryDeliveryGuy.DeliveryGuyInventory;
 import org.localareadelivery.distributorapp.CommonInterfaces.NotifyTitleChanged;
 import org.localareadelivery.distributorapp.HomeDeliveryInventory.Interface.RefreshFragment;
 import org.localareadelivery.distributorapp.ModelRoles.DeliveryGuySelf;

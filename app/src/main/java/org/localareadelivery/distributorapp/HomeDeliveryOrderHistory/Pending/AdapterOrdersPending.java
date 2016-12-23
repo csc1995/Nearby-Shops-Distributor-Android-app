@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.HomeDeliveryDeliveryGuyInventory.PaymentsPending;
+package org.localareadelivery.distributorapp.HomeDeliveryOrderHistory.Pending;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -6,8 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import org.localareadelivery.distributorapp.Model.Order;
+import org.localareadelivery.distributorapp.HomeDeliveryOrderHistory.Utility.UtilityOrderStatus;
 import org.localareadelivery.distributorapp.Model.DeliveryAddress;
+import org.localareadelivery.distributorapp.Model.Order;
 import org.localareadelivery.distributorapp.ModelStats.OrderStats;
 import org.localareadelivery.distributorapp.R;
 
@@ -20,30 +21,27 @@ import butterknife.OnClick;
 /**
  * Created by sumeet on 13/6/16.
  */
-public class AdapterPaymentsPending extends RecyclerView.Adapter<AdapterPaymentsPending.ViewHolder>{
-
+class AdapterOrdersPending extends RecyclerView.Adapter<AdapterOrdersPending.ViewHolder>{
 
     private List<Order> dataset = null;
-    private NotifyPaymentReceived notifications;
+    private NotifyConfirmOrder notifyConfirmOrder;
 
-
-    public AdapterPaymentsPending(List<Order> dataset, NotifyPaymentReceived notifications) {
+    AdapterOrdersPending(List<Order> dataset, NotifyConfirmOrder notifyConfirmOrder) {
         this.dataset = dataset;
-        this.notifications = notifications;
-
+        this.notifyConfirmOrder = notifyConfirmOrder;
     }
 
     @Override
-    public AdapterPaymentsPending.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public AdapterOrdersPending.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_item_order_payments_pending_vd,parent,false);
+                .inflate(R.layout.list_item_order_pending,parent,false);
 
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(AdapterPaymentsPending.ViewHolder holder, int position) {
+    public void onBindViewHolder(AdapterOrdersPending.ViewHolder holder, int position) {
 
         if(dataset!=null)
         {
@@ -57,7 +55,7 @@ public class AdapterPaymentsPending extends RecyclerView.Adapter<AdapterPayments
             OrderStats orderStats = order.getOrderStats();
 
             holder.orderID.setText("Order ID : " + order.getOrderID());
-            holder.dateTimePlaced.setText("Placed : " + order.getDateTimePlaced().toLocaleString());
+            holder.dateTimePlaced.setText("" + order.getDateTimePlaced().toLocaleString());
 
 
             holder.deliveryAddressName.setText(deliveryAddress.getName());
@@ -72,6 +70,9 @@ public class AdapterPaymentsPending extends RecyclerView.Adapter<AdapterPayments
             //holder.currentStatus.setText();
 
 
+            String status = UtilityOrderStatus.getStatus(order.getStatusHomeDelivery(),order.getDeliveryReceived(),order.getPaymentReceived());
+            holder.currentStatus.setText("Current Status : " + status);
+
         }
     }
 
@@ -81,7 +82,7 @@ public class AdapterPaymentsPending extends RecyclerView.Adapter<AdapterPayments
     }
 
 
-    class ViewHolder extends RecyclerView.ViewHolder{
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
 
         @Bind(R.id.order_id)
@@ -109,36 +110,44 @@ public class AdapterPaymentsPending extends RecyclerView.Adapter<AdapterPayments
         @Bind(R.id.currentStatus)
         TextView currentStatus;
 
-        @Bind(R.id.cancelHandoverButton)
-        TextView cancelHandoverButton;
+//        @Bind(R.id.confirmOrderButton)
+//        TextView confirmOrderButton;
 
 
         public ViewHolder(View itemView) {
             super(itemView);
-
             ButterKnife.bind(this,itemView);
-
-
+            itemView.setOnClickListener(this);
         }
 
 
-        @OnClick(R.id.cancelHandoverButton)
+//        @OnClick(R.id.confirmOrderButton)
         void onClickConfirmButton(View view)
         {
-            notifications.notifyPaymentReceived(dataset.get(getLayoutPosition()));
+//            notifyConfirmOrder.notifyConfirmOrder(dataset.get(getLayoutPosition()));
         }
 
+
+        @OnClick(R.id.close_button)
+        void closeButton(View view)
+        {
+            notifyConfirmOrder.notifyCancelOrder(dataset.get(getLayoutPosition()));
+        }
+
+        @Override
+        public void onClick(View v) {
+
+            notifyConfirmOrder.notifyOrderSelected(dataset.get(getLayoutPosition()));
+        }
     }
 
 
 
 
-
-
-    public interface NotifyPaymentReceived {
-
-        void notifyPaymentReceived(Order order);
-
+    interface NotifyConfirmOrder{
+//        void notifyConfirmOrder(Order order);
+        void notifyOrderSelected(Order order);
+        void notifyCancelOrder(Order order);
     }
 
 }

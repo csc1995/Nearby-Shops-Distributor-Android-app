@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.HomeDeliveryDeliveryGuyInventory.PendingHandover;
+package org.localareadelivery.distributorapp.HomeDeliveryInventoryDeliveryGuy.PaymentsPending;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -11,6 +11,7 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
@@ -31,35 +32,37 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import icepick.State;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static org.localareadelivery.distributorapp.HomeDeliveryDeliveryGuyInventory.DeliveryGuyInventory.DELIVERY_VEHICLE_INTENT_KEY;
-
 /**
  * Created by sumeet on 13/6/16.
  */
 
 
-public class PendingHandoverFragment extends Fragment
-        implements SwipeRefreshLayout.OnRefreshListener,AdapterPendingHandover.NotifyCancelHandover {
+/**
+ * A placeholder fragment containing a simple view.
+ */
+public class PaymentsPendingFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener,AdapterPaymentsPending.NotifyPaymentReceived {
 
-
-    @Inject
-    OrderServiceShopStaff orderServiceShopStaff;
 
     @Inject
     OrderService orderService;
 
+    @Inject
+    OrderServiceShopStaff orderServiceShopStaff;
+
+
     RecyclerView recyclerView;
-    AdapterPendingHandover adapter;
-
+    AdapterPaymentsPending adapter;
     public List<Order> dataset = new ArrayList<>();
-
     GridLayoutManager layoutManager;
+
     SwipeRefreshLayout swipeContainer;
 
 
@@ -67,6 +70,9 @@ public class PendingHandoverFragment extends Fragment
 //    NotificationReceiver notificationReceiver;
 
     DeliveryGuySelf deliveryGuySelf;
+
+    TextView ordersTotal;
+    TextView receivedTotal;
 
 
 
@@ -78,7 +84,7 @@ public class PendingHandoverFragment extends Fragment
 
 
 
-    public PendingHandoverFragment() {
+    public PaymentsPendingFragment() {
 
         DaggerComponentBuilder.getInstance()
                 .getNetComponent()
@@ -90,8 +96,8 @@ public class PendingHandoverFragment extends Fragment
      * Returns a new instance of this fragment for the given section
      * number.
      */
-    public static PendingHandoverFragment newInstance() {
-        PendingHandoverFragment fragment = new PendingHandoverFragment();
+    public static PaymentsPendingFragment newInstance() {
+        PaymentsPendingFragment fragment = new PaymentsPendingFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -100,29 +106,24 @@ public class PendingHandoverFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_home_delivery_pending_accept_vd, container, false);
-
+        View rootView = inflater.inflate(R.layout.fragment_home_delivery_payments_pending_vd, container, false);
 
         setRetainInstance(true);
+
+        ButterKnife.bind(this,rootView);
+
+        ordersTotal = (TextView) rootView.findViewById(R.id.ordersTotal);
+        receivedTotal = (TextView) rootView.findViewById(R.id.receivedTotal);
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
         swipeContainer = (SwipeRefreshLayout)rootView.findViewById(R.id.swipeContainer);
 
-
-        if(deliveryGuySelf==null)
+        if(savedInstanceState!=null)
         {
-            deliveryGuySelf = getActivity().getIntent().getParcelableExtra(DELIVERY_VEHICLE_INTENT_KEY);
+            // restore instance state
+            deliveryGuySelf = savedInstanceState.getParcelable("savedVehicle");
         }
-
-
-//        if(savedInstanceState!=null)
-//        {
-
-//            deliveryGuySelf = savedInstanceState.getParcelable("savedVehicle");
-//        }
-
-
-        if(savedInstanceState==null)
+        else
         {
             makeRefreshNetworkCall();
         }
@@ -153,7 +154,7 @@ public class PendingHandoverFragment extends Fragment
     void setupRecyclerView()
     {
 
-        adapter = new AdapterPendingHandover(dataset,this);
+        adapter = new AdapterPaymentsPending(dataset,this);
 
         recyclerView.setAdapter(adapter);
 
@@ -174,6 +175,7 @@ public class PendingHandoverFragment extends Fragment
         }
 
         layoutManager.setSpanCount(spanCount);
+
 
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -217,12 +219,15 @@ public class PendingHandoverFragment extends Fragment
 
     int previous_position = -1;
 
+
+
+
     @Override
     public void onRefresh() {
-
         offset = 0;
         makeNetworkCall(true);
     }
+
 
 
     void makeRefreshNetworkCall()
@@ -257,54 +262,58 @@ public class PendingHandoverFragment extends Fragment
 
         Shop currentShop = UtilityShopHome.getShop(getContext());
 
-            Call<OrderEndPoint> call = orderService
-                    .getOrders(null, currentShop.getShopID(),false,
-                            OrderStatusHomeDelivery.PENDING_HANDOVER,
-                            null, deliveryGuySelf.getDeliveryGuyID(),null,null,true,true,
-                            null,limit,offset,null);
+        Call<OrderEndPoint> call = orderService
+                .getOrders(null, currentShop.getShopID(),false,
+                        OrderStatusHomeDelivery.PENDING_DELIVERY,
+                        null, deliveryGuySelf.getDeliveryGuyID(),false,null,true,true,
+                        null,limit,offset,null);
 
 
-            call.enqueue(new Callback<OrderEndPoint>() {
-                @Override
-                public void onResponse(Call<OrderEndPoint> call, Response<OrderEndPoint> response) {
+        call.enqueue(new Callback<OrderEndPoint>() {
+            @Override
+            public void onResponse(Call<OrderEndPoint> call, Response<OrderEndPoint> response) {
 
-                    if(isDestroyed)
+                if(isDestroyed)
+                {
+                    return;
+                }
+
+                if(response.body()!= null)
+                {
+                    item_count = response.body().getItemCount();
+
+                    if(clearDataset)
                     {
-                        return;
+                        dataset.clear();
                     }
 
-                    if(response.body()!= null)
-                    {
-                        item_count = response.body().getItemCount();
-
-                        if(clearDataset)
-                        {
-                            dataset.clear();
-                        }
-
-                        dataset.addAll(response.body().getResults());
-                        adapter.notifyDataSetChanged();
-                        notifyTitleChanged();
-
-                    }
-
-                    swipeContainer.setRefreshing(false);
+                    dataset.addAll(response.body().getResults());
+                    adapter.notifyDataSetChanged();
+                    notifyTitleChanged();
+                    updateTotal();
 
                 }
 
-                @Override
-                public void onFailure(Call<OrderEndPoint> call, Throwable t) {
-                    if(isDestroyed)
-                    {
-                        return;
-                    }
+                swipeContainer.setRefreshing(false);
 
-                    showToastMessage("Network Request failed !");
-                    swipeContainer.setRefreshing(false);
+
+
+            }
+
+            @Override
+            public void onFailure(Call<OrderEndPoint> call, Throwable t) {
+                if(isDestroyed)
+                {
+                    return;
                 }
-            });
+
+                showToastMessage("Network Request failed !");
+                swipeContainer.setRefreshing(false);
+            }
+        });
 
     }
+
 
 
 
@@ -319,20 +328,135 @@ public class PendingHandoverFragment extends Fragment
 
 
 
+    int totalLabel;
+
+
+    void updateTotal()
+    {
+
+        int total = 0;
+
+        if(dataset!=null)
+        {
+            for(Order order : dataset)
+            {
+                total = total + (order.getOrderStats().getItemTotal()+ order.getDeliveryCharges());
+            }
+
+
+            ordersTotal.setText("All Orders Total : "  + total + "\nCollect " + total + " from Delivery guy.");
+            receivedTotal.setText("Received " + total + " from Delivery Guy.");
+
+        }
+
+        if(total == 0)
+        {
+            ordersTotal.setVisibility(View.GONE);
+            receivedTotal.setVisibility(View.GONE);
+
+        }else
+        {
+            ordersTotal.setVisibility(View.VISIBLE);
+            receivedTotal.setVisibility(View.VISIBLE);
+        }
+
+        totalLabel = total;
+    }
+
+
+
+
+    @OnClick(R.id.receivedTotal)
+    void receivedAllClick(View view)
+    {
+
+//        DialogFragment newFragment = new NotifyUserDialogFragment();
+  //      newFragment.show(getActivity().getSupportFragmentManager(), "notice");
+
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        builder.setTitle("Confirm Payment Received !")
+                .setMessage("Did you received " + String.valueOf(totalLabel) + " from Delivery Guy !")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        updatePaymentReceived();
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        showToastMessage("Update Cancelled !");
+                    }
+                })
+                .show();
+
+
+
+    }
+
+
+
+    void updatePaymentReceived()
+    {
+//        for(Order order : dataset)
+//        {
+//            order.setPaymentReceived(true);
+//        }
+
+//        Call<ResponseBody> call = orderService.putOrderBulk(dataset);
+
+        Call<ResponseBody> call = orderServiceShopStaff.paymentReceivedBulk(
+          UtilityLogin.getAuthorizationHeaders(getActivity()),dataset
+        );
+
+
+        call.enqueue(new Callback<ResponseBody>() {
+
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                if(response.code() == 200)
+                {
+                    showToastMessage("Successful !");
+
+                }else
+                {
+                    showToastMessage("Error while updating ! ");
+                }
+
+                makeRefreshNetworkCall();
+
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                showToastMessage("Network Request failed !");
+
+            }
+        });
+
+    }
+
+
+
+
     @Override
-    public void notifyCancelHandover(Order order) {
+    public void notifyPaymentReceived(Order order) {
 
-
-//        order.setStatusHomeDelivery(OrderStatusHomeDelivery.ORDER_PACKED);
-//        order.setDeliveryGuySelfID(null);
+//        order.setPaymentReceived(true);
 
 //        Call<ResponseBody> call = orderService.putOrder(order.getOrderID(),order);
 
-        Call<ResponseBody> call = orderServiceShopStaff.undoHandover(
+        Call<ResponseBody> call = orderServiceShopStaff.paymentReceived(
                 UtilityLogin.getAuthorizationHeaders(getActivity()),
                 order.getOrderID()
         );
-
 
 
         call.enqueue(new Callback<ResponseBody>() {
@@ -341,12 +465,12 @@ public class PendingHandoverFragment extends Fragment
 
                 if(response.code()==200)
                 {
-                    showToastMessage("Handover cancelled !");
+                    showToastMessage("Update Successful !");
                     makeRefreshNetworkCall();
                 }
                 else
                 {
-                    showToastMessage("Failed Code : " + String.valueOf(response.code()));
+                    showToastMessage("Failed code : " + String.valueOf(response.code()));
                 }
 
             }
@@ -361,86 +485,32 @@ public class PendingHandoverFragment extends Fragment
     }
 
 
-
-
-
-    @Override
-    public void notifyCancelOrder(final Order order) {
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
-        builder.setTitle("Confirm Cancel Order !")
-                .setMessage("Are you sure you want to cancel this order !")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        cancelOrder(order);
-                    }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        showToastMessage(" Not Cancelled !");
-                    }
-                })
-                .show();
+    public DeliveryGuySelf getDeliveryGuySelf() {
+        return deliveryGuySelf;
     }
 
-
-
-
-    private void cancelOrder(Order order) {
-
-//        Call<ResponseBody> call = orderService.cancelOrderByShop(order.getOrderID());
-
-        Call<ResponseBody> call = orderServiceShopStaff.cancelledByShop(
-                UtilityLogin.getAuthorizationHeaders(getActivity()),
-                order.getOrderID()
-        );
-
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-
-                if(response.code() == 200 )
-                {
-                    showToastMessage("Successful");
-                    makeRefreshNetworkCall();
-                }
-                else if(response.code() == 304)
-                {
-                    showToastMessage("Not Cancelled !");
-                }
-                else
-                {
-                    showToastMessage("Server Error");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-
-                showToastMessage("Network Request Failed. Check your internet connection !");
-            }
-        });
-
+    public void setDeliveryGuySelf(DeliveryGuySelf deliveryGuySelf) {
+        this.deliveryGuySelf = deliveryGuySelf;
     }
+
 
 
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-//        outState.putParcelable("savedVehicle", deliveryGuySelf);
+
+        outState.putParcelable("savedVehicle", deliveryGuySelf);
+
     }
+
 
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         isDestroyed = true;
+        ButterKnife.unbind(this);
     }
 
 
@@ -452,12 +522,11 @@ public class PendingHandoverFragment extends Fragment
         {
             ((NotifyTitleChanged)getActivity())
                     .NotifyTitleChanged(
-                            "Pending Handover ( " + String.valueOf(dataset.size())
-                                    + "/" + String.valueOf(item_count) + " )",0);
+                            "Pending Payments ( " + String.valueOf(dataset.size())
+                                    + "/" + String.valueOf(item_count) + " )",3);
 
 
         }
     }
-
 
 }

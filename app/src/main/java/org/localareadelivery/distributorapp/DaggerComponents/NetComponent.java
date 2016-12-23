@@ -19,11 +19,13 @@ import org.localareadelivery.distributorapp.DeliveryGuyDashboard.PendingDelivery
 import org.localareadelivery.distributorapp.DeliveryGuyDashboard.PendingHandover.PendingHandoverFragment;
 import org.localareadelivery.distributorapp.DeliveryGuyDashboard.PendingReturn.PendingReturnByDG;
 import org.localareadelivery.distributorapp.DeliveryGuyDashboard.PendingReturnCancelledByShop.PendingReturnCancelledByShop;
-import org.localareadelivery.distributorapp.HomeDeliveryDeliveryGuyInventory.OutForDelivery.OutForDeliveryFragment;
-import org.localareadelivery.distributorapp.HomeDeliveryDeliveryGuyInventory.PendingDeliveryApproval.PendingDeliveryApproval;
-import org.localareadelivery.distributorapp.HomeDeliveryDeliveryGuyInventory.PendingReturn.PendingReturnDGI;
-import org.localareadelivery.distributorapp.HomeDeliveryDeliveryGuyInventory.PendingReturnCancelledByShop.PendingReturnCancelledByShopDGI;
+import org.localareadelivery.distributorapp.HomeDeliveryInventoryDeliveryGuy.OutForDelivery.OutForDeliveryFragment;
+import org.localareadelivery.distributorapp.HomeDeliveryInventoryDeliveryGuy.PendingDeliveryApproval.PendingDeliveryApproval;
+import org.localareadelivery.distributorapp.HomeDeliveryInventoryDeliveryGuy.PendingReturn.PendingReturnDGI;
+import org.localareadelivery.distributorapp.HomeDeliveryInventoryDeliveryGuy.PendingReturnCancelledByShop.PendingReturnCancelledByShopDGI;
 import org.localareadelivery.distributorapp.DistributorLogin;
+import org.localareadelivery.distributorapp.HomeDeliveryOrderHistory.Complete.CompleteOrdersFragment;
+import org.localareadelivery.distributorapp.HomeDeliveryOrderHistory.Pending.PendingOrdersFragment;
 import org.localareadelivery.distributorapp.Items.ItemsFragmentSimple;
 import org.localareadelivery.distributorapp.ItemsByCategoryTypeSimple.ItemsByCatFragmentSimple;
 import org.localareadelivery.distributorapp.ItemsInShop.ItemsInStockFragment;
@@ -92,7 +94,7 @@ public interface NetComponent {
 
     void Inject(PendingAcceptFragment pendingAcceptOrdersFragment);
 
-    void Inject(org.localareadelivery.distributorapp.HomeDeliveryDeliveryGuyInventory.PendingHandover.PendingHandoverFragment pendingHandoverFragment);
+    void Inject(org.localareadelivery.distributorapp.HomeDeliveryInventoryDeliveryGuy.PendingHandover.PendingHandoverFragment pendingHandoverFragment);
 
     void Inject(PendingHandoverFragment pendingHandoverFragment);
 
@@ -102,7 +104,7 @@ public interface NetComponent {
 
     void Inject(OutForDeliveryFragment outForDeliveryFragment);
 
-    void Inject(org.localareadelivery.distributorapp.HomeDeliveryDeliveryGuyInventory.PaymentsPending.PaymentsPendingFragment paymentsPendingFragment);
+    void Inject(org.localareadelivery.distributorapp.HomeDeliveryInventoryDeliveryGuy.PaymentsPending.PaymentsPendingFragment paymentsPendingFragment);
 
     void Inject(FragmentOutOfStock outOfStockFragment);
 
@@ -196,4 +198,8 @@ public interface NetComponent {
     void Inject(ShopStaffHome shopStaffHome);
 
     void Inject(EditStaffSelfFragment editStaffSelfFragment);
+
+    void Inject(PendingOrdersFragment pendingOrdersFragment);
+
+    void Inject(CompleteOrdersFragment completeOrdersFragment);
 }

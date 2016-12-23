@@ -11,6 +11,7 @@ import org.localareadelivery.distributorapp.CancelledOrders.CancelledOrdersHomeD
 import org.localareadelivery.distributorapp.DeliveryAccounts.DeliveryGuySelection.AccountsSelectionFragment;
 import org.localareadelivery.distributorapp.DeliveryAccounts.DeliveryGuySelection.DeliveryGuySelection;
 import org.localareadelivery.distributorapp.HomeDeliveryInventory.HomeDelivery;
+import org.localareadelivery.distributorapp.HomeDeliveryOrderHistory.OrderHistoryHD;
 import org.localareadelivery.distributorapp.R;
 
 import butterknife.ButterKnife;
@@ -77,6 +78,14 @@ public class OrdersHome extends AppCompatActivity {
         Intent intent = new Intent(this, CancelledOrdersHomeDelivery.class);
         startActivity(intent);
     }
+
+
+    @OnClick(R.id.order_history)
+    void orderHistory()
+    {
+        startActivity(new Intent(this, OrderHistoryHD.class));
+    }
+
 
 
     @Override

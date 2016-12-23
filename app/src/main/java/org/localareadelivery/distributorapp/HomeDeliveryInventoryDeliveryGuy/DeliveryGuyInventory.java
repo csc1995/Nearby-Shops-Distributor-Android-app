@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.HomeDeliveryDeliveryGuyInventory;
+package org.localareadelivery.distributorapp.HomeDeliveryInventoryDeliveryGuy;
 
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;

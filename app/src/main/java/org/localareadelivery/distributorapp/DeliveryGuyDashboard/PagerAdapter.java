@@ -11,7 +11,7 @@ import org.localareadelivery.distributorapp.DeliveryGuyDashboard.PendingPayments
 import org.localareadelivery.distributorapp.DeliveryGuyDashboard.PendingReturn.PendingReturnByDG;
 import org.localareadelivery.distributorapp.DeliveryGuyDashboard.PendingReturnCancelledByShop.PendingReturnCancelledByShop;
 import org.localareadelivery.distributorapp.ModelRoles.DeliveryGuySelf;
-import org.localareadelivery.distributorapp.HomeDeliveryDeliveryGuyInventory.PlaceholderFragment;
+import org.localareadelivery.distributorapp.HomeDeliveryInventoryDeliveryGuy.PlaceholderFragment;
 
 /**
  * Created by sumeet on 15/6/16.

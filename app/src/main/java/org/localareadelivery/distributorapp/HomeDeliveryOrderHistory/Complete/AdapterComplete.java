@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.HomeDeliveryDeliveryGuyInventory.PendingReturn;
+package org.localareadelivery.distributorapp.HomeDeliveryOrderHistory.Complete;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -6,8 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import org.localareadelivery.distributorapp.Model.Order;
+import org.localareadelivery.distributorapp.HomeDeliveryOrderHistory.Utility.UtilityOrderStatus;
 import org.localareadelivery.distributorapp.Model.DeliveryAddress;
+import org.localareadelivery.distributorapp.Model.Order;
 import org.localareadelivery.distributorapp.ModelStats.OrderStats;
 import org.localareadelivery.distributorapp.R;
 
@@ -20,29 +21,27 @@ import butterknife.OnClick;
 /**
  * Created by sumeet on 13/6/16.
  */
-class AdapterPendingReturnDGI extends RecyclerView.Adapter<AdapterPendingReturnDGI.ViewHolder>{
-
+class AdapterComplete extends RecyclerView.Adapter<AdapterComplete.ViewHolder>{
 
     private List<Order> dataset = null;
-    private NotifyAcceptReturn notifications;
+    private NotifyConfirmOrder notifyConfirmOrder;
 
-
-    AdapterPendingReturnDGI(List<Order> dataset,NotifyAcceptReturn notifications) {
+    AdapterComplete(List<Order> dataset, NotifyConfirmOrder notifyConfirmOrder) {
         this.dataset = dataset;
-        this.notifications = notifications;
+        this.notifyConfirmOrder = notifyConfirmOrder;
     }
 
     @Override
-    public AdapterPendingReturnDGI.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public AdapterComplete.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_item_pending_return_dgi,parent,false);
+                .inflate(R.layout.list_item_order_complete,parent,false);
 
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(AdapterPendingReturnDGI.ViewHolder holder, int position) {
+    public void onBindViewHolder(AdapterComplete.ViewHolder holder, int position) {
 
         if(dataset!=null)
         {
@@ -56,7 +55,7 @@ class AdapterPendingReturnDGI extends RecyclerView.Adapter<AdapterPendingReturnD
             OrderStats orderStats = order.getOrderStats();
 
             holder.orderID.setText("Order ID : " + order.getOrderID());
-            holder.dateTimePlaced.setText("Placed : " + order.getDateTimePlaced().toLocaleString());
+            holder.dateTimePlaced.setText("" + order.getDateTimePlaced().toLocaleString());
 
 
             holder.deliveryAddressName.setText(deliveryAddress.getName());
@@ -70,6 +69,8 @@ class AdapterPendingReturnDGI extends RecyclerView.Adapter<AdapterPendingReturnD
             holder.orderTotal.setText("| Total : " + (orderStats.getItemTotal() + order.getDeliveryCharges()));
             //holder.currentStatus.setText();
 
+            String status = UtilityOrderStatus.getStatus(order.getStatusHomeDelivery(),order.getDeliveryReceived(),order.getPaymentReceived());
+            holder.currentStatus.setText("Current Status : " + status);
 
         }
     }
@@ -80,7 +81,7 @@ class AdapterPendingReturnDGI extends RecyclerView.Adapter<AdapterPendingReturnD
     }
 
 
-    class ViewHolder extends RecyclerView.ViewHolder{
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
 
         @Bind(R.id.order_id)
@@ -108,28 +109,44 @@ class AdapterPendingReturnDGI extends RecyclerView.Adapter<AdapterPendingReturnD
         @Bind(R.id.currentStatus)
         TextView currentStatus;
 
-//        @Bind(R.id.cancelHandoverButton)
-//        TextView cancelHandoverButton;
+//        @Bind(R.id.confirmOrderButton)
+//        TextView confirmOrderButton;
 
 
         public ViewHolder(View itemView) {
             super(itemView);
+
             ButterKnife.bind(this,itemView);
+            itemView.setOnClickListener(this);
         }
 
 
-        @OnClick(R.id.accept_return)
+//        @OnClick(R.id.confirmOrderButton)
         void onClickConfirmButton(View view)
         {
-            notifications.notifyAcceptReturn(dataset.get(getLayoutPosition()));
+//            notifyConfirmOrder.notifyConfirmOrder(dataset.get(getLayoutPosition()));
         }
 
+
+        @OnClick(R.id.close_button)
+        void closeButton(View view)
+        {
+//            notifyConfirmOrder.notifyCancelOrder(dataset.get(getLayoutPosition()));
+        }
+
+        @Override
+        public void onClick(View v) {
+            notifyConfirmOrder.notifyOrderSelected(dataset.get(getLayoutPosition()));
+        }
     }
 
 
-    interface NotifyAcceptReturn {
 
-        void notifyAcceptReturn(Order order);
+
+    interface NotifyConfirmOrder{
+        void notifyOrderSelected(Order order);
+//        void notifyConfirmOrder(Order order);
+//        void notifyCancelOrder(Order order);
     }
 
 }

@@ -1,8 +1,11 @@
-package org.localareadelivery.distributorapp.HomeDeliveryDeliveryGuyInventory.PendingDeliveryApproval;
+package org.localareadelivery.distributorapp.HomeDeliveryOrderHistory.Pending;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
@@ -11,17 +14,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import org.localareadelivery.distributorapp.DaggerComponentBuilder;
 import org.localareadelivery.distributorapp.CommonInterfaces.NotifyTitleChanged;
+import org.localareadelivery.distributorapp.DaggerComponentBuilder;
+import org.localareadelivery.distributorapp.HomeDeliveryInventory.Interface.RefreshFragment;
 import org.localareadelivery.distributorapp.Model.Order;
-import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.ModelEndpoints.OrderEndPoint;
-import org.localareadelivery.distributorapp.ModelRoles.DeliveryGuySelf;
 import org.localareadelivery.distributorapp.ModelStatusCodes.OrderStatusHomeDelivery;
+import org.localareadelivery.distributorapp.OrderDetail.OrderDetail;
+import org.localareadelivery.distributorapp.OrderDetail.UtilityOrderDetail;
 import org.localareadelivery.distributorapp.R;
-import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderService;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderServiceShopStaff;
-import org.localareadelivery.distributorapp.ShopHome.UtilityShopHome;
 import org.localareadelivery.distributorapp.Utility.UtilityLogin;
 
 import java.util.ArrayList;
@@ -35,23 +37,18 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-/**
- * Created by sumeet on 13/6/16.
- */
+
+public class PendingOrdersFragment extends Fragment implements AdapterOrdersPending.NotifyConfirmOrder, SwipeRefreshLayout.OnRefreshListener {
 
 
-public class PendingDeliveryApproval extends Fragment
-        implements SwipeRefreshLayout.OnRefreshListener,AdapterDeliveryApproval.NotifyMarkDelivered {
-
-
-    @Inject
-    OrderService orderService;
+//    @Inject
+//    OrderService orderService;
 
     @Inject
     OrderServiceShopStaff orderServiceShopStaff;
 
     RecyclerView recyclerView;
-    AdapterDeliveryApproval adapter;
+    AdapterOrdersPending adapter;
 
     public List<Order> dataset = new ArrayList<>();
 
@@ -59,22 +56,15 @@ public class PendingDeliveryApproval extends Fragment
     SwipeRefreshLayout swipeContainer;
 
 
-
-//    NotificationReceiver notificationReceiver;
-
-    DeliveryGuySelf deliveryGuySelf;
-
-
-
     final private int limit = 5;
     @State int offset = 0;
     @State int item_count = 0;
+
     boolean isDestroyed;
 
 
 
-
-    public PendingDeliveryApproval() {
+    public PendingOrdersFragment() {
 
         DaggerComponentBuilder.getInstance()
                 .getNetComponent()
@@ -82,45 +72,39 @@ public class PendingDeliveryApproval extends Fragment
 
     }
 
-    /**
-     * Returns a new instance of this fragment for the given section
-     * number.
-     */
-    public static PendingDeliveryApproval newInstance() {
-        PendingDeliveryApproval fragment = new PendingDeliveryApproval();
+
+    public static PendingOrdersFragment newInstance() {
+        PendingOrdersFragment fragment = new PendingOrdersFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
     }
 
+
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_pending_delivery_approval_dgi, container, false);
 
 
         setRetainInstance(true);
+        View rootView = inflater.inflate(R.layout.fragment_home_delivery_placed_orders, container, false);
+
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
         swipeContainer = (SwipeRefreshLayout)rootView.findViewById(R.id.swipeContainer);
 
 
-
-
-        if(savedInstanceState!=null)
-        {
-            // restore instance state
-            deliveryGuySelf = savedInstanceState.getParcelable("savedVehicle");
-        }
-        else
+        if(savedInstanceState==null)
         {
             makeRefreshNetworkCall();
         }
 
 
-
         setupRecyclerView();
         setupSwipeContainer();
+
 
         return rootView;
     }
@@ -143,7 +127,7 @@ public class PendingDeliveryApproval extends Fragment
     void setupRecyclerView()
     {
 
-        adapter = new AdapterDeliveryApproval(dataset,this);
+        adapter = new AdapterOrdersPending(dataset,this);
 
         recyclerView.setAdapter(adapter);
 
@@ -171,44 +155,46 @@ public class PendingDeliveryApproval extends Fragment
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
 
+
+                if(offset + limit > layoutManager.findLastVisibleItemPosition())
+                {
+                    return;
+                }
+
+
                 if(layoutManager.findLastVisibleItemPosition()==dataset.size()-1)
                 {
                     // trigger fetch next page
 
-                    if(layoutManager.findLastVisibleItemPosition() == previous_position)
-                    {
-                        return;
-                    }
+//                    if(layoutManager.findLastVisibleItemPosition() == previous_position)
+//                    {
+//                        return;
+//                    }
 
 
                     if((offset+limit)<=item_count)
                     {
                         offset = offset + limit;
-
-
-                        swipeContainer.post(new Runnable() {
-                            @Override
-                            public void run() {
-
-                                swipeContainer.setRefreshing(true);
-
-                                makeNetworkCall(false);
-                            }
-                        });
-
+                        makeNetworkCall(false);
                     }
 
-                    previous_position = layoutManager.findLastVisibleItemPosition();
+//                    previous_position = layoutManager.findLastVisibleItemPosition();
+
                 }
+
             }
         });
     }
 
 
-    int previous_position = -1;
+
+//    int previous_position = -1;
+
+
 
     @Override
     public void onRefresh() {
+
         offset = 0;
         makeNetworkCall(true);
     }
@@ -220,37 +206,28 @@ public class PendingDeliveryApproval extends Fragment
         swipeContainer.post(new Runnable() {
             @Override
             public void run() {
-
                 swipeContainer.setRefreshing(true);
+
                 onRefresh();
             }
         });
-    }
 
-
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        notifyTitleChanged();
     }
 
 
     void makeNetworkCall(final boolean clearDataset)
     {
 
-        if(deliveryGuySelf ==null)
-        {
-            return;
-        }
+//            Shop currentShop = UtilityShopHome.getShop(getContext());
 
-        Shop currentShop = UtilityShopHome.getShop(getContext());
-
-            Call<OrderEndPoint> call = orderService
-                    .getOrders(null, currentShop.getShopID(),false,
-                            OrderStatusHomeDelivery.PENDING_DELIVERY,
-                            null, deliveryGuySelf.getDeliveryGuyID(),null,false,true,true,
-                            null,limit,offset,null);
+            Call<OrderEndPoint> call = orderServiceShopStaff.getOrders(
+                    UtilityLogin.getAuthorizationHeaders(getActivity()),
+                    null,null,false,
+                    null,null,null,
+                    null,null,
+                    null,null,
+                    true,
+                    null,limit,offset,null);
 
 
             call.enqueue(new Callback<OrderEndPoint>() {
@@ -290,9 +267,24 @@ public class PendingDeliveryApproval extends Fragment
 
                     showToastMessage("Network Request failed !");
                     swipeContainer.setRefreshing(false);
+
                 }
             });
 
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        notifyTitleChanged();
+        isDestroyed=false;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        isDestroyed=true;
     }
 
 
@@ -308,16 +300,89 @@ public class PendingDeliveryApproval extends Fragment
 
 
 
+
+    void notifyTitleChanged()
+    {
+
+        if(getActivity() instanceof NotifyTitleChanged)
+        {
+            ((NotifyTitleChanged)getActivity())
+                    .NotifyTitleChanged(
+                            "Pending (" + String.valueOf(dataset.size())
+                                    + "/" + String.valueOf(item_count) + ")",0);
+
+
+        }
+    }
+
+
+
+
+
+    // Refresh the Confirmed PlaceholderFragment
+
+    private static String makeFragmentName(int viewId, int index) {
+        return "android:switcher:" + viewId + ":" + index;
+    }
+
+
+
+    void refreshConfirmedFragment()
+    {
+        Fragment fragment = getActivity().getSupportFragmentManager()
+                .findFragmentByTag(makeFragmentName(R.id.container,1));
+
+        if(fragment instanceof RefreshFragment)
+        {
+            ((RefreshFragment)fragment).refreshFragment();
+        }
+    }
+
+
+
     @Override
-    public void notifyMarkDelivered(Order order) {
+    public void notifyOrderSelected(Order order) {
+
+        UtilityOrderDetail.saveOrder(order,getActivity());
+        getActivity().startActivity(new Intent(getActivity(),OrderDetail.class));
+    }
 
 
-//        order.setStatusHomeDelivery(OrderStatusHomeDelivery.ORDER_PACKED);
-//        order.setDeliveryGuySelfID(null);
 
-//        Call<ResponseBody> call = orderService.putOrder(order.getOrderID(),order);
 
-        Call<ResponseBody> call = orderServiceShopStaff.markDelivered(
+
+    @Override
+    public void notifyCancelOrder(final Order order) {
+
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        builder.setTitle("Confirm Cancel Order !")
+                .setMessage("Are you sure you want to cancel this order !")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        cancelOrder(order);
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        showToastMessage(" Not Cancelled !");
+                    }
+                })
+                .show();
+    }
+
+
+    private void cancelOrder(Order order) {
+
+
+//        Call<ResponseBody> call = orderService.cancelOrderByShop(order.getOrderID());
+
+        Call<ResponseBody> call = orderServiceShopStaff.cancelledByShop(
                 UtilityLogin.getAuthorizationHeaders(getActivity()),
                 order.getOrderID()
         );
@@ -327,70 +392,30 @@ public class PendingDeliveryApproval extends Fragment
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
 
-                if(response.code()==200)
+                if(response.code() == 200 )
                 {
-                    showToastMessage("Handover cancelled !");
+                    showToastMessage("Successful");
                     makeRefreshNetworkCall();
+                }
+                else if(response.code() == 304)
+                {
+                    showToastMessage("Not Cancelled !");
                 }
                 else
                 {
-                    showToastMessage("Failed code : " + String.valueOf(response.code()));
+                    showToastMessage("Server Error");
                 }
-
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
 
-                showToastMessage("Network Request Failed. Try again !");
-
+                showToastMessage("Network Request Failed. Check your internet connection !");
             }
         });
+
     }
 
-
-    public DeliveryGuySelf getDeliveryGuySelf() {
-        return deliveryGuySelf;
-    }
-
-    public void setDeliveryGuySelf(DeliveryGuySelf deliveryGuySelf) {
-        this.deliveryGuySelf = deliveryGuySelf;
-    }
-
-    /*public interface NotificationReceiver
-    {
-        void notifyPendingAcceptChanged();
-    }
-    */
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putParcelable("savedVehicle", deliveryGuySelf);
-    }
-
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        isDestroyed = true;
-    }
-
-
-
-    void notifyTitleChanged()
-    {
-
-        if(getActivity() instanceof NotifyTitleChanged)
-        {
-            ((NotifyTitleChanged)getActivity())
-                    .NotifyTitleChanged(
-                            "Pending Delivery Approval ( " + String.valueOf(dataset.size())
-                                    + "/" + String.valueOf(item_count) + " )",2);
-
-
-        }
-    }
 
 
 }

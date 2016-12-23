@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.HomeDeliveryDeliveryGuyInventory.PendingReturnCancelledByShop;
+package org.localareadelivery.distributorapp.HomeDeliveryInventoryDeliveryGuy.PendingReturn;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -40,16 +40,14 @@ import retrofit2.Response;
  */
 
 
-public class PendingReturnCancelledByShopDGI extends Fragment implements SwipeRefreshLayout.OnRefreshListener, AdapterPendingReturnCancelledByShopDGI.NotifyAcceptReturn {
+public class PendingReturnDGI extends Fragment implements SwipeRefreshLayout.OnRefreshListener, AdapterPendingReturnDGI.NotifyAcceptReturn {
 
-    @Inject
-    OrderServiceShopStaff orderServiceShopStaff;
 
     @Inject
     OrderService orderService;
     RecyclerView recyclerView;
 
-    AdapterPendingReturnCancelledByShopDGI adapter;
+    AdapterPendingReturnDGI adapter;
     public List<Order> dataset = new ArrayList<>();
     GridLayoutManager layoutManager;
 
@@ -65,7 +63,7 @@ public class PendingReturnCancelledByShopDGI extends Fragment implements SwipeRe
 
 
 
-    public PendingReturnCancelledByShopDGI() {
+    public PendingReturnDGI() {
 
         DaggerComponentBuilder.getInstance()
                 .getNetComponent()
@@ -77,8 +75,8 @@ public class PendingReturnCancelledByShopDGI extends Fragment implements SwipeRe
      * Returns a new instance of this fragment for the given section
      * number.
      */
-    public static PendingReturnCancelledByShopDGI newInstance() {
-        PendingReturnCancelledByShopDGI fragment = new PendingReturnCancelledByShopDGI();
+    public static PendingReturnDGI newInstance() {
+        PendingReturnDGI fragment = new PendingReturnDGI();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -87,7 +85,7 @@ public class PendingReturnCancelledByShopDGI extends Fragment implements SwipeRe
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_pending_return_cancelled_by_shop_dgi, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_pending_return_dgi, container, false);
         setRetainInstance(true);
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
@@ -131,7 +129,7 @@ public class PendingReturnCancelledByShopDGI extends Fragment implements SwipeRe
     void setupRecyclerView()
     {
 
-        adapter = new AdapterPendingReturnCancelledByShopDGI(dataset,this);
+        adapter = new AdapterPendingReturnDGI(dataset,this);
 
         recyclerView.setAdapter(adapter);
 
@@ -241,7 +239,7 @@ public class PendingReturnCancelledByShopDGI extends Fragment implements SwipeRe
 
         Call<OrderEndPoint> call = orderService
                 .getOrders(null, currentShop.getShopID(),false,
-                        OrderStatusHomeDelivery.CANCELLED_BY_SHOP_RETURN_PENDING,
+                        OrderStatusHomeDelivery.RETURN_PENDING,
                         null, deliveryGuySelf.getDeliveryGuyID(),null,null,true,true,
                         null,limit,offset,null);
 
@@ -327,21 +325,24 @@ public class PendingReturnCancelledByShopDGI extends Fragment implements SwipeRe
             ((NotifyTitleChanged)getActivity())
                     .NotifyTitleChanged(
                             "Pending Return ( " + String.valueOf(dataset.size())
-                                    + "/" + String.valueOf(item_count) + " )",5);
+                                    + "/" + String.valueOf(item_count) + " )",4);
 
         }
     }
 
+
+    @Inject
+    OrderServiceShopStaff orderServiceShopStaff;
 
 
     @Override
     public void notifyAcceptReturn(Order order) {
 
 
-//        order.setStatusHomeDelivery(OrderStatusHomeDelivery.CANCELLED_BY_SHOP);
+//        order.setStatusHomeDelivery(OrderStatusHomeDelivery.RETURNED);
 //        Call<ResponseBody> call = orderService.putOrder(order.getOrderID(),order);
 
-        Call<ResponseBody> call = orderServiceShopStaff.acceptReturnCancelledByShop(
+        Call<ResponseBody> call = orderServiceShopStaff.acceptReturn(
                 UtilityLogin.getAuthorizationHeaders(getActivity()),
                 order.getOrderID()
         );

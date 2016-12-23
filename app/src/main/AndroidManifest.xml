@@ -147,7 +147,7 @@
                 android:value="org.localareadelivery.distributorapp.HomeDeliveryInventory.HomeDelivery" />
         </activity>
         <activity
-            android:name=".HomeDeliveryDeliveryGuyInventory.DeliveryGuyInventory"
+            android:name=".HomeDeliveryInventoryDeliveryGuy.DeliveryGuyInventory"
             android:label="@string/title_activity_vehicle_dashboard"
             android:parentActivityName=".aaDeprecated_DeliveryGuy.DeliveryVehicleActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -451,9 +451,7 @@
         <activity
             android:name=".ShopStaffHome.ShopStaffHome"
             android:label="@string/title_activity_shop_staff_home"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-
-
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ShopStaffHome.EditStaffSelf.EditStaffSelf"
             android:label="Edit Shop Staff"
@@ -463,7 +461,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ShopStaffHome.ShopStaffHome" />
         </activity>
-
         <activity
             android:name=".ShopStaffHome.ShopStaffDashboard"
             android:label="Edit Shop Staff"
@@ -473,8 +470,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ShopStaffHome.ShopStaffHome" />
         </activity>
-
-
+        <activity
+            android:name=".HomeDeliveryOrderHistory.OrderHistoryHD"
+            android:label="@string/title_activity_order_history_hd"
+            android:parentActivityName=".OrdersHome.OrdersHome"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.localareadelivery.distributorapp.OrdersHome.OrdersHome" />
+        </activity>
     </application>
 
 </manifest>

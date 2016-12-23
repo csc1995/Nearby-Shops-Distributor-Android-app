@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.HomeDeliveryDeliveryGuyInventory;
+package org.localareadelivery.distributorapp.HomeDeliveryInventoryDeliveryGuy;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
