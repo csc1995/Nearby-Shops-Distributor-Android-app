@@ -18,7 +18,7 @@ import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.ModelRoles.DeliveryGuySelf;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.DeliveryGuySelfService;
-import org.localareadelivery.distributorapp.DeliveryGuyInventory.DeliveryGuyInventory;
+import org.localareadelivery.distributorapp.HomeDeliveryDeliveryGuyInventory.DeliveryGuyInventory;
 import org.localareadelivery.distributorapp.ShopHome.UtilityShopHome;
 import org.localareadelivery.distributorapp.Utility.UtilityLogin;
 

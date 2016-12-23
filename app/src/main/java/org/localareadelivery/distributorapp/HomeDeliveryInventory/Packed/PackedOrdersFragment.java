@@ -17,7 +17,6 @@ import android.widget.Toast;
 import org.localareadelivery.distributorapp.ApplicationState.ApplicationState;
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
 import org.localareadelivery.distributorapp.Model.Order;
-import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.ModelEndpoints.OrderEndPoint;
 import org.localareadelivery.distributorapp.ModelStatusCodes.OrderStatusHomeDelivery;
 import org.localareadelivery.distributorapp.HomeDeliveryInventory.ConfirmItemsForDelivery;
@@ -25,9 +24,7 @@ import org.localareadelivery.distributorapp.HomeDeliveryInventory.Interface.Conf
 import org.localareadelivery.distributorapp.CommonInterfaces.NotifyTitleChanged;
 import org.localareadelivery.distributorapp.HomeDeliveryInventory.Interface.RefreshFragment;
 import org.localareadelivery.distributorapp.R;
-import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderService;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderServiceShopStaff;
-import org.localareadelivery.distributorapp.ShopHome.UtilityShopHome;
 import org.localareadelivery.distributorapp.Utility.UtilityLogin;
 
 import java.util.ArrayList;
@@ -56,8 +53,8 @@ public class PackedOrdersFragment extends Fragment implements SwipeRefreshLayout
     @Inject
     OrderServiceShopStaff orderServiceShopStaff;
 
-    @Inject
-    OrderService orderService;
+//    @Inject
+//    OrderService orderService;
 
 
 
@@ -173,14 +170,20 @@ public class PackedOrdersFragment extends Fragment implements SwipeRefreshLayout
                 super.onScrollStateChanged(recyclerView, newState);
 
 
+                if(offset + limit > layoutManager.findLastVisibleItemPosition())
+                {
+                    return;
+                }
+
+
                 if(layoutManager.findLastVisibleItemPosition()==dataset.size()-1)
                 {
                     // trigger fetch next page
 
-                    if(layoutManager.findLastVisibleItemPosition() == previous_position)
-                    {
-                        return;
-                    }
+//                    if(layoutManager.findLastVisibleItemPosition() == previous_position)
+//                    {
+//                        return;
+//                    }
 
 
                     if((offset+limit)<=item_count)
@@ -200,7 +203,7 @@ public class PackedOrdersFragment extends Fragment implements SwipeRefreshLayout
 
                     }
 
-                    previous_position = layoutManager.findLastVisibleItemPosition();
+//                    previous_position = layoutManager.findLastVisibleItemPosition();
 
                 }
 
@@ -209,7 +212,7 @@ public class PackedOrdersFragment extends Fragment implements SwipeRefreshLayout
     }
 
 
-    int previous_position = -1;
+//    int previous_position = -1;
 
 
     void onClickConfirmItems()
@@ -279,15 +282,26 @@ public class PackedOrdersFragment extends Fragment implements SwipeRefreshLayout
     void makeNetworkCall(final boolean clearDataset)
     {
 
-            Shop currentShop = UtilityShopHome.getShop(getContext());
+//            Shop currentShop = UtilityShopHome.getShop(getContext());
+//
+//            Call<OrderEndPoint> call = orderService.getOrders(null, currentShop.getShopID(),false,
+//                                            OrderStatusHomeDelivery.ORDER_PACKED,
+//                                            null,null,null,null,true,true,
+//                    null, limit,offset,null);
 
-            Call<OrderEndPoint> call = orderService.getOrders(null, currentShop.getShopID(),false,
-                                            OrderStatusHomeDelivery.ORDER_PACKED,
-                                            null,null,null,null,true,true,
-                    null, limit,offset,null);
 
 
-            call.enqueue(new Callback<OrderEndPoint>() {
+        Call<OrderEndPoint> call = orderServiceShopStaff.getOrders(
+                UtilityLogin.getAuthorizationHeaders(getActivity()),
+                null,null,false,
+                OrderStatusHomeDelivery.ORDER_PACKED,null,null,
+                null,null,
+                null,null,
+                null,
+                null,limit,offset,null);
+
+
+        call.enqueue(new Callback<OrderEndPoint>() {
                 @Override
                 public void onResponse(Call<OrderEndPoint> call, Response<OrderEndPoint> response) {
 

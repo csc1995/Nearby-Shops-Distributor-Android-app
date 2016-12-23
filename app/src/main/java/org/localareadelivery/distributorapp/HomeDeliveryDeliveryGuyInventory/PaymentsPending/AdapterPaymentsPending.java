@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.DeliveryGuyInventory.PendingDeliveryApproval;
+package org.localareadelivery.distributorapp.HomeDeliveryDeliveryGuyInventory.PaymentsPending;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,32 +20,30 @@ import butterknife.OnClick;
 /**
  * Created by sumeet on 13/6/16.
  */
-public class AdapterDeliveryApproval extends RecyclerView.Adapter<AdapterDeliveryApproval.ViewHolder>{
+public class AdapterPaymentsPending extends RecyclerView.Adapter<AdapterPaymentsPending.ViewHolder>{
 
 
     private List<Order> dataset = null;
-//    private Context context;
-    private NotifyMarkDelivered notifications;
+    private NotifyPaymentReceived notifications;
 
 
-    public AdapterDeliveryApproval(List<Order> dataset, NotifyMarkDelivered notifications) {
+    public AdapterPaymentsPending(List<Order> dataset, NotifyPaymentReceived notifications) {
         this.dataset = dataset;
-//        this.context = context;
         this.notifications = notifications;
 
     }
 
     @Override
-    public AdapterDeliveryApproval.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public AdapterPaymentsPending.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_item_pending_delivery_approval_dgi,parent,false);
+                .inflate(R.layout.list_item_order_payments_pending_vd,parent,false);
 
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(AdapterDeliveryApproval.ViewHolder holder, int position) {
+    public void onBindViewHolder(AdapterPaymentsPending.ViewHolder holder, int position) {
 
         if(dataset!=null)
         {
@@ -127,14 +125,20 @@ public class AdapterDeliveryApproval extends RecyclerView.Adapter<AdapterDeliver
         @OnClick(R.id.cancelHandoverButton)
         void onClickConfirmButton(View view)
         {
-            notifications.notifyMarkDelivered(dataset.get(getLayoutPosition()));
+            notifications.notifyPaymentReceived(dataset.get(getLayoutPosition()));
         }
 
     }
 
 
-    interface NotifyMarkDelivered {
-        void notifyMarkDelivered(Order order);
+
+
+
+
+    public interface NotifyPaymentReceived {
+
+        void notifyPaymentReceived(Order order);
+
     }
 
 }

@@ -1,10 +1,8 @@
-package org.localareadelivery.distributorapp.DeliveryGuyInventory.OutForDelivery;
+package org.localareadelivery.distributorapp.HomeDeliveryDeliveryGuyInventory.PendingReturn;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
@@ -42,23 +40,19 @@ import retrofit2.Response;
  */
 
 
-public class OutForDeliveryFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, AdapterOutForDelivery.NotifyCancelOrder{
+public class PendingReturnDGI extends Fragment implements SwipeRefreshLayout.OnRefreshListener, AdapterPendingReturnDGI.NotifyAcceptReturn {
 
-    @Inject
-    OrderServiceShopStaff orderServiceShopStaff;
 
     @Inject
     OrderService orderService;
-
     RecyclerView recyclerView;
-    AdapterOutForDelivery adapter;
 
+    AdapterPendingReturnDGI adapter;
     public List<Order> dataset = new ArrayList<>();
-
     GridLayoutManager layoutManager;
+
     SwipeRefreshLayout swipeContainer;
 
-//    NotificationReceiver notificationReceiver;
     DeliveryGuySelf deliveryGuySelf;
 
 
@@ -69,9 +63,7 @@ public class OutForDeliveryFragment extends Fragment implements SwipeRefreshLayo
 
 
 
-
-
-    public OutForDeliveryFragment() {
+    public PendingReturnDGI() {
 
         DaggerComponentBuilder.getInstance()
                 .getNetComponent()
@@ -83,8 +75,8 @@ public class OutForDeliveryFragment extends Fragment implements SwipeRefreshLayo
      * Returns a new instance of this fragment for the given section
      * number.
      */
-    public static OutForDeliveryFragment newInstance() {
-        OutForDeliveryFragment fragment = new OutForDeliveryFragment();
+    public static PendingReturnDGI newInstance() {
+        PendingReturnDGI fragment = new PendingReturnDGI();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -93,13 +85,11 @@ public class OutForDeliveryFragment extends Fragment implements SwipeRefreshLayo
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_home_delivery_pending_handover_vd, container, false);
-
+        View rootView = inflater.inflate(R.layout.fragment_pending_return_dgi, container, false);
         setRetainInstance(true);
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
         swipeContainer = (SwipeRefreshLayout)rootView.findViewById(R.id.swipeContainer);
-
 
 
 
@@ -116,6 +106,7 @@ public class OutForDeliveryFragment extends Fragment implements SwipeRefreshLayo
 
         setupRecyclerView();
         setupSwipeContainer();
+
 
         return rootView;
     }
@@ -138,15 +129,15 @@ public class OutForDeliveryFragment extends Fragment implements SwipeRefreshLayo
     void setupRecyclerView()
     {
 
-        adapter = new AdapterOutForDelivery(dataset, this);
+        adapter = new AdapterPendingReturnDGI(dataset,this);
 
         recyclerView.setAdapter(adapter);
+
         layoutManager = new GridLayoutManager(getActivity(),1);
         recyclerView.setLayoutManager(layoutManager);
 
         DisplayMetrics metrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
-
 //        layoutManager.setSpanCount(metrics.widthPixels/400);
 
 
@@ -158,6 +149,8 @@ public class OutForDeliveryFragment extends Fragment implements SwipeRefreshLayo
         }
 
         layoutManager.setSpanCount(spanCount);
+
+
 
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -198,7 +191,6 @@ public class OutForDeliveryFragment extends Fragment implements SwipeRefreshLayo
         });
     }
 
-
     int previous_position = -1;
 
 
@@ -207,10 +199,17 @@ public class OutForDeliveryFragment extends Fragment implements SwipeRefreshLayo
 
     @Override
     public void onRefresh() {
+
         offset = 0;
         makeNetworkCall(true);
     }
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        notifyTitleChanged();
+    }
 
     void makeRefreshNetworkCall()
     {
@@ -227,12 +226,6 @@ public class OutForDeliveryFragment extends Fragment implements SwipeRefreshLayo
 
 
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        notifyTitleChanged();
-    }
-
 
     void makeNetworkCall(final boolean clearDataset)
     {
@@ -246,7 +239,7 @@ public class OutForDeliveryFragment extends Fragment implements SwipeRefreshLayo
 
         Call<OrderEndPoint> call = orderService
                 .getOrders(null, currentShop.getShopID(),false,
-                        OrderStatusHomeDelivery.HANDOVER_ACCEPTED,
+                        OrderStatusHomeDelivery.RETURN_PENDING,
                         null, deliveryGuySelf.getDeliveryGuyID(),null,null,true,true,
                         null,limit,offset,null);
 
@@ -296,7 +289,6 @@ public class OutForDeliveryFragment extends Fragment implements SwipeRefreshLayo
 
 
 
-
     void showToastMessage(String message)
     {
         if(getActivity()!=null)
@@ -308,39 +300,6 @@ public class OutForDeliveryFragment extends Fragment implements SwipeRefreshLayo
 
 
 
-
-
-    public void notifyCancelHandover(Order order) {
-
-
-        order.setStatusHomeDelivery(OrderStatusHomeDelivery.ORDER_PACKED);
-        order.setDeliveryGuySelfID(0);
-
-        Call<ResponseBody> call = orderService.putOrder(order.getOrderID(),order);
-
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-
-                if(response.code()==200)
-                {
-                    showToastMessage("Handover cancelled !");
-                    makeRefreshNetworkCall();
-
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-
-                showToastMessage("Network Request Failed. Try again !");
-
-            }
-        });
-    }
-
-
     public DeliveryGuySelf getDeliveryGuySelf() {
         return deliveryGuySelf;
     }
@@ -348,7 +307,6 @@ public class OutForDeliveryFragment extends Fragment implements SwipeRefreshLayo
     public void setDeliveryGuySelf(DeliveryGuySelf deliveryGuySelf) {
         this.deliveryGuySelf = deliveryGuySelf;
     }
-
 
 
     @Override
@@ -359,8 +317,6 @@ public class OutForDeliveryFragment extends Fragment implements SwipeRefreshLayo
 
 
 
-
-
     void notifyTitleChanged()
     {
 
@@ -368,78 +324,54 @@ public class OutForDeliveryFragment extends Fragment implements SwipeRefreshLayo
         {
             ((NotifyTitleChanged)getActivity())
                     .NotifyTitleChanged(
-                            "Out For Delivery ( " + String.valueOf(dataset.size())
-                                    + "/" + String.valueOf(item_count) + " )",1);
-
+                            "Pending Return ( " + String.valueOf(dataset.size())
+                                    + "/" + String.valueOf(item_count) + " )",4);
 
         }
     }
 
+
+    @Inject
+    OrderServiceShopStaff orderServiceShopStaff;
+
+
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        isDestroyed = true;
-    }
-
-    @Override
-    public void notifyPaymentReceived(final Order order) {
+    public void notifyAcceptReturn(Order order) {
 
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+//        order.setStatusHomeDelivery(OrderStatusHomeDelivery.RETURNED);
+//        Call<ResponseBody> call = orderService.putOrder(order.getOrderID(),order);
 
-        builder.setTitle("Confirm Cancel Order !")
-                .setMessage("Are you sure you want to cancel this order !")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        cancelOrder(order);
-                    }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        showToastMessage(" Not Cancelled !");
-                    }
-                })
-                .show();
-    }
-
-
-    private void cancelOrder(Order order) {
-
-//        Call<ResponseBody> call = orderService.cancelOrderByShop(order.getOrderID());
-
-        Call<ResponseBody> call = orderServiceShopStaff.cancelledByShop(
+        Call<ResponseBody> call = orderServiceShopStaff.acceptReturn(
                 UtilityLogin.getAuthorizationHeaders(getActivity()),
                 order.getOrderID()
         );
-
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
 
-                if(response.code() == 200 )
+                if(response.code()==200)
                 {
-                    showToastMessage("Successful");
+                    showToastMessage("Update Successful !");
                     makeRefreshNetworkCall();
                 }
-                else if(response.code() == 304)
+                else if(response.code()==304)
                 {
-                    showToastMessage("Not Cancelled !");
+                    showToastMessage("Update failed !");
                 }
                 else
                 {
                     showToastMessage("Server Error Code : " + String.valueOf(response.code()));
                 }
+
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
 
-                showToastMessage("Network Request Failed. Check your internet connection !");
+                showToastMessage("Network Request Failed. Try again !");
+
             }
         });
 

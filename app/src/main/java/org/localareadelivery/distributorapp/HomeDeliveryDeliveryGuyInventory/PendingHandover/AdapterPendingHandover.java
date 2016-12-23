@@ -1,9 +1,10 @@
-package org.localareadelivery.distributorapp.DeliveryGuyInventory.OutForDelivery;
+package org.localareadelivery.distributorapp.HomeDeliveryDeliveryGuyInventory.PendingHandover;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.localareadelivery.distributorapp.Model.Order;
@@ -20,29 +21,32 @@ import butterknife.OnClick;
 /**
  * Created by sumeet on 13/6/16.
  */
-public class AdapterOutForDelivery extends RecyclerView.Adapter<AdapterOutForDelivery.ViewHolder>{
+public class AdapterPendingHandover extends RecyclerView.Adapter<AdapterPendingHandover.ViewHolder>{
 
 
     private List<Order> dataset = null;
-    private NotifyCancelOrder notifications;
+//    private Context context;
+    private NotifyCancelHandover notifications;
 
 
-    public AdapterOutForDelivery(List<Order> dataset, NotifyCancelOrder notifications) {
+    public AdapterPendingHandover(List<Order> dataset, NotifyCancelHandover notifications) {
         this.dataset = dataset;
+//        this.context = context;
         this.notifications = notifications;
+
     }
 
     @Override
-    public AdapterOutForDelivery.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public AdapterPendingHandover.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_item_order_pending_handover_vd,parent,false);
+                .inflate(R.layout.list_item_order_pending_accept_vd,parent,false);
 
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(AdapterOutForDelivery.ViewHolder holder, int position) {
+    public void onBindViewHolder(AdapterPendingHandover.ViewHolder holder, int position) {
 
         if(dataset!=null)
         {
@@ -108,7 +112,11 @@ public class AdapterOutForDelivery extends RecyclerView.Adapter<AdapterOutForDel
         @Bind(R.id.currentStatus)
         TextView currentStatus;
 
+        @Bind(R.id.cancelHandoverButton)
+        TextView cancelHandoverButton;
 
+        @Bind(R.id.close_button)
+        ImageView closeButton;
 
 
         public ViewHolder(View itemView) {
@@ -120,23 +128,24 @@ public class AdapterOutForDelivery extends RecyclerView.Adapter<AdapterOutForDel
         }
 
 
-        @OnClick(R.id.close_button)
+        @OnClick(R.id.cancelHandoverButton)
         void onClickConfirmButton(View view)
         {
-            notifications.notifyPaymentReceived(dataset.get(getLayoutPosition()));
+            notifications.notifyCancelHandover(dataset.get(getLayoutPosition()));
+        }
+
+        @OnClick(R.id.close_button)
+        void closeButton(View view)
+        {
+            notifications.notifyCancelOrder(dataset.get(getLayoutPosition()));
         }
 
     }
 
 
-
-
-
-
-    interface NotifyCancelOrder {
-
-        void notifyPaymentReceived(Order order);
-
+    interface NotifyCancelHandover {
+        void notifyCancelHandover(Order order);
+        void notifyCancelOrder(Order order);
     }
 
 }

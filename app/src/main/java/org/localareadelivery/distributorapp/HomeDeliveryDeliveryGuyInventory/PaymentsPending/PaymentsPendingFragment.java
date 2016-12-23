@@ -1,14 +1,17 @@
-package org.localareadelivery.distributorapp.DeliveryGuyInventory.PendingReturnCancelledByShop;
+package org.localareadelivery.distributorapp.HomeDeliveryDeliveryGuyInventory.PaymentsPending;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
@@ -29,6 +32,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import icepick.State;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -40,22 +45,35 @@ import retrofit2.Response;
  */
 
 
-public class PendingReturnCancelledByShopDGI extends Fragment implements SwipeRefreshLayout.OnRefreshListener, AdapterPendingReturnCancelledByShopDGI.NotifyAcceptReturn {
+/**
+ * A placeholder fragment containing a simple view.
+ */
+public class PaymentsPendingFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener,AdapterPaymentsPending.NotifyPaymentReceived {
+
+
+    @Inject
+    OrderService orderService;
 
     @Inject
     OrderServiceShopStaff orderServiceShopStaff;
 
-    @Inject
-    OrderService orderService;
-    RecyclerView recyclerView;
 
-    AdapterPendingReturnCancelledByShopDGI adapter;
+    RecyclerView recyclerView;
+    AdapterPaymentsPending adapter;
     public List<Order> dataset = new ArrayList<>();
     GridLayoutManager layoutManager;
 
     SwipeRefreshLayout swipeContainer;
 
+
+
+//    NotificationReceiver notificationReceiver;
+
     DeliveryGuySelf deliveryGuySelf;
+
+    TextView ordersTotal;
+    TextView receivedTotal;
+
 
 
     final private int limit = 5;
@@ -65,7 +83,8 @@ public class PendingReturnCancelledByShopDGI extends Fragment implements SwipeRe
 
 
 
-    public PendingReturnCancelledByShopDGI() {
+
+    public PaymentsPendingFragment() {
 
         DaggerComponentBuilder.getInstance()
                 .getNetComponent()
@@ -77,8 +96,8 @@ public class PendingReturnCancelledByShopDGI extends Fragment implements SwipeRe
      * Returns a new instance of this fragment for the given section
      * number.
      */
-    public static PendingReturnCancelledByShopDGI newInstance() {
-        PendingReturnCancelledByShopDGI fragment = new PendingReturnCancelledByShopDGI();
+    public static PaymentsPendingFragment newInstance() {
+        PaymentsPendingFragment fragment = new PaymentsPendingFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -87,13 +106,17 @@ public class PendingReturnCancelledByShopDGI extends Fragment implements SwipeRe
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_pending_return_cancelled_by_shop_dgi, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_home_delivery_payments_pending_vd, container, false);
+
         setRetainInstance(true);
+
+        ButterKnife.bind(this,rootView);
+
+        ordersTotal = (TextView) rootView.findViewById(R.id.ordersTotal);
+        receivedTotal = (TextView) rootView.findViewById(R.id.receivedTotal);
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
         swipeContainer = (SwipeRefreshLayout)rootView.findViewById(R.id.swipeContainer);
-
-
 
         if(savedInstanceState!=null)
         {
@@ -106,9 +129,9 @@ public class PendingReturnCancelledByShopDGI extends Fragment implements SwipeRe
         }
 
 
+
         setupRecyclerView();
         setupSwipeContainer();
-
 
         return rootView;
     }
@@ -131,7 +154,7 @@ public class PendingReturnCancelledByShopDGI extends Fragment implements SwipeRe
     void setupRecyclerView()
     {
 
-        adapter = new AdapterPendingReturnCancelledByShopDGI(dataset,this);
+        adapter = new AdapterPaymentsPending(dataset,this);
 
         recyclerView.setAdapter(adapter);
 
@@ -140,6 +163,7 @@ public class PendingReturnCancelledByShopDGI extends Fragment implements SwipeRe
 
         DisplayMetrics metrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
+
 //        layoutManager.setSpanCount(metrics.widthPixels/400);
 
 
@@ -151,7 +175,6 @@ public class PendingReturnCancelledByShopDGI extends Fragment implements SwipeRe
         }
 
         layoutManager.setSpanCount(spanCount);
-
 
 
 
@@ -193,25 +216,19 @@ public class PendingReturnCancelledByShopDGI extends Fragment implements SwipeRe
         });
     }
 
-    int previous_position = -1;
 
+    int previous_position = -1;
 
 
 
 
     @Override
     public void onRefresh() {
-
         offset = 0;
         makeNetworkCall(true);
     }
 
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        notifyTitleChanged();
-    }
 
     void makeRefreshNetworkCall()
     {
@@ -228,6 +245,12 @@ public class PendingReturnCancelledByShopDGI extends Fragment implements SwipeRe
 
 
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        notifyTitleChanged();
+    }
+
 
     void makeNetworkCall(final boolean clearDataset)
     {
@@ -241,8 +264,8 @@ public class PendingReturnCancelledByShopDGI extends Fragment implements SwipeRe
 
         Call<OrderEndPoint> call = orderService
                 .getOrders(null, currentShop.getShopID(),false,
-                        OrderStatusHomeDelivery.CANCELLED_BY_SHOP_RETURN_PENDING,
-                        null, deliveryGuySelf.getDeliveryGuyID(),null,null,true,true,
+                        OrderStatusHomeDelivery.PENDING_DELIVERY,
+                        null, deliveryGuySelf.getDeliveryGuyID(),false,null,true,true,
                         null,limit,offset,null);
 
 
@@ -267,10 +290,13 @@ public class PendingReturnCancelledByShopDGI extends Fragment implements SwipeRe
                     dataset.addAll(response.body().getResults());
                     adapter.notifyDataSetChanged();
                     notifyTitleChanged();
+                    updateTotal();
 
                 }
 
                 swipeContainer.setRefreshing(false);
+
+
 
             }
 
@@ -302,49 +328,136 @@ public class PendingReturnCancelledByShopDGI extends Fragment implements SwipeRe
 
 
 
-    public DeliveryGuySelf getDeliveryGuySelf() {
-        return deliveryGuySelf;
-    }
-
-    public void setDeliveryGuySelf(DeliveryGuySelf deliveryGuySelf) {
-        this.deliveryGuySelf = deliveryGuySelf;
-    }
+    int totalLabel;
 
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putParcelable("savedVehicle", deliveryGuySelf);
-    }
-
-
-
-    void notifyTitleChanged()
+    void updateTotal()
     {
 
-        if(getActivity() instanceof NotifyTitleChanged)
+        int total = 0;
+
+        if(dataset!=null)
         {
-            ((NotifyTitleChanged)getActivity())
-                    .NotifyTitleChanged(
-                            "Pending Return ( " + String.valueOf(dataset.size())
-                                    + "/" + String.valueOf(item_count) + " )",5);
+            for(Order order : dataset)
+            {
+                total = total + (order.getOrderStats().getItemTotal()+ order.getDeliveryCharges());
+            }
+
+
+            ordersTotal.setText("All Orders Total : "  + total + "\nCollect " + total + " from Delivery guy.");
+            receivedTotal.setText("Received " + total + " from Delivery Guy.");
 
         }
+
+        if(total == 0)
+        {
+            ordersTotal.setVisibility(View.GONE);
+            receivedTotal.setVisibility(View.GONE);
+
+        }else
+        {
+            ordersTotal.setVisibility(View.VISIBLE);
+            receivedTotal.setVisibility(View.VISIBLE);
+        }
+
+        totalLabel = total;
     }
 
 
 
+
+    @OnClick(R.id.receivedTotal)
+    void receivedAllClick(View view)
+    {
+
+//        DialogFragment newFragment = new NotifyUserDialogFragment();
+  //      newFragment.show(getActivity().getSupportFragmentManager(), "notice");
+
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        builder.setTitle("Confirm Payment Received !")
+                .setMessage("Did you received " + String.valueOf(totalLabel) + " from Delivery Guy !")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        updatePaymentReceived();
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        showToastMessage("Update Cancelled !");
+                    }
+                })
+                .show();
+
+
+
+    }
+
+
+
+    void updatePaymentReceived()
+    {
+//        for(Order order : dataset)
+//        {
+//            order.setPaymentReceived(true);
+//        }
+
+//        Call<ResponseBody> call = orderService.putOrderBulk(dataset);
+
+        Call<ResponseBody> call = orderServiceShopStaff.paymentReceivedBulk(
+          UtilityLogin.getAuthorizationHeaders(getActivity()),dataset
+        );
+
+
+        call.enqueue(new Callback<ResponseBody>() {
+
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                if(response.code() == 200)
+                {
+                    showToastMessage("Successful !");
+
+                }else
+                {
+                    showToastMessage("Error while updating ! ");
+                }
+
+                makeRefreshNetworkCall();
+
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                showToastMessage("Network Request failed !");
+
+            }
+        });
+
+    }
+
+
+
+
     @Override
-    public void notifyAcceptReturn(Order order) {
+    public void notifyPaymentReceived(Order order) {
 
+//        order.setPaymentReceived(true);
 
-//        order.setStatusHomeDelivery(OrderStatusHomeDelivery.CANCELLED_BY_SHOP);
 //        Call<ResponseBody> call = orderService.putOrder(order.getOrderID(),order);
 
-        Call<ResponseBody> call = orderServiceShopStaff.acceptReturnCancelledByShop(
+        Call<ResponseBody> call = orderServiceShopStaff.paymentReceived(
                 UtilityLogin.getAuthorizationHeaders(getActivity()),
                 order.getOrderID()
         );
+
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -355,13 +468,9 @@ public class PendingReturnCancelledByShopDGI extends Fragment implements SwipeRe
                     showToastMessage("Update Successful !");
                     makeRefreshNetworkCall();
                 }
-                else if(response.code()==304)
-                {
-                    showToastMessage("Update failed !");
-                }
                 else
                 {
-                    showToastMessage("Server Error Code : " + String.valueOf(response.code()));
+                    showToastMessage("Failed code : " + String.valueOf(response.code()));
                 }
 
             }
@@ -373,6 +482,51 @@ public class PendingReturnCancelledByShopDGI extends Fragment implements SwipeRe
 
             }
         });
+    }
+
+
+    public DeliveryGuySelf getDeliveryGuySelf() {
+        return deliveryGuySelf;
+    }
+
+    public void setDeliveryGuySelf(DeliveryGuySelf deliveryGuySelf) {
+        this.deliveryGuySelf = deliveryGuySelf;
+    }
+
+
+
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putParcelable("savedVehicle", deliveryGuySelf);
 
     }
+
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        isDestroyed = true;
+        ButterKnife.unbind(this);
+    }
+
+
+
+    void notifyTitleChanged()
+    {
+
+        if(getActivity() instanceof NotifyTitleChanged)
+        {
+            ((NotifyTitleChanged)getActivity())
+                    .NotifyTitleChanged(
+                            "Pending Payments ( " + String.valueOf(dataset.size())
+                                    + "/" + String.valueOf(item_count) + " )",3);
+
+
+        }
+    }
+
 }

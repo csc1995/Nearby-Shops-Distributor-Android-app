@@ -1,10 +1,9 @@
-package org.localareadelivery.distributorapp.DeliveryGuyInventory.PendingHandover;
+package org.localareadelivery.distributorapp.HomeDeliveryDeliveryGuyInventory.PendingReturnCancelledByShop;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.localareadelivery.distributorapp.Model.Order;
@@ -21,32 +20,29 @@ import butterknife.OnClick;
 /**
  * Created by sumeet on 13/6/16.
  */
-public class AdapterPendingHandover extends RecyclerView.Adapter<AdapterPendingHandover.ViewHolder>{
+class AdapterPendingReturnCancelledByShopDGI extends RecyclerView.Adapter<AdapterPendingReturnCancelledByShopDGI.ViewHolder>{
 
 
     private List<Order> dataset = null;
-//    private Context context;
-    private NotifyCancelHandover notifications;
+    private NotifyAcceptReturn notifications;
 
 
-    public AdapterPendingHandover(List<Order> dataset, NotifyCancelHandover notifications) {
+    AdapterPendingReturnCancelledByShopDGI(List<Order> dataset, NotifyAcceptReturn notifications) {
         this.dataset = dataset;
-//        this.context = context;
         this.notifications = notifications;
-
     }
 
     @Override
-    public AdapterPendingHandover.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public AdapterPendingReturnCancelledByShopDGI.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_item_order_pending_accept_vd,parent,false);
+                .inflate(R.layout.list_item_pending_return_cancelled_by_shop_dgi,parent,false);
 
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(AdapterPendingHandover.ViewHolder holder, int position) {
+    public void onBindViewHolder(AdapterPendingReturnCancelledByShopDGI.ViewHolder holder, int position) {
 
         if(dataset!=null)
         {
@@ -112,40 +108,28 @@ public class AdapterPendingHandover extends RecyclerView.Adapter<AdapterPendingH
         @Bind(R.id.currentStatus)
         TextView currentStatus;
 
-        @Bind(R.id.cancelHandoverButton)
-        TextView cancelHandoverButton;
-
-        @Bind(R.id.close_button)
-        ImageView closeButton;
+//        @Bind(R.id.cancelHandoverButton)
+//        TextView cancelHandoverButton;
 
 
         public ViewHolder(View itemView) {
             super(itemView);
-
             ButterKnife.bind(this,itemView);
-
-
         }
 
 
-        @OnClick(R.id.cancelHandoverButton)
+        @OnClick(R.id.accept_return)
         void onClickConfirmButton(View view)
         {
-            notifications.notifyCancelHandover(dataset.get(getLayoutPosition()));
-        }
-
-        @OnClick(R.id.close_button)
-        void closeButton(View view)
-        {
-            notifications.notifyCancelOrder(dataset.get(getLayoutPosition()));
+            notifications.notifyAcceptReturn(dataset.get(getLayoutPosition()));
         }
 
     }
 
 
-    interface NotifyCancelHandover {
-        void notifyCancelHandover(Order order);
-        void notifyCancelOrder(Order order);
+    interface NotifyAcceptReturn {
+
+        void notifyAcceptReturn(Order order);
     }
 
 }

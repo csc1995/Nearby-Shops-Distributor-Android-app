@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.HomeDeliveryGuy;
+package org.localareadelivery.distributorapp.DeliveryGuyHome;
 
 import android.content.Intent;
 import android.os.Bundle;

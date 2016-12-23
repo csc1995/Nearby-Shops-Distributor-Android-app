@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.DeliveryGuyInventory.PendingHandover;
+package org.localareadelivery.distributorapp.HomeDeliveryDeliveryGuyInventory.PendingHandover;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -37,7 +37,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static org.localareadelivery.distributorapp.DeliveryGuyInventory.DeliveryGuyInventory.DELIVERY_VEHICLE_INTENT_KEY;
+import static org.localareadelivery.distributorapp.HomeDeliveryDeliveryGuyInventory.DeliveryGuyInventory.DELIVERY_VEHICLE_INTENT_KEY;
 
 /**
  * Created by sumeet on 13/6/16.

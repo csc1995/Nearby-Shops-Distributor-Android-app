@@ -147,7 +147,7 @@
                 android:value="org.localareadelivery.distributorapp.HomeDeliveryInventory.HomeDelivery" />
         </activity>
         <activity
-            android:name=".DeliveryGuyInventory.DeliveryGuyInventory"
+            android:name=".HomeDeliveryDeliveryGuyInventory.DeliveryGuyInventory"
             android:label="@string/title_activity_vehicle_dashboard"
             android:parentActivityName=".aaDeprecated_DeliveryGuy.DeliveryVehicleActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -311,7 +311,7 @@
                 android:value="org.localareadelivery.distributorapp.OrdersHome.OrdersHome" />
         </activity>
         <activity
-            android:name=".HomeDeliveryGuy.DeliveryGuyHome"
+            android:name=".DeliveryGuyHome.DeliveryGuyHome"
             android:label="@string/title_activity_delivery_guy_home"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

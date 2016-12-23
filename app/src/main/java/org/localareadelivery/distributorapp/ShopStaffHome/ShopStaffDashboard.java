@@ -8,8 +8,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
-import org.localareadelivery.distributorapp.HomeShopAdmin.ShopAdminHome;
 import org.localareadelivery.distributorapp.Items.ItemsTypeSimple;
 import org.localareadelivery.distributorapp.ItemsByCategoryTypeSimple.ItemsByCatSimple;
 import org.localareadelivery.distributorapp.ItemsInShop.ItemsInStock;
@@ -115,9 +113,6 @@ public class ShopStaffDashboard extends AppCompatActivity {
     @OnClick(R.id.items)
     void optionItemsClick()
     {
-//        startActivity(new Intent(this, DetachedTabs.class));
-
-
         startActivity(new Intent(this, ItemsTypeSimple.class));
     }
 
@@ -150,7 +145,6 @@ public class ShopStaffDashboard extends AppCompatActivity {
     @OnClick(R.id.items_in_shop_by_category)
     void distributorAccountClick(View view)
     {
-
         startActivity(new Intent(this, ItemsInStockByCat.class));
     }
 

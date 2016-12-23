@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.DeliveryGuyInventory.PaymentsPending;
+package org.localareadelivery.distributorapp.HomeDeliveryDeliveryGuyInventory.PendingReturn;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,30 +20,29 @@ import butterknife.OnClick;
 /**
  * Created by sumeet on 13/6/16.
  */
-public class AdapterPaymentsPending extends RecyclerView.Adapter<AdapterPaymentsPending.ViewHolder>{
+class AdapterPendingReturnDGI extends RecyclerView.Adapter<AdapterPendingReturnDGI.ViewHolder>{
 
 
     private List<Order> dataset = null;
-    private NotifyPaymentReceived notifications;
+    private NotifyAcceptReturn notifications;
 
 
-    public AdapterPaymentsPending(List<Order> dataset, NotifyPaymentReceived notifications) {
+    AdapterPendingReturnDGI(List<Order> dataset,NotifyAcceptReturn notifications) {
         this.dataset = dataset;
         this.notifications = notifications;
-
     }
 
     @Override
-    public AdapterPaymentsPending.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public AdapterPendingReturnDGI.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_item_order_payments_pending_vd,parent,false);
+                .inflate(R.layout.list_item_pending_return_dgi,parent,false);
 
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(AdapterPaymentsPending.ViewHolder holder, int position) {
+    public void onBindViewHolder(AdapterPendingReturnDGI.ViewHolder holder, int position) {
 
         if(dataset!=null)
         {
@@ -109,36 +108,28 @@ public class AdapterPaymentsPending extends RecyclerView.Adapter<AdapterPayments
         @Bind(R.id.currentStatus)
         TextView currentStatus;
 
-        @Bind(R.id.cancelHandoverButton)
-        TextView cancelHandoverButton;
+//        @Bind(R.id.cancelHandoverButton)
+//        TextView cancelHandoverButton;
 
 
         public ViewHolder(View itemView) {
             super(itemView);
-
             ButterKnife.bind(this,itemView);
-
-
         }
 
 
-        @OnClick(R.id.cancelHandoverButton)
+        @OnClick(R.id.accept_return)
         void onClickConfirmButton(View view)
         {
-            notifications.notifyPaymentReceived(dataset.get(getLayoutPosition()));
+            notifications.notifyAcceptReturn(dataset.get(getLayoutPosition()));
         }
 
     }
 
 
+    interface NotifyAcceptReturn {
 
-
-
-
-    public interface NotifyPaymentReceived {
-
-        void notifyPaymentReceived(Order order);
-
+        void notifyAcceptReturn(Order order);
     }
 
 }

@@ -14,13 +14,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.localareadelivery.distributorapp.HomeDeliveryGuy.DeliveryGuyHome;
-import org.localareadelivery.distributorapp.HomeDistributor.DistributorHome;
+import org.localareadelivery.distributorapp.DeliveryGuyHome.DeliveryGuyHome;
 import org.localareadelivery.distributorapp.HomeShopAdmin.EditProfile.EditShopAdmin;
 import org.localareadelivery.distributorapp.HomeShopAdmin.EditProfile.EditShopAdminFragment;
 import org.localareadelivery.distributorapp.HomeShopAdmin.ShopAdminHome;
 import org.localareadelivery.distributorapp.ModelRoles.DeliveryGuySelf;
-import org.localareadelivery.distributorapp.ModelRoles.Deprecated.Distributor;
 import org.localareadelivery.distributorapp.ModelRoles.ShopAdmin;
 import org.localareadelivery.distributorapp.ModelRoles.ShopStaff;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.DeliveryGuySelfService;

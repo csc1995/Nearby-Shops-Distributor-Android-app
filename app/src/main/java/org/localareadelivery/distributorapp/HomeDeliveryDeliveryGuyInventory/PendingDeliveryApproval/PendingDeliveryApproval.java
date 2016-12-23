@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.DeliveryGuyInventory.PendingDeliveryApproval;
+package org.localareadelivery.distributorapp.HomeDeliveryDeliveryGuyInventory.PendingDeliveryApproval;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

@@ -19,10 +19,10 @@ import org.localareadelivery.distributorapp.DeliveryGuyDashboard.PendingDelivery
 import org.localareadelivery.distributorapp.DeliveryGuyDashboard.PendingHandover.PendingHandoverFragment;
 import org.localareadelivery.distributorapp.DeliveryGuyDashboard.PendingReturn.PendingReturnByDG;
 import org.localareadelivery.distributorapp.DeliveryGuyDashboard.PendingReturnCancelledByShop.PendingReturnCancelledByShop;
-import org.localareadelivery.distributorapp.DeliveryGuyInventory.OutForDelivery.OutForDeliveryFragment;
-import org.localareadelivery.distributorapp.DeliveryGuyInventory.PendingDeliveryApproval.PendingDeliveryApproval;
-import org.localareadelivery.distributorapp.DeliveryGuyInventory.PendingReturn.PendingReturnDGI;
-import org.localareadelivery.distributorapp.DeliveryGuyInventory.PendingReturnCancelledByShop.PendingReturnCancelledByShopDGI;
+import org.localareadelivery.distributorapp.HomeDeliveryDeliveryGuyInventory.OutForDelivery.OutForDeliveryFragment;
+import org.localareadelivery.distributorapp.HomeDeliveryDeliveryGuyInventory.PendingDeliveryApproval.PendingDeliveryApproval;
+import org.localareadelivery.distributorapp.HomeDeliveryDeliveryGuyInventory.PendingReturn.PendingReturnDGI;
+import org.localareadelivery.distributorapp.HomeDeliveryDeliveryGuyInventory.PendingReturnCancelledByShop.PendingReturnCancelledByShopDGI;
 import org.localareadelivery.distributorapp.DistributorLogin;
 import org.localareadelivery.distributorapp.Items.ItemsFragmentSimple;
 import org.localareadelivery.distributorapp.ItemsByCategoryTypeSimple.ItemsByCatFragmentSimple;
@@ -92,7 +92,7 @@ public interface NetComponent {
 
     void Inject(PendingAcceptFragment pendingAcceptOrdersFragment);
 
-    void Inject(org.localareadelivery.distributorapp.DeliveryGuyInventory.PendingHandover.PendingHandoverFragment pendingHandoverFragment);
+    void Inject(org.localareadelivery.distributorapp.HomeDeliveryDeliveryGuyInventory.PendingHandover.PendingHandoverFragment pendingHandoverFragment);
 
     void Inject(PendingHandoverFragment pendingHandoverFragment);
 
@@ -102,7 +102,7 @@ public interface NetComponent {
 
     void Inject(OutForDeliveryFragment outForDeliveryFragment);
 
-    void Inject(org.localareadelivery.distributorapp.DeliveryGuyInventory.PaymentsPending.PaymentsPendingFragment paymentsPendingFragment);
+    void Inject(org.localareadelivery.distributorapp.HomeDeliveryDeliveryGuyInventory.PaymentsPending.PaymentsPendingFragment paymentsPendingFragment);
 
     void Inject(FragmentOutOfStock outOfStockFragment);
 

@@ -54,8 +54,8 @@ public class ConfirmedOrdersFragment extends Fragment implements SwipeRefreshLay
     @Inject
     OrderServiceShopStaff orderServiceShopStaff;
 
-    @Inject
-    OrderService orderService;
+//    @Inject
+//    OrderService orderService;
 
     RecyclerView recyclerView;
     AdapterConfirmedOrders adapter;
@@ -159,14 +159,19 @@ public class ConfirmedOrdersFragment extends Fragment implements SwipeRefreshLay
                 super.onScrollStateChanged(recyclerView, newState);
 
 
+                if(offset + limit > layoutManager.findLastVisibleItemPosition())
+                {
+                    return;
+                }
+
                 if(layoutManager.findLastVisibleItemPosition()==dataset.size()-1)
                 {
                     // trigger fetch next page
 
-                    if(layoutManager.findLastVisibleItemPosition() == previous_position)
-                    {
-                        return;
-                    }
+//                    if(layoutManager.findLastVisibleItemPosition() == previous_position)
+//                    {
+//                        return;
+//                    }
 
                     if((offset+limit)<=item_count)
                     {
@@ -174,14 +179,14 @@ public class ConfirmedOrdersFragment extends Fragment implements SwipeRefreshLay
                         makeNetworkCall(false);
                     }
 
-                    previous_position = layoutManager.findLastVisibleItemPosition();
+//                    previous_position = layoutManager.findLastVisibleItemPosition();
                 }
             }
         });
     }
 
 
-    int previous_position = -1;
+//    int previous_position = -1;
 
 
 
@@ -217,12 +222,23 @@ public class ConfirmedOrdersFragment extends Fragment implements SwipeRefreshLay
     void makeNetworkCall(final boolean clearDataset)
     {
 
-            Shop currentShop = UtilityShopHome.getShop(getContext());
+//            Shop currentShop = UtilityShopHome.getShop(getContext());
+//
+//            Call<OrderEndPoint> call = orderService.getOrders(null, currentShop.getShopID(),false,
+//                                            OrderStatusHomeDelivery.ORDER_CONFIRMED,
+//                                            null,null,null,null,true,true,
+//                                            null,limit,offset,null);
 
-            Call<OrderEndPoint> call = orderService.getOrders(null, currentShop.getShopID(),false,
-                                            OrderStatusHomeDelivery.ORDER_CONFIRMED,
-                                            null,null,null,null,true,true,
-                                            null,limit,offset,null);
+
+            Call<OrderEndPoint> call = orderServiceShopStaff.getOrders(
+                    UtilityLogin.getAuthorizationHeaders(getActivity()),
+                    null,null,false,
+                    OrderStatusHomeDelivery.ORDER_CONFIRMED,null,null,
+                    null,null,
+                    null,null,
+                    null,
+                    null,limit,offset,null);
+
 
             call.enqueue(new Callback<OrderEndPoint>() {
                 @Override

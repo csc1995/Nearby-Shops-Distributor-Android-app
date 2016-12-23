@@ -41,8 +41,8 @@ import retrofit2.Response;
 public class PlacedOrdersFragment extends Fragment implements AdapterPlacedOrders.NotifyConfirmOrder, SwipeRefreshLayout.OnRefreshListener {
 
 
-    @Inject
-    OrderService orderService;
+//    @Inject
+//    OrderService orderService;
 
     @Inject
     OrderServiceShopStaff orderServiceShopStaff;
@@ -155,14 +155,21 @@ public class PlacedOrdersFragment extends Fragment implements AdapterPlacedOrder
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
 
+
+                if(offset + limit > layoutManager.findLastVisibleItemPosition())
+                {
+                    return;
+                }
+
+
                 if(layoutManager.findLastVisibleItemPosition()==dataset.size()-1)
                 {
                     // trigger fetch next page
 
-                    if(layoutManager.findLastVisibleItemPosition() == previous_position)
-                    {
-                        return;
-                    }
+//                    if(layoutManager.findLastVisibleItemPosition() == previous_position)
+//                    {
+//                        return;
+//                    }
 
 
                     if((offset+limit)<=item_count)
@@ -171,7 +178,7 @@ public class PlacedOrdersFragment extends Fragment implements AdapterPlacedOrder
                         makeNetworkCall(false);
                     }
 
-                    previous_position = layoutManager.findLastVisibleItemPosition();
+//                    previous_position = layoutManager.findLastVisibleItemPosition();
 
                 }
 
@@ -181,7 +188,7 @@ public class PlacedOrdersFragment extends Fragment implements AdapterPlacedOrder
 
 
 
-    int previous_position = -1;
+//    int previous_position = -1;
 
 
 
@@ -211,11 +218,15 @@ public class PlacedOrdersFragment extends Fragment implements AdapterPlacedOrder
     void makeNetworkCall(final boolean clearDataset)
     {
 
-            Shop currentShop = UtilityShopHome.getShop(getContext());
+//            Shop currentShop = UtilityShopHome.getShop(getContext());
 
-            Call<OrderEndPoint> call = orderService.getOrders(null, currentShop.getShopID()  ,false,
+            Call<OrderEndPoint> call = orderServiceShopStaff.getOrders(
+                    UtilityLogin.getAuthorizationHeaders(getActivity()),
+                    null,null,false,
                     OrderStatusHomeDelivery.ORDER_PLACED,null,null,
-                    null,null,true,true,
+                    null,null,
+                    null,null,
+                    null,
                     null,limit,offset,null);
 
 
@@ -268,6 +279,7 @@ public class PlacedOrdersFragment extends Fragment implements AdapterPlacedOrder
         super.onResume();
         notifyTitleChanged();
     }
+
 
     void showToastMessage(String message)
     {
@@ -337,7 +349,9 @@ public class PlacedOrdersFragment extends Fragment implements AdapterPlacedOrder
 //        order.setStatusHomeDelivery(OrderStatusHomeDelivery.ORDER_CONFIRMED);
 //        Call<ResponseBody> call = orderService.putOrder(order.getOrderID(),order);
 
-        Call<ResponseBody> call = orderServiceShopStaff.confirmOrder(UtilityLogin.getAuthorizationHeaders(getActivity()),order.getOrderID());
+        Call<ResponseBody> call = orderServiceShopStaff.confirmOrder(
+                UtilityLogin.getAuthorizationHeaders(getActivity()),
+                order.getOrderID());
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
