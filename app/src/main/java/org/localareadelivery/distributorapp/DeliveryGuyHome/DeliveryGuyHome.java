@@ -33,7 +33,7 @@ public class DeliveryGuyHome extends AppCompatActivity {
     void dashboardClick()
     {
         Intent vehicleDashboardIntent = new Intent(this,DeliveryGuyDashboard.class);
-        vehicleDashboardIntent.putExtra(DeliveryGuyDashboard.DELIVERY_VEHICLE_INTENT_KEY, UtilityLogin.getDeliveryGuySelf(this));
+        vehicleDashboardIntent.putExtra(DeliveryGuyDashboard.DELIVERY_GUY_INTENT_KEY_DASHBOARD, UtilityLogin.getDeliveryGuySelf(this));
         startActivity(vehicleDashboardIntent);
     }
 

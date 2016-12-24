@@ -297,7 +297,7 @@ public class DeliveryVehicleActivity extends AppCompatActivity implements SwipeR
         {
 
             Intent vehicleDashboardIntent = new Intent(this,DeliveryGuyDashboard.class);
-            vehicleDashboardIntent.putExtra(DeliveryGuyDashboard.DELIVERY_VEHICLE_INTENT_KEY, deliveryGuySelf);
+            vehicleDashboardIntent.putExtra(DeliveryGuyDashboard.DELIVERY_GUY_INTENT_KEY_DASHBOARD, deliveryGuySelf);
             startActivity(vehicleDashboardIntent);
         }
 

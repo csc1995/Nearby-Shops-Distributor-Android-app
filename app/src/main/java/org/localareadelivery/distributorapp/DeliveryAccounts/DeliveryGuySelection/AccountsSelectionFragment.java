@@ -344,7 +344,7 @@ public class AccountsSelectionFragment extends Fragment implements SwipeRefreshL
         else if(requestCode == INTENT_CODE_DELIVERY_GUY_DASHBOARD)
         {
             Intent vehicleDashboardIntent = new Intent(getContext(),DeliveryGuyDashboard.class);
-            vehicleDashboardIntent.putExtra(DeliveryGuyDashboard.DELIVERY_VEHICLE_INTENT_KEY, deliveryGuySelf);
+            vehicleDashboardIntent.putExtra(DeliveryGuyDashboard.DELIVERY_GUY_INTENT_KEY_DASHBOARD, deliveryGuySelf);
             startActivity(vehicleDashboardIntent);
 
         }

@@ -111,7 +111,7 @@ public class AdapterReturnedByDG extends RecyclerView.Adapter<AdapterReturnedByD
         @Bind(R.id.currentStatus)
         TextView currentStatus;
 
-        @Bind(R.id.cancelHandoverButton)
+        @Bind(R.id.acceptHandoverButton)
         TextView cancelHandoverButton;
 
 
@@ -124,7 +124,7 @@ public class AdapterReturnedByDG extends RecyclerView.Adapter<AdapterReturnedByD
         }
 
 
-        @OnClick(R.id.cancelHandoverButton)
+        @OnClick(R.id.acceptHandoverButton)
         void onClickConfirmButton(View view)
         {
             notifications.notifyCancelHandover(dataset.get(getLayoutPosition()));

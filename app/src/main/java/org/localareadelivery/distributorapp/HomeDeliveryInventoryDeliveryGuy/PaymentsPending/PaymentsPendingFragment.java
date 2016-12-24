@@ -40,6 +40,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static org.localareadelivery.distributorapp.HomeDeliveryInventoryDeliveryGuy.DeliveryGuyInventory.DELIVERY_VEHICLE_INTENT_KEY;
+
 /**
  * Created by sumeet on 13/6/16.
  */
@@ -51,8 +53,8 @@ import retrofit2.Response;
 public class PaymentsPendingFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener,AdapterPaymentsPending.NotifyPaymentReceived {
 
 
-    @Inject
-    OrderService orderService;
+//    @Inject
+//    OrderService orderService;
 
     @Inject
     OrderServiceShopStaff orderServiceShopStaff;
@@ -118,12 +120,19 @@ public class PaymentsPendingFragment extends Fragment implements SwipeRefreshLay
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
         swipeContainer = (SwipeRefreshLayout)rootView.findViewById(R.id.swipeContainer);
 
-        if(savedInstanceState!=null)
+        if(deliveryGuySelf==null)
         {
-            // restore instance state
-            deliveryGuySelf = savedInstanceState.getParcelable("savedVehicle");
+            deliveryGuySelf = getActivity().getIntent().getParcelableExtra(DELIVERY_VEHICLE_INTENT_KEY);
         }
-        else
+
+
+//        if(savedInstanceState!=null)
+//        {
+//             restore instance state
+//            deliveryGuySelf = savedInstanceState.getParcelable("savedVehicle");
+//        }
+
+        if(savedInstanceState==null)
         {
             makeRefreshNetworkCall();
         }
@@ -187,7 +196,12 @@ public class PaymentsPendingFragment extends Fragment implements SwipeRefreshLay
                 {
                     // trigger fetch next page
 
-                    if(layoutManager.findLastVisibleItemPosition() == previous_position)
+//                    if(layoutManager.findLastVisibleItemPosition() == previous_position)
+//                    {
+//                        return;
+//                    }
+
+                    if(offset + limit > layoutManager.findLastVisibleItemPosition())
                     {
                         return;
                     }
@@ -210,14 +224,14 @@ public class PaymentsPendingFragment extends Fragment implements SwipeRefreshLay
 
                     }
 
-                    previous_position = layoutManager.findLastVisibleItemPosition();
+//                    previous_position = layoutManager.findLastVisibleItemPosition();
                 }
             }
         });
     }
 
 
-    int previous_position = -1;
+//    int previous_position = -1;
 
 
 
@@ -249,6 +263,16 @@ public class PaymentsPendingFragment extends Fragment implements SwipeRefreshLay
     public void onResume() {
         super.onResume();
         notifyTitleChanged();
+        isDestroyed = false;
+    }
+
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        isDestroyed = true;
+        ButterKnife.unbind(this);
     }
 
 
@@ -260,13 +284,26 @@ public class PaymentsPendingFragment extends Fragment implements SwipeRefreshLay
             return;
         }
 
-        Shop currentShop = UtilityShopHome.getShop(getContext());
+//        Shop currentShop = UtilityShopHome.getShop(getContext());
+//
+//        Call<OrderEndPoint> call = orderService
+//                .getOrders(null, currentShop.getShopID(),false,
+//                        OrderStatusHomeDelivery.PENDING_DELIVERY,
+//                        null, deliveryGuySelf.getDeliveryGuyID(),
+//                        false,null,
+//                        true,true,
+//                        null,limit,offset,null);
 
-        Call<OrderEndPoint> call = orderService
-                .getOrders(null, currentShop.getShopID(),false,
-                        OrderStatusHomeDelivery.PENDING_DELIVERY,
-                        null, deliveryGuySelf.getDeliveryGuyID(),false,null,true,true,
-                        null,limit,offset,null);
+
+
+        Call<OrderEndPoint> call = orderServiceShopStaff.getOrders(
+                UtilityLogin.getAuthorizationHeaders(getActivity()),
+                null,null,false,
+                OrderStatusHomeDelivery.PENDING_DELIVERY,null,deliveryGuySelf.getDeliveryGuyID(),
+                false,null,
+                null,null,
+                null,
+                null,limit,offset,null);
 
 
         call.enqueue(new Callback<OrderEndPoint>() {
@@ -343,9 +380,8 @@ public class PaymentsPendingFragment extends Fragment implements SwipeRefreshLay
                 total = total + (order.getOrderStats().getItemTotal()+ order.getDeliveryCharges());
             }
 
-
             ordersTotal.setText("All Orders Total : "  + total + "\nCollect " + total + " from Delivery guy.");
-            receivedTotal.setText("Received " + total + " from Delivery Guy.");
+            receivedTotal.setText("Confirm Received " + total + " from Delivery Guy.");
 
         }
 
@@ -485,33 +521,17 @@ public class PaymentsPendingFragment extends Fragment implements SwipeRefreshLay
     }
 
 
-    public DeliveryGuySelf getDeliveryGuySelf() {
-        return deliveryGuySelf;
-    }
-
-    public void setDeliveryGuySelf(DeliveryGuySelf deliveryGuySelf) {
-        this.deliveryGuySelf = deliveryGuySelf;
-    }
-
-
-
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        outState.putParcelable("savedVehicle", deliveryGuySelf);
-
-    }
+//    public DeliveryGuySelf getDeliveryGuySelf() {
+//        return deliveryGuySelf;
+//    }
+//
+//    public void setDeliveryGuySelf(DeliveryGuySelf deliveryGuySelf) {
+//        this.deliveryGuySelf = deliveryGuySelf;
+//    }
+//
 
 
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        isDestroyed = true;
-        ButterKnife.unbind(this);
-    }
 
 
 

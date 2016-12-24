@@ -128,7 +128,7 @@ public class AdapterPaymentsPending extends RecyclerView.Adapter<AdapterPayments
 
         void onClickConfirmButton(View view)
         {
-            notifications.notifyCancelHandover(dataset.get(getLayoutPosition()));
+//            notifications.notifyCancelHandover(dataset.get(getLayoutPosition()));
         }
 
     }
@@ -140,8 +140,7 @@ public class AdapterPaymentsPending extends RecyclerView.Adapter<AdapterPayments
 
     public interface NotificationReciever{
 
-        void notifyCancelHandover(Order order);
-
+//        void notifyCancelHandover(Order order);
     }
 
 }

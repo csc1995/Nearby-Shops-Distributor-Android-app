@@ -110,7 +110,7 @@ public class AdapterOutForDelivery extends RecyclerView.Adapter<AdapterOutForDel
         @Bind(R.id.currentStatus)
         TextView currentStatus;
 
-        @Bind(R.id.cancelHandoverButton)
+        @Bind(R.id.acceptHandoverButton)
         TextView cancelHandoverButton;
 
         @Bind(R.id.return_package)
@@ -123,7 +123,7 @@ public class AdapterOutForDelivery extends RecyclerView.Adapter<AdapterOutForDel
         }
 
 
-        @OnClick(R.id.cancelHandoverButton)
+        @OnClick(R.id.acceptHandoverButton)
         void onClickConfirmButton(View view)
         {
             notifications.notifyHandoverToUser(dataset.get(getLayoutPosition()));

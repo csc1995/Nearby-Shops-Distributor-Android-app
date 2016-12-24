@@ -19,9 +19,9 @@ import org.localareadelivery.distributorapp.HomeDeliveryInventoryDeliveryGuy.Pla
 
 public class PagerAdapter extends FragmentPagerAdapter {
 
-    DeliveryGuySelf deliveryVehicle;
-
-    int vehicleID;
+//    DeliveryGuySelf deliveryVehicle;
+//
+//    int vehicleID;
 
 
 
@@ -32,12 +32,12 @@ public class PagerAdapter extends FragmentPagerAdapter {
     public PagerAdapter(FragmentManager fm, DeliveryGuySelf deliveryGuySelf) {
         super(fm);
 
-        deliveryVehicle = deliveryGuySelf;
-
-        if(deliveryVehicle!=null)
-        {
-            vehicleID = deliveryVehicle.getDeliveryGuyID();
-        }
+//        deliveryVehicle = deliveryGuySelf;
+//
+//        if(deliveryVehicle!=null)
+//        {
+//            vehicleID = deliveryVehicle.getDeliveryGuyID();
+//        }
     }
 
     @Override
@@ -49,46 +49,47 @@ public class PagerAdapter extends FragmentPagerAdapter {
 
         if(position==0)
         {
-            PendingHandoverFragment pendingHandoverFragment = PendingHandoverFragment.newInstance();
-            pendingHandoverFragment.setDeliveryGuySelf(deliveryVehicle);
-            return pendingHandoverFragment;
+//            PendingHandoverFragment pendingHandoverFragment = PendingHandoverFragment.newInstance();
+//            pendingHandoverFragment.setDeliveryGuySelf(deliveryVehicle);
+            return PendingHandoverFragment.newInstance();
 
         }else if(position == 1)
         {
-            FragmentOutForDelivery fragmentOutForDelivery = FragmentOutForDelivery.newInstance();
-            fragmentOutForDelivery.setDeliveryGuySelf(deliveryVehicle);
-            return fragmentOutForDelivery;
+//            FragmentOutForDelivery fragmentOutForDelivery = FragmentOutForDelivery.newInstance();
+//            fragmentOutForDelivery.setDeliveryGuySelf(deliveryVehicle);
+            return FragmentOutForDelivery.newInstance();
         }
         else if(position == 2)
         {
-            PendingDeliveryApprovalDGD pendingDeliveryApproval = PendingDeliveryApprovalDGD.newInstance();
-            pendingDeliveryApproval.setDeliveryGuySelf(deliveryVehicle);
-            return pendingDeliveryApproval;
+//            PendingDeliveryApprovalDGD pendingDeliveryApproval = PendingDeliveryApprovalDGD.newInstance();
+//            pendingDeliveryApproval.setDeliveryGuySelf(deliveryVehicle);
+            return PendingDeliveryApprovalDGD.newInstance();
         }
         else if(position == 3)
         {
-            PaymentsPendingFragment paymentsPendingFragment;
-            paymentsPendingFragment = PaymentsPendingFragment.newInstance();
-            paymentsPendingFragment.setDeliveryGuySelf(deliveryVehicle);
-            return paymentsPendingFragment;
+//            PaymentsPendingFragment paymentsPendingFragment;
+//            paymentsPendingFragment = PaymentsPendingFragment.newInstance();
+//            paymentsPendingFragment.setDeliveryGuySelf(deliveryVehicle);
+            return PaymentsPendingFragment.newInstance();
         }
         else if(position == 4)
         {
-            PendingReturnByDG pendingReturnByDG;
-            pendingReturnByDG = PendingReturnByDG.newInstance();
-            pendingReturnByDG.setDeliveryGuySelf(deliveryVehicle);
-            return pendingReturnByDG;
+//            PendingReturnByDG pendingReturnByDG;
+//            pendingReturnByDG = PendingReturnByDG.newInstance();
+//            pendingReturnByDG.setDeliveryGuySelf(deliveryVehicle);
+            return PendingReturnByDG.newInstance();
         }
         else if(position == 5)
         {
-            PendingReturnCancelledByShop returnCancelledByShop;
-            returnCancelledByShop = PendingReturnCancelledByShop.newInstance();
-            returnCancelledByShop.setDeliveryGuySelf(deliveryVehicle);
-            return returnCancelledByShop;
+//            PendingReturnCancelledByShop returnCancelledByShop;
+//            returnCancelledByShop = PendingReturnCancelledByShop.newInstance();
+//            returnCancelledByShop.setDeliveryGuySelf(deliveryVehicle);
+            return PendingReturnCancelledByShop.newInstance();
         }
 
 
-        return PlaceholderFragment.newInstance(vehicleID);
+        return null;
+//        return PlaceholderFragment.newInstance(vehicleID);
     }
 
     @Override

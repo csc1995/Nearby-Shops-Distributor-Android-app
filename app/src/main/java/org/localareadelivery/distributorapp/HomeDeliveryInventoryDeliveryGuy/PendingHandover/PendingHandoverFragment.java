@@ -51,8 +51,8 @@ public class PendingHandoverFragment extends Fragment
     @Inject
     OrderServiceShopStaff orderServiceShopStaff;
 
-    @Inject
-    OrderService orderService;
+//    @Inject
+//    OrderService orderService;
 
     RecyclerView recyclerView;
     AdapterPendingHandover adapter;
@@ -185,10 +185,16 @@ public class PendingHandoverFragment extends Fragment
                 {
                     // trigger fetch next page
 
-                    if(layoutManager.findLastVisibleItemPosition() == previous_position)
+//                    if(layoutManager.findLastVisibleItemPosition() == previous_position)
+//                    {
+//                        return;
+//                    }
+
+                    if(offset + limit > layoutManager.findLastVisibleItemPosition())
                     {
                         return;
                     }
+
 
 
                     if((offset+limit)<=item_count)
@@ -208,14 +214,14 @@ public class PendingHandoverFragment extends Fragment
 
                     }
 
-                    previous_position = layoutManager.findLastVisibleItemPosition();
+//                    previous_position = layoutManager.findLastVisibleItemPosition();
                 }
             }
         });
     }
 
 
-    int previous_position = -1;
+//    int previous_position = -1;
 
     @Override
     public void onRefresh() {
@@ -255,16 +261,28 @@ public class PendingHandoverFragment extends Fragment
             return;
         }
 
-        Shop currentShop = UtilityShopHome.getShop(getContext());
+//        Shop currentShop = UtilityShopHome.getShop(getContext());
+//
+//            Call<OrderEndPoint> call = orderService
+//                    .getOrders(null, currentShop.getShopID(),false,
+//                            OrderStatusHomeDelivery.PENDING_HANDOVER,
+//                            null, deliveryGuySelf.getDeliveryGuyID(),null,null,true,true,
+//                            null,limit,offset,null);
 
-            Call<OrderEndPoint> call = orderService
-                    .getOrders(null, currentShop.getShopID(),false,
-                            OrderStatusHomeDelivery.PENDING_HANDOVER,
-                            null, deliveryGuySelf.getDeliveryGuyID(),null,null,true,true,
-                            null,limit,offset,null);
 
 
-            call.enqueue(new Callback<OrderEndPoint>() {
+        Call<OrderEndPoint> call = orderServiceShopStaff.getOrders(
+                UtilityLogin.getAuthorizationHeaders(getActivity()),
+                null,null,false,
+                OrderStatusHomeDelivery.PENDING_HANDOVER,null,deliveryGuySelf.getDeliveryGuyID(),
+                null,null,
+                null,null,
+                null,
+                null,limit,offset,null);
+
+
+
+        call.enqueue(new Callback<OrderEndPoint>() {
                 @Override
                 public void onResponse(Call<OrderEndPoint> call, Response<OrderEndPoint> response) {
 

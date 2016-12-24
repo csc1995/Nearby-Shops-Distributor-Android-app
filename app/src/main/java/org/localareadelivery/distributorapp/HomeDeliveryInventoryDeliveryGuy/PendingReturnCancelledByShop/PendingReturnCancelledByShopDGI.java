@@ -35,6 +35,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static org.localareadelivery.distributorapp.HomeDeliveryInventoryDeliveryGuy.DeliveryGuyInventory.DELIVERY_VEHICLE_INTENT_KEY;
+
 /**
  * Created by sumeet on 13/6/16.
  */
@@ -45,8 +47,9 @@ public class PendingReturnCancelledByShopDGI extends Fragment implements SwipeRe
     @Inject
     OrderServiceShopStaff orderServiceShopStaff;
 
-    @Inject
-    OrderService orderService;
+//    @Inject
+//    OrderService orderService;
+
     RecyclerView recyclerView;
 
     AdapterPendingReturnCancelledByShopDGI adapter;
@@ -93,14 +96,14 @@ public class PendingReturnCancelledByShopDGI extends Fragment implements SwipeRe
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
         swipeContainer = (SwipeRefreshLayout)rootView.findViewById(R.id.swipeContainer);
 
-
-
-        if(savedInstanceState!=null)
+        if(deliveryGuySelf==null)
         {
-            // restore instance state
-            deliveryGuySelf = savedInstanceState.getParcelable("savedVehicle");
+            deliveryGuySelf = getActivity().getIntent().getParcelableExtra(DELIVERY_VEHICLE_INTENT_KEY);
         }
-        else
+
+
+
+        if(savedInstanceState==null)
         {
             makeRefreshNetworkCall();
         }
@@ -164,11 +167,15 @@ public class PendingReturnCancelledByShopDGI extends Fragment implements SwipeRe
                 {
                     // trigger fetch next page
 
-                    if(layoutManager.findLastVisibleItemPosition() == previous_position)
+//                    if(layoutManager.findLastVisibleItemPosition() == previous_position)
+//                    {
+//                        return;
+//                    }
+
+                    if(offset + limit > layoutManager.findLastVisibleItemPosition())
                     {
                         return;
                     }
-
 
                     if((offset+limit)<=item_count)
                     {
@@ -187,13 +194,13 @@ public class PendingReturnCancelledByShopDGI extends Fragment implements SwipeRe
 
                     }
 
-                    previous_position = layoutManager.findLastVisibleItemPosition();
+//                    previous_position = layoutManager.findLastVisibleItemPosition();
                 }
             }
         });
     }
 
-    int previous_position = -1;
+//    int previous_position = -1;
 
 
 
@@ -211,7 +218,16 @@ public class PendingReturnCancelledByShopDGI extends Fragment implements SwipeRe
     public void onResume() {
         super.onResume();
         notifyTitleChanged();
+        isDestroyed=false;
     }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        isDestroyed = true;
+    }
+
 
     void makeRefreshNetworkCall()
     {
@@ -237,13 +253,26 @@ public class PendingReturnCancelledByShopDGI extends Fragment implements SwipeRe
             return;
         }
 
-        Shop currentShop = UtilityShopHome.getShop(getContext());
+//        Shop currentShop = UtilityShopHome.getShop(getContext());
 
-        Call<OrderEndPoint> call = orderService
-                .getOrders(null, currentShop.getShopID(),false,
-                        OrderStatusHomeDelivery.CANCELLED_BY_SHOP_RETURN_PENDING,
-                        null, deliveryGuySelf.getDeliveryGuyID(),null,null,true,true,
-                        null,limit,offset,null);
+//        Call<OrderEndPoint> call = orderService
+//                .getOrders(null, currentShop.getShopID(),false,
+//                        OrderStatusHomeDelivery.CANCELLED_BY_SHOP_RETURN_PENDING,
+//                        null, deliveryGuySelf.getDeliveryGuyID(),null,null,true,true,
+//                        null,limit,offset,null);
+
+
+
+        Call<OrderEndPoint> call = orderServiceShopStaff.getOrders(
+                UtilityLogin.getAuthorizationHeaders(getActivity()),
+                null,null,false,
+                OrderStatusHomeDelivery.CANCELLED_BY_SHOP_RETURN_PENDING,null,
+                deliveryGuySelf.getDeliveryGuyID(),
+                null,null,
+                null,null,
+                null,
+                null,limit,offset,null);
+
 
 
         call.enqueue(new Callback<OrderEndPoint>() {
@@ -301,21 +330,21 @@ public class PendingReturnCancelledByShopDGI extends Fragment implements SwipeRe
     }
 
 
-
-    public DeliveryGuySelf getDeliveryGuySelf() {
-        return deliveryGuySelf;
-    }
-
-    public void setDeliveryGuySelf(DeliveryGuySelf deliveryGuySelf) {
-        this.deliveryGuySelf = deliveryGuySelf;
-    }
-
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putParcelable("savedVehicle", deliveryGuySelf);
-    }
+//
+//    public DeliveryGuySelf getDeliveryGuySelf() {
+//        return deliveryGuySelf;
+//    }
+//
+//    public void setDeliveryGuySelf(DeliveryGuySelf deliveryGuySelf) {
+//        this.deliveryGuySelf = deliveryGuySelf;
+//    }
+//
+//
+//    @Override
+//    public void onSaveInstanceState(Bundle outState) {
+//        super.onSaveInstanceState(outState);
+//        outState.putParcelable("savedVehicle", deliveryGuySelf);
+//    }
 
 
 

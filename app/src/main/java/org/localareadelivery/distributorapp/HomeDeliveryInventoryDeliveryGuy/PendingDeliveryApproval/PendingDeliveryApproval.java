@@ -35,6 +35,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static org.localareadelivery.distributorapp.HomeDeliveryInventoryDeliveryGuy.DeliveryGuyInventory.DELIVERY_VEHICLE_INTENT_KEY;
+
 /**
  * Created by sumeet on 13/6/16.
  */
@@ -44,8 +46,8 @@ public class PendingDeliveryApproval extends Fragment
         implements SwipeRefreshLayout.OnRefreshListener,AdapterDeliveryApproval.NotifyMarkDelivered {
 
 
-    @Inject
-    OrderService orderService;
+//    @Inject
+//    OrderService orderService;
 
     @Inject
     OrderServiceShopStaff orderServiceShopStaff;
@@ -105,14 +107,20 @@ public class PendingDeliveryApproval extends Fragment
         swipeContainer = (SwipeRefreshLayout)rootView.findViewById(R.id.swipeContainer);
 
 
-
-
-        if(savedInstanceState!=null)
+        if(deliveryGuySelf==null)
         {
-            // restore instance state
-            deliveryGuySelf = savedInstanceState.getParcelable("savedVehicle");
+            deliveryGuySelf = getActivity().getIntent().getParcelableExtra(DELIVERY_VEHICLE_INTENT_KEY);
         }
-        else
+
+
+
+
+//        if(savedInstanceState!=null)
+//        {
+//             restore instance state
+//            deliveryGuySelf = savedInstanceState.getParcelable("savedVehicle");
+//        }
+        if(savedInstanceState == null)
         {
             makeRefreshNetworkCall();
         }
@@ -175,7 +183,12 @@ public class PendingDeliveryApproval extends Fragment
                 {
                     // trigger fetch next page
 
-                    if(layoutManager.findLastVisibleItemPosition() == previous_position)
+//                    if(layoutManager.findLastVisibleItemPosition() == previous_position)
+//                    {
+//                        return;
+//                    }
+
+                    if(offset + limit > layoutManager.findLastVisibleItemPosition())
                     {
                         return;
                     }
@@ -198,14 +211,14 @@ public class PendingDeliveryApproval extends Fragment
 
                     }
 
-                    previous_position = layoutManager.findLastVisibleItemPosition();
+//                    previous_position = layoutManager.findLastVisibleItemPosition();
                 }
             }
         });
     }
 
 
-    int previous_position = -1;
+//    int previous_position = -1;
 
     @Override
     public void onRefresh() {
@@ -233,6 +246,14 @@ public class PendingDeliveryApproval extends Fragment
     public void onResume() {
         super.onResume();
         notifyTitleChanged();
+        isDestroyed= false;
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        isDestroyed = true;
     }
 
 
@@ -244,13 +265,26 @@ public class PendingDeliveryApproval extends Fragment
             return;
         }
 
-        Shop currentShop = UtilityShopHome.getShop(getContext());
+//        Shop currentShop = UtilityShopHome.getShop(getContext());
 
-            Call<OrderEndPoint> call = orderService
-                    .getOrders(null, currentShop.getShopID(),false,
-                            OrderStatusHomeDelivery.PENDING_DELIVERY,
-                            null, deliveryGuySelf.getDeliveryGuyID(),null,false,true,true,
-                            null,limit,offset,null);
+//            Call<OrderEndPoint> call = orderService
+//                    .getOrders(null, currentShop.getShopID(),false,
+//                            OrderStatusHomeDelivery.PENDING_DELIVERY,
+//                            null, deliveryGuySelf.getDeliveryGuyID(),
+//                            null,false,
+//                            true,true,
+//                            null,limit,offset,null);
+
+
+            Call<OrderEndPoint> call = orderServiceShopStaff.getOrders(
+                    UtilityLogin.getAuthorizationHeaders(getActivity()),
+                    null,null,false,
+                    OrderStatusHomeDelivery.PENDING_DELIVERY,null,deliveryGuySelf.getDeliveryGuyID(),
+                    null,false,
+                    null,null,
+                    null,
+                    null,limit,offset,null);
+
 
 
             call.enqueue(new Callback<OrderEndPoint>() {
@@ -347,15 +381,15 @@ public class PendingDeliveryApproval extends Fragment
             }
         });
     }
-
-
-    public DeliveryGuySelf getDeliveryGuySelf() {
-        return deliveryGuySelf;
-    }
-
-    public void setDeliveryGuySelf(DeliveryGuySelf deliveryGuySelf) {
-        this.deliveryGuySelf = deliveryGuySelf;
-    }
+//
+//
+//    public DeliveryGuySelf getDeliveryGuySelf() {
+//        return deliveryGuySelf;
+//    }
+//
+//    public void setDeliveryGuySelf(DeliveryGuySelf deliveryGuySelf) {
+//        this.deliveryGuySelf = deliveryGuySelf;
+//    }
 
     /*public interface NotificationReceiver
     {
@@ -363,18 +397,13 @@ public class PendingDeliveryApproval extends Fragment
     }
     */
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putParcelable("savedVehicle", deliveryGuySelf);
-    }
+//    @Override
+//    public void onSaveInstanceState(Bundle outState) {
+//        super.onSaveInstanceState(outState);
+//        outState.putParcelable("savedVehicle", deliveryGuySelf);
+//    }
 
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        isDestroyed = true;
-    }
 
 
 

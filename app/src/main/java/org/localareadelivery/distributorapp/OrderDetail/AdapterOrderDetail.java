@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import org.localareadelivery.distributorapp.HomeDeliveryOrderHistory.Utility.UtilityOrderStatus;
 import org.localareadelivery.distributorapp.Model.Item;
 import org.localareadelivery.distributorapp.Model.Order;
 import org.localareadelivery.distributorapp.Model.OrderItem;
@@ -195,6 +196,10 @@ class AdapterOrderDetail extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
             holder.numberOfItems.setText(orderStats.getItemCount() + " Items");
             holder.orderTotal.setText("| Total : " + (orderStats.getItemTotal() + order.getDeliveryCharges()));
             //holder.currentStatus.setText();
+
+
+            String status = UtilityOrderStatus.getStatus(order.getStatusHomeDelivery(),order.getDeliveryReceived(),order.getPaymentReceived());
+            holder.currentStatus.setText("Current Status : " + status);
 
         }
     }

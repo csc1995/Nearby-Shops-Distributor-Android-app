@@ -84,11 +84,9 @@ public class AdapterItemsInStock extends RecyclerView.Adapter<RecyclerView.ViewH
         else if(viewType == VIEW_TYPE_SCROLL_PROGRESS_BAR)
         {
 
-                view = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.list_item_progress_bar,parent,false);
-
-                return new LoadingViewHolder(view);
-
+            view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.list_item_progress_bar,parent,false);
+            return new LoadingViewHolder(view);
         }
 
 //        else

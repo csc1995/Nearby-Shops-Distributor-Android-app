@@ -114,7 +114,7 @@ public class AdapterHandover extends RecyclerView.Adapter<AdapterHandover.ViewHo
         @Bind(R.id.currentStatus)
         TextView currentStatus;
 
-        @Bind(R.id.cancelHandoverButton)
+        @Bind(R.id.acceptHandoverButton)
         TextView cancelHandoverButton;
 
 
@@ -127,10 +127,10 @@ public class AdapterHandover extends RecyclerView.Adapter<AdapterHandover.ViewHo
         }
 
 
-        @OnClick(R.id.cancelHandoverButton)
+        @OnClick(R.id.acceptHandoverButton)
         void onClickConfirmButton(View view)
         {
-            notifications.notifyCancelHandover(dataset.get(getLayoutPosition()));
+            notifications.notifyAcceptHandover(dataset.get(getLayoutPosition()));
         }
 
     }
@@ -142,7 +142,7 @@ public class AdapterHandover extends RecyclerView.Adapter<AdapterHandover.ViewHo
 
     public interface NotificationReciever{
 
-        void notifyCancelHandover(Order order);
+        void notifyAcceptHandover(Order order);
 
     }
 

@@ -123,7 +123,7 @@ public class AdapterOutForDelivery extends RecyclerView.Adapter<AdapterOutForDel
         @OnClick(R.id.close_button)
         void onClickConfirmButton(View view)
         {
-            notifications.notifyPaymentReceived(dataset.get(getLayoutPosition()));
+            notifications.notifyCancelOrder(dataset.get(getLayoutPosition()));
         }
 
     }
@@ -135,7 +135,7 @@ public class AdapterOutForDelivery extends RecyclerView.Adapter<AdapterOutForDel
 
     interface NotifyCancelOrder {
 
-        void notifyPaymentReceived(Order order);
+        void notifyCancelOrder(Order order);
 
     }
 

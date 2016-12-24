@@ -19,7 +19,7 @@ import butterknife.ButterKnife;
 /**
  * Created by sumeet on 13/6/16.
  */
-public class AdapterOutForDelivery extends RecyclerView.Adapter<AdapterOutForDelivery.ViewHolder>{
+public class AdapterPendingDelivery extends RecyclerView.Adapter<AdapterPendingDelivery.ViewHolder>{
 
 
     private List<Order> dataset = null;
@@ -27,7 +27,7 @@ public class AdapterOutForDelivery extends RecyclerView.Adapter<AdapterOutForDel
     private NotifyCancelHandover notifications;
 
 
-    public AdapterOutForDelivery(List<Order> dataset) {
+    public AdapterPendingDelivery(List<Order> dataset) {
         this.dataset = dataset;
 //        this.context = context;
         this.notifications = notifications;
@@ -35,7 +35,7 @@ public class AdapterOutForDelivery extends RecyclerView.Adapter<AdapterOutForDel
     }
 
     @Override
-    public AdapterOutForDelivery.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public AdapterPendingDelivery.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item_pending_delivery_approval_dgd,parent,false);
@@ -44,7 +44,7 @@ public class AdapterOutForDelivery extends RecyclerView.Adapter<AdapterOutForDel
     }
 
     @Override
-    public void onBindViewHolder(AdapterOutForDelivery.ViewHolder holder, int position) {
+    public void onBindViewHolder(AdapterPendingDelivery.ViewHolder holder, int position) {
 
         if(dataset!=null)
         {

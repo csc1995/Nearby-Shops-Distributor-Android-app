@@ -20,6 +20,8 @@ import org.localareadelivery.distributorapp.ModelRoles.DeliveryGuySelf;
 import org.localareadelivery.distributorapp.ModelStatusCodes.OrderStatusHomeDelivery;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderService;
+import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderServiceDeliveryGuySelf;
+import org.localareadelivery.distributorapp.Utility.UtilityLogin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +34,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static org.localareadelivery.distributorapp.DeliveryGuyDashboard.DeliveryGuyDashboard.DELIVERY_GUY_INTENT_KEY_DASHBOARD;
+
 /**
  * Created by sumeet on 13/6/16.
  */
@@ -41,8 +45,13 @@ public class PendingHandoverFragment extends Fragment implements SwipeRefreshLay
         AdapterHandover.NotificationReciever {
 
 
+//    @Inject
+//    OrderService orderService;
+
     @Inject
-    OrderService orderService;
+    OrderServiceDeliveryGuySelf orderServiceDelivery;
+
+
     RecyclerView recyclerView;
 
     AdapterHandover adapter;
@@ -84,20 +93,20 @@ public class PendingHandoverFragment extends Fragment implements SwipeRefreshLay
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_home_delivery_pending_accept_driver_dashboard, container, false);
-
         setRetainInstance(true);
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
         swipeContainer = (SwipeRefreshLayout)rootView.findViewById(R.id.swipeContainer);
 
+        deliveryGuySelf = getActivity().getIntent().getParcelableExtra(DELIVERY_GUY_INTENT_KEY_DASHBOARD);
 
 
-        if(savedInstanceState!=null)
-        {
-            // restore instance state
-            deliveryGuySelf = savedInstanceState.getParcelable("savedVehicle");
-        }
-        else
+//        if(savedInstanceState!=null)
+//        {
+//            // restore instance state
+//            deliveryGuySelf = savedInstanceState.getParcelable("savedVehicle");
+//        }
+        if(savedInstanceState==null)
         {
             makeRefreshNetworkCall();
         }
@@ -161,11 +170,16 @@ public class PendingHandoverFragment extends Fragment implements SwipeRefreshLay
                 {
                     // trigger fetch next page
 
-                    if(layoutManager.findLastVisibleItemPosition() == previous_position)
+//                    if(layoutManager.findLastVisibleItemPosition() == previous_position)
+//                    {
+//                        return;
+//                    }
+
+
+                    if(offset + limit > layoutManager.findLastVisibleItemPosition())
                     {
                         return;
                     }
-
 
                     if((offset+limit)<=item_count)
                     {
@@ -178,19 +192,19 @@ public class PendingHandoverFragment extends Fragment implements SwipeRefreshLay
 
                                 swipeContainer.setRefreshing(true);
 
-                                makeNetworkCall(false);
+                                makeNetworkCall(false,false);
                             }
                         });
 
                     }
 
-                    previous_position = layoutManager.findLastVisibleItemPosition();
+//                    previous_position = layoutManager.findLastVisibleItemPosition();
                 }
             }
         });
     }
 
-    int previous_position = -1;
+//    int previous_position = -1;
 
 
 
@@ -199,8 +213,8 @@ public class PendingHandoverFragment extends Fragment implements SwipeRefreshLay
     @Override
     public void onRefresh() {
 
-        offset = 0;
-        makeNetworkCall(true);
+//        offset = 0;
+        makeNetworkCall(true,true);
     }
 
 
@@ -208,7 +222,11 @@ public class PendingHandoverFragment extends Fragment implements SwipeRefreshLay
     public void onResume() {
         super.onResume();
         notifyTitleChanged();
+        isDestroyed=false;
     }
+
+
+
 
     void makeRefreshNetworkCall()
     {
@@ -226,23 +244,47 @@ public class PendingHandoverFragment extends Fragment implements SwipeRefreshLay
 
 
 
-    void makeNetworkCall(final boolean clearDataset)
+    void makeNetworkCall(final boolean clearDataset, final boolean resetOffset)
     {
-
-        if(deliveryGuySelf ==null)
+        if(resetOffset)
         {
-            return;
+            offset =0;
         }
+
+//        if(deliveryGuySelf ==null)
+//        {
+//            return;
+//        }
 
 //        Shop currentShop = UtilityShopHome.getShop(getContext());
 
-        Log.d("delivery","Delivery Guy ID : " + String.valueOf(deliveryGuySelf.getDeliveryGuyID()));
+//        Log.d("delivery","Delivery Guy ID : " + String.valueOf(deliveryGuySelf.getDeliveryGuyID()));
 
-        Call<OrderEndPoint> call = orderService
-                .getOrders(null, deliveryGuySelf.getShopID(),false,
-                        OrderStatusHomeDelivery.PENDING_HANDOVER,
-                        null, deliveryGuySelf.getDeliveryGuyID(),null,null,true,true,
-                        null,limit,offset,null);
+
+//        Call<OrderEndPoint> call = orderService
+//                .getOrders(null, deliveryGuySelf.getShopID(),false,
+//                        OrderStatusHomeDelivery.PENDING_HANDOVER,
+//                        null, deliveryGuySelf.getDeliveryGuyID(),null,null,true,true,
+//                        null,limit,offset,null);
+
+
+        int deliveryGuyID = 0;
+
+        if(deliveryGuySelf!=null)
+        {
+            deliveryGuyID = deliveryGuySelf.getDeliveryGuyID();
+        }
+
+        Call<OrderEndPoint> call = orderServiceDelivery
+                                        .getOrders(UtilityLogin.getAuthorizationHeaders(getActivity()),
+                                                deliveryGuyID,
+                                                null,null,
+                                                false,OrderStatusHomeDelivery.PENDING_HANDOVER,
+                                                null,
+                                                null,null,
+                                                null,null,
+                                                null,
+                                                null,limit,offset,null);
 
 
         call.enqueue(new Callback<OrderEndPoint>() {
@@ -268,6 +310,11 @@ public class PendingHandoverFragment extends Fragment implements SwipeRefreshLay
                     notifyTitleChanged();
 
                 }
+                else
+                {
+                    showToastMessage("Response code : " + String.valueOf(response.code()));
+                }
+
 
                 swipeContainer.setRefreshing(false);
 
@@ -302,12 +349,13 @@ public class PendingHandoverFragment extends Fragment implements SwipeRefreshLay
 
 
     @Override
-    public void notifyCancelHandover(Order order) {
+    public void notifyAcceptHandover(Order order) {
 
+//        order.setStatusHomeDelivery(OrderStatusHomeDelivery.HANDOVER_ACCEPTED);
 
-        order.setStatusHomeDelivery(OrderStatusHomeDelivery.HANDOVER_ACCEPTED);
-
-        Call<ResponseBody> call = orderService.putOrder(order.getOrderID(),order);
+        Call<ResponseBody> call = orderServiceDelivery.acceptOrder(
+                UtilityLogin.getAuthorizationHeaders(getActivity()),
+                order.getOrderID());
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -317,6 +365,14 @@ public class PendingHandoverFragment extends Fragment implements SwipeRefreshLay
                 {
                     showToastMessage("Order Accepted !");
                     makeRefreshNetworkCall();
+                }
+                else if(response.code()==401 || response.code()==404)
+                {
+                    showToastMessage("Not Permitted !!");
+                }
+                else
+                {
+                    showToastMessage("Response Code : " + String.valueOf(response.code()));
                 }
             }
 
@@ -332,20 +388,20 @@ public class PendingHandoverFragment extends Fragment implements SwipeRefreshLay
 
 
 
-    public DeliveryGuySelf getDeliveryGuySelf() {
-        return deliveryGuySelf;
-    }
-
-    public void setDeliveryGuySelf(DeliveryGuySelf deliveryGuySelf) {
-        this.deliveryGuySelf = deliveryGuySelf;
-    }
-
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putParcelable("savedVehicle", deliveryGuySelf);
-    }
+//    public DeliveryGuySelf getDeliveryGuySelf() {
+//        return deliveryGuySelf;
+//    }
+//
+//    public void setDeliveryGuySelf(DeliveryGuySelf deliveryGuySelf) {
+//        this.deliveryGuySelf = deliveryGuySelf;
+//    }
+//
+//
+//    @Override
+//    public void onSaveInstanceState(Bundle outState) {
+//        super.onSaveInstanceState(outState);
+//        outState.putParcelable("savedVehicle", deliveryGuySelf);
+//    }
 
 
 

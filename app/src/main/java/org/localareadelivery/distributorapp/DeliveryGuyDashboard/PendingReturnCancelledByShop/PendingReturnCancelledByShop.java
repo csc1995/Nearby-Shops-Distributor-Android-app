@@ -19,6 +19,8 @@ import org.localareadelivery.distributorapp.ModelRoles.DeliveryGuySelf;
 import org.localareadelivery.distributorapp.ModelStatusCodes.OrderStatusHomeDelivery;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderService;
+import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderServiceDeliveryGuySelf;
+import org.localareadelivery.distributorapp.Utility.UtilityLogin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +32,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static org.localareadelivery.distributorapp.DeliveryGuyDashboard.DeliveryGuyDashboard.DELIVERY_GUY_INTENT_KEY_DASHBOARD;
+
 /**
  * Created by sumeet on 13/6/16.
  */
@@ -38,8 +42,14 @@ import retrofit2.Response;
 public class PendingReturnCancelledByShop extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
 
 
+//    @Inject
+//    OrderService orderService;
+
     @Inject
-    OrderService orderService;
+    OrderServiceDeliveryGuySelf orderServiceDelivery;
+
+
+
     RecyclerView recyclerView;
 
     AdapterPendingReturnCancelledByShop adapter;
@@ -87,14 +97,17 @@ public class PendingReturnCancelledByShop extends Fragment implements SwipeRefre
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
         swipeContainer = (SwipeRefreshLayout)rootView.findViewById(R.id.swipeContainer);
 
+        deliveryGuySelf = getActivity().getIntent().getParcelableExtra(DELIVERY_GUY_INTENT_KEY_DASHBOARD);
 
 
-        if(savedInstanceState!=null)
-        {
-            // restore instance state
-            deliveryGuySelf = savedInstanceState.getParcelable("savedVehicle");
-        }
-        else
+
+//        if(savedInstanceState!=null)
+//        {
+//             restore instance state
+//            deliveryGuySelf = savedInstanceState.getParcelable("savedVehicle");
+//        }
+
+        if(savedInstanceState==null)
         {
             makeRefreshNetworkCall();
         }
@@ -158,7 +171,12 @@ public class PendingReturnCancelledByShop extends Fragment implements SwipeRefre
                 {
                     // trigger fetch next page
 
-                    if(layoutManager.findLastVisibleItemPosition() == previous_position)
+//                    if(layoutManager.findLastVisibleItemPosition() == previous_position)
+//                    {
+//                        return;
+//                    }
+
+                    if(offset + limit > layoutManager.findLastVisibleItemPosition())
                     {
                         return;
                     }
@@ -175,19 +193,19 @@ public class PendingReturnCancelledByShop extends Fragment implements SwipeRefre
 
                                 swipeContainer.setRefreshing(true);
 
-                                makeNetworkCall(false);
+                                makeNetworkCall(false,false);
                             }
                         });
 
                     }
 
-                    previous_position = layoutManager.findLastVisibleItemPosition();
+//                    previous_position = layoutManager.findLastVisibleItemPosition();
                 }
             }
         });
     }
 
-    int previous_position = -1;
+//    int previous_position = -1;
 
 
 
@@ -196,8 +214,8 @@ public class PendingReturnCancelledByShop extends Fragment implements SwipeRefre
     @Override
     public void onRefresh() {
 
-        offset = 0;
-        makeNetworkCall(true);
+//        offset = 0;
+        makeNetworkCall(true,true);
     }
 
 
@@ -205,7 +223,16 @@ public class PendingReturnCancelledByShop extends Fragment implements SwipeRefre
     public void onResume() {
         super.onResume();
         notifyTitleChanged();
+        isDestroyed=false;
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        isDestroyed=true;
+    }
+
+
 
     void makeRefreshNetworkCall()
     {
@@ -223,21 +250,48 @@ public class PendingReturnCancelledByShop extends Fragment implements SwipeRefre
 
 
 
-    void makeNetworkCall(final boolean clearDataset)
+    void makeNetworkCall(final boolean clearDataset,boolean resetOffset)
     {
-
-        if(deliveryGuySelf ==null)
+        if(resetOffset)
         {
-            return;
+            offset=0;
         }
+
+//        if(deliveryGuySelf ==null)
+//        {
+//            return;
+//        }
 
 //        Shop currentShop = UtilityShopHome.getShop(getContext());
 
-        Call<OrderEndPoint> call = orderService
-                .getOrders(null, deliveryGuySelf.getShopID(),false,
-                        OrderStatusHomeDelivery.CANCELLED_BY_SHOP_RETURN_PENDING,
-                        null, deliveryGuySelf.getDeliveryGuyID(),null,null,true,true,
+//        Call<OrderEndPoint> call = orderService
+//                .getOrders(null, deliveryGuySelf.getShopID(),false,
+//                        OrderStatusHomeDelivery.CANCELLED_BY_SHOP_RETURN_PENDING,
+//                        null, deliveryGuySelf.getDeliveryGuyID(),null,null,true,true,
+//                        null,limit,offset,null);
+
+
+
+
+        int deliveryGuyID = 0;
+
+        if(deliveryGuySelf!=null)
+        {
+            deliveryGuyID = deliveryGuySelf.getDeliveryGuyID();
+        }
+
+        Call<OrderEndPoint> call = orderServiceDelivery
+                .getOrders(UtilityLogin.getAuthorizationHeaders(getActivity()),
+                        deliveryGuyID,
+                        null,null,
+                        false,OrderStatusHomeDelivery.CANCELLED_BY_SHOP_RETURN_PENDING,
+                        null,
+                        null,null,
+                        null,null,
+                        null,
                         null,limit,offset,null);
+
+
 
 
         call.enqueue(new Callback<OrderEndPoint>() {
@@ -297,22 +351,22 @@ public class PendingReturnCancelledByShop extends Fragment implements SwipeRefre
 
 
 
-
-
-    public DeliveryGuySelf getDeliveryGuySelf() {
-        return deliveryGuySelf;
-    }
-
-    public void setDeliveryGuySelf(DeliveryGuySelf deliveryGuySelf) {
-        this.deliveryGuySelf = deliveryGuySelf;
-    }
-
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putParcelable("savedVehicle", deliveryGuySelf);
-    }
+//
+//
+//    public DeliveryGuySelf getDeliveryGuySelf() {
+//        return deliveryGuySelf;
+//    }
+//
+//    public void setDeliveryGuySelf(DeliveryGuySelf deliveryGuySelf) {
+//        this.deliveryGuySelf = deliveryGuySelf;
+//    }
+//
+//
+//    @Override
+//    public void onSaveInstanceState(Bundle outState) {
+//        super.onSaveInstanceState(outState);
+//        outState.putParcelable("savedVehicle", deliveryGuySelf);
+//    }
 
 
 

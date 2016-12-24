@@ -114,7 +114,7 @@ public class AdapterPendingAccept extends RecyclerView.Adapter<AdapterPendingAcc
         @Bind(R.id.currentStatus)
         TextView currentStatus;
 
-        @Bind(R.id.cancelHandoverButton)
+        @Bind(R.id.acceptHandoverButton)
         TextView cancelHandoverButton;
 
 
@@ -127,7 +127,7 @@ public class AdapterPendingAccept extends RecyclerView.Adapter<AdapterPendingAcc
         }
 
 
-        @OnClick(R.id.cancelHandoverButton)
+        @OnClick(R.id.acceptHandoverButton)
         void onClickConfirmButton(View view)
         {
             notifications.notifyCancelHandover(dataset.get(getLayoutPosition()));

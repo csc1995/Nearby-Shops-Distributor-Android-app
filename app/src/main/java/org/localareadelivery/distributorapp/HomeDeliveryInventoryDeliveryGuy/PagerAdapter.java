@@ -18,20 +18,20 @@ import org.localareadelivery.distributorapp.ModelRoles.DeliveryGuySelf;
 
 public class PagerAdapter extends FragmentPagerAdapter {
 
-    private DeliveryGuySelf deliveryVehicle;
-    private int vehicleID;
+//    private DeliveryGuySelf deliveryVehicle;
+//    private int vehicleID;
 
 
 
     public PagerAdapter(FragmentManager fm, DeliveryGuySelf deliveryGuySelf) {
         super(fm);
-
-        deliveryVehicle = deliveryGuySelf;
-
-        if(deliveryVehicle!=null)
-        {
-            vehicleID = deliveryVehicle.getDeliveryGuyID();
-        }
+//
+//        deliveryVehicle = deliveryGuySelf;
+//
+//        if(deliveryVehicle!=null)
+//        {
+//            vehicleID = deliveryVehicle.getDeliveryGuyID();
+//        }
     }
 
     @Override
@@ -43,43 +43,31 @@ public class PagerAdapter extends FragmentPagerAdapter {
 
         if(position==0)
         {
-            //            pendingHandoverFragment.setDeliveryGuySelf(deliveryVehicle);
             return PendingHandoverFragment.newInstance();
         }
         else if(position == 1)
         {
-            OutForDeliveryFragment outForDeliveryFragment = OutForDeliveryFragment.newInstance();
-            outForDeliveryFragment.setDeliveryGuySelf(deliveryVehicle);
-            return outForDeliveryFragment;
+            return OutForDeliveryFragment.newInstance();
 
         }else if (position == 2)
         {
-            PendingDeliveryApproval fragment = PendingDeliveryApproval.newInstance();
-            fragment.setDeliveryGuySelf(deliveryVehicle);
-            return fragment;
+            return PendingDeliveryApproval.newInstance();
 
         }
         else if (position == 3)
         {
-            PaymentsPendingFragment paymentsPendingFragment = PaymentsPendingFragment.newInstance();
-            paymentsPendingFragment.setDeliveryGuySelf(deliveryVehicle);
-            return paymentsPendingFragment;
+            return PaymentsPendingFragment.newInstance();
         }
         else if (position == 4)
         {
-            PendingReturnDGI pendingReturnDGI = PendingReturnDGI.newInstance();
-            pendingReturnDGI.setDeliveryGuySelf(deliveryVehicle);
-            return pendingReturnDGI;
+            return PendingReturnDGI.newInstance();
         }
         else if (position == 5)
         {
-            PendingReturnCancelledByShopDGI returnCancelledByShopDGI = PendingReturnCancelledByShopDGI.newInstance();
-            returnCancelledByShopDGI.setDeliveryGuySelf(deliveryVehicle);
-            return returnCancelledByShopDGI;
+            return PendingReturnCancelledByShopDGI.newInstance();
         }
 
-
-        return PlaceholderFragment.newInstance(vehicleID);
+        return null;
     }
 
     @Override

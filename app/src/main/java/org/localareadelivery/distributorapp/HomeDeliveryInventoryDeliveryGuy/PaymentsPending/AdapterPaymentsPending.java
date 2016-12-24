@@ -109,7 +109,7 @@ public class AdapterPaymentsPending extends RecyclerView.Adapter<AdapterPayments
         @Bind(R.id.currentStatus)
         TextView currentStatus;
 
-        @Bind(R.id.cancelHandoverButton)
+        @Bind(R.id.acceptHandoverButton)
         TextView cancelHandoverButton;
 
 
@@ -122,7 +122,7 @@ public class AdapterPaymentsPending extends RecyclerView.Adapter<AdapterPayments
         }
 
 
-        @OnClick(R.id.cancelHandoverButton)
+        @OnClick(R.id.acceptHandoverButton)
         void onClickConfirmButton(View view)
         {
             notifications.notifyPaymentReceived(dataset.get(getLayoutPosition()));

@@ -19,7 +19,8 @@ import org.localareadelivery.distributorapp.ModelEndpoints.OrderEndPoint;
 import org.localareadelivery.distributorapp.ModelRoles.DeliveryGuySelf;
 import org.localareadelivery.distributorapp.ModelStatusCodes.OrderStatusHomeDelivery;
 import org.localareadelivery.distributorapp.R;
-import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderService;
+import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderServiceDeliveryGuySelf;
+import org.localareadelivery.distributorapp.Utility.UtilityLogin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,10 +28,11 @@ import java.util.List;
 import javax.inject.Inject;
 
 import icepick.State;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static org.localareadelivery.distributorapp.DeliveryGuyDashboard.DeliveryGuyDashboard.DELIVERY_GUY_INTENT_KEY_DASHBOARD;
 
 /**
  * Created by sumeet on 13/6/16.
@@ -43,8 +45,15 @@ import retrofit2.Response;
 public class PaymentsPendingFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, AdapterPaymentsPending.NotificationReciever {
 
 
+//    @Inject
+//    OrderService orderService;
+
+
+
     @Inject
-    OrderService orderService;
+    OrderServiceDeliveryGuySelf orderServiceDelivery;
+
+
     RecyclerView recyclerView;
 
     AdapterPaymentsPending adapter;
@@ -98,14 +107,15 @@ public class PaymentsPendingFragment extends Fragment implements SwipeRefreshLay
 
         ordersTotal = (TextView) rootView.findViewById(R.id.ordersTotal);
 
+        deliveryGuySelf = getActivity().getIntent().getParcelableExtra(DELIVERY_GUY_INTENT_KEY_DASHBOARD);
 
 
-        if(savedInstanceState!=null)
-        {
-            // restore instance state
-            deliveryGuySelf = savedInstanceState.getParcelable("savedVehicle");
-        }
-        else
+//        if(savedInstanceState!=null)
+//        {
+//             restore instance state
+//            deliveryGuySelf = savedInstanceState.getParcelable("savedVehicle");
+//        }
+        if(savedInstanceState ==null)
         {
             makeRefreshNetworkCall();
         }
@@ -165,10 +175,10 @@ public class PaymentsPendingFragment extends Fragment implements SwipeRefreshLay
                 {
                     // trigger fetch next page
 
-                    if(layoutManager.findLastVisibleItemPosition() == previous_position)
-                    {
-                        return;
-                    }
+//                    if(layoutManager.findLastVisibleItemPosition() == previous_position)
+//                    {
+//                        return;
+//                    }
 
 
                     if((offset+limit)<=item_count)
@@ -182,13 +192,13 @@ public class PaymentsPendingFragment extends Fragment implements SwipeRefreshLay
 
                                 swipeContainer.setRefreshing(true);
 
-                                makeNetworkCall(false);
+                                makeNetworkCall(false,false);
                             }
                         });
 
                     }
 
-                    previous_position = layoutManager.findLastVisibleItemPosition();
+//                    previous_position = layoutManager.findLastVisibleItemPosition();
                 }
             }
         });
@@ -197,14 +207,14 @@ public class PaymentsPendingFragment extends Fragment implements SwipeRefreshLay
     }
 
 
-    int previous_position = -1;
+//    int previous_position = -1;
 
 
 
     @Override
     public void onRefresh() {
-        offset = 0;
-        makeNetworkCall(true);
+//        offset = 0;
+        makeNetworkCall(true,true);
     }
 
 
@@ -229,25 +239,60 @@ public class PaymentsPendingFragment extends Fragment implements SwipeRefreshLay
     public void onResume() {
         super.onResume();
         notifyTitleChanged();
+        isDestroyed=false;
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        isDestroyed = true;
     }
 
 
 
-    void makeNetworkCall(final boolean clearDataset)
+    void makeNetworkCall(final boolean clearDataset,boolean resetOffset)
     {
-
-        if(deliveryGuySelf ==null)
+        if(resetOffset)
         {
-            return;
+            offset=0;
         }
+
+//        if(deliveryGuySelf ==null)
+//        {
+//            return;
+//        }
 
 //        Shop currentShop = UtilityShopHome.getShop(getContext());
 
-        Call<OrderEndPoint> call = orderService
-                .getOrders(null,deliveryGuySelf.getShopID(),false,
-                        OrderStatusHomeDelivery.PENDING_DELIVERY,
-                        null, deliveryGuySelf.getDeliveryGuyID(),false,null,true,true,
+
+        int deliveryGuyID = 0;
+
+        if(deliveryGuySelf!=null)
+        {
+            deliveryGuyID = deliveryGuySelf.getDeliveryGuyID();
+        }
+
+        Call<OrderEndPoint> call = orderServiceDelivery
+                .getOrders(UtilityLogin.getAuthorizationHeaders(getActivity()),
+                        deliveryGuyID,
+                        null,null,
+                        false,OrderStatusHomeDelivery.PENDING_DELIVERY,
+                        null,
+                        false,null,
+                        null,null,
+                        null,
                         null,limit,offset,null);
+
+
+
+//        Call<OrderEndPoint> call = orderService
+//                .getOrders(null,deliveryGuySelf.getShopID(),false,
+//                        OrderStatusHomeDelivery.PENDING_DELIVERY,
+//                        null, deliveryGuySelf.getDeliveryGuyID(),
+//                        false,null,
+//                        true,true,
+//                        null,limit,offset,null);
 
 
         call.enqueue(new Callback<OrderEndPoint>() {
@@ -355,51 +400,51 @@ public class PaymentsPendingFragment extends Fragment implements SwipeRefreshLay
 
 
 
-    @Override
-    public void notifyCancelHandover(Order order) {
+//    @Override
+//    public void notifyCancelHandover(Order order) {
+//
+//
+//        order.setStatusHomeDelivery(OrderStatusHomeDelivery.PENDING_DELIVERY);
+//
+//        Call<ResponseBody> call = orderService.putOrder(order.getOrderID(),order);
+//
+//        call.enqueue(new Callback<ResponseBody>() {
+//            @Override
+//            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+//
+//                if(response.code()==200)
+//                {
+//                    showToastMessage("Successful !");
+//                    makeRefreshNetworkCall();
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onFailure(Call<ResponseBody> call, Throwable t) {
+//
+//                showToastMessage("Network Request Failed. Try again !");
+//
+//            }
+//        });
+//    }
 
 
-        order.setStatusHomeDelivery(OrderStatusHomeDelivery.PENDING_DELIVERY);
-
-        Call<ResponseBody> call = orderService.putOrder(order.getOrderID(),order);
-
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-
-                if(response.code()==200)
-                {
-                    showToastMessage("Successful !");
-                    makeRefreshNetworkCall();
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-
-                showToastMessage("Network Request Failed. Try again !");
-
-            }
-        });
-    }
+//    public DeliveryGuySelf getDeliveryGuySelf() {
+//        return deliveryGuySelf;
+//    }
+//
+//    public void setDeliveryGuySelf(DeliveryGuySelf deliveryGuySelf) {
+//        this.deliveryGuySelf = deliveryGuySelf;
+//    }
+//
 
 
-    public DeliveryGuySelf getDeliveryGuySelf() {
-        return deliveryGuySelf;
-    }
-
-    public void setDeliveryGuySelf(DeliveryGuySelf deliveryGuySelf) {
-        this.deliveryGuySelf = deliveryGuySelf;
-    }
-
-
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putParcelable("savedVehicle", deliveryGuySelf);
-    }
+//    @Override
+//    public void onSaveInstanceState(Bundle outState) {
+//        super.onSaveInstanceState(outState);
+//        outState.putParcelable("savedVehicle", deliveryGuySelf);
+//    }
 
 
 
@@ -419,9 +464,4 @@ public class PaymentsPendingFragment extends Fragment implements SwipeRefreshLay
     }
 
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        isDestroyed = true;
-    }
 }

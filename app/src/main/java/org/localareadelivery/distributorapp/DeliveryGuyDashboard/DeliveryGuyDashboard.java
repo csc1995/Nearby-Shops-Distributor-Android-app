@@ -28,7 +28,7 @@ public class DeliveryGuyDashboard extends AppCompatActivity implements NotifyTit
 
     DeliveryGuySelf deliveryGuySelf = null;
 
-    public static final String DELIVERY_VEHICLE_INTENT_KEY = "delivery_vehicle_intent_key";
+    public static final String DELIVERY_GUY_INTENT_KEY_DASHBOARD = "delivery_guy_intent_key";
 
 
     @Override
@@ -43,7 +43,7 @@ public class DeliveryGuyDashboard extends AppCompatActivity implements NotifyTit
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
 
-        deliveryGuySelf = getIntent().getParcelableExtra(DELIVERY_VEHICLE_INTENT_KEY);
+        deliveryGuySelf = getIntent().getParcelableExtra(DELIVERY_GUY_INTENT_KEY_DASHBOARD);
         mPagerAdapter = new PagerAdapter(getSupportFragmentManager(), deliveryGuySelf);
 
         // Set up the ViewPager with the sections adapter.
