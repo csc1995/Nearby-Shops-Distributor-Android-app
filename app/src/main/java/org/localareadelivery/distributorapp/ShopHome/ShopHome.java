@@ -11,6 +11,8 @@ import org.localareadelivery.distributorapp.Items.ItemsTypeSimple;
 import org.localareadelivery.distributorapp.ItemsByCategoryTypeSimple.ItemsByCatSimple;
 import org.localareadelivery.distributorapp.ItemsInShop.ItemsInStock;
 import org.localareadelivery.distributorapp.ItemsInShopByCat.ItemsInStockByCat;
+import org.localareadelivery.distributorapp.Model.Shop;
+import org.localareadelivery.distributorapp.Notifications.SSEIntentService;
 import org.localareadelivery.distributorapp.OrdersHome.OrdersHome;
 import org.localareadelivery.distributorapp.QuickStockEditor.QuickStockEditor;
 import org.localareadelivery.distributorapp.R;
@@ -37,6 +39,7 @@ public class ShopHome extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        setupNotifications();
 
         //Toast.makeText(this,String.valueOf(getIntent().getIntExtra(SHOP_ID_INTENT_KEY,0)),Toast.LENGTH_SHORT).show();
 
@@ -145,10 +148,23 @@ public class ShopHome extends AppCompatActivity {
 */
 
 
+    void setupNotifications()
+    {
+        Shop shop = UtilityShopHome.getShop(this);
+
+        if(shop!=null)
+        {
+            Intent intent = new Intent(this, SSEIntentService.class);
+            intent.putExtra(SSEIntentService.SHOP_ID, shop.getShopID());
+            startService(intent);
+        }
+    }
+
+
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
         ButterKnife.unbind(this);
     }
 

@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.HomeDistributor;
+package org.localareadelivery.distributorapp.Notifications;
 
 import android.app.IntentService;
 import android.app.NotificationManager;
@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.media.RingtoneManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 import org.glassfish.jersey.media.sse.EventInput;
 import org.glassfish.jersey.media.sse.InboundEvent;
@@ -25,6 +26,8 @@ import javax.ws.rs.client.WebTarget;
 
 public class SSEIntentService extends IntentService{
 
+    public static final String SHOP_ID = "SHOP_ID";
+
     /**
      * Creates an IntentService.  Invoked by your subclass's constructor.
      *
@@ -39,16 +42,62 @@ public class SSEIntentService extends IntentService{
     }
 
 
+    void logMessage(String message)
+    {
+        Log.d("notification_log",message);
+    }
+
+
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
 
+//        System.out.println("Inside Notification Intent Service");
+
+        logMessage("Inside Notification Intent Service !");
+
+        try{
+
+            handleNotification(intent);
+        }
+        catch (Exception ex)
+        {
+            System.out.println("Exception : " + ex.toString());
+        }
+
+    }
+
+
+
+    void handleNotification(Intent intent)
+    {
         Client client = ClientBuilder.newBuilder()
                 .register(SseFeature.class).build();
 
-        String url = UtilityGeneral.getServiceURL(MyApplication.getAppContext()) + "/api/Order/Notifications/1";
+        int shopID = -1;
+
+//        System.out.println("Inside Before Shop Fetch!");
+        logMessage("Inside Before Shop Fetch !");
+
+        if (intent != null) {
+            shopID = intent.getIntExtra(SHOP_ID,-1);
+        }
+
+        if(shopID==-1)
+        {
+            return;
+        }
+
+
+//        String url = UtilityGeneral.getServiceURL(MyApplication.getAppContext()) + "/api/Order/ShopStaff/Notifications/" + String.valueOf(shopID);
+
+        String url = UtilityGeneral.getServiceURL(MyApplication.getAppContext()) + "/api/Order/Notifications/" + String.valueOf(shopID);
+
+
+        System.out.println("URL : " + url);
+        logMessage("URL : " + url);
+
 
         WebTarget target = client.target(url);
-
 
         EventInput eventInput = target.request().get(EventInput.class);
 
@@ -63,16 +112,17 @@ public class SSEIntentService extends IntentService{
             System.out.println(inboundEvent.getName() + "; "
                     + inboundEvent.readData(String.class));
 
-            String message = inboundEvent.getName() + "; " + inboundEvent.readData(String.class);
+            String eventName = inboundEvent.getName();
+            String message = inboundEvent.readData(String.class);
 
             NotificationCompat.Builder mBuilder =
                     new NotificationCompat.Builder(SSEIntentService.this)
-                            .setContentTitle("SSE Notification")
+                            .setContentTitle(eventName)
                             .setStyle(new NotificationCompat.BigTextStyle()
                                     .bigText("server"))
                             .setContentText(message)
-                            .setSmallIcon(R.drawable.ic_details_black_48px)
-                    .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
+                            .setSmallIcon(R.drawable.ic_detach)
+                            .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
 
 
 
@@ -81,9 +131,7 @@ public class SSEIntentService extends IntentService{
             // mId allows you to update the notification later on.
             mNotificationManager.notify(2, mBuilder.build());
         }
-
     }
-
 
 
 }

@@ -170,7 +170,7 @@ public class PackedOrdersFragment extends Fragment implements SwipeRefreshLayout
                 super.onScrollStateChanged(recyclerView, newState);
 
 
-                if(offset + limit > layoutManager.findLastVisibleItemPosition())
+                if(offset + limit > layoutManager.findLastVisibleItemPosition()+1)
                 {
                     return;
                 }

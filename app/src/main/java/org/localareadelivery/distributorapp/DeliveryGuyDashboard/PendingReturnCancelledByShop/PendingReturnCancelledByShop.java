@@ -167,6 +167,12 @@ public class PendingReturnCancelledByShop extends Fragment implements SwipeRefre
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
 
+
+                if(offset + limit > layoutManager.findLastVisibleItemPosition() + 1)
+                {
+                    return;
+                }
+
                 if(layoutManager.findLastVisibleItemPosition()==dataset.size()-1)
                 {
                     // trigger fetch next page
@@ -176,10 +182,6 @@ public class PendingReturnCancelledByShop extends Fragment implements SwipeRefre
 //                        return;
 //                    }
 
-                    if(offset + limit > layoutManager.findLastVisibleItemPosition())
-                    {
-                        return;
-                    }
 
 
                     if((offset+limit)<=item_count)

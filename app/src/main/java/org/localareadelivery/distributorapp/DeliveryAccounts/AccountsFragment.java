@@ -16,6 +16,7 @@ import org.localareadelivery.distributorapp.DaggerComponentBuilder;
 import org.localareadelivery.distributorapp.DeliveryAccounts.EditProfile.EditDelivery;
 import org.localareadelivery.distributorapp.DeliveryAccounts.EditProfile.EditDeliveryFragment;
 import org.localareadelivery.distributorapp.CommonInterfaces.NotifyTitleChanged;
+import org.localareadelivery.distributorapp.DeliveryAccounts.EditProfile.UtilityDeliveryGuySelf;
 import org.localareadelivery.distributorapp.HomeDeliveryInventory.Interface.RefreshFragment;
 import org.localareadelivery.distributorapp.ModelRoles.DeliveryGuySelf;
 import org.localareadelivery.distributorapp.Model.Shop;
@@ -332,7 +333,8 @@ public class AccountsFragment extends Fragment implements SwipeRefreshLayout.OnR
     public void notifyEditClick(DeliveryGuySelf deliveryGuySelf) {
 
         Intent intent = new Intent(getContext(), EditDelivery.class);
-        intent.putExtra(EditDeliveryFragment.DELIVERY_GUY_INTENT_KEY,deliveryGuySelf);
+//        intent.putExtra(EditDeliveryFragment.DELIVERY_GUY_INTENT_KEY,deliveryGuySelf);
+        UtilityDeliveryGuySelf.saveDeliveryGuySelf(deliveryGuySelf,getActivity());
         intent.putExtra(EditDeliveryFragment.EDIT_MODE_INTENT_KEY,EditDeliveryFragment.MODE_UPDATE);
         startActivity(intent);
 

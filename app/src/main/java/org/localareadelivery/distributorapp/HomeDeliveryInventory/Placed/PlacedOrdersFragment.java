@@ -156,7 +156,7 @@ public class PlacedOrdersFragment extends Fragment implements AdapterPlacedOrder
                 super.onScrollStateChanged(recyclerView, newState);
 
 
-                if(offset + limit > layoutManager.findLastVisibleItemPosition())
+                if(offset + limit > layoutManager.findLastVisibleItemPosition()+1)
                 {
                     return;
                 }

@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Switch;
@@ -95,6 +96,13 @@ public class EditDeliveryFragment extends Fragment {
     @Bind(R.id.phone_number) EditText phone;
     @Bind(R.id.switch_enable) Switch aSwitch;
 
+
+    @Bind(R.id.designation) EditText designation;
+    @Bind(R.id.make_account_private) CheckBox makeAccountPrivate;
+    @Bind(R.id.govt_id_name) EditText govtIDName;
+    @Bind(R.id.govt_id_number) EditText govtIDNumber;
+
+
     @Bind(R.id.saveButton) Button buttonUpdateItem;
 
 
@@ -132,7 +140,8 @@ public class EditDeliveryFragment extends Fragment {
 
         if(savedInstanceState==null)
         {
-            deliveryGuySelf = getActivity().getIntent().getParcelableExtra(DELIVERY_GUY_INTENT_KEY);
+//            deliveryGuySelf = getActivity().getIntent().getParcelableExtra(DELIVERY_GUY_INTENT_KEY);
+            deliveryGuySelf = UtilityDeliveryGuySelf.getDeliveryGuySelf(getActivity());
             current_mode = getActivity().getIntent().getIntExtra(EDIT_MODE_INTENT_KEY,MODE_ADD);
 
             if(deliveryGuySelf!=null) {
@@ -410,6 +419,11 @@ public class EditDeliveryFragment extends Fragment {
             about.setText(deliveryGuySelf.getAbout());
             phone.setText(deliveryGuySelf.getPhoneNumber());
             aSwitch.setChecked(deliveryGuySelf.getEnabled());
+
+            designation.setText(deliveryGuySelf.getDesignation());
+            govtIDName.setText(deliveryGuySelf.getGovtIDName());
+            govtIDNumber.setText(deliveryGuySelf.getGovtIDNumber());
+            makeAccountPrivate.setChecked(deliveryGuySelf.isAccountPrivate());
         }
     }
 
@@ -440,6 +454,12 @@ public class EditDeliveryFragment extends Fragment {
         deliveryGuySelf.setPhoneNumber(phone.getText().toString());
 
         deliveryGuySelf.setEnabled(aSwitch.isChecked());
+
+        deliveryGuySelf.setDesignation(designation.getText().toString());
+        deliveryGuySelf.setGovtIDName(govtIDName.getText().toString());
+        deliveryGuySelf.setGovtIDNumber(govtIDNumber.getText().toString());
+        deliveryGuySelf.setAccountPrivate(makeAccountPrivate.isChecked());
+
     }
 
 

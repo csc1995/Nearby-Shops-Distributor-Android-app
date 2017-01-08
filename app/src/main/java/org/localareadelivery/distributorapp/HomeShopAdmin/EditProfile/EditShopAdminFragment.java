@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Switch;
@@ -95,6 +96,10 @@ public class EditShopAdminFragment extends Fragment {
     @Bind(R.id.phone_number) EditText phone;
     @Bind(R.id.designation) EditText designation;
 //    @Bind(R.id.switch_enable) Switch aSwitch;
+    @Bind(R.id.make_account_private) CheckBox accountPrivate;
+
+    @Bind(R.id.govt_id_name) EditText govtIDName;
+    @Bind(R.id.govt_id_number) EditText govtIDNumber;
 
     @Bind(R.id.saveButton) Button buttonUpdateItem;
 
@@ -395,6 +400,12 @@ public class EditShopAdminFragment extends Fragment {
             about.setText(shopAdmin.getAbout());
             phone.setText(shopAdmin.getPhoneNumber());
             designation.setText(shopAdmin.getDesignation());
+
+            accountPrivate.setChecked(shopAdmin.isAccountPrivate());
+
+            govtIDName.setText(shopAdmin.getGovtIDName());
+            govtIDNumber.setText(shopAdmin.getGovtIDNumber());
+
         }
     }
 
@@ -424,6 +435,11 @@ public class EditShopAdminFragment extends Fragment {
         shopAdmin.setAbout(about.getText().toString());
         shopAdmin.setPhoneNumber(phone.getText().toString());
         shopAdmin.setDesignation(designation.getText().toString());
+
+        shopAdmin.setAccountPrivate(accountPrivate.isChecked());
+
+        shopAdmin.setGovtIDName(govtIDName.getText().toString());
+        shopAdmin.setGovtIDNumber(govtIDNumber.getText().toString());
 
     }
 

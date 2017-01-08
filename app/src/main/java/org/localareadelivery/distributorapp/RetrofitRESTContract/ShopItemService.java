@@ -5,12 +5,6 @@ import org.localareadelivery.distributorapp.ModelEndpoints.ShopItemEndPoint;
 
 import java.util.List;
 
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;

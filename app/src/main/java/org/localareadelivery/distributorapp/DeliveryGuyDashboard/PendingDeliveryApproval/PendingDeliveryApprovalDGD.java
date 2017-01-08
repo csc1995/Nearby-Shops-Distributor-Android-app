@@ -170,6 +170,13 @@ public class PendingDeliveryApprovalDGD extends Fragment
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
 
+
+                if(offset + limit > layoutManager.findLastVisibleItemPosition()+1)
+                {
+                    return;
+                }
+
+
                 if(layoutManager.findLastVisibleItemPosition()==dataset.size()-1)
                 {
                     // trigger fetch next page
@@ -180,10 +187,6 @@ public class PendingDeliveryApprovalDGD extends Fragment
 //                    }
 
 
-                    if(offset + limit > layoutManager.findLastVisibleItemPosition())
-                    {
-                        return;
-                    }
 
 
                     if((offset+limit)<=item_count)

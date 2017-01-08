@@ -156,7 +156,7 @@ public class PendingOrdersFragment extends Fragment implements AdapterOrdersPend
                 super.onScrollStateChanged(recyclerView, newState);
 
 
-                if(offset + limit > layoutManager.findLastVisibleItemPosition())
+                if(offset + limit > layoutManager.findLastVisibleItemPosition() + 1)
                 {
                     return;
                 }

@@ -10,9 +10,11 @@ import android.widget.Toast;
 import org.glassfish.jersey.media.sse.EventInput;
 import org.glassfish.jersey.media.sse.InboundEvent;
 import org.glassfish.jersey.media.sse.SseFeature;
-import org.localareadelivery.distributorapp.HomeDistributor.SSEIntentService;
+import org.localareadelivery.distributorapp.Model.Shop;
+import org.localareadelivery.distributorapp.Notifications.SSEIntentService;
 import org.localareadelivery.distributorapp.MyApplication;
 import org.localareadelivery.distributorapp.R;
+import org.localareadelivery.distributorapp.ShopHome.UtilityShopHome;
 import org.localareadelivery.distributorapp.Utility.UtilityGeneral;
 
 import javax.ws.rs.client.Client;
@@ -45,10 +47,14 @@ public class SSEExample extends AppCompatActivity {
     @OnClick(R.id.send_button)
     void sendClick()
     {
+        Shop shop = UtilityShopHome.getShop(this);
 
-        Intent intent = new Intent(this, SSEIntentService.class);
-        intent.putExtra("extra","Extra string");
-        startService(intent);
+        if(shop!=null)
+        {
+            Intent intent = new Intent(this, SSEIntentService.class);
+            intent.putExtra(SSEIntentService.SHOP_ID, shop.getShopID());
+            startService(intent);
+        }
 
 //        new SseTask().execute(null,null);
     }

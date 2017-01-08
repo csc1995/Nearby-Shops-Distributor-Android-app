@@ -330,6 +330,7 @@ public class AccountsSelectionFragment extends Fragment implements SwipeRefreshL
 
             Intent output = new Intent();
             output.putExtra("output", deliveryGuySelf);
+
             getActivity().setResult(2,output);
             getActivity().finish();
 
