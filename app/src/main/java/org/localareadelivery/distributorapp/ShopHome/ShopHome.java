@@ -13,7 +13,8 @@ import org.localareadelivery.distributorapp.ItemsInShop.ItemsInStock;
 import org.localareadelivery.distributorapp.ItemsInShopByCat.ItemsInStockByCat;
 import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.Notifications.SSEIntentService;
-import org.localareadelivery.distributorapp.OrdersHome.OrdersHome;
+import org.localareadelivery.distributorapp.OrdersHomeDelivery.OrdersHomeDelivery;
+import org.localareadelivery.distributorapp.OrdersPickFromShop.OrdersPickFromShop;
 import org.localareadelivery.distributorapp.QuickStockEditor.QuickStockEditor;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.SSEExample.SSEExample;
@@ -55,7 +56,14 @@ public class ShopHome extends AppCompatActivity {
     @OnClick(R.id.option_orders)
     void ordersClick()
     {
-        startActivity(new Intent(this, OrdersHome.class));
+        startActivity(new Intent(this, OrdersHomeDelivery.class));
+    }
+
+
+    @OnClick(R.id.option_orders_pick_from_shop)
+    void ordersPickFromShop()
+    {
+        startActivity(new Intent(this, OrdersPickFromShop.class));
     }
 
 

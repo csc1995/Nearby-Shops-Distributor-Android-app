@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
-import org.localareadelivery.distributorapp.ItemsByCategoryTabsOld.Interfaces.NotifySort;
+import org.localareadelivery.distributorapp.ItemsInShop.Interfaces.NotifySort;
 import org.localareadelivery.distributorapp.ItemsByCategoryTypeSimple.Interfaces.NotifyIndicatorChanged;
 import org.localareadelivery.distributorapp.ItemsByCategoryTypeSimple.Interfaces.NotifySearch;
 import org.localareadelivery.distributorapp.ItemsByCategoryTypeSimple.Utility.HeaderItemsList;

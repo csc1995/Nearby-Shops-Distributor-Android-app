@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.ItemsByCategoryTabsOld.Interfaces;
+package org.localareadelivery.distributorapp.ItemsInShop.Interfaces;
 
 /**
  * Created by sumeet on 14/9/16.

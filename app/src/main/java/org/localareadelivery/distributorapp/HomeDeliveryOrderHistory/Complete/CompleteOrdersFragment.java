@@ -15,6 +15,8 @@ import android.widget.Toast;
 import org.localareadelivery.distributorapp.CommonInterfaces.NotifyTitleChanged;
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
 import org.localareadelivery.distributorapp.HomeDeliveryInventory.Interface.RefreshFragment;
+import org.localareadelivery.distributorapp.HomeDeliveryOrderHistory.SlidingLayerSort.UtilitySortOrdersHD;
+import org.localareadelivery.distributorapp.ItemsInShop.Interfaces.NotifySort;
 import org.localareadelivery.distributorapp.Model.Order;
 import org.localareadelivery.distributorapp.ModelEndpoints.OrderEndPoint;
 import org.localareadelivery.distributorapp.OrderDetail.OrderDetail;
@@ -34,7 +36,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class CompleteOrdersFragment extends Fragment implements AdapterComplete.NotifyConfirmOrder, SwipeRefreshLayout.OnRefreshListener {
+public class CompleteOrdersFragment extends Fragment implements AdapterComplete.NotifyConfirmOrder, SwipeRefreshLayout.OnRefreshListener ,NotifySort{
 
 
 //    @Inject
@@ -216,14 +218,18 @@ public class CompleteOrdersFragment extends Fragment implements AdapterComplete.
 
 //            Shop currentShop = UtilityShopHome.getShop(getContext());
 
-            Call<OrderEndPoint> call = orderServiceShopStaff.getOrders(
+
+        String current_sort = "";
+        current_sort = UtilitySortOrdersHD.getSort(getContext()) + " " + UtilitySortOrdersHD.getAscending(getContext());
+
+        Call<OrderEndPoint> call = orderServiceShopStaff.getOrders(
                     UtilityLogin.getAuthorizationHeaders(getActivity()),
                     null,null,false,
                     null,null,null,
                     null,null,
                     null,null,
                     false,
-                    null,limit,offset,null);
+                    current_sort,limit,offset,null);
 
 
             call.enqueue(new Callback<OrderEndPoint>() {
@@ -338,6 +344,11 @@ public class CompleteOrdersFragment extends Fragment implements AdapterComplete.
     public void notifyOrderSelected(Order order) {
         UtilityOrderDetail.saveOrder(order,getActivity());
         getActivity().startActivity(new Intent(getActivity(),OrderDetail.class));
+    }
+
+    @Override
+    public void notifySortChanged() {
+        makeRefreshNetworkCall();
     }
 
 

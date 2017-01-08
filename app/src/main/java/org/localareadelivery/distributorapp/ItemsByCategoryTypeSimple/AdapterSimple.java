@@ -365,7 +365,7 @@ public class AdapterSimple extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         TextView priceRange;
         @Bind(R.id.price_average)
         TextView priceAverage;
-        @Bind(R.id.shop_count)
+        @Bind(R.id.order_status)
         TextView shopCount;
         @Bind(R.id.item_rating)
         TextView itemRating;

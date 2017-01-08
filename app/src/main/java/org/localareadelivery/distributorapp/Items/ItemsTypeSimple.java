@@ -19,8 +19,8 @@ import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.wunderlist.slidinglayer.SlidingLayer;
 
-import org.localareadelivery.distributorapp.ItemsByCategoryTabsOld.Interfaces.NotifySort;
-import org.localareadelivery.distributorapp.ItemsByCategoryTabsOld.Interfaces.ToggleFab;
+import org.localareadelivery.distributorapp.ItemsInShop.Interfaces.NotifySort;
+import org.localareadelivery.distributorapp.ItemsInShop.Interfaces.ToggleFab;
 import org.localareadelivery.distributorapp.ItemsByCategoryTypeSimple.Interfaces.NotifyBackPressed;
 import org.localareadelivery.distributorapp.ItemsByCategoryTypeSimple.Interfaces.NotifyFABClick;
 import org.localareadelivery.distributorapp.ItemsByCategoryTypeSimple.Interfaces.NotifyIndicatorChanged;

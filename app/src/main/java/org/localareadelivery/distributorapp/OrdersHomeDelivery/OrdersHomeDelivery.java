@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.OrdersHome;
+package org.localareadelivery.distributorapp.OrdersHomeDelivery;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,7 +17,7 @@ import org.localareadelivery.distributorapp.R;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class OrdersHome extends AppCompatActivity {
+public class OrdersHomeDelivery extends AppCompatActivity {
 
 
     RelativeLayout ordersHomeDelivery;
@@ -37,14 +37,14 @@ public class OrdersHome extends AppCompatActivity {
     }
 
 
-    @OnClick(R.id.order_home_delivery)
+    @OnClick(R.id.home_delivery_inventory)
     void homeDeliveryClick()
     {
         this.startActivity(new Intent(this, HomeDelivery.class));
     }
 
 
-    @OnClick(R.id.order_edit_delivery_vehicles)
+    @OnClick(R.id.delivery_guy_inventory)
     void deliveryVehiclesClick(View view)
     {
 //        Intent intent = new Intent(this, DeliveryVehicleActivity.class);
@@ -59,7 +59,7 @@ public class OrdersHome extends AppCompatActivity {
     }
 
 
-    @OnClick(R.id.orderhome_vehicle_driver_dashboard)
+    @OnClick(R.id.delivery_guy_dashboard)
     void vehicleDriverDashboardClick(View view)
     {
 //        Intent intent = new Intent(this, DeliveryVehicleActivity.class);
@@ -72,7 +72,7 @@ public class OrdersHome extends AppCompatActivity {
     }
 
 
-    @OnClick(R.id.cancelled_orders_home_delivery)
+    @OnClick(R.id.cancelled_orders)
     void cancelledOrdersClick(View view)
     {
         Intent intent = new Intent(this, CancelledOrdersHomeDelivery.class);
@@ -80,7 +80,7 @@ public class OrdersHome extends AppCompatActivity {
     }
 
 
-    @OnClick(R.id.order_history)
+    @OnClick(R.id.orders_history)
     void orderHistory()
     {
         startActivity(new Intent(this, OrderHistoryHD.class));
@@ -91,7 +91,6 @@ public class OrdersHome extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
         ButterKnife.unbind(this);
     }
 }

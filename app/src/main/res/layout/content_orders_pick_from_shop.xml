@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+
 <android.support.v4.widget.NestedScrollView
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="org.localareadelivery.distributorapp.OrdersPickFromShop.OrdersPickFromShop"
+    tools:showIn="@layout/activity_orders_pick_from_shop"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="org.localareadelivery.distributorapp.OrdersHomeDelivery.OrdersHomeDelivery"
-    tools:showIn="@layout/activity_orders_home">
-
+    android:layout_height="match_parent">
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/content_orders_pick_from_shop"
@@ -21,7 +21,6 @@
         android:paddingTop="@dimen/activity_vertical_margin">
 
 
-
         <TextView
             android:id="@+id/border_top"
             android:background="#88000000"
@@ -31,7 +30,6 @@
             android:layout_width="0dp"
             android:layout_height="1dp" />
 
-
         <TextView
             app:layout_constraintTop_toBottomOf="@+id/border_top"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -39,13 +37,11 @@
             android:padding="5dp"
             android:layout_marginTop="10dp"
             android:id="@+id/header_inventory"
-            android:text="Home Delivery Inventory"
+            android:text="Pick From Shop Inventory"
             android:textSize="17sp"
             android:background="@color/light_grey"
             android:layout_width="0dp"
             android:layout_height="wrap_content" />
-
-
 
 
         <android.support.constraint.Guideline
@@ -58,123 +54,49 @@
             tools:layout_editor_absoluteX="10dp" />
 
 
+        <!--app:layout_constraintRight_toLeftOf="@id/vertical_guide"-->
+        <!--android:layout_marginEnd="5dp"-->
+        <!--android:layout_marginRight="5dp"-->
+
         <ImageView
-            android:layout_marginEnd="5dp"
-            android:layout_marginRight="5dp"
             android:paddingBottom="60dp"
             android:background="@color/gplus_color_2"
-            android:id="@+id/home_delivery_inventory"
+            android:id="@+id/pick_from_shop_inventory"
             android:layout_marginTop="10dp"
-            app:layout_constraintRight_toLeftOf="@+id/vertical_guide"
+            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/header_inventory"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:srcCompat="@drawable/ic_add_white_24px"
+            app:srcCompat="@drawable/ic_nature_people_white_48px"
             android:layout_width="0dp"
             android:layout_height="150dp" />
 
 
         <TextView
-            app:layout_constraintLeft_toLeftOf="@+id/home_delivery_inventory"
-            app:layout_constraintRight_toRightOf="@+id/home_delivery_inventory"
-            app:layout_constraintBottom_toBottomOf="@+id/home_delivery_inventory"
+            app:layout_constraintLeft_toLeftOf="@+id/pick_from_shop_inventory"
+            app:layout_constraintRight_toRightOf="@+id/pick_from_shop_inventory"
+            app:layout_constraintBottom_toBottomOf="@+id/pick_from_shop_inventory"
             android:padding="10dp"
-            android:id="@+id/text_home_delivery_inventory"
+            android:id="@+id/text_items_by_category"
             android:textSize="@dimen/menu_item_text_size"
             android:textColor="#ffffff"
-            android:text="Home Delivery Inventory"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" />
-
-
-
-
-        <ImageView
-            android:layout_marginStart="5dp"
-            android:layout_marginLeft="5dp"
-            android:paddingBottom="60dp"
-            android:background="@color/cyan900"
-            android:id="@+id/delivery_guy_inventory"
-            android:layout_marginTop="10dp"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/header_inventory"
-            app:srcCompat="@drawable/ic_sort_black_24px"
-            android:layout_width="0dp"
-            android:layout_height="150dp"
-            app:layout_constraintLeft_toLeftOf="@+id/vertical_guide" />
-
-
-        <TextView
-            app:layout_constraintLeft_toLeftOf="@+id/delivery_guy_inventory"
-            app:layout_constraintRight_toRightOf="@+id/delivery_guy_inventory"
-            app:layout_constraintBottom_toBottomOf="@+id/delivery_guy_inventory"
-            android:padding="10dp"
-            android:id="@+id/text_delivery_inventory"
-            android:textSize="@dimen/menu_item_text_size"
-            android:textColor="#ffffff"
-            android:text="Delivery Guy Inventory"
+            android:text="Pick\nfrom Shop Inventory"
             android:layout_width="0dp"
             android:layout_height="wrap_content" />
 
 
 
         <TextView
-            app:layout_constraintTop_toBottomOf="@+id/home_delivery_inventory"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            android:padding="5dp"
-            android:layout_marginTop="10dp"
-            android:id="@+id/header_dashboard"
-            android:text="Delivery Dashboard"
-            android:textSize="17sp"
-            android:background="@color/light_grey"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" />
-
-
-
-        <ImageView
-            android:layout_marginEnd="5dp"
-            android:layout_marginRight="5dp"
-            android:paddingBottom="60dp"
-            android:background="@color/slate_grey"
-            android:id="@+id/delivery_guy_dashboard"
-            android:layout_marginTop="10dp"
-            app:layout_constraintRight_toLeftOf="@+id/vertical_guide"
-            app:layout_constraintTop_toBottomOf="@+id/header_dashboard"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:srcCompat="@drawable/ic_low_priority_black_24px"
-            android:layout_width="0dp"
-            android:layout_height="150dp" />
-
-
-        <TextView
-            app:layout_constraintLeft_toLeftOf="@+id/delivery_guy_dashboard"
-            app:layout_constraintRight_toRightOf="@+id/delivery_guy_dashboard"
-            app:layout_constraintBottom_toBottomOf="@+id/delivery_guy_dashboard"
-            android:padding="10dp"
-            android:id="@+id/text_delivery_dashboard"
-            android:textSize="@dimen/menu_item_text_size"
-            android:textColor="#ffffff"
-            android:text="Delivery Guy Dashboard"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" />
-
-
-
-
-        <TextView
-            app:layout_constraintTop_toBottomOf="@+id/delivery_guy_dashboard"
+            app:layout_constraintTop_toBottomOf="@+id/pick_from_shop_inventory"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             android:padding="5dp"
             android:layout_marginTop="10dp"
             android:id="@+id/header_database"
-            android:text="Orders Database : Home Delivery"
+            android:text="Orders Database : Pick from Shop"
             android:textSize="17sp"
             android:background="@color/light_grey"
             android:layout_width="0dp"
             android:layout_height="wrap_content" />
-
 
 
 
@@ -237,20 +159,13 @@
 
 
 
-        <TextView
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="0dp"
-            android:id="@+id/border_bottom"
-            android:background="#88000000"
-            app:layout_constraintTop_toBottomOf="@+id/cancelled_orders"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            android:layout_width="0dp"
-            android:layout_height="1dp" />
+
+
+
+
+
 
     </android.support.constraint.ConstraintLayout>
 
+
 </android.support.v4.widget.NestedScrollView>
-
-

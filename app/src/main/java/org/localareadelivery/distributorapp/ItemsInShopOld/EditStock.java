@@ -20,7 +20,7 @@ import org.localareadelivery.distributorapp.CommonInterfaces.NotifyTitleChanged;
 import org.localareadelivery.distributorapp.ItemsByCategoryTabsOld.Interfaces.NotifyBackPressed;
 import org.localareadelivery.distributorapp.ItemsByCategoryTabsOld.Interfaces.NotifyCategoryChanged;
 import org.localareadelivery.distributorapp.ItemsByCategoryTabsOld.Interfaces.NotifyGeneral;
-import org.localareadelivery.distributorapp.ItemsByCategoryTabsOld.Interfaces.NotifySort;
+import org.localareadelivery.distributorapp.ItemsInShop.Interfaces.NotifySort;
 import org.localareadelivery.distributorapp.Model.ItemCategory;
 import org.localareadelivery.distributorapp.R;
 

@@ -15,9 +15,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
-import org.localareadelivery.distributorapp.ItemsByCategoryTabsOld.Interfaces.NotifySort;
-import org.localareadelivery.distributorapp.ItemsByCategoryTabsOld.Interfaces.ToggleFab;
-import org.localareadelivery.distributorapp.ItemsByCategoryTypeSimple.Interfaces.NotifyBackPressed;
+import org.localareadelivery.distributorapp.ItemsInShop.Interfaces.NotifySort;
+import org.localareadelivery.distributorapp.ItemsInShop.Interfaces.ToggleFab;
 import org.localareadelivery.distributorapp.ItemsByCategoryTypeSimple.Interfaces.NotifyFABClick;
 import org.localareadelivery.distributorapp.ItemsByCategoryTypeSimple.Interfaces.NotifyIndicatorChanged;
 import org.localareadelivery.distributorapp.ItemsByCategoryTypeSimple.Interfaces.NotifySearch;
@@ -26,11 +25,9 @@ import org.localareadelivery.distributorapp.ItemsByCategoryTypeSimple.Utility.Ut
 import org.localareadelivery.distributorapp.Model.Item;
 import org.localareadelivery.distributorapp.Model.ItemCategory;
 import org.localareadelivery.distributorapp.Model.ShopItem;
-import org.localareadelivery.distributorapp.ModelEndpoints.ItemCategoryEndPoint;
 import org.localareadelivery.distributorapp.ModelEndpoints.ItemEndPoint;
 import org.localareadelivery.distributorapp.ModelEndpoints.ShopItemEndPoint;
 import org.localareadelivery.distributorapp.R;
-import org.localareadelivery.distributorapp.RetrofitRESTContract.ItemCategoryService;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ItemService;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ShopItemService;
 import org.localareadelivery.distributorapp.ShopHome.UtilityShopHome;

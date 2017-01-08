@@ -2,7 +2,6 @@ package org.localareadelivery.distributorapp.Items;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.support.constraint.ConstraintLayout;
 import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -20,7 +19,6 @@ import com.squareup.picasso.Picasso;
 
 import org.localareadelivery.distributorapp.ItemsByCategoryTypeSimple.Utility.HeaderItemsList;
 import org.localareadelivery.distributorapp.Model.Item;
-import org.localareadelivery.distributorapp.Model.ItemCategory;
 import org.localareadelivery.distributorapp.Model.ShopItem;
 import org.localareadelivery.distributorapp.ModelStats.ItemStats;
 import org.localareadelivery.distributorapp.R;
@@ -286,7 +284,7 @@ public class AdapterItems extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         @Bind(R.id.itemImage) ImageView categoryImage;
         @Bind(R.id.price_range) TextView priceRange;
         @Bind(R.id.price_average) TextView priceAverage;
-        @Bind(R.id.shop_count) TextView shopCount;
+        @Bind(R.id.order_status) TextView shopCount;
         @Bind(R.id.item_rating) TextView itemRating;
         @Bind(R.id.rating_count) TextView ratingCount;
 

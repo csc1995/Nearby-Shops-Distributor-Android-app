@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import org.localareadelivery.distributorapp.ItemsByCategoryTabsOld.Interfaces.NotifySort;
+import org.localareadelivery.distributorapp.ItemsInShop.Interfaces.NotifySort;
 import org.localareadelivery.distributorapp.Model.Item;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.Utility.UtilitySortItem;
@@ -36,7 +36,7 @@ public class SlidingLayerEditStock extends Fragment {
 //    @Bind(R.id.sort_by_updated)
 //    TextView sort_by_updated;
 
-    @Bind(R.id.item_price)
+    @Bind(R.id.pincode)
     TextView sort_by_price_avg;
 
     @Bind(R.id.item_total)
@@ -184,7 +184,7 @@ public class SlidingLayerEditStock extends Fragment {
     }
 
 
-    @OnClick(R.id.item_price)
+    @OnClick(R.id.pincode)
     void sortByPriceAvg(View view)
     {
         clearSelectionSort();

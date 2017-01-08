@@ -17,6 +17,8 @@ import android.widget.Toast;
 import org.localareadelivery.distributorapp.CommonInterfaces.NotifyTitleChanged;
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
 import org.localareadelivery.distributorapp.HomeDeliveryInventory.Interface.RefreshFragment;
+import org.localareadelivery.distributorapp.HomeDeliveryOrderHistory.SlidingLayerSort.UtilitySortOrdersHD;
+import org.localareadelivery.distributorapp.ItemsInShop.Interfaces.NotifySort;
 import org.localareadelivery.distributorapp.Model.Order;
 import org.localareadelivery.distributorapp.ModelEndpoints.OrderEndPoint;
 import org.localareadelivery.distributorapp.ModelStatusCodes.OrderStatusHomeDelivery;
@@ -38,7 +40,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class PendingOrdersFragment extends Fragment implements AdapterOrdersPending.NotifyConfirmOrder, SwipeRefreshLayout.OnRefreshListener {
+public class PendingOrdersFragment extends Fragment implements AdapterOrdersPending.NotifyConfirmOrder, SwipeRefreshLayout.OnRefreshListener ,NotifySort{
 
 
 //    @Inject
@@ -220,14 +222,19 @@ public class PendingOrdersFragment extends Fragment implements AdapterOrdersPend
 
 //            Shop currentShop = UtilityShopHome.getShop(getContext());
 
-            Call<OrderEndPoint> call = orderServiceShopStaff.getOrders(
+
+        String current_sort = "";
+        current_sort = UtilitySortOrdersHD.getSort(getContext()) + " " + UtilitySortOrdersHD.getAscending(getContext());
+
+
+        Call<OrderEndPoint> call = orderServiceShopStaff.getOrders(
                     UtilityLogin.getAuthorizationHeaders(getActivity()),
                     null,null,false,
                     null,null,null,
                     null,null,
                     null,null,
                     true,
-                    null,limit,offset,null);
+                    current_sort,limit,offset,null);
 
 
             call.enqueue(new Callback<OrderEndPoint>() {
@@ -417,5 +424,8 @@ public class PendingOrdersFragment extends Fragment implements AdapterOrdersPend
     }
 
 
-
+    @Override
+    public void notifySortChanged() {
+        makeRefreshNetworkCall();
+    }
 }

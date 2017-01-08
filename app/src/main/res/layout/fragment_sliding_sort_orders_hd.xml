@@ -21,7 +21,7 @@
             android:id="@+id/text_sortby"
             android:textSize="20sp"
             android:layout_marginTop="10dp"
-            android:text="Sort Item's"
+            android:text="Sort Order's"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -52,12 +52,12 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/sort_rating"
+                android:id="@+id/sort_distance"
                 android:padding="10dp"
                 android:gravity="center"
                 android:layout_weight="1"
                 android:background="#22000000"
-                android:text="Item Rating"
+                android:text="Delivery Distance"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content" />
 
@@ -65,14 +65,14 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginLeft="5dp"
                 android:background="#22000000"
-                android:id="@+id/sort_popularity"
+                android:id="@+id/sort_date_time"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
                 android:paddingLeft="2dp"
                 android:paddingRight="2dp"
                 android:gravity="center"
                 android:layout_weight="1"
-                android:text="Popularity"
+                android:text="Date Time"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content" />
 
@@ -92,12 +92,12 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/shop_count"
+                android:id="@+id/order_status"
                 android:padding="10dp"
                 android:gravity="center"
                 android:layout_weight="1"
                 android:background="#22000000"
-                android:text="Shop Count"
+                android:text="Order Status"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content" />
 
@@ -105,14 +105,14 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginLeft="5dp"
                 android:background="#22000000"
-                android:id="@+id/item_price"
+                android:id="@+id/pincode"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
                 android:paddingLeft="2dp"
                 android:paddingRight="2dp"
                 android:gravity="center"
                 android:layout_weight="1"
-                android:text="Item Price"
+                android:text="Pincode"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content" />
         </LinearLayout>
@@ -189,7 +189,7 @@
             android:id="@+id/header_filter"
             android:textSize="20sp"
             android:layout_marginTop="20dp"
-            android:text="Filter Item's"
+            android:text="Filter Order's"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 

@@ -18,7 +18,6 @@ import org.localareadelivery.distributorapp.Model.Order;
 import org.localareadelivery.distributorapp.Model.OrderItem;
 import org.localareadelivery.distributorapp.Model.DeliveryAddress;
 import org.localareadelivery.distributorapp.ModelStats.OrderStats;
-import org.localareadelivery.distributorapp.MyApplication;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.Utility.UtilityGeneral;
 
@@ -218,7 +217,7 @@ class AdapterOrderDetail extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         @Bind(R.id.quantity)
         TextView quantity;
 
-        @Bind(R.id.item_price)
+        @Bind(R.id.pincode)
         TextView itemPrice;
 
         @Bind(R.id.item_total)

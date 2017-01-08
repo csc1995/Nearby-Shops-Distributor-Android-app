@@ -16,8 +16,8 @@ import android.widget.Toast;
 
 
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
-import org.localareadelivery.distributorapp.ItemsByCategoryTabsOld.Interfaces.NotifySort;
-import org.localareadelivery.distributorapp.ItemsByCategoryTabsOld.Interfaces.ToggleFab;
+import org.localareadelivery.distributorapp.ItemsInShop.Interfaces.NotifySort;
+import org.localareadelivery.distributorapp.ItemsInShop.Interfaces.ToggleFab;
 import org.localareadelivery.distributorapp.ItemsByCategoryTypeSimple.Interfaces.NotifyBackPressed;
 import org.localareadelivery.distributorapp.ItemsByCategoryTypeSimple.Interfaces.NotifyFABClick;
 import org.localareadelivery.distributorapp.ItemsByCategoryTypeSimple.Interfaces.NotifyIndicatorChanged;

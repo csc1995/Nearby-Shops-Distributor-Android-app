@@ -23,18 +23,6 @@ import retrofit2.http.Query;
 public interface DeliveryGuySelfService {
 
 
-    @GET("/api/DeliveryGuySelf/Login")
-    Call<DeliveryGuySelf> getLogin(@Header("Authorization") String headers);
-
-    @GET("/api/DeliveryGuySelf")
-    Call<List<DeliveryGuySelf>> getVehicles(@Header("Authorization") String headers,
-                                            @Query("ShopID") int shopID,
-                                            @Query("IsEnabled") Boolean isEnabled);
-
-
-    @GET("/api/DeliveryGuySelf/{id}")
-    Call<DeliveryGuySelf> getVehicle(@Header("Authorization") String headers,
-                                     @Path("id") int id);
 
     @POST("/api/DeliveryGuySelf")
     Call<DeliveryGuySelf> postVehicle(@Header("Authorization") String headers,
@@ -49,6 +37,28 @@ public interface DeliveryGuySelfService {
                                      @Path("id") int id);
 
 
+    @GET("/api/DeliveryGuySelf/CheckUsernameExists/{username}")
+    Call<ResponseBody> checkUsernameExist(@Path("username")String username);
+
+    @GET("/api/DeliveryGuySelf/Login")
+    Call<DeliveryGuySelf> getLogin(@Header("Authorization") String headers);
+
+    @GET("/api/DeliveryGuySelf")
+    Call<List<DeliveryGuySelf>> getVehicles(@Header("Authorization") String headers,
+                                            @Query("ShopID") int shopID,
+                                            @Query("IsEnabled") Boolean isEnabled);
+
+
+//    @GET("/api/DeliveryGuySelf/{id}")
+//    Call<DeliveryGuySelf> getVehicle(@Header("Authorization") String headers,
+//                                     @Path("id") int id);
+
+
+
+    // Image Endpoints
+
+
+
     @POST("/api/DeliveryGuySelf/Image")
     Call<Image> uploadImage(@Header("Authorization") String headers,
                             @Body RequestBody image);
@@ -58,9 +68,5 @@ public interface DeliveryGuySelfService {
     @DELETE("/api/DeliveryGuySelf/Image/{name}")
     Call<ResponseBody> deleteImage(@Header("Authorization") String headers,
                                    @Path("name")String fileName);
-
-
-    @GET("/api/DeliveryGuySelf/CheckUsernameExists/{username}")
-    Call<ResponseBody> checkUsernameExist(@Path("username")String username);
 
 }

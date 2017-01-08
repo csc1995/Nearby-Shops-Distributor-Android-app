@@ -24,8 +24,8 @@ import org.localareadelivery.distributorapp.ItemsByCategoryTabsOld.Interfaces.No
 import org.localareadelivery.distributorapp.ItemsByCategoryTabsOld.Interfaces.NotifyCategoryChanged;
 import org.localareadelivery.distributorapp.ItemsByCategoryTabsOld.Interfaces.NotifyFabClick_ItemCategories;
 import org.localareadelivery.distributorapp.ItemsByCategoryTabsOld.Interfaces.NotifyGeneral;
-import org.localareadelivery.distributorapp.ItemsByCategoryTabsOld.Interfaces.NotifySort;
-import org.localareadelivery.distributorapp.ItemsByCategoryTabsOld.Interfaces.ToggleFab;
+import org.localareadelivery.distributorapp.ItemsInShop.Interfaces.NotifySort;
+import org.localareadelivery.distributorapp.ItemsInShop.Interfaces.ToggleFab;
 import org.localareadelivery.distributorapp.ItemsByCategoryTabsOld.ItemCategoriesTabs;
 import org.localareadelivery.distributorapp.Model.ItemCategory;
 import org.localareadelivery.distributorapp.ModelEndpoints.ItemCategoryEndPoint;
