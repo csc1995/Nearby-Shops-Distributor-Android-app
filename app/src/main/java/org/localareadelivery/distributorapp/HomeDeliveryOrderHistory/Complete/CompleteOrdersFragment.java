@@ -16,6 +16,7 @@ import org.localareadelivery.distributorapp.CommonInterfaces.NotifyTitleChanged;
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
 import org.localareadelivery.distributorapp.HomeDeliveryInventory.Interface.RefreshFragment;
 import org.localareadelivery.distributorapp.HomeDeliveryOrderHistory.SlidingLayerSort.UtilitySortOrdersHD;
+import org.localareadelivery.distributorapp.ItemsByCategoryTypeSimple.Interfaces.NotifySearch;
 import org.localareadelivery.distributorapp.ItemsInShop.Interfaces.NotifySort;
 import org.localareadelivery.distributorapp.Model.Order;
 import org.localareadelivery.distributorapp.ModelEndpoints.OrderEndPoint;
@@ -36,7 +37,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class CompleteOrdersFragment extends Fragment implements AdapterComplete.NotifyConfirmOrder, SwipeRefreshLayout.OnRefreshListener ,NotifySort{
+public class CompleteOrdersFragment extends Fragment implements AdapterComplete.NotifyConfirmOrder, SwipeRefreshLayout.OnRefreshListener ,NotifySort,NotifySearch{
 
 
 //    @Inject
@@ -218,7 +219,6 @@ public class CompleteOrdersFragment extends Fragment implements AdapterComplete.
 
 //            Shop currentShop = UtilityShopHome.getShop(getContext());
 
-
         String current_sort = "";
         current_sort = UtilitySortOrdersHD.getSort(getContext()) + " " + UtilitySortOrdersHD.getAscending(getContext());
 
@@ -228,7 +228,7 @@ public class CompleteOrdersFragment extends Fragment implements AdapterComplete.
                     null,null,null,
                     null,null,
                     null,null,
-                    false,
+                    false,searchQuery,
                     current_sort,limit,offset,null);
 
 
@@ -350,6 +350,25 @@ public class CompleteOrdersFragment extends Fragment implements AdapterComplete.
     public void notifySortChanged() {
         makeRefreshNetworkCall();
     }
+
+
+
+
+    String searchQuery = null;
+
+    @Override
+    public void search(final String searchString) {
+        searchQuery = searchString;
+        makeRefreshNetworkCall();
+    }
+
+    @Override
+    public void endSearchMode() {
+        searchQuery = null;
+        makeRefreshNetworkCall();
+    }
+
+
 
 
 //    @Override

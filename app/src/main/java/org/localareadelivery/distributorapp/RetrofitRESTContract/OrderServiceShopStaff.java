@@ -107,6 +107,27 @@ public interface OrderServiceShopStaff {
 
 
 
+    @GET("/api/Order/ShopStaff")
+    Call<OrderEndPoint> getOrders(@Header("Authorization") String headers,
+                                  @Query("OrderID")Integer orderID,
+                                  @Query("EndUserID")Integer endUserID,
+                                  @Query("PickFromShop") Boolean pickFromShop,
+                                  @Query("StatusHomeDelivery")Integer homeDeliveryStatus,
+                                  @Query("StatusPickFromShopStatus")Integer pickFromShopStatus,
+                                  @Query("DeliveryGuyID")Integer deliveryGuyID,
+                                  @Query("PaymentsReceived") Boolean paymentsReceived,
+                                  @Query("DeliveryReceived") Boolean deliveryReceived,
+                                  @Query("latCenter")Double latCenter, @Query("lonCenter")Double lonCenter,
+                                  @Query("PendingOrders") Boolean pendingOrders,
+                                  @Query("SearchString") String searchString,
+                                  @Query("SortBy") String sortBy,
+                                  @Query("Limit")Integer limit, @Query("Offset")Integer offset,
+                                  @Query("metadata_only")Boolean metaonly);
+
+
+
+
+
     // previous methods
 
 //    @GET("/api/Order/{id}")

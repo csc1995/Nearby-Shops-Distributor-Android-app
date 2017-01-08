@@ -380,7 +380,7 @@ public class FragmentOutForDelivery extends Fragment implements SwipeRefreshLayo
                 }
                 else if(response.code()==401 || response.code()==404)
                 {
-                    showToastMessage("Not Permitted !!");
+                    showToastMessage("Not Permitted !");
                 }
                 else
                 {
@@ -420,7 +420,7 @@ public class FragmentOutForDelivery extends Fragment implements SwipeRefreshLayo
                 }
                 else if(response.code()==401 || response.code()==404)
                 {
-                    showToastMessage("Not Permitted !!");
+                    showToastMessage("Not Permitted !");
                 }
                 else
                 {

@@ -471,6 +471,7 @@
                 android:value=".ShopStaffHome.ShopStaffHome" />
         </activity>
         <activity
+            android:launchMode="singleTop"
             android:name=".HomeDeliveryOrderHistory.OrderHistoryHD"
             android:label="@string/title_activity_order_history_hd"
             android:parentActivityName=".OrdersHomeDelivery.OrdersHomeDelivery"
@@ -478,7 +479,16 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.localareadelivery.distributorapp.OrdersHomeDelivery.OrdersHomeDelivery" />
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
         </activity>
+
         <activity
             android:name=".OrdersPickFromShop.OrdersPickFromShop"
             android:label="@string/title_activity_orders_pick_from_shop"

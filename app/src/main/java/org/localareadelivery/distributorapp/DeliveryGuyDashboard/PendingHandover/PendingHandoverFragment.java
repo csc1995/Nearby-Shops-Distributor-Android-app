@@ -370,7 +370,7 @@ public class PendingHandoverFragment extends Fragment implements SwipeRefreshLay
                 }
                 else if(response.code()==401 || response.code()==404)
                 {
-                    showToastMessage("Not Permitted !!");
+                    showToastMessage("Not Permitted !");
                 }
                 else
                 {
