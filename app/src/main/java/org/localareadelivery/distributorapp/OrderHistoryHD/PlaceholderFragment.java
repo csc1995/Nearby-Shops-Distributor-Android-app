@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.HomeDeliveryOrderHistory;
+package org.localareadelivery.distributorapp.OrderHistoryHD;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

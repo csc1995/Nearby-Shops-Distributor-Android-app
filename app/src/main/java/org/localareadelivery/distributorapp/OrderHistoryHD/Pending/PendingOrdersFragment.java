@@ -1,9 +1,11 @@
-package org.localareadelivery.distributorapp.HomeDeliveryOrderHistory.Complete;
+package org.localareadelivery.distributorapp.OrderHistoryHD.Pending;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
@@ -15,7 +17,7 @@ import android.widget.Toast;
 import org.localareadelivery.distributorapp.CommonInterfaces.NotifyTitleChanged;
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
 import org.localareadelivery.distributorapp.HomeDeliveryInventory.Interface.RefreshFragment;
-import org.localareadelivery.distributorapp.HomeDeliveryOrderHistory.SlidingLayerSort.UtilitySortOrdersHD;
+import org.localareadelivery.distributorapp.OrderHistoryHD.SlidingLayerSort.UtilitySortOrdersHD;
 import org.localareadelivery.distributorapp.ItemsByCategoryTypeSimple.Interfaces.NotifySearch;
 import org.localareadelivery.distributorapp.ItemsInShop.Interfaces.NotifySort;
 import org.localareadelivery.distributorapp.Model.Order;
@@ -32,12 +34,13 @@ import java.util.List;
 import javax.inject.Inject;
 
 import icepick.State;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class CompleteOrdersFragment extends Fragment implements AdapterComplete.NotifyConfirmOrder, SwipeRefreshLayout.OnRefreshListener ,NotifySort,NotifySearch{
+public class PendingOrdersFragment extends Fragment implements AdapterOrdersPending.NotifyConfirmOrder, SwipeRefreshLayout.OnRefreshListener ,NotifySort,NotifySearch{
 
 
 //    @Inject
@@ -47,7 +50,7 @@ public class CompleteOrdersFragment extends Fragment implements AdapterComplete.
     OrderServiceShopStaff orderServiceShopStaff;
 
     RecyclerView recyclerView;
-    AdapterComplete adapter;
+    AdapterOrdersPending adapter;
 
     public List<Order> dataset = new ArrayList<>();
 
@@ -63,7 +66,7 @@ public class CompleteOrdersFragment extends Fragment implements AdapterComplete.
 
 
 
-    public CompleteOrdersFragment() {
+    public PendingOrdersFragment() {
 
         DaggerComponentBuilder.getInstance()
                 .getNetComponent()
@@ -72,8 +75,8 @@ public class CompleteOrdersFragment extends Fragment implements AdapterComplete.
     }
 
 
-    public static CompleteOrdersFragment newInstance() {
-        CompleteOrdersFragment fragment = new CompleteOrdersFragment();
+    public static PendingOrdersFragment newInstance() {
+        PendingOrdersFragment fragment = new PendingOrdersFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -126,7 +129,7 @@ public class CompleteOrdersFragment extends Fragment implements AdapterComplete.
     void setupRecyclerView()
     {
 
-        adapter = new AdapterComplete(dataset,this);
+        adapter = new AdapterOrdersPending(dataset,this,this);
 
         recyclerView.setAdapter(adapter);
 
@@ -155,13 +158,13 @@ public class CompleteOrdersFragment extends Fragment implements AdapterComplete.
                 super.onScrollStateChanged(recyclerView, newState);
 
 
-                if(offset + limit > layoutManager.findLastVisibleItemPosition()+1)
+                if(offset + limit > layoutManager.findLastVisibleItemPosition() + 1 - 1)
                 {
                     return;
                 }
 
 
-                if(layoutManager.findLastVisibleItemPosition()==dataset.size()-1)
+                if(layoutManager.findLastVisibleItemPosition()==dataset.size()-1 + 1)
                 {
                     // trigger fetch next page
 
@@ -201,7 +204,6 @@ public class CompleteOrdersFragment extends Fragment implements AdapterComplete.
 
     void makeRefreshNetworkCall()
     {
-
         swipeContainer.post(new Runnable() {
             @Override
             public void run() {
@@ -210,7 +212,6 @@ public class CompleteOrdersFragment extends Fragment implements AdapterComplete.
                 onRefresh();
             }
         });
-
     }
 
 
@@ -222,13 +223,14 @@ public class CompleteOrdersFragment extends Fragment implements AdapterComplete.
         String current_sort = "";
         current_sort = UtilitySortOrdersHD.getSort(getContext()) + " " + UtilitySortOrdersHD.getAscending(getContext());
 
+
         Call<OrderEndPoint> call = orderServiceShopStaff.getOrders(
                     UtilityLogin.getAuthorizationHeaders(getActivity()),
                     null,null,false,
                     null,null,null,
                     null,null,
                     null,null,
-                    false,searchQuery,
+                    true,searchQuery,
                     current_sort,limit,offset,null);
 
 
@@ -310,8 +312,8 @@ public class CompleteOrdersFragment extends Fragment implements AdapterComplete.
         {
             ((NotifyTitleChanged)getActivity())
                     .NotifyTitleChanged(
-                            "Complete (" + String.valueOf(dataset.size())
-                                    + "/" + String.valueOf(item_count) + ")",1);
+                            "Pending (" + String.valueOf(dataset.size())
+                                    + "/" + String.valueOf(item_count) + ")",0);
 
 
         }
@@ -340,18 +342,89 @@ public class CompleteOrdersFragment extends Fragment implements AdapterComplete.
         }
     }
 
+
+
     @Override
     public void notifyOrderSelected(Order order) {
+
         UtilityOrderDetail.saveOrder(order,getActivity());
         getActivity().startActivity(new Intent(getActivity(),OrderDetail.class));
     }
+
+
+
+
+
+    @Override
+    public void notifyCancelOrder(final Order order) {
+
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        builder.setTitle("Confirm Cancel Order !")
+                .setMessage("Are you sure you want to cancel this order !")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        cancelOrder(order);
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        showToastMessage(" Not Cancelled !");
+                    }
+                })
+                .show();
+    }
+
+
+    private void cancelOrder(Order order) {
+
+
+//        Call<ResponseBody> call = orderService.cancelOrderByShop(order.getOrderID());
+
+        Call<ResponseBody> call = orderServiceShopStaff.cancelledByShop(
+                UtilityLogin.getAuthorizationHeaders(getActivity()),
+                order.getOrderID()
+        );
+
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                if(response.code() == 200 )
+                {
+                    showToastMessage("Successful");
+                    makeRefreshNetworkCall();
+                }
+                else if(response.code() == 304)
+                {
+                    showToastMessage("Not Cancelled !");
+                }
+                else
+                {
+                    showToastMessage("Server Error");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                showToastMessage("Network Request Failed. Check your internet connection !");
+            }
+        });
+
+    }
+
 
     @Override
     public void notifySortChanged() {
         makeRefreshNetworkCall();
     }
-
-
 
 
     String searchQuery = null;
@@ -367,75 +440,4 @@ public class CompleteOrdersFragment extends Fragment implements AdapterComplete.
         searchQuery = null;
         makeRefreshNetworkCall();
     }
-
-
-
-
-//    @Override
-//    public void notifyCancelOrder(final Order order) {
-//
-//
-//        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-//
-//        builder.setTitle("Confirm Cancel Order !")
-//                .setMessage("Are you sure you want to cancel this order !")
-//                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//
-//                        cancelOrder(order);
-//                    }
-//                })
-//                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//
-//                        showToastMessage(" Not Cancelled !");
-//                    }
-//                })
-//                .show();
-//    }
-
-
-//    private void cancelOrder(Order order) {
-//
-//
-////        Call<ResponseBody> call = orderService.cancelOrderByShop(order.getOrderID());
-//
-//        Call<ResponseBody> call = orderServiceShopStaff.cancelledByShop(
-//                UtilityLogin.getAuthorizationHeaders(getActivity()),
-//                order.getOrderID()
-//        );
-//
-//
-//        call.enqueue(new Callback<ResponseBody>() {
-//            @Override
-//            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-//
-//                if(response.code() == 200 )
-//                {
-//                    showToastMessage("Successful");
-//                    makeRefreshNetworkCall();
-//                }
-//                else if(response.code() == 304)
-//                {
-//                    showToastMessage("Not Cancelled !");
-//                }
-//                else
-//                {
-//                    showToastMessage("Server Error");
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<ResponseBody> call, Throwable t) {
-//
-//                showToastMessage("Network Request Failed. Check your internet connection !");
-//            }
-//        });
-//
-//    }
-
-
-
 }

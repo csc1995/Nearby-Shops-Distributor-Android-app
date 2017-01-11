@@ -1,11 +1,11 @@
-package org.localareadelivery.distributorapp.HomeDeliveryOrderHistory;
+package org.localareadelivery.distributorapp.OrderHistoryHD;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import org.localareadelivery.distributorapp.HomeDeliveryOrderHistory.Complete.CompleteOrdersFragment;
-import org.localareadelivery.distributorapp.HomeDeliveryOrderHistory.Pending.PendingOrdersFragment;
+import org.localareadelivery.distributorapp.OrderHistoryHD.Complete.CompleteOrdersFragment;
+import org.localareadelivery.distributorapp.OrderHistoryHD.Pending.PendingOrdersFragment;
 
 /**
  * Created by sumeet on 23/12/16.

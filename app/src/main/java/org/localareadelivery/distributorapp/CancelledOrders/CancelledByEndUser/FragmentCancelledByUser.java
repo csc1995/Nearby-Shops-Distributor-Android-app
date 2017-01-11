@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.CancelledOrders.CancelledByShop;
+package org.localareadelivery.distributorapp.CancelledOrders.CancelledByEndUser;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,14 +11,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import org.localareadelivery.distributorapp.DaggerComponentBuilder;
 import org.localareadelivery.distributorapp.CommonInterfaces.NotifyTitleChanged;
+import org.localareadelivery.distributorapp.DaggerComponentBuilder;
 import org.localareadelivery.distributorapp.Model.Order;
 import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.ModelEndpoints.OrderEndPoint;
 import org.localareadelivery.distributorapp.ModelStatusCodes.OrderStatusHomeDelivery;
 import org.localareadelivery.distributorapp.R;
-import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderService;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderServiceShopStaff;
 import org.localareadelivery.distributorapp.ShopHome.UtilityShopHome;
 import org.localareadelivery.distributorapp.Utility.UtilityLogin;
@@ -38,15 +37,15 @@ import retrofit2.Response;
  */
 
 
-public class FragmentCancelledByShop extends Fragment
-        implements SwipeRefreshLayout.OnRefreshListener,AdapterPendingHandover.NotifyCancelHandover {
+public class FragmentCancelledByUser extends Fragment
+        implements SwipeRefreshLayout.OnRefreshListener,AdapterCancelledByUser.NotifyCancelHandover {
 
 
     @Inject
     OrderServiceShopStaff orderService;
 
     RecyclerView recyclerView;
-    AdapterPendingHandover adapter;
+    AdapterCancelledByUser adapter;
 
     public List<Order> dataset = new ArrayList<>();
 
@@ -69,7 +68,7 @@ public class FragmentCancelledByShop extends Fragment
 
 
 
-    public FragmentCancelledByShop() {
+    public FragmentCancelledByUser() {
 
         DaggerComponentBuilder.getInstance()
                 .getNetComponent()
@@ -79,8 +78,8 @@ public class FragmentCancelledByShop extends Fragment
 
 
 
-    public static FragmentCancelledByShop newInstance() {
-        FragmentCancelledByShop fragment = new FragmentCancelledByShop();
+    public static FragmentCancelledByUser newInstance() {
+        FragmentCancelledByUser fragment = new FragmentCancelledByUser();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -138,7 +137,7 @@ public class FragmentCancelledByShop extends Fragment
     void setupRecyclerView()
     {
 
-        adapter = new AdapterPendingHandover(dataset,this);
+        adapter = new AdapterCancelledByUser(dataset,this);
 
         recyclerView.setAdapter(adapter);
 
@@ -246,7 +245,7 @@ public class FragmentCancelledByShop extends Fragment
             Call<OrderEndPoint> call = orderService
                     .getOrders(
                             UtilityLogin.getAuthorizationHeaders(getActivity()),
-                            null,null,false,OrderStatusHomeDelivery.CANCELLED_BY_SHOP,
+                            null,null,false,OrderStatusHomeDelivery.CANCELLED_BY_USER,
                             null,null,null,null,null,null,null,null,null,
                             limit,offset,null
                     );
@@ -356,11 +355,11 @@ public class FragmentCancelledByShop extends Fragment
     }
     */
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
+//    @Override
+//    public void onSaveInstanceState(Bundle outState) {
+//        super.onSaveInstanceState(outState);
 //        outState.putParcelable("savedVehicle", deliveryGuySelf);
-    }
+//    }
 
 
     @Override
@@ -378,8 +377,8 @@ public class FragmentCancelledByShop extends Fragment
         {
             ((NotifyTitleChanged)getActivity())
                     .NotifyTitleChanged(
-                            "Cancelled By Shop (" + String.valueOf(dataset.size())
-                                    + "/" + String.valueOf(item_count) + ")",1);
+                            "Cancelled By User (" + String.valueOf(dataset.size())
+                                    + "/" + String.valueOf(item_count) + ")",2);
 
 
         }

@@ -472,7 +472,7 @@
         </activity>
         <activity
             android:launchMode="singleTop"
-            android:name=".HomeDeliveryOrderHistory.OrderHistoryHD"
+            android:name=".OrderHistoryHD.OrderHistoryHD"
             android:label="@string/title_activity_order_history_hd"
             android:parentActivityName=".OrdersHomeDelivery.OrdersHomeDelivery"
             android:theme="@style/AppTheme.NoActionBar">

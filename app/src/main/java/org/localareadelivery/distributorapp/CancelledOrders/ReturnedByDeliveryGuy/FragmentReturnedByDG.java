@@ -19,7 +19,9 @@ import org.localareadelivery.distributorapp.ModelEndpoints.OrderEndPoint;
 import org.localareadelivery.distributorapp.ModelStatusCodes.OrderStatusHomeDelivery;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderService;
+import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderServiceShopStaff;
 import org.localareadelivery.distributorapp.ShopHome.UtilityShopHome;
+import org.localareadelivery.distributorapp.Utility.UtilityLogin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +43,7 @@ public class FragmentReturnedByDG extends Fragment
 
 
     @Inject
-    OrderService orderService;
+    OrderServiceShopStaff orderService;
 
     RecyclerView recyclerView;
     AdapterReturnedByDG adapter;
@@ -241,11 +243,21 @@ public class FragmentReturnedByDG extends Fragment
 
         Shop currentShop = UtilityShopHome.getShop(getContext());
 
-            Call<OrderEndPoint> call = orderService
-                    .getOrders(null, currentShop.getShopID(),false,
-                            OrderStatusHomeDelivery.RETURNED,
-                            null,null,null,null,true,true,
-                            null,limit,offset,null);
+//            Call<OrderEndPoint> call = orderService
+//                    .getOrders(null, currentShop.getShopID(),false,
+//                            OrderStatusHomeDelivery.RETURNED,
+//                            null,null,null,null,true,true,
+//                            null,limit,offset,null);
+
+
+
+        Call<OrderEndPoint> call = orderService
+                .getOrders(
+                        UtilityLogin.getAuthorizationHeaders(getActivity()),
+                        null,null,false,OrderStatusHomeDelivery.RETURNED,
+                        null,null,null,null,null,null,null,null,null,
+                        limit,offset,null
+                );
 
 
             call.enqueue(new Callback<OrderEndPoint>() {
@@ -374,8 +386,8 @@ public class FragmentReturnedByDG extends Fragment
         {
             ((NotifyTitleChanged)getActivity())
                     .NotifyTitleChanged(
-                            "Returned By Delivery Guy ( " + String.valueOf(dataset.size())
-                                    + "/" + String.valueOf(item_count) + " )",0);
+                            "Returned By Delivery Guy (" + String.valueOf(dataset.size())
+                                    + "/" + String.valueOf(item_count) + ")",0);
 
 
         }

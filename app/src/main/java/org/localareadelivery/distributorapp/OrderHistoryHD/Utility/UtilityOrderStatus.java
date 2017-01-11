@@ -1,4 +1,6 @@
-package org.localareadelivery.distributorapp.HomeDeliveryOrderHistory.Utility;
+package org.localareadelivery.distributorapp.OrderHistoryHD.Utility;
+
+import org.localareadelivery.distributorapp.ModelStatusCodes.*;
 
 /**
  * Created by sumeet on 23/12/16.
@@ -44,6 +46,31 @@ public class UtilityOrderStatus {
         {
             return "Complete";
         }
+        else if(orderStatusHomeDelivery== OrderStatusHomeDelivery.CANCELLED_BY_SHOP)
+        {
+            return "Cancelled By Shop";
+        }
+        else if(orderStatusHomeDelivery == OrderStatusHomeDelivery.CANCELLED_BY_SHOP_RETURN_PENDING)
+        {
+            return "Pending Return - Cancelled By Shop";
+        }
+        else if(orderStatusHomeDelivery == OrderStatusHomeDelivery.CANCELLED_BY_USER_RETURN_PENDING)
+        {
+            return "Pending Return - Cancelled By User";
+        }
+        else if(orderStatusHomeDelivery == OrderStatusHomeDelivery.CANCELLED_BY_USER)
+        {
+            return "Cancelled By User";
+        }
+        else if(orderStatusHomeDelivery == OrderStatusHomeDelivery.RETURN_PENDING)
+        {
+            return "Return Pending";
+        }
+        else if(orderStatusHomeDelivery == OrderStatusHomeDelivery.RETURNED)
+        {
+            return "Returned";
+        }
+
 
         return "";
     }

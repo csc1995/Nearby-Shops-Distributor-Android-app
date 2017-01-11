@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.HomeDeliveryOrderHistory.Complete;
+package org.localareadelivery.distributorapp.CancelledOrders.CancelledByEndUser;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -6,10 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import org.localareadelivery.distributorapp.HomeDeliveryOrderHistory.Utility.UtilityOrderStatus;
 import org.localareadelivery.distributorapp.Model.DeliveryAddress;
 import org.localareadelivery.distributorapp.Model.Order;
 import org.localareadelivery.distributorapp.ModelStats.OrderStats;
+import org.localareadelivery.distributorapp.OrderHistoryHD.Utility.UtilityOrderStatus;
 import org.localareadelivery.distributorapp.R;
 
 import java.util.List;
@@ -21,27 +21,32 @@ import butterknife.OnClick;
 /**
  * Created by sumeet on 13/6/16.
  */
-class AdapterComplete extends RecyclerView.Adapter<AdapterComplete.ViewHolder>{
+public class AdapterCancelledByUser extends RecyclerView.Adapter<AdapterCancelledByUser.ViewHolder>{
+
 
     private List<Order> dataset = null;
-    private NotifyConfirmOrder notifyConfirmOrder;
+//    private Context context;
+    private NotifyCancelHandover notifications;
 
-    AdapterComplete(List<Order> dataset, NotifyConfirmOrder notifyConfirmOrder) {
+
+    public AdapterCancelledByUser(List<Order> dataset, NotifyCancelHandover notifications) {
         this.dataset = dataset;
-        this.notifyConfirmOrder = notifyConfirmOrder;
+//        this.context = context;
+        this.notifications = notifications;
+
     }
 
     @Override
-    public AdapterComplete.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public AdapterCancelledByUser.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_item_order_complete,parent,false);
+                .inflate(R.layout.list_item_order_cancelled_by_shop,parent,false);
 
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(AdapterComplete.ViewHolder holder, int position) {
+    public void onBindViewHolder(AdapterCancelledByUser.ViewHolder holder, int position) {
 
         if(dataset!=null)
         {
@@ -55,7 +60,7 @@ class AdapterComplete extends RecyclerView.Adapter<AdapterComplete.ViewHolder>{
             OrderStats orderStats = order.getOrderStats();
 
             holder.orderID.setText("Order ID : " + order.getOrderID());
-            holder.dateTimePlaced.setText("" + order.getDateTimePlaced().toLocaleString());
+            holder.dateTimePlaced.setText("Placed : " + order.getDateTimePlaced().toLocaleString());
 
 
             holder.deliveryAddressName.setText(deliveryAddress.getName());
@@ -67,10 +72,9 @@ class AdapterComplete extends RecyclerView.Adapter<AdapterComplete.ViewHolder>{
 
             holder.numberOfItems.setText(orderStats.getItemCount() + " Items");
             holder.orderTotal.setText("| Total : " + (orderStats.getItemTotal() + order.getDeliveryCharges()));
-            //holder.currentStatus.setText();
 
-            String status = UtilityOrderStatus.getStatus(order.getStatusHomeDelivery(),order.getDeliveryReceived(),order.getPaymentReceived());
-            holder.currentStatus.setText("Current Status : " + status);
+            holder.currentStatus.setText("Current Status : " + UtilityOrderStatus.getStatus(order.getStatusHomeDelivery(),false,false));
+
 
         }
     }
@@ -81,7 +85,7 @@ class AdapterComplete extends RecyclerView.Adapter<AdapterComplete.ViewHolder>{
     }
 
 
-    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class ViewHolder extends RecyclerView.ViewHolder{
 
 
         @Bind(R.id.order_id)
@@ -109,44 +113,30 @@ class AdapterComplete extends RecyclerView.Adapter<AdapterComplete.ViewHolder>{
         @Bind(R.id.currentStatus)
         TextView currentStatus;
 
-//        @Bind(R.id.confirmOrderButton)
-//        TextView confirmOrderButton;
+        @Bind(R.id.acceptHandoverButton)
+        TextView cancelHandoverButton;
 
 
         public ViewHolder(View itemView) {
             super(itemView);
 
             ButterKnife.bind(this,itemView);
-            itemView.setOnClickListener(this);
+
+
         }
 
 
-//        @OnClick(R.id.confirmOrderButton)
+        @OnClick(R.id.acceptHandoverButton)
         void onClickConfirmButton(View view)
         {
-//            notifyConfirmOrder.notifyConfirmOrder(dataset.get(getLayoutPosition()));
+            notifications.notifyCancelHandover(dataset.get(getLayoutPosition()));
         }
 
-
-        @OnClick(R.id.close_button)
-        void closeButton(View view)
-        {
-//            notifyConfirmOrder.notifyCancelOrder(dataset.get(getLayoutPosition()));
-        }
-
-        @Override
-        public void onClick(View v) {
-            notifyConfirmOrder.notifyOrderSelected(dataset.get(getLayoutPosition()));
-        }
     }
 
 
-
-
-    interface NotifyConfirmOrder{
-        void notifyOrderSelected(Order order);
-//        void notifyConfirmOrder(Order order);
-//        void notifyCancelOrder(Order order);
+    interface NotifyCancelHandover {
+        void notifyCancelHandover(Order order);
     }
 
 }

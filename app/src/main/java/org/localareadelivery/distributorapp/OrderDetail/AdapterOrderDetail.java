@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import org.localareadelivery.distributorapp.HomeDeliveryOrderHistory.Utility.UtilityOrderStatus;
+import org.localareadelivery.distributorapp.OrderHistoryHD.Utility.UtilityOrderStatus;
 import org.localareadelivery.distributorapp.Model.Item;
 import org.localareadelivery.distributorapp.Model.Order;
 import org.localareadelivery.distributorapp.Model.OrderItem;

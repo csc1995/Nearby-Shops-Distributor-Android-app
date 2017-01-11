@@ -1,11 +1,9 @@
-package org.localareadelivery.distributorapp.HomeDeliveryOrderHistory.Pending;
+package org.localareadelivery.distributorapp.OrderHistoryHD.Complete;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
@@ -17,12 +15,11 @@ import android.widget.Toast;
 import org.localareadelivery.distributorapp.CommonInterfaces.NotifyTitleChanged;
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
 import org.localareadelivery.distributorapp.HomeDeliveryInventory.Interface.RefreshFragment;
-import org.localareadelivery.distributorapp.HomeDeliveryOrderHistory.SlidingLayerSort.UtilitySortOrdersHD;
+import org.localareadelivery.distributorapp.OrderHistoryHD.SlidingLayerSort.UtilitySortOrdersHD;
 import org.localareadelivery.distributorapp.ItemsByCategoryTypeSimple.Interfaces.NotifySearch;
 import org.localareadelivery.distributorapp.ItemsInShop.Interfaces.NotifySort;
 import org.localareadelivery.distributorapp.Model.Order;
 import org.localareadelivery.distributorapp.ModelEndpoints.OrderEndPoint;
-import org.localareadelivery.distributorapp.ModelStatusCodes.OrderStatusHomeDelivery;
 import org.localareadelivery.distributorapp.OrderDetail.OrderDetail;
 import org.localareadelivery.distributorapp.OrderDetail.UtilityOrderDetail;
 import org.localareadelivery.distributorapp.R;
@@ -35,13 +32,12 @@ import java.util.List;
 import javax.inject.Inject;
 
 import icepick.State;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class PendingOrdersFragment extends Fragment implements AdapterOrdersPending.NotifyConfirmOrder, SwipeRefreshLayout.OnRefreshListener ,NotifySort,NotifySearch{
+public class CompleteOrdersFragment extends Fragment implements AdapterComplete.NotifyConfirmOrder, SwipeRefreshLayout.OnRefreshListener ,NotifySort,NotifySearch{
 
 
 //    @Inject
@@ -51,7 +47,7 @@ public class PendingOrdersFragment extends Fragment implements AdapterOrdersPend
     OrderServiceShopStaff orderServiceShopStaff;
 
     RecyclerView recyclerView;
-    AdapterOrdersPending adapter;
+    AdapterComplete adapter;
 
     public List<Order> dataset = new ArrayList<>();
 
@@ -67,7 +63,7 @@ public class PendingOrdersFragment extends Fragment implements AdapterOrdersPend
 
 
 
-    public PendingOrdersFragment() {
+    public CompleteOrdersFragment() {
 
         DaggerComponentBuilder.getInstance()
                 .getNetComponent()
@@ -76,8 +72,8 @@ public class PendingOrdersFragment extends Fragment implements AdapterOrdersPend
     }
 
 
-    public static PendingOrdersFragment newInstance() {
-        PendingOrdersFragment fragment = new PendingOrdersFragment();
+    public static CompleteOrdersFragment newInstance() {
+        CompleteOrdersFragment fragment = new CompleteOrdersFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -130,7 +126,7 @@ public class PendingOrdersFragment extends Fragment implements AdapterOrdersPend
     void setupRecyclerView()
     {
 
-        adapter = new AdapterOrdersPending(dataset,this);
+        adapter = new AdapterComplete(dataset,this,this);
 
         recyclerView.setAdapter(adapter);
 
@@ -159,13 +155,13 @@ public class PendingOrdersFragment extends Fragment implements AdapterOrdersPend
                 super.onScrollStateChanged(recyclerView, newState);
 
 
-                if(offset + limit > layoutManager.findLastVisibleItemPosition() + 1)
+                if(offset + limit > layoutManager.findLastVisibleItemPosition()+1-1)
                 {
                     return;
                 }
 
 
-                if(layoutManager.findLastVisibleItemPosition()==dataset.size()-1)
+                if(layoutManager.findLastVisibleItemPosition()==dataset.size()-1+1)
                 {
                     // trigger fetch next page
 
@@ -205,6 +201,7 @@ public class PendingOrdersFragment extends Fragment implements AdapterOrdersPend
 
     void makeRefreshNetworkCall()
     {
+
         swipeContainer.post(new Runnable() {
             @Override
             public void run() {
@@ -213,6 +210,7 @@ public class PendingOrdersFragment extends Fragment implements AdapterOrdersPend
                 onRefresh();
             }
         });
+
     }
 
 
@@ -224,14 +222,13 @@ public class PendingOrdersFragment extends Fragment implements AdapterOrdersPend
         String current_sort = "";
         current_sort = UtilitySortOrdersHD.getSort(getContext()) + " " + UtilitySortOrdersHD.getAscending(getContext());
 
-
         Call<OrderEndPoint> call = orderServiceShopStaff.getOrders(
                     UtilityLogin.getAuthorizationHeaders(getActivity()),
                     null,null,false,
                     null,null,null,
                     null,null,
                     null,null,
-                    true,searchQuery,
+                    false,searchQuery,
                     current_sort,limit,offset,null);
 
 
@@ -313,8 +310,8 @@ public class PendingOrdersFragment extends Fragment implements AdapterOrdersPend
         {
             ((NotifyTitleChanged)getActivity())
                     .NotifyTitleChanged(
-                            "Pending (" + String.valueOf(dataset.size())
-                                    + "/" + String.valueOf(item_count) + ")",0);
+                            "Complete (" + String.valueOf(dataset.size())
+                                    + "/" + String.valueOf(item_count) + ")",1);
 
 
         }
@@ -343,89 +340,18 @@ public class PendingOrdersFragment extends Fragment implements AdapterOrdersPend
         }
     }
 
-
-
     @Override
     public void notifyOrderSelected(Order order) {
-
         UtilityOrderDetail.saveOrder(order,getActivity());
         getActivity().startActivity(new Intent(getActivity(),OrderDetail.class));
     }
-
-
-
-
-
-    @Override
-    public void notifyCancelOrder(final Order order) {
-
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
-        builder.setTitle("Confirm Cancel Order !")
-                .setMessage("Are you sure you want to cancel this order !")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        cancelOrder(order);
-                    }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        showToastMessage(" Not Cancelled !");
-                    }
-                })
-                .show();
-    }
-
-
-    private void cancelOrder(Order order) {
-
-
-//        Call<ResponseBody> call = orderService.cancelOrderByShop(order.getOrderID());
-
-        Call<ResponseBody> call = orderServiceShopStaff.cancelledByShop(
-                UtilityLogin.getAuthorizationHeaders(getActivity()),
-                order.getOrderID()
-        );
-
-
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-
-                if(response.code() == 200 )
-                {
-                    showToastMessage("Successful");
-                    makeRefreshNetworkCall();
-                }
-                else if(response.code() == 304)
-                {
-                    showToastMessage("Not Cancelled !");
-                }
-                else
-                {
-                    showToastMessage("Server Error");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-
-                showToastMessage("Network Request Failed. Check your internet connection !");
-            }
-        });
-
-    }
-
 
     @Override
     public void notifySortChanged() {
         makeRefreshNetworkCall();
     }
+
+
 
 
     String searchQuery = null;
@@ -441,4 +367,75 @@ public class PendingOrdersFragment extends Fragment implements AdapterOrdersPend
         searchQuery = null;
         makeRefreshNetworkCall();
     }
+
+
+
+
+//    @Override
+//    public void notifyCancelOrder(final Order order) {
+//
+//
+//        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+//
+//        builder.setTitle("Confirm Cancel Order !")
+//                .setMessage("Are you sure you want to cancel this order !")
+//                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//
+//                        cancelOrder(order);
+//                    }
+//                })
+//                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//
+//                        showToastMessage(" Not Cancelled !");
+//                    }
+//                })
+//                .show();
+//    }
+
+
+//    private void cancelOrder(Order order) {
+//
+//
+////        Call<ResponseBody> call = orderService.cancelOrderByShop(order.getOrderID());
+//
+//        Call<ResponseBody> call = orderServiceShopStaff.cancelledByShop(
+//                UtilityLogin.getAuthorizationHeaders(getActivity()),
+//                order.getOrderID()
+//        );
+//
+//
+//        call.enqueue(new Callback<ResponseBody>() {
+//            @Override
+//            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+//
+//                if(response.code() == 200 )
+//                {
+//                    showToastMessage("Successful");
+//                    makeRefreshNetworkCall();
+//                }
+//                else if(response.code() == 304)
+//                {
+//                    showToastMessage("Not Cancelled !");
+//                }
+//                else
+//                {
+//                    showToastMessage("Server Error");
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<ResponseBody> call, Throwable t) {
+//
+//                showToastMessage("Network Request Failed. Check your internet connection !");
+//            }
+//        });
+//
+//    }
+
+
+
 }

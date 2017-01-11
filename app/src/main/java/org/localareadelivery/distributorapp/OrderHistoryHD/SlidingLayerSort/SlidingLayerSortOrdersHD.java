@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.HomeDeliveryOrderHistory.SlidingLayerSort;
+package org.localareadelivery.distributorapp.OrderHistoryHD.SlidingLayerSort;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

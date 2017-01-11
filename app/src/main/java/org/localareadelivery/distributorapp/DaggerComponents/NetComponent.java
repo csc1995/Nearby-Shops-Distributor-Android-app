@@ -8,6 +8,7 @@ import org.localareadelivery.distributorapp.AddItemsToShopInventory.Items.EditIt
 import org.localareadelivery.distributorapp.AddItemsToShopInventory.Items.ItemRemakeAdapter;
 
 import org.localareadelivery.distributorapp.AddItemsToShopInventory.Items.ItemRemakeFragmentOld;
+import org.localareadelivery.distributorapp.CancelledOrders.CancelledByEndUser.FragmentCancelledByUser;
 import org.localareadelivery.distributorapp.CancelledOrders.CancelledByShop.FragmentCancelledByShop;
 import org.localareadelivery.distributorapp.CancelledOrders.ReturnedByDeliveryGuy.FragmentReturnedByDG;
 import org.localareadelivery.distributorapp.DaggerModules.AppModule;
@@ -24,8 +25,8 @@ import org.localareadelivery.distributorapp.HomeDeliveryInventoryDeliveryGuy.Pen
 import org.localareadelivery.distributorapp.HomeDeliveryInventoryDeliveryGuy.PendingReturn.PendingReturnDGI;
 import org.localareadelivery.distributorapp.HomeDeliveryInventoryDeliveryGuy.PendingReturnCancelledByShop.PendingReturnCancelledByShopDGI;
 import org.localareadelivery.distributorapp.DistributorLogin;
-import org.localareadelivery.distributorapp.HomeDeliveryOrderHistory.Complete.CompleteOrdersFragment;
-import org.localareadelivery.distributorapp.HomeDeliveryOrderHistory.Pending.PendingOrdersFragment;
+import org.localareadelivery.distributorapp.OrderHistoryHD.Complete.CompleteOrdersFragment;
+import org.localareadelivery.distributorapp.OrderHistoryHD.Pending.PendingOrdersFragment;
 import org.localareadelivery.distributorapp.Items.ItemsFragmentSimple;
 import org.localareadelivery.distributorapp.ItemsByCategoryTypeSimple.ItemsByCatFragmentSimple;
 import org.localareadelivery.distributorapp.ItemsInShop.ItemsInStockFragment;
@@ -202,4 +203,6 @@ public interface NetComponent {
     void Inject(PendingOrdersFragment pendingOrdersFragment);
 
     void Inject(CompleteOrdersFragment completeOrdersFragment);
+
+    void Inject(FragmentCancelledByUser fragmentCancelledByUser);
 }

@@ -9,6 +9,8 @@ import android.widget.TextView;
 import org.localareadelivery.distributorapp.Model.Order;
 import org.localareadelivery.distributorapp.Model.DeliveryAddress;
 import org.localareadelivery.distributorapp.ModelStats.OrderStats;
+import org.localareadelivery.distributorapp.ModelStatusCodes.OrderStatusHomeDelivery;
+import org.localareadelivery.distributorapp.OrderHistoryHD.Utility.UtilityOrderStatus;
 import org.localareadelivery.distributorapp.R;
 
 import java.util.List;
@@ -71,8 +73,8 @@ public class AdapterPendingHandover extends RecyclerView.Adapter<AdapterPendingH
 
             holder.numberOfItems.setText(orderStats.getItemCount() + " Items");
             holder.orderTotal.setText("| Total : " + (orderStats.getItemTotal() + order.getDeliveryCharges()));
-            //holder.currentStatus.setText();
 
+            holder.currentStatus.setText("Current Status : " + UtilityOrderStatus.getStatus(order.getStatusHomeDelivery(),false,false));
 
         }
     }
