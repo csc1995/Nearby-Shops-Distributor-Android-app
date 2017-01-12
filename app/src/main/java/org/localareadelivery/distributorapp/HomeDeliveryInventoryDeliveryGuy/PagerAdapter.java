@@ -10,6 +10,7 @@ import org.localareadelivery.distributorapp.HomeDeliveryInventoryDeliveryGuy.Pen
 import org.localareadelivery.distributorapp.HomeDeliveryInventoryDeliveryGuy.PendingHandover.PendingHandoverFragment;
 import org.localareadelivery.distributorapp.HomeDeliveryInventoryDeliveryGuy.PendingReturn.PendingReturnDGI;
 import org.localareadelivery.distributorapp.HomeDeliveryInventoryDeliveryGuy.PendingReturnCancelledByShop.PendingReturnCancelledByShopDGI;
+import org.localareadelivery.distributorapp.HomeDeliveryInventoryDeliveryGuy.PendingReturnCancelledByUser.PendingReturnCancelledByUserDGI;
 import org.localareadelivery.distributorapp.ModelRoles.DeliveryGuySelf;
 
 /**
@@ -66,6 +67,10 @@ public class PagerAdapter extends FragmentPagerAdapter {
         {
             return PendingReturnCancelledByShopDGI.newInstance();
         }
+        else if(position==6)
+        {
+            return PendingReturnCancelledByUserDGI.newInstance();
+        }
 
         return null;
     }
@@ -73,7 +78,7 @@ public class PagerAdapter extends FragmentPagerAdapter {
     @Override
     public int getCount() {
         // Show 3 total pages.
-        return 6;
+        return 7;
     }
 
     @Override
@@ -91,6 +96,9 @@ public class PagerAdapter extends FragmentPagerAdapter {
                 return titlePendingReturn;
             case 5:
                 return titlePendingReturnCancelledShop;
+            case 6:
+                return titlePendingReturnCancelledUser;
+
 
         }
         return null;
@@ -106,6 +114,7 @@ public class PagerAdapter extends FragmentPagerAdapter {
     private String titlePendingPayments = "Pending Payments (0/0)";
     private String titlePendingReturn = "Pending Return (0/0)";
     private String titlePendingReturnCancelledShop = "Pending Return (0/0)";
+    private String titlePendingReturnCancelledUser = "Pending Return (0/0)";
 
 
     public void setTitle(String title, int tabPosition)
@@ -133,6 +142,10 @@ public class PagerAdapter extends FragmentPagerAdapter {
         else if(tabPosition == 5)
         {
             titlePendingReturnCancelledShop = title;
+        }
+        else if(tabPosition==6)
+        {
+            titlePendingReturnCancelledUser = title;
         }
 
         notifyDataSetChanged();

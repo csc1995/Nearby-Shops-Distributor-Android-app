@@ -1,49 +1,23 @@
-package org.localareadelivery.distributorapp.DeliveryGuyDashboard.OutForDelivery;
+package org.localareadelivery.distributorapp.DeliveryGuyDashboard.PendingReturnCancelledByUser;
 
-import android.Manifest;
-import android.content.Intent;
-import android.content.IntentSender;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.LocationSettingsRequest;
-import com.google.android.gms.location.LocationSettingsResult;
-import com.google.android.gms.location.LocationSettingsStates;
-import com.google.android.gms.location.LocationSettingsStatusCodes;
-
-import org.localareadelivery.distributorapp.DaggerComponentBuilder;
 import org.localareadelivery.distributorapp.CommonInterfaces.NotifyTitleChanged;
-import org.localareadelivery.distributorapp.DeliveryGuyDashboard.Interfaces.NotifyLocation;
-import org.localareadelivery.distributorapp.Model.DeliveryAddress;
+import org.localareadelivery.distributorapp.DaggerComponentBuilder;
 import org.localareadelivery.distributorapp.Model.Order;
 import org.localareadelivery.distributorapp.ModelEndpoints.OrderEndPoint;
 import org.localareadelivery.distributorapp.ModelRoles.DeliveryGuySelf;
 import org.localareadelivery.distributorapp.ModelStatusCodes.OrderStatusHomeDelivery;
 import org.localareadelivery.distributorapp.R;
-import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderService;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderServiceDeliveryGuySelf;
 import org.localareadelivery.distributorapp.Utility.UtilityLogin;
 
@@ -52,14 +26,11 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.OnClick;
 import icepick.State;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static android.app.Activity.RESULT_OK;
 import static org.localareadelivery.distributorapp.DeliveryGuyDashboard.DeliveryGuyDashboard.DELIVERY_GUY_INTENT_KEY_DASHBOARD;
 
 /**
@@ -67,32 +38,26 @@ import static org.localareadelivery.distributorapp.DeliveryGuyDashboard.Delivery
  */
 
 
-/**
- * A placeholder fragment containing a simple view.
- */
-public class FragmentOutForDelivery extends Fragment implements SwipeRefreshLayout.OnRefreshListener,AdapterOutForDelivery.NotifyHandoverToUser,NotifyLocation{
+public class PendingReturnCancelledByUser extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
 
 
 //    @Inject
 //    OrderService orderService;
 
-
-
-    Location locationResult;
-
-
-
     @Inject
     OrderServiceDeliveryGuySelf orderServiceDelivery;
 
+
+
     RecyclerView recyclerView;
-    AdapterOutForDelivery adapter;
 
+    AdapterPendingReturnCancelledByUser adapter;
     public List<Order> dataset = new ArrayList<>();
-
     GridLayoutManager layoutManager;
+
     SwipeRefreshLayout swipeContainer;
 
+    DeliveryGuySelf deliveryGuySelf;
 
 
     final private int limit = 5;
@@ -102,12 +67,7 @@ public class FragmentOutForDelivery extends Fragment implements SwipeRefreshLayo
 
 
 
-//    NotificationReceiver notificationReceiver;
-
-    DeliveryGuySelf deliveryGuySelf;
-
-
-    public FragmentOutForDelivery() {
+    public PendingReturnCancelledByUser() {
 
         DaggerComponentBuilder.getInstance()
                 .getNetComponent()
@@ -119,8 +79,8 @@ public class FragmentOutForDelivery extends Fragment implements SwipeRefreshLayo
      * Returns a new instance of this fragment for the given section
      * number.
      */
-    public static FragmentOutForDelivery newInstance() {
-        FragmentOutForDelivery fragment = new FragmentOutForDelivery();
+    public static PendingReturnCancelledByUser newInstance() {
+        PendingReturnCancelledByUser fragment = new PendingReturnCancelledByUser();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -129,43 +89,35 @@ public class FragmentOutForDelivery extends Fragment implements SwipeRefreshLayo
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_home_delivery_pending_handover_driver_dashboard, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_pending_return_cancelled_by_user, container, false);
 
         setRetainInstance(true);
 
-        swipeContainer = (SwipeRefreshLayout)rootView.findViewById(R.id.swipeContainer);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
+        swipeContainer = (SwipeRefreshLayout)rootView.findViewById(R.id.swipeContainer);
 
         deliveryGuySelf = getActivity().getIntent().getParcelableExtra(DELIVERY_GUY_INTENT_KEY_DASHBOARD);
 
-//
+
+
 //        if(savedInstanceState!=null)
 //        {
-//            // restore instance state
+//             restore instance state
 //            deliveryGuySelf = savedInstanceState.getParcelable("savedVehicle");
-//
 //        }
+
         if(savedInstanceState==null)
         {
             makeRefreshNetworkCall();
         }
 
 
-
-
         setupRecyclerView();
         setupSwipeContainer();
 
+
         return rootView;
     }
-
-
-
-
-
-
-
-
 
 
     void setupSwipeContainer()
@@ -181,10 +133,11 @@ public class FragmentOutForDelivery extends Fragment implements SwipeRefreshLayo
 
     }
 
+
     void setupRecyclerView()
     {
 
-        adapter = new AdapterOutForDelivery(dataset,this);
+        adapter = new AdapterPendingReturnCancelledByUser(dataset);
 
         recyclerView.setAdapter(adapter);
 
@@ -207,16 +160,17 @@ public class FragmentOutForDelivery extends Fragment implements SwipeRefreshLayo
 
 
 
+
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
 
-                if(offset + limit > layoutManager.findLastVisibleItemPosition()+1)
+
+                if(offset + limit > layoutManager.findLastVisibleItemPosition() + 1)
                 {
                     return;
                 }
-
 
                 if(layoutManager.findLastVisibleItemPosition()==dataset.size()-1)
                 {
@@ -250,7 +204,6 @@ public class FragmentOutForDelivery extends Fragment implements SwipeRefreshLayo
                 }
             }
         });
-
     }
 
 //    int previous_position = -1;
@@ -258,11 +211,12 @@ public class FragmentOutForDelivery extends Fragment implements SwipeRefreshLayo
 
 
 
+
     @Override
     public void onRefresh() {
 
+//        offset = 0;
         makeNetworkCall(true,true);
-        isDestroyed=false;
     }
 
 
@@ -276,8 +230,10 @@ public class FragmentOutForDelivery extends Fragment implements SwipeRefreshLayo
     @Override
     public void onDestroy() {
         super.onDestroy();
-        isDestroyed = true;
+        isDestroyed=true;
     }
+
+
 
     void makeRefreshNetworkCall()
     {
@@ -294,11 +250,12 @@ public class FragmentOutForDelivery extends Fragment implements SwipeRefreshLayo
 
 
 
-    void makeNetworkCall(final boolean clearDataset, boolean resetOffset)
+
+    void makeNetworkCall(final boolean clearDataset,boolean resetOffset)
     {
         if(resetOffset)
         {
-            offset = 0;
+            offset=0;
         }
 
 //        if(deliveryGuySelf ==null)
@@ -308,13 +265,13 @@ public class FragmentOutForDelivery extends Fragment implements SwipeRefreshLayo
 
 //        Shop currentShop = UtilityShopHome.getShop(getContext());
 
-
-
 //        Call<OrderEndPoint> call = orderService
 //                .getOrders(null, deliveryGuySelf.getShopID(),false,
-//                        OrderStatusHomeDelivery.HANDOVER_ACCEPTED,
+//                        OrderStatusHomeDelivery.CANCELLED_BY_SHOP_RETURN_PENDING,
 //                        null, deliveryGuySelf.getDeliveryGuyID(),null,null,true,true,
 //                        null,limit,offset,null);
+
+
 
 
         int deliveryGuyID = 0;
@@ -324,24 +281,17 @@ public class FragmentOutForDelivery extends Fragment implements SwipeRefreshLayo
             deliveryGuyID = deliveryGuySelf.getDeliveryGuyID();
         }
 
-        double lat = 0;
-        double lon = 0;
-
-        if(locationResult!=null)
-        {
-            lat = locationResult.getLatitude();
-            lon = locationResult.getLongitude();
-        }
-
         Call<OrderEndPoint> call = orderServiceDelivery
                 .getOrders(UtilityLogin.getAuthorizationHeaders(getActivity()),
                         deliveryGuyID,
-                        null,null,false,OrderStatusHomeDelivery.HANDOVER_ACCEPTED,
+                        null,null,
+                        false,OrderStatusHomeDelivery.CANCELLED_BY_USER_RETURN_PENDING,
                         null,
                         null,null,
-                        lat,lon,
+                        null,null,
                         null,
-                        "distance",limit,offset,null);
+                        null,limit,offset,null);
+
 
 
 
@@ -390,9 +340,6 @@ public class FragmentOutForDelivery extends Fragment implements SwipeRefreshLayo
 
 
 
-
-
-
     void showToastMessage(String message)
     {
         if(getActivity()!=null)
@@ -405,105 +352,8 @@ public class FragmentOutForDelivery extends Fragment implements SwipeRefreshLayo
 
 
 
-    @Override
-    public void notifyHandoverToUser(Order order) {
-
-
-//        order.setStatusHomeDelivery(OrderStatusHomeDelivery.PENDING_DELIVERY);
-
-        Call<ResponseBody> call = orderServiceDelivery.handoverToUser(
-                UtilityLogin.getAuthorizationHeaders(getActivity()),
-                order.getOrderID());
-
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-
-                if(response.code()==200)
-                {
-                    showToastMessage("Successful !");
-                    makeRefreshNetworkCall();
-                }
-                else if(response.code()==304)
-                {
-                    showToastMessage("Not Successful !");
-                }
-                else if(response.code()==401 || response.code()==404)
-                {
-                    showToastMessage("Not Permitted !");
-                }
-                else
-                {
-                    showToastMessage("Server Error !");
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-
-                showToastMessage("Network Request Failed. Try again !");
-
-            }
-        });
-    }
-
-    @Override
-    public void notifyReturnPackage(Order order) {
-
-        Call<ResponseBody> callReturn = orderServiceDelivery.returnOrderPackage(
-                UtilityLogin.getAuthorizationHeaders(getActivity()),
-                order.getOrderID());
-
-        callReturn.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-
-                if(response.code()==200)
-                {
-                    showToastMessage("Successful !");
-                    makeRefreshNetworkCall();
-                }
-                else if(response.code()==304)
-                {
-                    showToastMessage("Not Updated !");
-                }
-                else if(response.code()==401 || response.code()==404)
-                {
-                    showToastMessage("Not Permitted !");
-                }
-                else
-                {
-                    showToastMessage("Server Error !");
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-
-                showToastMessage("Network Request Failed. Try again !");
-            }
-        });
-
-    }
-
-    @Override
-    public void notifyGetDirections(DeliveryAddress deliveryAddress) {
-
-//        showToastMessage("Get Directions : " + String.valueOf(deliveryAddress.getLatitude())+ ":" + String.valueOf(deliveryAddress.getLongitude()));
-
-        String str_latitude = String.valueOf(deliveryAddress.getLatitude());
-        String str_longitude = String.valueOf(deliveryAddress.getLongitude());
-
-        Uri gmmIntentUri = Uri.parse("google.navigation:q=" + str_latitude +  "," + str_longitude);
-        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-        mapIntent.setPackage("com.google.android.apps.maps");
-        startActivity(mapIntent);
-
-    }
-
-
+//
+//
 //    public DeliveryGuySelf getDeliveryGuySelf() {
 //        return deliveryGuySelf;
 //    }
@@ -513,12 +363,12 @@ public class FragmentOutForDelivery extends Fragment implements SwipeRefreshLayo
 //    }
 //
 //
-//
 //    @Override
 //    public void onSaveInstanceState(Bundle outState) {
 //        super.onSaveInstanceState(outState);
 //        outState.putParcelable("savedVehicle", deliveryGuySelf);
 //    }
+
 
 
     void notifyTitleChanged()
@@ -528,20 +378,12 @@ public class FragmentOutForDelivery extends Fragment implements SwipeRefreshLayo
         {
             ((NotifyTitleChanged)getActivity())
                     .NotifyTitleChanged(
-                            "Out For Delivery (" + String.valueOf(dataset.size())
-                                    + "/" + String.valueOf(item_count) + ")",1);
+                            "Pending Return ( " + String.valueOf(dataset.size())
+                                    + "/" + String.valueOf(item_count) + " )",6);
 
 
         }
     }
 
 
-
-
-    @Override
-    public void fetchedLocation(Location location) {
-        locationResult = location;
-        makeRefreshNetworkCall();
-        showToastMessage("Location Updated !");
-    }
 }

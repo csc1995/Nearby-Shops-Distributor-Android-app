@@ -9,6 +9,7 @@ import android.widget.TextView;
 import org.localareadelivery.distributorapp.Model.Order;
 import org.localareadelivery.distributorapp.Model.DeliveryAddress;
 import org.localareadelivery.distributorapp.ModelStats.OrderStats;
+import org.localareadelivery.distributorapp.OrderHistoryHD.Utility.UtilityOrderStatus;
 import org.localareadelivery.distributorapp.R;
 
 import java.util.List;
@@ -70,7 +71,9 @@ public class AdapterOutForDelivery extends RecyclerView.Adapter<AdapterOutForDel
 
             holder.numberOfItems.setText(orderStats.getItemCount() + " Items");
             holder.orderTotal.setText("| Total : " + (orderStats.getItemTotal() + order.getDeliveryCharges()));
-            //holder.currentStatus.setText();
+            holder.currentStatus.setText("Status : " + UtilityOrderStatus.getStatus(order.getStatusHomeDelivery(),false,false));
+
+            holder.distance.setText(String.format("%.2f", deliveryAddress.getRt_distance()) + " Km");
 
 
         }
@@ -85,36 +88,18 @@ public class AdapterOutForDelivery extends RecyclerView.Adapter<AdapterOutForDel
     class ViewHolder extends RecyclerView.ViewHolder{
 
 
-        @Bind(R.id.order_id)
-        TextView orderID;
-
-        @Bind(R.id.dateTimePlaced)
-        TextView dateTimePlaced;
-
-        @Bind(R.id.deliveryAddressName)
-        TextView deliveryAddressName;
-
-        @Bind(R.id.deliveryAddress)
-        TextView deliveryAddress;
-
-        @Bind(R.id.deliveryAddressPhone)
-        TextView deliveryAddressPhone;
-
-
-        @Bind(R.id.numberOfItems)
-        TextView numberOfItems;
-
-        @Bind(R.id.orderTotal)
-        TextView orderTotal;
-
-        @Bind(R.id.currentStatus)
-        TextView currentStatus;
-
-        @Bind(R.id.acceptHandoverButton)
-        TextView cancelHandoverButton;
-
-        @Bind(R.id.return_package)
-        TextView returnPackage;
+        @Bind(R.id.order_id) TextView orderID;
+        @Bind(R.id.dateTimePlaced) TextView dateTimePlaced;
+        @Bind(R.id.deliveryAddressName) TextView deliveryAddressName;
+        @Bind(R.id.deliveryAddress) TextView deliveryAddress;
+        @Bind(R.id.deliveryAddressPhone) TextView deliveryAddressPhone;
+        @Bind(R.id.numberOfItems) TextView numberOfItems;
+        @Bind(R.id.orderTotal) TextView orderTotal;
+        @Bind(R.id.currentStatus) TextView currentStatus;
+        @Bind(R.id.acceptHandoverButton) TextView cancelHandoverButton;
+        @Bind(R.id.return_package) TextView returnPackage;
+        @Bind(R.id.distance) TextView distance;
+        @Bind(R.id.get_directions) TextView getDirections;
 
 
         public ViewHolder(View itemView) {
@@ -136,17 +121,21 @@ public class AdapterOutForDelivery extends RecyclerView.Adapter<AdapterOutForDel
             notifications.notifyReturnPackage(dataset.get(getLayoutPosition()));
         }
 
+
+        @OnClick(R.id.get_directions)
+        void getDirections()
+        {
+            Order order = dataset.get(getLayoutPosition());
+            notifications.notifyGetDirections(order.getDeliveryAddress());
+        }
+
     }
 
 
-
-
-
-
     interface NotifyHandoverToUser {
-
         void notifyHandoverToUser(Order order);
         void notifyReturnPackage(Order order);
+        void notifyGetDirections(DeliveryAddress deliveryAddress);
     }
 
 }

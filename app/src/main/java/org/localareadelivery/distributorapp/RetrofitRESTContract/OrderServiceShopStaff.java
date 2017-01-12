@@ -83,6 +83,13 @@ public interface OrderServiceShopStaff {
                                                    @Path("OrderID")int orderID);
 
 
+
+    @PUT("/api/Order/ShopStaff/AcceptReturnCancelledByUser/{OrderID}")
+    Call<ResponseBody> acceptReturnCancelledByUser(@Header("Authorization") String headers,
+                                                   @Path("OrderID")int orderID);
+
+
+
     @PUT("/api/Order/ShopStaff/AcceptReturn/{OrderID}")
     Call<ResponseBody> acceptReturn(@Header("Authorization") String headers,
                                     @Path("OrderID")int orderID);

@@ -20,11 +20,13 @@ import org.localareadelivery.distributorapp.DeliveryGuyDashboard.PendingDelivery
 import org.localareadelivery.distributorapp.DeliveryGuyDashboard.PendingHandover.PendingHandoverFragment;
 import org.localareadelivery.distributorapp.DeliveryGuyDashboard.PendingReturn.PendingReturnByDG;
 import org.localareadelivery.distributorapp.DeliveryGuyDashboard.PendingReturnCancelledByShop.PendingReturnCancelledByShop;
+import org.localareadelivery.distributorapp.DeliveryGuyDashboard.PendingReturnCancelledByUser.PendingReturnCancelledByUser;
 import org.localareadelivery.distributorapp.HomeDeliveryInventoryDeliveryGuy.OutForDelivery.OutForDeliveryFragment;
 import org.localareadelivery.distributorapp.HomeDeliveryInventoryDeliveryGuy.PendingDeliveryApproval.PendingDeliveryApproval;
 import org.localareadelivery.distributorapp.HomeDeliveryInventoryDeliveryGuy.PendingReturn.PendingReturnDGI;
 import org.localareadelivery.distributorapp.HomeDeliveryInventoryDeliveryGuy.PendingReturnCancelledByShop.PendingReturnCancelledByShopDGI;
 import org.localareadelivery.distributorapp.DistributorLogin;
+import org.localareadelivery.distributorapp.HomeDeliveryInventoryDeliveryGuy.PendingReturnCancelledByUser.PendingReturnCancelledByUserDGI;
 import org.localareadelivery.distributorapp.OrderHistoryHD.Complete.CompleteOrdersFragment;
 import org.localareadelivery.distributorapp.OrderHistoryHD.Pending.PendingOrdersFragment;
 import org.localareadelivery.distributorapp.Items.ItemsFragmentSimple;
@@ -205,4 +207,8 @@ public interface NetComponent {
     void Inject(CompleteOrdersFragment completeOrdersFragment);
 
     void Inject(FragmentCancelledByUser fragmentCancelledByUser);
+
+    void Inject(PendingReturnCancelledByUserDGI pendingReturnCancelledByUserDGI);
+
+    void Inject(PendingReturnCancelledByUser pendingReturnCancelledByUser);
 }
