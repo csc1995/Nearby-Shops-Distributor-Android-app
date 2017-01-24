@@ -333,6 +333,61 @@
 
 
 
+        <TextView
+            android:layout_marginTop="20dp"
+            android:paddingLeft="5dp"
+            android:paddingStart="5dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:background="#33000000"
+            android:text="Permissions : Pick From Shop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+
+        <CheckBox
+            android:text="Cancel Orders"
+            android:id="@+id/permit_cancel_orders_pfs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+        <CheckBox
+            android:text="Confirm Orders"
+            android:id="@+id/permit_confirm_orders_pfs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+        <CheckBox
+            android:text="Set Orders Packed"
+            android:id="@+id/permit_set_orders_packed_pfs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+
+        <CheckBox
+            android:text="Set Order Ready for Pickup"
+            android:id="@+id/permit_set_ready_for_pickup_pfs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+
+        <CheckBox
+            android:text="Accept Payments Pick From Shop"
+            android:id="@+id/permit_accept_payments_pfs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <CheckBox
+            android:text="Mark Orders Delivered"
+            android:id="@+id/permit_mark_orders_delivered_pfs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
 
 
 

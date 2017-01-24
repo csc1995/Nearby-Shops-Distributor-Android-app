@@ -456,7 +456,7 @@ public class ItemRemakeFragmentOld extends Fragment
                 if(parentCategory!=null)
                 {
 
-                    if(parentCategory.getAbstractNode())
+                    if(parentCategory.getisAbstractNode())
                     {
                         showToastMessage(parentCategory.getCategoryName()
                                 + " is an abstract category you cannot add item to an abstract category");
@@ -484,7 +484,7 @@ public class ItemRemakeFragmentOld extends Fragment
                 if(parentCategory!=null)
                 {
 
-                    if(parentCategory.getAbstractNode())
+                    if(parentCategory.getisAbstractNode())
                     {
                         showToastMessage(parentCategory.getCategoryName()
                                 + " is an abstract category you cannot add item to an abstract category");

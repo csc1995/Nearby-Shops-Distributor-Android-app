@@ -105,9 +105,11 @@ public class EditStaffFragment extends Fragment {
     @Bind(R.id.govt_id_number) EditText govtIDNumber;
 
 
+    // permissions General
     @Bind(R.id.permit_add_remove_items) CheckBox permitAddRemoveItems;
     @Bind(R.id.permit_update_stock) CheckBox permitUpdateStock;
 
+    // permissions home delivery
     @Bind(R.id.permit_cancel_orders) CheckBox permitCancelOrders;
     @Bind(R.id.permit_confirm_orders) CheckBox permitConfirmOrders;
     @Bind(R.id.permit_set_orders_packed) CheckBox permitSetOrdersPacked;
@@ -117,6 +119,15 @@ public class EditStaffFragment extends Fragment {
 
     @Bind(R.id.permit_accept_payments) CheckBox permitAcceptPayments;
     @Bind(R.id.permit_accept_returns) CheckBox permitAcceptReturns;
+
+    // permissions pick from shop
+    @Bind(R.id.permit_cancel_orders_pfs) CheckBox permitCancelOrdersPFS;
+    @Bind(R.id.permit_confirm_orders_pfs) CheckBox permitConfirmOrdersPFS;
+    @Bind(R.id.permit_set_orders_packed_pfs) CheckBox permitSetOrdersPackedPFS;
+    @Bind(R.id.permit_set_ready_for_pickup_pfs) CheckBox permitReadyForPickupPFS;
+    @Bind(R.id.permit_accept_payments_pfs) CheckBox permitPaymentReceivedPFS;
+    @Bind(R.id.permit_mark_orders_delivered_pfs) CheckBox permitMarkDeliveredPFS;
+
 
 
     @Bind(R.id.saveButton)
@@ -473,9 +484,11 @@ public class EditStaffFragment extends Fragment {
             govtIDName.setText(staff.getGovtIDName());
             govtIDNumber.setText(staff.getGovtIDNumber());
 
+            // permissions general
             permitAddRemoveItems.setChecked(staff.isAddRemoveItemsFromShop());
             permitUpdateStock.setChecked(staff.isUpdateStock());
 
+            // permissions home delivery
             permitCancelOrders.setChecked(staff.isCancelOrders());
             permitConfirmOrders.setChecked(staff.isConfirmOrders());
             permitSetOrdersPacked.setChecked(staff.isSetOrdersPacked());
@@ -483,6 +496,15 @@ public class EditStaffFragment extends Fragment {
             permitMarkOrdersDelivered.setChecked(staff.isMarkOrdersDelivered());
             permitAcceptPayments.setChecked(staff.isAcceptPaymentsFromDelivery());
             permitAcceptReturns.setChecked(staff.isAcceptReturns());
+
+
+            // permissions pick from shop
+            permitCancelOrdersPFS.setChecked(staff.isPermitCancelOrdersPFS());
+            permitConfirmOrdersPFS.setChecked(staff.isPermitConfirmOrdersPFS());
+            permitSetOrdersPackedPFS.setChecked(staff.isPermitSetOrdersPackedPFS());
+            permitReadyForPickupPFS.setChecked(staff.isPermitSetReadyForPickupPFS());
+            permitPaymentReceivedPFS.setChecked(staff.isPermitSetPaymentReceivedPFS());
+            permitMarkDeliveredPFS.setChecked(staff.isPermitMarkDeliveredPFS());
 
         }
     }
@@ -533,6 +555,15 @@ public class EditStaffFragment extends Fragment {
         staff.setMarkOrdersDelivered(permitMarkOrdersDelivered.isChecked());
         staff.setAcceptPaymentsFromDelivery(permitAcceptPayments.isChecked());
         staff.setAcceptReturns(permitAcceptReturns.isChecked());
+
+        // permissions pick from shop
+        staff.setPermitCancelOrdersPFS(permitCancelOrdersPFS.isChecked());
+        staff.setPermitConfirmOrdersPFS(permitConfirmOrdersPFS.isChecked());
+        staff.setPermitSetOrdersPackedPFS(permitSetOrdersPackedPFS.isChecked());
+        staff.setPermitSetReadyForPickupPFS(permitSetOrdersPackedPFS.isChecked());
+        staff.setPermitSetPaymentReceivedPFS(permitPaymentReceivedPFS.isChecked());
+        staff.setPermitMarkDeliveredPFS(permitMarkDeliveredPFS.isChecked());
+
 
     }
 

@@ -186,7 +186,7 @@ public class AddItemCategoryOld extends AppCompatActivity implements Callback<Im
         itemCategory.setIsLeafNode(isLeafNode.isChecked());
 
 
-        itemCategory.setAbstractNode(isAbstractNode.isChecked());
+        itemCategory.setisAbstractNode(isAbstractNode.isChecked());
         itemCategory.setDescriptionShort(descriptionShort.getText().toString());
 
     }

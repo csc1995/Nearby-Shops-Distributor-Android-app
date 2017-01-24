@@ -773,7 +773,7 @@ public class ItemCategoriesFragmentOld extends Fragment
 
 //        notificationReceiverFragment.showAppBar();
 
-        if(!currentCategory.getAbstractNode())
+        if(!currentCategory.getisAbstractNode())
         {
             notificationReceiverFragment.notifySwipeToright();
         }

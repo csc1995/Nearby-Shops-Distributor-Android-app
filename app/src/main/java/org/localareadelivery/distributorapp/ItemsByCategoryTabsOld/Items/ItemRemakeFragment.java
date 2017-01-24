@@ -326,7 +326,7 @@ public class ItemRemakeFragment extends Fragment
                 notifyTitleChanged();
 
 
-                if(!notifiedCurrentCategory.getAbstractNode() && item_count>0 && !isbackPressed)
+                if(!notifiedCurrentCategory.getisAbstractNode() && item_count>0 && !isbackPressed)
                 {
                     notificationReceiverFragment.notifySwipeToright();
                 }
@@ -379,7 +379,7 @@ public class ItemRemakeFragment extends Fragment
                 if(parentCategory!=null)
                 {
 
-                    if(parentCategory.getAbstractNode())
+                    if(parentCategory.getisAbstractNode())
                     {
                         showToastMessage(parentCategory.getCategoryName()
                                 + " is an abstract category you cannot add item to an abstract category");
@@ -407,7 +407,7 @@ public class ItemRemakeFragment extends Fragment
                 if(parentCategory!=null)
                 {
 
-                    if(parentCategory.getAbstractNode())
+                    if(parentCategory.getisAbstractNode())
                     {
                         showToastMessage(parentCategory.getCategoryName()
                                 + " is an abstract category you cannot add item to an abstract category");

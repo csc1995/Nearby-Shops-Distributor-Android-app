@@ -329,7 +329,7 @@ public class ItemsInStockByCatFragment extends Fragment implements SwipeRefreshL
                     currentShop.getShopID(),
                     currentCategory.getItemCategoryID(),
                     null,null,null,null,null,null,
-                    "id", null,null,
+                    ItemCategory.CATEGORY_ORDER, null,null,
                     false
             );
 
@@ -349,7 +349,7 @@ public class ItemsInStockByCatFragment extends Fragment implements SwipeRefreshL
                     currentShop.getShopID(),
                     null,
                     null,null,null,null,null,null,
-                    "id", null,null,
+                    ItemCategory.CATEGORY_ORDER, null,null,
                     false
             );
 

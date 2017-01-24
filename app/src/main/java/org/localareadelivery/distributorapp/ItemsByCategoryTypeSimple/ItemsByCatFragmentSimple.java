@@ -435,7 +435,7 @@ public class ItemsByCatFragmentSimple extends Fragment implements SwipeRefreshLa
                     currentCategory.getItemCategoryID(),
                     null,
                     null,
-                    "id",null,null
+                    ItemCategory.CATEGORY_ORDER,null,null
             );
         }
         else
@@ -444,7 +444,7 @@ public class ItemsByCatFragmentSimple extends Fragment implements SwipeRefreshLa
                     null,
                     null,
                     searchQuery,
-                    "id",null,null
+                    ItemCategory.CATEGORY_ORDER,null,null
             );
         }
 

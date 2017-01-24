@@ -1,6 +1,5 @@
 package org.localareadelivery.distributorapp.ModelRoles;
 
-import org.localareadelivery.distributorapp.Model.Shop;
 
 import java.sql.Timestamp;
 
@@ -14,9 +13,9 @@ public class ShopStaff {
 
     // Column names for Distributor
 
-    public static final String STAFF_ID = "ID";
+    public static final String STAFF_ID = "STAFF_ID";
     public static final String STAFF_NAME = "STAFF_NAME";
-    public static final String USER_NAME = "USER_NAME";
+//    public static final String USER_NAME = "USER_NAME";
     public static final String PASSWORD = "PASSWORD";
 
     public static final String SHOP_ID = "SHOP_ID";
@@ -38,14 +37,11 @@ public class ShopStaff {
     public static final String TIMESTAMP_CREATED = "TIMESTAMP_CREATED";
 
 
-
-
     // permissions General
     public static final String ADD_REMOVE_ITEMS_FROM_SHOP = "ADD_REMOVE_ITEMS_FROM_SHOP";
     public static final String UPDATE_STOCK = "UPDATE_STOCK";
 
     // permissions : Home Delivery
-
     public static final String CANCEL_ORDERS = "CANCEL_ORDERS";
     public static final String CONFIRM_ORDERS = "CONFIRM_ORDERS";
     public static final String SET_ORDERS_PACKED = "SET_ORDERS_PACKED";
@@ -54,16 +50,27 @@ public class ShopStaff {
     public static final String ACCEPT_PAYMENTS_FROM_DELIVERY = "ACCEPT_PAYMENTS_FROM_DELIVERY";
     public static final String ACCEPT_RETURNS = "ACCEPT_RETURNS";
 
+    // permissions : Pick from Shop
+    public static final String CANCEL_ORDERS_PFS = "CANCEL_ORDERS_PFS";
+
+    public static final String CONFIRM_ORDERS_PFS = "CONFIRM_ORDERS_PFS";
+    public static final String SET_ORDERS_PACKED_PFS = "SET_ORDERS_PACKED_PFS";
+    public static final String SET_READY_FOR_PICKUP_PFS = "SET_READY_FOR_PICKUP_PFS";
+    public static final String SET_PAYMENT_RECEIVED_PFS = "SET_PAYMENT_RECEIVED_PFS";
+    public static final String MARK_DELIVERED_PFS = "MARK_DELIVERED_PFS";
+
+
+
 
 
 
     // Create Table CurrentServiceConfiguration Provider
     public static final String createTableShopStaffPostgres =
             "CREATE TABLE IF NOT EXISTS " + ShopStaff.TABLE_NAME + "("
-            + " " + ShopStaff.STAFF_ID + " SERIAL PRIMARY KEY,"
+            + " " + ShopStaff.STAFF_ID + " INT UNIQUE NOT NULL,"
 
             + " " + ShopStaff.STAFF_NAME + " text,"
-            + " " + ShopStaff.USER_NAME + " text UNIQUE NOT NULL,"
+//            + " " + ShopStaff.USER_NAME + " text UNIQUE NOT NULL,"
             + " " + ShopStaff.PASSWORD + " text NOT NULL,"
 
                   + ShopStaff.SHOP_ID + " INT NOT NULL,"
@@ -76,7 +83,6 @@ public class ShopStaff {
             + " " + ShopStaff.IS_ENABLED + " boolean NOT NULL,"
             + " " + ShopStaff.ACCOUNT_PRIVATE + " boolean,"
 
-
             + " " + ShopStaff.GOVERNMENT_ID_NAME + " text,"
             + " " + ShopStaff.GOVERNMENT_ID_NUMBER + " text,"
             + " " + ShopStaff.TIMESTAMP_CREATED + " timestamp with time zone NOT NULL DEFAULT now(),"
@@ -86,14 +92,22 @@ public class ShopStaff {
 
             + " " + ShopStaff.CANCEL_ORDERS + " boolean ,"
             + " " + ShopStaff.CONFIRM_ORDERS + " boolean ,"
-                    + " " + ShopStaff.SET_ORDERS_PACKED + " boolean ,"
-                    + " " + ShopStaff.HANDOVER_TO_DELIVERY + " boolean ,"
-                    + " " + ShopStaff.MARK_ORDERS_DELIVERED + " boolean ,"
-                    + " " + ShopStaff.ACCEPT_PAYMENTS_FROM_DELIVERY + " boolean ,"
-                    + " " + ShopStaff.ACCEPT_RETURNS + " boolean ,"
+            + " " + ShopStaff.SET_ORDERS_PACKED + " boolean ,"
+            + " " + ShopStaff.HANDOVER_TO_DELIVERY + " boolean ,"
+            + " " + ShopStaff.MARK_ORDERS_DELIVERED + " boolean ,"
+            + " " + ShopStaff.ACCEPT_PAYMENTS_FROM_DELIVERY + " boolean ,"
+            + " " + ShopStaff.ACCEPT_RETURNS + " boolean ,"
 
-                    + " FOREIGN KEY(" + ShopStaff.SHOP_ID +") REFERENCES " + Shop.TABLE_NAME + "(" + Shop.SHOP_ID + ")"
-                    + ")";
+            + " " + ShopStaff.CANCEL_ORDERS_PFS + " boolean ,"
+            + " " + ShopStaff.CONFIRM_ORDERS_PFS + " boolean ,"
+            + " " + ShopStaff.SET_ORDERS_PACKED_PFS + " boolean ,"
+            + " " + ShopStaff.SET_READY_FOR_PICKUP_PFS + " boolean ,"
+            + " " + ShopStaff.SET_PAYMENT_RECEIVED_PFS + " boolean ,"
+            + " " + ShopStaff.MARK_DELIVERED_PFS + " boolean ,"
+
+//            + " FOREIGN KEY(" + ShopStaff.SHOP_ID +") REFERENCES " + Shop.TABLE_NAME + "(" + Shop.SHOP_ID + "),"
+//            + " FOREIGN KEY(" + ShopStaff.STAFF_ID +") REFERENCES " + Usernames.TABLE_NAME + "(" + Usernames.USER_ID + ")"
+            + ")";
 
 
     
@@ -112,7 +126,7 @@ public class ShopStaff {
     private String phone;
     private String designation;
 
-    private boolean isEnabled;
+    private Boolean isEnabled;
     private boolean accountPrivate;
 
     private String govtIDName;
@@ -123,7 +137,7 @@ public class ShopStaff {
     private boolean addRemoveItemsFromShop;
     private boolean updateStock;
 
-    // permissions orders
+    // permissions home delivery orders
     private boolean cancelOrders;
     private boolean confirmOrders;
     private boolean setOrdersPacked;
@@ -132,11 +146,67 @@ public class ShopStaff {
     private boolean acceptPaymentsFromDelivery;
     private boolean acceptReturns;
 
+    // permissions pick from shop orders
+    private boolean permitCancelOrdersPFS;
+
+    private boolean permitConfirmOrdersPFS;
+    private boolean permitSetOrdersPackedPFS;
+    private boolean permitSetReadyForPickupPFS;
+    private boolean permitSetPaymentReceivedPFS;
+    private boolean permitMarkDeliveredPFS;
 
 
 
     // Getter and Setters
 
+
+    public boolean isPermitCancelOrdersPFS() {
+        return permitCancelOrdersPFS;
+    }
+
+    public void setPermitCancelOrdersPFS(boolean permitCancelOrdersPFS) {
+        this.permitCancelOrdersPFS = permitCancelOrdersPFS;
+    }
+
+    public boolean isPermitConfirmOrdersPFS() {
+        return permitConfirmOrdersPFS;
+    }
+
+    public void setPermitConfirmOrdersPFS(boolean permitConfirmOrdersPFS) {
+        this.permitConfirmOrdersPFS = permitConfirmOrdersPFS;
+    }
+
+    public boolean isPermitSetOrdersPackedPFS() {
+        return permitSetOrdersPackedPFS;
+    }
+
+    public void setPermitSetOrdersPackedPFS(boolean permitSetOrdersPackedPFS) {
+        this.permitSetOrdersPackedPFS = permitSetOrdersPackedPFS;
+    }
+
+    public boolean isPermitSetReadyForPickupPFS() {
+        return permitSetReadyForPickupPFS;
+    }
+
+    public void setPermitSetReadyForPickupPFS(boolean permitSetReadyForPickupPFS) {
+        this.permitSetReadyForPickupPFS = permitSetReadyForPickupPFS;
+    }
+
+    public boolean isPermitSetPaymentReceivedPFS() {
+        return permitSetPaymentReceivedPFS;
+    }
+
+    public void setPermitSetPaymentReceivedPFS(boolean permitSetPaymentReceivedPFS) {
+        this.permitSetPaymentReceivedPFS = permitSetPaymentReceivedPFS;
+    }
+
+    public boolean isPermitMarkDeliveredPFS() {
+        return permitMarkDeliveredPFS;
+    }
+
+    public void setPermitMarkDeliveredPFS(boolean permitMarkDeliveredPFS) {
+        this.permitMarkDeliveredPFS = permitMarkDeliveredPFS;
+    }
 
     public int getShopID() {
         return shopID;
