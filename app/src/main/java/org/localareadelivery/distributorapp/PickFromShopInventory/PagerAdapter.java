@@ -7,6 +7,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 import org.localareadelivery.distributorapp.OrderHistoryHD.PlaceholderFragment;
 import org.localareadelivery.distributorapp.PickFromShopInventory.Confirmed.ConfirmedOrdersFragmentPFS;
 import org.localareadelivery.distributorapp.PickFromShopInventory.Packed.PackedOrdersFragmentPFS;
+import org.localareadelivery.distributorapp.PickFromShopInventory.PendingDelivery.PendingDeliveryFragmentPFS;
+import org.localareadelivery.distributorapp.PickFromShopInventory.PendingPayments.PaymentsPendingFragmentPFS;
 import org.localareadelivery.distributorapp.PickFromShopInventory.Placed.PlacedOrdersFragmentPFS;
 
 /**
@@ -37,6 +39,14 @@ public class PagerAdapter extends FragmentPagerAdapter {
         {
             return PackedOrdersFragmentPFS.newInstance();
         }
+        else if(position==3)
+        {
+            return PaymentsPendingFragmentPFS.newInstance();
+        }
+        else if(position==4)
+        {
+            return PendingDeliveryFragmentPFS.newInstance();
+        }
 
 
         return PlaceholderFragment.newInstance(position + 1);
@@ -45,7 +55,7 @@ public class PagerAdapter extends FragmentPagerAdapter {
     @Override
     public int getCount() {
         // Show 3 total pages.
-        return 3;
+        return 5;
     }
 
     @Override
@@ -57,6 +67,10 @@ public class PagerAdapter extends FragmentPagerAdapter {
                 return titleConfirmed;
             case 2:
                 return titlePacked;
+            case 3:
+                return titlePaymentsPending;
+            case 4:
+                return titleDeliveryPending;
         }
         return null;
     }
@@ -65,6 +79,8 @@ public class PagerAdapter extends FragmentPagerAdapter {
     private String titlePlaced = "Placed (0/0)";
     private String titleConfirmed = "Confirmed (0/0)";
     private String titlePacked = "Packed (0/0)";
+    private String titlePaymentsPending = "Payments Pending (0/0)";
+    private String titleDeliveryPending = "Delivery Pending (0/0)";
 
 
     public void setTitle(String title, int tabPosition)
@@ -81,6 +97,14 @@ public class PagerAdapter extends FragmentPagerAdapter {
         else if(tabPosition==2)
         {
             titlePacked = title;
+        }
+        else if(tabPosition==3)
+        {
+            titlePaymentsPending = title;
+        }
+        else if(tabPosition==4)
+        {
+            titleDeliveryPending = title;
         }
 
         notifyDataSetChanged();

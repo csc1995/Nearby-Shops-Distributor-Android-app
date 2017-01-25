@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.PickFromShopInventory.Packed;
+package org.localareadelivery.distributorapp.PickFromShopInventory.PendingDelivery;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -41,7 +41,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class PackedOrdersFragmentPFS extends Fragment implements AdapterPackedPFS.NotifyConfirmOrder, SwipeRefreshLayout.OnRefreshListener ,NotifySort,NotifySearch, RefreshFragment{
+public class PendingDeliveryFragmentPFS extends Fragment implements AdapterPendingDeliveryPFS.NotifyConfirmOrder, SwipeRefreshLayout.OnRefreshListener ,NotifySort,NotifySearch,RefreshFragment{
 
 
 //    @Inject
@@ -51,7 +51,7 @@ public class PackedOrdersFragmentPFS extends Fragment implements AdapterPackedPF
     OrderServiceShopStaffPFS orderServiceShopStaff;
 
     RecyclerView recyclerView;
-    AdapterPackedPFS adapter;
+    AdapterPendingDeliveryPFS adapter;
 
     public List<OrderPFS> dataset = new ArrayList<>();
 
@@ -67,7 +67,7 @@ public class PackedOrdersFragmentPFS extends Fragment implements AdapterPackedPF
 
 
 
-    public PackedOrdersFragmentPFS() {
+    public PendingDeliveryFragmentPFS() {
 
         DaggerComponentBuilder.getInstance()
                 .getNetComponent()
@@ -76,8 +76,8 @@ public class PackedOrdersFragmentPFS extends Fragment implements AdapterPackedPF
     }
 
 
-    public static PackedOrdersFragmentPFS newInstance() {
-        PackedOrdersFragmentPFS fragment = new PackedOrdersFragmentPFS();
+    public static PendingDeliveryFragmentPFS newInstance() {
+        PendingDeliveryFragmentPFS fragment = new PendingDeliveryFragmentPFS();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -92,7 +92,7 @@ public class PackedOrdersFragmentPFS extends Fragment implements AdapterPackedPF
 
 
         setRetainInstance(true);
-        View rootView = inflater.inflate(R.layout.fragment_pick_from_shop_complete_orders, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_pick_from_shop_pending_orders, container, false);
 
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
@@ -130,7 +130,7 @@ public class PackedOrdersFragmentPFS extends Fragment implements AdapterPackedPF
     void setupRecyclerView()
     {
 
-        adapter = new AdapterPackedPFS(dataset,this,this);
+        adapter = new AdapterPendingDeliveryPFS(dataset,this,this);
 
         recyclerView.setAdapter(adapter);
 
@@ -159,13 +159,13 @@ public class PackedOrdersFragmentPFS extends Fragment implements AdapterPackedPF
                 super.onScrollStateChanged(recyclerView, newState);
 
 
-                if(offset + limit > layoutManager.findLastVisibleItemPosition()+1-1)
+                if(offset + limit > layoutManager.findLastVisibleItemPosition() + 1 - 1)
                 {
                     return;
                 }
 
 
-                if(layoutManager.findLastVisibleItemPosition()==dataset.size()-1+1)
+                if(layoutManager.findLastVisibleItemPosition()==dataset.size()-1 + 1)
                 {
                     // trigger fetch next page
 
@@ -205,7 +205,6 @@ public class PackedOrdersFragmentPFS extends Fragment implements AdapterPackedPF
 
     void makeRefreshNetworkCall()
     {
-
         swipeContainer.post(new Runnable() {
             @Override
             public void run() {
@@ -214,7 +213,6 @@ public class PackedOrdersFragmentPFS extends Fragment implements AdapterPackedPF
                 onRefresh();
             }
         });
-
     }
 
 
@@ -226,15 +224,15 @@ public class PackedOrdersFragmentPFS extends Fragment implements AdapterPackedPF
         String current_sort = "";
         current_sort = UtilitySortOrdersPFS.getSort(getContext()) + " " + UtilitySortOrdersPFS.getAscending(getContext());
 
+
         Call<OrderEndPointPFS> call = orderServiceShopStaff.getOrdersPFS(
                     UtilityLogin.getAuthorizationHeaders(getActivity()),
                     null,null,
-                    OrderStatusPickFromShop.ORDER_PACKED,
+                    OrderStatusPickFromShop.READY_FOR_PICKUP,
+                    null,false,
                     null,null,
-                    null,null,
-                    null, searchQuery,
+                    null,searchQuery,
                     current_sort,limit,offset,null);
-
 
 
             call.enqueue(new Callback<OrderEndPointPFS>() {
@@ -315,9 +313,8 @@ public class PackedOrdersFragmentPFS extends Fragment implements AdapterPackedPF
         {
             ((NotifyTitleChanged)getActivity())
                     .NotifyTitleChanged(
-                            "Packed (" + String.valueOf(dataset.size())
-                                    + "/" + String.valueOf(item_count) + ")",2);
-
+                            "Delivery Pending (" + String.valueOf(dataset.size())
+                                    + "/" + String.valueOf(item_count) + ")",4);
 
         }
     }
@@ -337,37 +334,20 @@ public class PackedOrdersFragmentPFS extends Fragment implements AdapterPackedPF
     void refreshConfirmedFragment()
     {
         Fragment fragment = getActivity().getSupportFragmentManager()
-                .findFragmentByTag(makeFragmentName(R.id.container,3));
-
-        Fragment fragmentTwo = getActivity().getSupportFragmentManager()
-                .findFragmentByTag(makeFragmentName(R.id.container,4));
+                .findFragmentByTag(makeFragmentName(R.id.container,2));
 
         if(fragment instanceof RefreshFragment)
         {
             ((RefreshFragment)fragment).refreshFragment();
         }
-
-
-        if(fragmentTwo instanceof RefreshFragment)
-        {
-            ((RefreshFragment)fragmentTwo).refreshFragment();
-        }
-
     }
 
 
-    @Override
-    public void notifyOrderSelected(OrderPFS order) {
-
-        UtilityOrderDetailPFS.saveOrder(order,getActivity());
-        getActivity().startActivity(new Intent(getActivity(),OrderDetailPFS.class));
-
-    }
 
     @Override
-    public void notifyConfirmOrder(final OrderPFS order, final int position) {
+    public void notifySetOrderPacked(final OrderPFS order, final int position) {
 
-        Call<ResponseBody> call = orderServiceShopStaff.setOrderReadyForPickupPFS(
+        Call<ResponseBody> call = orderServiceShopStaff.markDeliveredPFS(
                 UtilityLogin.getAuthorizationHeaders(getActivity()),
                 order.getOrderID()
         );
@@ -381,7 +361,6 @@ public class PackedOrdersFragmentPFS extends Fragment implements AdapterPackedPF
                 {
                     showToastMessage("Successful !");
 
-                    refreshConfirmedFragment();
                     dataset.remove(order);
                     item_count = item_count - 1;
                     adapter.notifyItemRemoved(position);
@@ -405,32 +384,15 @@ public class PackedOrdersFragmentPFS extends Fragment implements AdapterPackedPF
                 showToastMessage("Network request failed. Check your connection !");
             }
         });
-    }
 
-
-
-    @Override
-    public void notifySortChanged() {
-        makeRefreshNetworkCall();
-    }
-
-
-
-
-    String searchQuery = null;
-
-    @Override
-    public void search(final String searchString) {
-        searchQuery = searchString;
-        makeRefreshNetworkCall();
     }
 
     @Override
-    public void endSearchMode() {
-        searchQuery = null;
-        makeRefreshNetworkCall();
-    }
+    public void notifyOrderSelected(OrderPFS order) {
 
+        UtilityOrderDetailPFS.saveOrder(order,getActivity());
+        getActivity().startActivity(new Intent(getActivity(),OrderDetailPFS.class));
+    }
 
 
 
@@ -504,6 +466,27 @@ public class PackedOrdersFragmentPFS extends Fragment implements AdapterPackedPF
             }
         });
 
+    }
+
+
+    @Override
+    public void notifySortChanged() {
+        makeRefreshNetworkCall();
+    }
+
+
+    String searchQuery = null;
+
+    @Override
+    public void search(final String searchString) {
+        searchQuery = searchString;
+        makeRefreshNetworkCall();
+    }
+
+    @Override
+    public void endSearchMode() {
+        searchQuery = null;
+        makeRefreshNetworkCall();
     }
 
 
