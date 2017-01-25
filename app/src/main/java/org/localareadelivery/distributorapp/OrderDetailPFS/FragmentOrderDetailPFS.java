@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.OrderDetail;
+package org.localareadelivery.distributorapp.OrderDetailPFS;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -6,23 +6,17 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-
 import org.localareadelivery.distributorapp.DaggerComponentBuilder;
-import org.localareadelivery.distributorapp.Model.Order;
-import org.localareadelivery.distributorapp.Model.OrderItem;
-import org.localareadelivery.distributorapp.Model.Shop;
-import org.localareadelivery.distributorapp.ModelEndpoints.OrderItemEndPoint;
+import org.localareadelivery.distributorapp.ModelPickFromShop.OrderItemEndPointPFS;
+import org.localareadelivery.distributorapp.ModelPickFromShop.OrderPFS;
 import org.localareadelivery.distributorapp.R;
-import org.localareadelivery.distributorapp.RetrofitRESTContract.OrderItemService;
-import org.localareadelivery.distributorapp.ShopHome.UtilityShopHome;
+import org.localareadelivery.distributorapp.RetrofitRESTContractPFS.OrderServiceShopStaffPFS;
 import org.localareadelivery.distributorapp.Utility.UtilityLogin;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,16 +32,16 @@ import retrofit2.Response;
  * Created by sumeet on 15/11/16.
  */
 
-public class FragmentOrderDetail extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class FragmentOrderDetailPFS extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
 
-    Order order;
+    OrderPFS order;
 
     @Inject
-    OrderItemService orderItemService;
+    OrderServiceShopStaffPFS orderItemService;
 
     RecyclerView recyclerView;
-    AdapterOrderDetail adapter;
+    AdapterOrderDetailPFS adapter;
 
     public List<Object> dataset = new ArrayList<>();
 
@@ -64,7 +58,7 @@ public class FragmentOrderDetail extends Fragment implements SwipeRefreshLayout.
 
 
 
-    public FragmentOrderDetail() {
+    public FragmentOrderDetailPFS() {
         DaggerComponentBuilder.getInstance()
                 .getNetComponent()
                 .Inject(this);
@@ -84,7 +78,7 @@ public class FragmentOrderDetail extends Fragment implements SwipeRefreshLayout.
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
         swipeContainer = (SwipeRefreshLayout)rootView.findViewById(R.id.swipeContainer);
 
-        order = UtilityOrderDetail.getOrder(getActivity());
+        order = UtilityOrderDetailPFS.getOrder(getActivity());
 
 
         if(savedInstanceState==null)
@@ -120,7 +114,7 @@ public class FragmentOrderDetail extends Fragment implements SwipeRefreshLayout.
     void setupRecyclerView()
     {
 
-        adapter = new AdapterOrderDetail(dataset,getActivity());
+        adapter = new AdapterOrderDetailPFS(dataset,getActivity());
 
         layoutManager = new GridLayoutManager(getActivity(),1);
 
@@ -155,11 +149,11 @@ public class FragmentOrderDetail extends Fragment implements SwipeRefreshLayout.
                 System.out.println("Position : " + position);
 
 
-//                if(adapter.getItemViewType(position)==AdapterOrderDetail.TAG_VIEW_HOLDER_ORDER_ITEM)
+//                if(adapter.getItemViewType(position)==AdapterOrderDetailPFS.TAG_VIEW_HOLDER_ORDER_ITEM)
 //                {
 //                    return 1;
 //                }
-//                else if(adapter.getItemViewType(position)==AdapterOrderDetail.TAG_VIEW_HOLDER_ORDER)
+//                else if(adapter.getItemViewType(position)==AdapterOrderDetailPFS.TAG_VIEW_HOLDER_ORDER)
 //                {
 //
 
@@ -274,16 +268,19 @@ public class FragmentOrderDetail extends Fragment implements SwipeRefreshLayout.
     void makeNetworkCall(final boolean clearDataset)
     {
 
-        Shop currentShop = UtilityShopHome.getShop(getContext());
+//        Shop currentShop = UtilityShopHome.getShop(getContext());
 
-        Call<OrderItemEndPoint> call = orderItemService.getOrderItem(
+        Call<OrderItemEndPointPFS> call = orderItemService.getOrderItemPFS
+                (
                 UtilityLogin.getAuthorizationHeaders(getActivity()),
-                order.getOrderID(),null,null,null,limit,offset,null);
+                order.getOrderID(),
+                null,null,null,limit,offset,null
+                );
 
 
-        call.enqueue(new Callback<OrderItemEndPoint>() {
+        call.enqueue(new Callback<OrderItemEndPointPFS>() {
             @Override
-            public void onResponse(Call<OrderItemEndPoint> call, Response<OrderItemEndPoint> response) {
+            public void onResponse(Call<OrderItemEndPointPFS> call, Response<OrderItemEndPointPFS> response) {
 
                 if(isDestroyed)
                 {
@@ -308,12 +305,10 @@ public class FragmentOrderDetail extends Fragment implements SwipeRefreshLayout.
 
                 swipeContainer.setRefreshing(false);
 
-//                showToastMessage("Response Code : " + String.valueOf(response.code()));
-
             }
 
             @Override
-            public void onFailure(Call<OrderItemEndPoint> call, Throwable t) {
+            public void onFailure(Call<OrderItemEndPointPFS> call, Throwable t) {
                 if(isDestroyed)
                 {
                     return;

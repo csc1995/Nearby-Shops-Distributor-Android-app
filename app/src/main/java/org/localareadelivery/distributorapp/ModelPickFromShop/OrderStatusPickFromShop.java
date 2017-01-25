@@ -1,4 +1,4 @@
-package org.localareadelivery.distributorapp.ModelStatusCodes;
+package org.localareadelivery.distributorapp.ModelPickFromShop;
 
 /**
  * Created by sumeet on 13/6/16.
@@ -12,7 +12,10 @@ public class OrderStatusPickFromShop {
     public static final int READY_FOR_PICKUP = 4;
     public static final int DELIVERY_COMPLETE = 5;
 
-    public static final int STATUS_CANCELLED_BY_SHOP = 10;
-    public static final int STATUS_CANCELLED_BY_END_USER = 11;
+
+//    public static final int STATUS_CANCELLED = 11;
+
+    public static final int CANCELLED_BY_SHOP = 16;
+    public static final int CANCELLED_BY_USER = 18;
 
 }

@@ -27,6 +27,7 @@ import org.localareadelivery.distributorapp.HomeDeliveryInventoryDeliveryGuy.Pen
 import org.localareadelivery.distributorapp.HomeDeliveryInventoryDeliveryGuy.PendingReturnCancelledByShop.PendingReturnCancelledByShopDGI;
 import org.localareadelivery.distributorapp.DistributorLogin;
 import org.localareadelivery.distributorapp.HomeDeliveryInventoryDeliveryGuy.PendingReturnCancelledByUser.PendingReturnCancelledByUserDGI;
+import org.localareadelivery.distributorapp.OrderDetailPFS.FragmentOrderDetailPFS;
 import org.localareadelivery.distributorapp.OrderHistoryHD.Complete.CompleteOrdersFragment;
 import org.localareadelivery.distributorapp.OrderHistoryHD.Pending.PendingOrdersFragment;
 import org.localareadelivery.distributorapp.Items.ItemsFragmentSimple;
@@ -47,6 +48,11 @@ import org.localareadelivery.distributorapp.ItemsByCategoryTabsOld.Items.EditIte
 import org.localareadelivery.distributorapp.ItemsByCategoryTabsOld.Items.ItemAdapterTwo;
 import org.localareadelivery.distributorapp.ItemsByCategoryTabsOld.Items.ItemRemakeFragment;
 import org.localareadelivery.distributorapp.OrderDetail.FragmentOrderDetail;
+import org.localareadelivery.distributorapp.OrderHistoryPFS.Complete.CompleteOrdersFragmentPFS;
+import org.localareadelivery.distributorapp.OrderHistoryPFS.Pending.PendingOrdersFragmentPFS;
+import org.localareadelivery.distributorapp.PickFromShopInventory.Confirmed.ConfirmedOrdersFragmentPFS;
+import org.localareadelivery.distributorapp.PickFromShopInventory.Packed.PackedOrdersFragmentPFS;
+import org.localareadelivery.distributorapp.PickFromShopInventory.Placed.PlacedOrdersFragmentPFS;
 import org.localareadelivery.distributorapp.ShopStaffAccounts.EditShopStaff.EditStaffFragment;
 import org.localareadelivery.distributorapp.ShopStaffAccounts.FragmentShopStaff;
 import org.localareadelivery.distributorapp.ShopStaffHome.EditStaffSelf.EditStaffSelfFragment;
@@ -211,4 +217,16 @@ public interface NetComponent {
     void Inject(PendingReturnCancelledByUserDGI pendingReturnCancelledByUserDGI);
 
     void Inject(PendingReturnCancelledByUser pendingReturnCancelledByUser);
+
+    void Inject(CompleteOrdersFragmentPFS completeOrdersFragmentPFS);
+
+    void Inject(FragmentOrderDetailPFS fragmentOrderDetailPFS);
+
+    void Inject(PendingOrdersFragmentPFS pendingOrdersFragmentPFS);
+
+    void Inject(PlacedOrdersFragmentPFS placedOrdersFragmentPFS);
+
+    void Inject(ConfirmedOrdersFragmentPFS confirmedOrdersFragmentPFS);
+
+    void Inject(PackedOrdersFragmentPFS packedOrdersFragmentPFS);
 }

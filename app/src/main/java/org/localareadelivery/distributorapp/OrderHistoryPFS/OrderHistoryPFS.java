@@ -1,16 +1,15 @@
-package org.localareadelivery.distributorapp.OrderHistoryHD;
+package org.localareadelivery.distributorapp.OrderHistoryPFS;
 
 import android.app.SearchManager;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-
-import android.support.v4.view.ViewPager;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -18,16 +17,16 @@ import android.view.MenuItem;
 import com.wunderlist.slidinglayer.SlidingLayer;
 
 import org.localareadelivery.distributorapp.CommonInterfaces.NotifyTitleChanged;
-import org.localareadelivery.distributorapp.OrderHistoryHD.SlidingLayerSort.SlidingLayerSortOrdersHD;
 import org.localareadelivery.distributorapp.ItemsByCategoryTypeSimple.Interfaces.NotifySearch;
 import org.localareadelivery.distributorapp.ItemsInShop.Interfaces.NotifySort;
+import org.localareadelivery.distributorapp.OrderHistoryPFS.SlidingLayerSort.SlidingLayerSortOrdersPFS;
 import org.localareadelivery.distributorapp.R;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class OrderHistoryHD extends AppCompatActivity implements NotifyTitleChanged, NotifySort{
+public class OrderHistoryPFS extends AppCompatActivity implements NotifyTitleChanged, NotifySort{
 
 
     private PagerAdapter mPagerAdapter;
@@ -41,7 +40,7 @@ public class OrderHistoryHD extends AppCompatActivity implements NotifyTitleChan
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_order_history_hd);
+        setContentView(R.layout.activity_order_history_pfs);
         ButterKnife.bind(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -99,7 +98,7 @@ public class OrderHistoryHD extends AppCompatActivity implements NotifyTitleChan
             {
                 getSupportFragmentManager()
                         .beginTransaction()
-                        .add(R.id.slidinglayerfragment,new SlidingLayerSortOrdersHD(),TAG_SLIDING_LAYER)
+                        .add(R.id.slidinglayerfragment,new SlidingLayerSortOrdersPFS(),TAG_SLIDING_LAYER)
                         .commit();
             }
 

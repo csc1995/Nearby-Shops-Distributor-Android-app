@@ -560,10 +560,9 @@ public class EditStaffFragment extends Fragment {
         staff.setPermitCancelOrdersPFS(permitCancelOrdersPFS.isChecked());
         staff.setPermitConfirmOrdersPFS(permitConfirmOrdersPFS.isChecked());
         staff.setPermitSetOrdersPackedPFS(permitSetOrdersPackedPFS.isChecked());
-        staff.setPermitSetReadyForPickupPFS(permitSetOrdersPackedPFS.isChecked());
+        staff.setPermitSetReadyForPickupPFS(permitReadyForPickupPFS.isChecked());
         staff.setPermitSetPaymentReceivedPFS(permitPaymentReceivedPFS.isChecked());
         staff.setPermitMarkDeliveredPFS(permitMarkDeliveredPFS.isChecked());
-
 
     }
 

@@ -21,6 +21,7 @@ import org.localareadelivery.distributorapp.RetrofitRESTContract.ShopItemService
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ShopService;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.DeliveryGuySelfService;
 import org.localareadelivery.distributorapp.RetrofitRESTContract.ShopStaffService;
+import org.localareadelivery.distributorapp.RetrofitRESTContractPFS.OrderServiceShopStaffPFS;
 import org.localareadelivery.distributorapp.Utility.UtilityGeneral;
 
 import javax.inject.Singleton;
@@ -210,5 +211,12 @@ public class NetModule {
         return retrofit.create(OrderServiceDeliveryGuySelf.class);
     }
 
+
+
+    @Provides
+    OrderServiceShopStaffPFS provideOrderServicePFS(Retrofit retrofit)
+    {
+        return retrofit.create(OrderServiceShopStaffPFS.class);
+    }
 
 }
