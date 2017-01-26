@@ -494,11 +494,11 @@
             android:launchMode="singleTop"
             android:name=".OrderHistoryPFS.OrderHistoryPFS"
             android:label="@string/title_activity_order_history_hd"
-            android:parentActivityName=".OrdersPickFromShop.OrdersPickFromShop"
+            android:parentActivityName=".PickFromShopMenu.OrdersPickFromShop"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".OrdersPickFromShop.OrdersPickFromShop" />
+                android:value=".PickFromShopMenu.OrdersPickFromShop" />
 
             <meta-data
                 android:name="android.app.searchable"
@@ -513,18 +513,18 @@
         <activity
             android:name=".OrderDetailPFS.OrderDetailPFS"
             android:label="Order Details"
-            android:parentActivityName=".OrdersPickFromShop.OrdersPickFromShop"
+            android:parentActivityName=".PickFromShopMenu.OrdersPickFromShop"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".OrdersPickFromShop.OrdersPickFromShop" />
+                android:value=".PickFromShopMenu.OrdersPickFromShop" />
         </activity>
 
 
 
         <activity
-            android:name=".OrdersPickFromShop.OrdersPickFromShop"
-            android:label="@string/title_activity_orders_pick_from_shop"
+            android:name=".PickFromShopMenu.OrdersPickFromShop"
+            android:label="Pick From Shop Orders"
             android:parentActivityName=".ShopHome.ShopHome"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
@@ -537,12 +537,12 @@
         <activity
             android:launchMode="singleTop"
             android:name=".PickFromShopInventory.PickFromShopInventory"
-            android:label="@string/title_activity_order_history_hd"
-            android:parentActivityName=".OrdersPickFromShop.OrdersPickFromShop"
+            android:label="Pick From Shop Inventory"
+            android:parentActivityName=".PickFromShopMenu.OrdersPickFromShop"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".OrdersPickFromShop.OrdersPickFromShop" />
+                android:value=".PickFromShopMenu.OrdersPickFromShop" />
 
             <meta-data
                 android:name="android.app.searchable"
@@ -553,6 +553,27 @@
             </intent-filter>
         </activity>
 
+
+
+
+        <activity
+            android:launchMode="singleTop"
+            android:name=".PickFromShopCancelled.CancelledOrdersPFS"
+            android:label="Cancelled Orders "
+            android:parentActivityName=".PickFromShopMenu.OrdersPickFromShop"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".PickFromShopMenu.OrdersPickFromShop" />
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+        </activity>
 
 
     </application>

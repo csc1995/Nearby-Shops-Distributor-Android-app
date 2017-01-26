@@ -1,14 +1,12 @@
-package org.localareadelivery.distributorapp.OrdersPickFromShop;
+package org.localareadelivery.distributorapp.PickFromShopMenu;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 
 import org.localareadelivery.distributorapp.OrderHistoryPFS.OrderHistoryPFS;
+import org.localareadelivery.distributorapp.PickFromShopCancelled.CancelledOrdersPFS;
 import org.localareadelivery.distributorapp.PickFromShopInventory.PickFromShopInventory;
 import org.localareadelivery.distributorapp.R;
 
@@ -55,6 +53,13 @@ public class OrdersPickFromShop extends AppCompatActivity {
         startActivity(new Intent(this, PickFromShopInventory.class));
     }
 
+
+
+    @OnClick(R.id.cancelled_orders)
+    void cancelledOrdersPFS()
+    {
+        startActivity(new Intent(this, CancelledOrdersPFS.class));
+    }
 
 
 

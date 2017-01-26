@@ -14,7 +14,7 @@ import org.localareadelivery.distributorapp.ItemsInShopByCat.ItemsInStockByCat;
 import org.localareadelivery.distributorapp.Model.Shop;
 import org.localareadelivery.distributorapp.Notifications.SSEIntentService;
 import org.localareadelivery.distributorapp.OrdersHomeDelivery.OrdersHomeDelivery;
-import org.localareadelivery.distributorapp.OrdersPickFromShop.OrdersPickFromShop;
+import org.localareadelivery.distributorapp.PickFromShopMenu.OrdersPickFromShop;
 import org.localareadelivery.distributorapp.QuickStockEditor.QuickStockEditor;
 import org.localareadelivery.distributorapp.R;
 import org.localareadelivery.distributorapp.SSEExample.SSEExample;

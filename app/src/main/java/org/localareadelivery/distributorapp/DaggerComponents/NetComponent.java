@@ -50,6 +50,8 @@ import org.localareadelivery.distributorapp.ItemsByCategoryTabsOld.Items.ItemRem
 import org.localareadelivery.distributorapp.OrderDetail.FragmentOrderDetail;
 import org.localareadelivery.distributorapp.OrderHistoryPFS.Complete.CompleteOrdersFragmentPFS;
 import org.localareadelivery.distributorapp.OrderHistoryPFS.Pending.PendingOrdersFragmentPFS;
+import org.localareadelivery.distributorapp.PickFromShopCancelled.CancelledByShop.CancelledByShopFragmentPFS;
+import org.localareadelivery.distributorapp.PickFromShopCancelled.CancelledByUser.CancelledByUserFragmentPFS;
 import org.localareadelivery.distributorapp.PickFromShopInventory.Confirmed.ConfirmedOrdersFragmentPFS;
 import org.localareadelivery.distributorapp.PickFromShopInventory.Packed.PackedOrdersFragmentPFS;
 import org.localareadelivery.distributorapp.PickFromShopInventory.PendingDelivery.PendingDeliveryFragmentPFS;
@@ -235,4 +237,8 @@ public interface NetComponent {
     void Inject(PaymentsPendingFragmentPFS paymentsPendingFragmentPFS);
 
     void Inject(PendingDeliveryFragmentPFS pendingDeliveryFragmentPFS);
+
+    void Inject(CancelledByShopFragmentPFS cancelledByShopFragmentPFS);
+
+    void Inject(CancelledByUserFragmentPFS cancelledByUserFragmentPFS);
 }
