@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="org.localareadelivery.distributorapp.PickFromShopMenu.OrdersPickFromShop"
+    tools:context="org.nearbyshops.shopkeeperapp.PickFromShopMenu.OrdersPickFromShop"
     tools:showIn="@layout/activity_orders_pick_from_shop"
     android:layout_width="match_parent"
     android:layout_height="match_parent">

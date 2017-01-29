@@ -5,6 +5,6 @@
     android:id="@+id/activity_sseexample"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="org.localareadelivery.distributorapp.SSEExample.SSEExample">
+    tools:context="org.nearbyshops.shopkeeperapp.SSEExample.SSEExample">
 
 </android.support.constraint.ConstraintLayout>

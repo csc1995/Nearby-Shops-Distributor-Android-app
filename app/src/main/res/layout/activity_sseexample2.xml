@@ -5,7 +5,7 @@
     android:id="@+id/activity_sseexample2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="org.localareadelivery.distributorapp.SSEExample.SSEExample">
+    tools:context="org.nearbyshops.shopkeeperapp.SSEExample.SSEExample">
 
     <TextView
         android:id="@+id/result"

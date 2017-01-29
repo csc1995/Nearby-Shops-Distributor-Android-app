@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:backgroundTint="#88000000"
-    tools:context="org.localareadelivery.distributorapp.ShopHome.ShopHome">
+    tools:context="org.nearbyshops.shopkeeperapp.ShopHome.ShopHome">
 
     <!--
     android:background="@drawable/busystreetcrop"

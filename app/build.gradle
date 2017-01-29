@@ -6,8 +6,10 @@ android {
     compileSdkVersion 25
     buildToolsVersion '25.0.2'
 
+//    applicationId "org.localareadelivery.distributorapp"
+
     defaultConfig {
-        applicationId "org.localareadelivery.distributorapp"
+        applicationId "org.nearbyshops.shopkeeperapp"
         minSdkVersion 15
         targetSdkVersion 25
         versionCode 1
