@@ -131,7 +131,7 @@ public class ShopStaff {
 
     private String govtIDName;
     private String govtIDNumber;
-    private Timestamp timestampCreated;
+//    private Timestamp timestampCreated;
 
     // permissions General
     private boolean addRemoveItemsFromShop;
@@ -329,13 +329,6 @@ public class ShopStaff {
         this.govtIDNumber = govtIDNumber;
     }
 
-    public Timestamp getTimestampCreated() {
-        return timestampCreated;
-    }
-
-    public void setTimestampCreated(Timestamp timestampCreated) {
-        this.timestampCreated = timestampCreated;
-    }
 
     public String getAbout() {
         return about;

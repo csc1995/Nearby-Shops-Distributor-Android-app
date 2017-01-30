@@ -23,6 +23,8 @@ import org.nearbyshops.shopkeeperapp.HomeDeliveryInventory.ConfirmItemsForDelive
 import org.nearbyshops.shopkeeperapp.HomeDeliveryInventory.Interface.ConfirmOrdersClicked;
 import org.nearbyshops.shopkeeperapp.CommonInterfaces.NotifyTitleChanged;
 import org.nearbyshops.shopkeeperapp.HomeDeliveryInventory.Interface.RefreshFragment;
+import org.nearbyshops.shopkeeperapp.OrderDetail.OrderDetail;
+import org.nearbyshops.shopkeeperapp.OrderDetail.UtilityOrderDetail;
 import org.nearbyshops.shopkeeperapp.R;
 import org.nearbyshops.shopkeeperapp.RetrofitRESTContract.OrderServiceShopStaff;
 import org.nearbyshops.shopkeeperapp.Utility.UtilityLogin;
@@ -365,8 +367,8 @@ public class PackedOrdersFragment extends Fragment implements SwipeRefreshLayout
         {
             ((NotifyTitleChanged)getActivity())
                     .NotifyTitleChanged(
-                            "Packed ( " + String.valueOf(dataset.size())
-                                    + "/" + String.valueOf(item_count) + " )",2);
+                            "Packed (" + String.valueOf(dataset.size())
+                                    + "/" + String.valueOf(item_count) + ")",2);
 
 
         }
@@ -396,7 +398,7 @@ public class PackedOrdersFragment extends Fragment implements SwipeRefreshLayout
 
 
     @Override
-    public void notifyCancelOrder(final Order order) {
+    public void notifyCancelOrder(final Order order, final int position) {
 
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -407,7 +409,7 @@ public class PackedOrdersFragment extends Fragment implements SwipeRefreshLayout
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        cancelOrder(order);
+                        cancelOrder(order, position);
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -420,8 +422,14 @@ public class PackedOrdersFragment extends Fragment implements SwipeRefreshLayout
                 .show();
     }
 
+    @Override
+    public void notityOrderSelected(Order order) {
+        UtilityOrderDetail.saveOrder(order,getActivity());
+        getActivity().startActivity(new Intent(getActivity(),OrderDetail.class));
+    }
 
-    private void cancelOrder(Order order) {
+
+    private void cancelOrder(Order order, final int position) {
 
 //        Call<ResponseBody> call = orderService.cancelOrderByShop(order.getOrderID());
         Call<ResponseBody> call = orderServiceShopStaff.cancelledByShop(
@@ -438,7 +446,9 @@ public class PackedOrdersFragment extends Fragment implements SwipeRefreshLayout
                 if(response.code() == 200 )
                 {
                     showToastMessage("Successful");
-                    makeRefreshNetworkCall();
+//                    makeRefreshNetworkCall();
+                    dataset.remove(position);
+                    adapter.notifyItemRemoved(position);
                 }
                 else if(response.code() == 304)
                 {

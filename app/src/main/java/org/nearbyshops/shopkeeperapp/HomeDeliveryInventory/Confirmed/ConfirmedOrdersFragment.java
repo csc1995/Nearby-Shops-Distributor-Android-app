@@ -303,8 +303,8 @@ public class ConfirmedOrdersFragment extends Fragment implements SwipeRefreshLay
         {
             ((NotifyTitleChanged)getActivity())
                     .NotifyTitleChanged(
-                            "Confirmed ( " + String.valueOf(dataset.size())
-                                    + "/" + String.valueOf(item_count) + " )",1);
+                            "Confirmed (" + String.valueOf(dataset.size())
+                                    + "/" + String.valueOf(item_count) + ")",1);
 
 
         }
@@ -357,7 +357,7 @@ public class ConfirmedOrdersFragment extends Fragment implements SwipeRefreshLay
 
 
     @Override
-    public void notifyOrderPacked(Order order) {
+    public void notifyOrderPacked(Order order, final int position) {
 
 
 //        order.setStatusHomeDelivery(OrderStatusHomeDelivery.ORDER_PACKED);
@@ -372,8 +372,11 @@ public class ConfirmedOrdersFragment extends Fragment implements SwipeRefreshLay
                 if(response.code()==200)
                 {
                     showToastMessage("Order Set Packed !");
-                    makeRefreshNetworkCall();
+                    dataset.remove(position);
+                    adapter.notifyItemRemoved(position);
 
+
+//                    makeRefreshNetworkCall();
                     refreshPackedFragment();
                 }
                 else
@@ -395,7 +398,7 @@ public class ConfirmedOrdersFragment extends Fragment implements SwipeRefreshLay
     }
 
     @Override
-    public void notifyCancelOrder(final Order order) {
+    public void notifyCancelOrder(final Order order, final int position) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
@@ -405,7 +408,7 @@ public class ConfirmedOrdersFragment extends Fragment implements SwipeRefreshLay
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        cancelOrder(order);
+                        cancelOrder(order, position);
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -418,7 +421,7 @@ public class ConfirmedOrdersFragment extends Fragment implements SwipeRefreshLay
                 .show();
     }
 
-    private void cancelOrder(Order order) {
+    private void cancelOrder(Order order, final int position) {
 
 //        Call<ResponseBody> call = orderService.cancelOrderByShop(order.getOrderID());
 
@@ -435,7 +438,9 @@ public class ConfirmedOrdersFragment extends Fragment implements SwipeRefreshLay
                 if(response.code() == 200 )
                 {
                     showToastMessage("Successful");
-                    makeRefreshNetworkCall();
+//                    makeRefreshNetworkCall();
+                    dataset.remove(position);
+                    adapter.notifyItemRemoved(position);
                 }
                 else if(response.code() == 304)
                 {
@@ -453,9 +458,7 @@ public class ConfirmedOrdersFragment extends Fragment implements SwipeRefreshLay
                 showToastMessage("Network Request Failed. Check your internet connection !");
             }
         });
-
     }
-
 
 
 

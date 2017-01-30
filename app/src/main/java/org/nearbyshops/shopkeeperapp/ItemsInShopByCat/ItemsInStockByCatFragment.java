@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import org.nearbyshops.shopkeeperapp.DaggerComponentBuilder;
+import org.nearbyshops.shopkeeperapp.HomeShopAdmin.ShopAdminHome;
 import org.nearbyshops.shopkeeperapp.ItemsInShopByCat.SlidingLayerSort.UtilitySortItemsInStock;
 import org.nearbyshops.shopkeeperapp.ItemsInShop.Interfaces.NotifySort;
 import org.nearbyshops.shopkeeperapp.ItemsByCategoryTypeSimple.Interfaces.NotifyBackPressed;
@@ -502,6 +503,7 @@ public class ItemsInStockByCatFragment extends Fragment implements SwipeRefreshL
         Shop currentShop = UtilityShopHome.getShop(getContext());
 
 
+
         if(searchQuery==null)
         {
 
@@ -671,7 +673,6 @@ public class ItemsInStockByCatFragment extends Fragment implements SwipeRefreshL
                 if(response.code()==200)
                 {
 
-
                     if(shopItem.getItem()!=null)
                     {
                         showToastMessage(shopItem.getItem().getItemName() + " Updated !");
@@ -690,6 +691,10 @@ public class ItemsInStockByCatFragment extends Fragment implements SwipeRefreshL
                 else if(response.code() == 401)
                 {
                     showToastMessage("We are not able to identify you !");
+                }
+                else
+                {
+                    showToastMessage("Failed : Code " + String.valueOf(response.code()));
                 }
 
             }

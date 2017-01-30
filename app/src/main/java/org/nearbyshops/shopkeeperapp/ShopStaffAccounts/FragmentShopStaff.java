@@ -300,8 +300,7 @@ public class FragmentShopStaff extends Fragment implements Adapter.NotifyConfirm
 
         intent.putExtra(EditStaffFragment.EDIT_MODE_INTENT_KEY, EditStaffFragment.MODE_UPDATE);
         startActivity(intent);
-
-        showToastMessage("Edit Click!");
+//        showToastMessage("Edit Click!");
 
     }
 

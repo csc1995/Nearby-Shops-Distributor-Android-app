@@ -622,16 +622,20 @@ public class ItemsFragmentSimple extends Fragment implements SwipeRefreshLayout.
             @Override
             public void onResponse(Call<ShopItemEndPoint> call, Response<ShopItemEndPoint> response) {
 
-                listAdapter.shopItemMap.clear();
-                for(ShopItem shopItem: response.body().getResults())
+                if(response.body()!=null && response.code()==200)
                 {
-                    listAdapter.shopItemMap.put(shopItem.getItemID(),shopItem);
+                    listAdapter.shopItemMap.clear();
+
+                    for(ShopItem shopItem: response.body().getResults())
+                    {
+                        listAdapter.shopItemMap.put(shopItem.getItemID(),shopItem);
+                    }
+
+                    // add this map into the temporary variable to save shopItems after rotation
+                    shopItemMapTemp.putAll(listAdapter.shopItemMap);
+
+                    listAdapter.notifyDataSetChanged();
                 }
-
-                // add this map into the temporary variable to save shopItems after rotation
-                shopItemMapTemp.putAll(listAdapter.shopItemMap);
-
-                listAdapter.notifyDataSetChanged();
             }
 
             @Override

@@ -78,7 +78,7 @@ class AdapterPlacedOrders extends RecyclerView.Adapter<AdapterPlacedOrders.ViewH
     }
 
 
-    class ViewHolder extends RecyclerView.ViewHolder{
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
 
         @Bind(R.id.order_id)
@@ -114,31 +114,38 @@ class AdapterPlacedOrders extends RecyclerView.Adapter<AdapterPlacedOrders.ViewH
             super(itemView);
 
             ButterKnife.bind(this,itemView);
-
-
+            itemView.setOnClickListener(this);
         }
 
 
         @OnClick(R.id.confirmOrderButton)
         void onClickConfirmButton(View view)
         {
-            notifyConfirmOrder.notifyConfirmOrder(dataset.get(getLayoutPosition()));
+            notifyConfirmOrder.notifyConfirmOrder(dataset.get(getLayoutPosition()),getLayoutPosition());
         }
 
 
         @OnClick(R.id.close_button)
         void closeButton(View view)
         {
-            notifyConfirmOrder.notifyCancelOrder(dataset.get(getLayoutPosition()));
+            notifyConfirmOrder.notifyCancelOrder(dataset.get(getLayoutPosition()),getLayoutPosition());
         }
+
+        @Override
+        public void onClick(View v) {
+            notifyConfirmOrder.notityOrderSelected(dataset.get(getLayoutPosition()));
+        }
+
+
     }
 
 
 
 
     interface NotifyConfirmOrder{
-        void notifyConfirmOrder(Order order);
-        void notifyCancelOrder(Order order);
+        void notifyConfirmOrder(Order order, int position);
+        void notifyCancelOrder(Order order, int position);
+        void notityOrderSelected(Order order);
     }
 
 }

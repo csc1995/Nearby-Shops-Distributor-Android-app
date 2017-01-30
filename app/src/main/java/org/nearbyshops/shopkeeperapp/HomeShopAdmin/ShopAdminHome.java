@@ -81,9 +81,13 @@ public class ShopAdminHome extends AppCompatActivity {
 
         ShopAdmin shopAdmin = UtilityLogin.getShopAdmin(this);
 
-        if(shopAdmin!=null && !shopAdmin.getEnabled())
+        if(shopAdmin!=null)
         {
-            notice.setVisibility(View.VISIBLE);
+            if(shopAdmin.getEnabled()!=null && !shopAdmin.getEnabled())
+            {
+                notice.setVisibility(View.VISIBLE);
+            }
+
         }
         else
         {
@@ -198,6 +202,7 @@ public class ShopAdminHome extends AppCompatActivity {
                     {
                         UtilityShopHome.saveShop(response.body(),ShopAdminHome.this);
 
+//                        Toast.makeText(ShopAdminHome.this,"Shop ID : "  + String.valueOf(response.body().getShopID()),Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(ShopAdminHome.this,ShopHome.class);
                         startActivity(intent);
 
@@ -212,15 +217,17 @@ public class ShopAdminHome extends AppCompatActivity {
                         Toast.makeText(ShopAdminHome.this,"Not Permitted. Your account is not activated !",Toast.LENGTH_SHORT)
                                 .show();
                     }
+                    else
+                    {
+                        showToastMessage("Failed Code : " + String.valueOf(response.code()));
+                    }
 
                 }
 
                 @Override
                 public void onFailure(Call<Shop> call, Throwable t) {
 
-
-
-
+                    showToastMessage("Network Failed !");
                 }
             });
         }
@@ -231,6 +238,13 @@ public class ShopAdminHome extends AppCompatActivity {
 
         }
 
+    }
+
+
+
+    void showToastMessage(String message)
+    {
+        Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
     }
 
 

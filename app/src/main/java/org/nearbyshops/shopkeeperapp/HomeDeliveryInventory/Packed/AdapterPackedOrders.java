@@ -19,6 +19,7 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnLongClick;
 
 /**
  * Created by sumeet on 13/6/16.
@@ -130,10 +131,16 @@ class AdapterPackedOrders extends RecyclerView.Adapter<AdapterPackedOrders.ViewH
             super(itemView);
 
             ButterKnife.bind(this,itemView);
-
-
         }
 
+
+        @OnLongClick(R.id.list_item_order_packed)
+        boolean listItemLongClick()
+        {
+            notifications.notityOrderSelected(dataset.get(getLayoutPosition()));
+
+            return true;
+        }
 
         @OnClick(R.id.list_item_order_packed)
         void onListItemClick(View view) {
@@ -165,8 +172,9 @@ class AdapterPackedOrders extends RecyclerView.Adapter<AdapterPackedOrders.ViewH
         @OnClick(R.id.close_button)
         void closeButton(View view)
         {
-            notifications.notifyCancelOrder(dataset.get(getLayoutPosition()));
+            notifications.notifyCancelOrder(dataset.get(getLayoutPosition()), getLayoutPosition());
         }
+
 
     }
 
@@ -182,7 +190,8 @@ class AdapterPackedOrders extends RecyclerView.Adapter<AdapterPackedOrders.ViewH
 
 
     public interface NotifyCancelHandover{
-        void notifyCancelOrder(Order order);
+        void notifyCancelOrder(Order order, int position);
+        void notityOrderSelected(Order order);
     }
 
 }

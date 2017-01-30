@@ -25,7 +25,7 @@ public interface ShopItemService {
     Call<ResponseBody> postShopItem(@Header("Authorization") String headers,
                                     @Body ShopItem shopItem);
 
-    @PUT("/api/v1/ShopItem")
+    @PUT("/api/v1/ShopItem/UpdateByShop")
     Call<ResponseBody> putShopItem(@Header("Authorization") String headers,
                                    @Body ShopItem shopItem);
 

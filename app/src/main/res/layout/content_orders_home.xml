@@ -161,34 +161,17 @@
 
 
 
-
-        <TextView
-            app:layout_constraintTop_toBottomOf="@+id/delivery_guy_dashboard"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            android:padding="5dp"
-            android:layout_marginTop="10dp"
-            android:id="@+id/header_database"
-            android:text="Orders Database : Home Delivery"
-            android:textSize="17sp"
-            android:background="@color/light_grey"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" />
-
-
-
-
         <ImageView
-            android:layout_marginEnd="5dp"
-            android:layout_marginRight="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
             android:paddingBottom="60dp"
             android:background="@color/buttonColor"
             android:id="@+id/cancelled_orders"
             android:layout_marginTop="10dp"
-            app:layout_constraintRight_toLeftOf="@+id/vertical_guide"
-            app:layout_constraintTop_toBottomOf="@+id/header_database"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:srcCompat="@drawable/ic_close_black_24dp"
+            app:layout_constraintLeft_toRightOf="@id/vertical_guide"
+            app:layout_constraintTop_toBottomOf="@+id/header_dashboard"
+            app:layout_constraintRight_toRightOf="parent"
+            app:srcCompat="@drawable/ic_close_white_24dp"
             android:layout_width="0dp"
             android:layout_height="150dp" />
 
@@ -208,19 +191,39 @@
 
 
 
+
+
+        <TextView
+            app:layout_constraintTop_toBottomOf="@+id/delivery_guy_dashboard"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:padding="5dp"
+            android:layout_marginTop="10dp"
+            android:id="@+id/header_database"
+            android:text="Orders Database : Home Delivery"
+            android:textSize="17sp"
+            android:background="@color/light_grey"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+
+
+
+
+        <!--app:layout_constraintLeft_toLeftOf="@+id/vertical_guide"-->
         <ImageView
-            android:layout_marginStart="5dp"
-            android:layout_marginLeft="5dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginLeft="0dp"
             android:paddingBottom="60dp"
-            android:background="@color/phonographyBlue"
+            android:background="@color/gplus_color_2"
             android:id="@+id/orders_history"
             android:layout_marginTop="10dp"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/header_database"
-            app:srcCompat="@drawable/ic_playlist_add_from_global"
+            app:srcCompat="@drawable/ic_search_white_24px"
             android:layout_width="0dp"
-            android:layout_height="150dp"
-            app:layout_constraintLeft_toLeftOf="@+id/vertical_guide" />
+            android:layout_height="150dp" />
 
 
         <TextView
@@ -228,6 +231,7 @@
             app:layout_constraintRight_toRightOf="@+id/orders_history"
             app:layout_constraintBottom_toBottomOf="@+id/orders_history"
             android:padding="10dp"
+            android:gravity="center_horizontal"
             android:id="@+id/text_orders_history"
             android:textSize="@dimen/menu_item_text_size"
             android:textColor="#ffffff"
@@ -242,7 +246,7 @@
             android:layout_marginBottom="0dp"
             android:id="@+id/border_bottom"
             android:background="#88000000"
-            app:layout_constraintTop_toBottomOf="@+id/cancelled_orders"
+            app:layout_constraintTop_toBottomOf="@+id/orders_history"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"

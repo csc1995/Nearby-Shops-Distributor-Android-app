@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Shop Owner Application</string>
+    <string name="app_name">NearbyShops : ShopKeeper</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_login">Distributor Login</string>
     <string name="preference_file_name">sharedpreferencefile</string>
@@ -24,8 +24,8 @@
 
 
     <string name="google_app_id">419317660589</string>
-    <string name="title_activity_orders_home">Orders Home</string>
-    <string name="title_activity_home_delivery">Orders : Home Delivery</string>
+    <string name="title_activity_orders_home">Orders Home Delivery</string>
+    <string name="title_activity_home_delivery">Home Delivery Inventory</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="title_activity_confirm_items_for_delivery">Confirm Items For Delivery</string>
     <string name="title_activity_vehicle_dashboard">Delivery Guy Inventory</string>

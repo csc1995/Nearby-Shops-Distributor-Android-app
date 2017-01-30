@@ -1,7 +1,9 @@
 package org.nearbyshops.shopkeeperapp.Notifications;
 
 import android.app.IntentService;
+import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
@@ -13,6 +15,7 @@ import org.glassfish.jersey.media.sse.EventInput;
 import org.glassfish.jersey.media.sse.InboundEvent;
 import org.glassfish.jersey.media.sse.SseFeature;
 import org.nearbyshops.shopkeeperapp.MyApplication;
+import org.nearbyshops.shopkeeperapp.OrderHistoryPFS.OrderHistoryPFS;
 import org.nearbyshops.shopkeeperapp.R;
 import org.nearbyshops.shopkeeperapp.Utility.UtilityGeneral;
 
@@ -93,6 +96,7 @@ public class SSEIntentService extends IntentService{
         String url = UtilityGeneral.getServiceURL(MyApplication.getAppContext()) + "/api/Order/Notifications/" + String.valueOf(shopID);
 
 
+
         System.out.println("URL : " + url);
         logMessage("URL : " + url);
 
@@ -118,16 +122,30 @@ public class SSEIntentService extends IntentService{
             NotificationCompat.Builder mBuilder =
                     new NotificationCompat.Builder(SSEIntentService.this)
                             .setContentTitle(eventName)
-                            .setStyle(new NotificationCompat.BigTextStyle()
-                                    .bigText("server"))
                             .setContentText(message)
                             .setSmallIcon(R.drawable.ic_detach)
                             .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
 
 
+//            .setStyle(new NotificationCompat.BigTextStyle().bigText("Order Received !"))
+
 
             NotificationManager mNotificationManager =
                     (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+//            Intent notificationIntent = new Intent(getApplicationContext(), OrderHistoryPFS.class);
+
+//            notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+//                    | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+//            PendingIntent intentPending = PendingIntent.getActivity(getApplicationContext(), 0,
+//                    notificationIntent, 0);
+
+//            Notification notification = mBuilder.build();
+
+//            notification.set(getApplicationContext(),"Title", message, intent);
+//            notification.flags |= Notification.FLAG_AUTO_CANCEL;
+
             // mId allows you to update the notification later on.
             mNotificationManager.notify(2, mBuilder.build());
         }

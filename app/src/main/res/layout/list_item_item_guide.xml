@@ -28,6 +28,7 @@
 
 
             <ImageView
+
                 android:layout_marginLeft="5dp"
                 android:layout_marginStart="5dp"
                 android:id="@+id/in_shop_color"

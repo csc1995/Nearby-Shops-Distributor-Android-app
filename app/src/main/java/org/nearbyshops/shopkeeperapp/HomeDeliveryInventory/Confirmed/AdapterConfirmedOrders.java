@@ -123,14 +123,14 @@ public class AdapterConfirmedOrders extends RecyclerView.Adapter<AdapterConfirme
         @OnClick(R.id.confirmOrderButton)
         void onClickConfirmButton(View view)
         {
-            notifications.notifyOrderPacked(dataset.get(getLayoutPosition()));
+            notifications.notifyOrderPacked(dataset.get(getLayoutPosition()), getLayoutPosition());
         }
 
 
         @OnClick(R.id.close_button)
         void closeButton(View view)
         {
-            notifications.notifyCancelOrder(dataset.get(getLayoutPosition()));
+            notifications.notifyCancelOrder(dataset.get(getLayoutPosition()), getLayoutPosition());
         }
 
         @Override
@@ -145,8 +145,8 @@ public class AdapterConfirmedOrders extends RecyclerView.Adapter<AdapterConfirme
     interface NotifyOrderPacked {
 
         void notifyOrderSelected(Order order);
-        void notifyOrderPacked(Order order);
-        void notifyCancelOrder(Order order);
+        void notifyOrderPacked(Order order, int position);
+        void notifyCancelOrder(Order order, int position);
     }
 
 }

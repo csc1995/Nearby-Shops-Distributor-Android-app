@@ -595,6 +595,7 @@ public class AdapterItemsInShop extends RecyclerView.Adapter<RecyclerView.ViewHo
         @OnClick(R.id.updateButton)
         void updateClick(View view)
         {
+//            showToastMessage("Update Button Click !");
 
             if(!itemQuantity.getText().toString().equals("") && !itemPrice.getText().toString().equals(""))
             {

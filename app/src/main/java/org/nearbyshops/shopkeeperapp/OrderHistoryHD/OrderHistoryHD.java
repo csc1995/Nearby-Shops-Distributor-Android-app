@@ -37,7 +37,6 @@ public class OrderHistoryHD extends AppCompatActivity implements NotifyTitleChan
 
     public static final String TAG_SLIDING_LAYER = "sliding_layer";
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,7 +101,6 @@ public class OrderHistoryHD extends AppCompatActivity implements NotifyTitleChan
                         .add(R.id.slidinglayerfragment,new SlidingLayerSortOrdersHD(),TAG_SLIDING_LAYER)
                         .commit();
             }
-
         }
     }
 

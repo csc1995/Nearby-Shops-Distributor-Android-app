@@ -458,10 +458,20 @@ public class ItemsInShopFragment extends Fragment implements SwipeRefreshLayout.
     public void notifyShopItemUpdated(final ShopItem shopItem) {
 
 
+//        showToastMessage("Available : " + String.valueOf(shopItem.getAvailableItemQuantity())
+//        + " Item Price : " + String.valueOf(shopItem.getItemPrice())
+//        + " Shop ID :" + String.valueOf(shopItem.getShopID())
+//        + " Item ID : " + String.valueOf(shopItem.getItemID()));
+
+//        shopItem.setDateTimeAdded(null);
+//        shopItem.setLastUpdateDateTime(null);
+
         Call<ResponseBody> call = shopItemService.putShopItem(
                 UtilityLogin.getAuthorizationHeaders(getActivity()),
                 shopItem
         );
+
+
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -489,6 +499,10 @@ public class ItemsInShopFragment extends Fragment implements SwipeRefreshLayout.
                 else if(response.code() == 401)
                 {
                     showToastMessage("We are not able to identify you !");
+                }
+                else
+                {
+                    showToastMessage("Failed : Code : " + String.valueOf(response.code()));
                 }
 
             }

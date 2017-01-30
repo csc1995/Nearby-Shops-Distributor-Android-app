@@ -537,9 +537,7 @@ public class ItemsByCatFragmentSimple extends Fragment implements SwipeRefreshLa
         }
 
         dataset.add(headerItemCategory);
-
         dataset.addAll(datasetCategory);
-
         HeaderItemsList headerItem = new HeaderItemsList();
 
         if(searchQuery==null)
@@ -553,11 +551,8 @@ public class ItemsByCatFragmentSimple extends Fragment implements SwipeRefreshLa
 
 
         dataset.add(headerItem);
-
         dataset.addAll(datasetItems);
-
         listAdapter.notifyDataSetChanged();
-
         swipeContainer.setRefreshing(false);
     }
 
@@ -810,6 +805,8 @@ public class ItemsByCatFragmentSimple extends Fragment implements SwipeRefreshLa
 
         int currentShopID = UtilityShopHome.getShop(getContext()).getShopID();
 
+//        Toast.makeText(getActivity(),"Shop ID : "  + String.valueOf(currentShopID),Toast.LENGTH_SHORT).show();
+
         if(currentCategory==null)
         {
 
@@ -868,17 +865,26 @@ public class ItemsByCatFragmentSimple extends Fragment implements SwipeRefreshLa
             public void onResponse(Call<ShopItemEndPoint> call, Response<ShopItemEndPoint> response) {
 
 
-                listAdapter.shopItemMap.clear();
-
-                for(ShopItem shopItem: response.body().getResults())
+                if(response.code()==200 && response.body()!=null)
                 {
-                    listAdapter.shopItemMap.put(shopItem.getItemID(),shopItem);
+                    listAdapter.shopItemMap.clear();
+
+                    for(ShopItem shopItem: response.body().getResults())
+                    {
+                        listAdapter.shopItemMap.put(shopItem.getItemID(),shopItem);
+                    }
+
+
+                    // add this map into the temporary variable to save shopItems after rotation
+                    shopItemMapTemp.putAll(listAdapter.shopItemMap);
+                    listAdapter.notifyDataSetChanged();
+
+                }
+                else
+                {
+                    showToastMessage("Failed : " + String.valueOf(response.code()));
                 }
 
-                // add this map into the temporary variable to save shopItems after rotation
-                shopItemMapTemp.putAll(listAdapter.shopItemMap);
-
-                listAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -1019,7 +1025,6 @@ public class ItemsByCatFragmentSimple extends Fragment implements SwipeRefreshLa
                 if(response.code() == 200)
                 {
                     showToastMessage("Update Successful !");
-
                     clearSelectedItems();
 
                 }else if (response.code() == 206)

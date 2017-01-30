@@ -1,6 +1,7 @@
 package org.nearbyshops.shopkeeperapp.HomeDeliveryInventory.Placed;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -19,6 +20,8 @@ import org.nearbyshops.shopkeeperapp.ModelEndpoints.OrderEndPoint;
 import org.nearbyshops.shopkeeperapp.ModelStatusCodes.OrderStatusHomeDelivery;
 import org.nearbyshops.shopkeeperapp.CommonInterfaces.NotifyTitleChanged;
 import org.nearbyshops.shopkeeperapp.HomeDeliveryInventory.Interface.RefreshFragment;
+import org.nearbyshops.shopkeeperapp.OrderDetail.OrderDetail;
+import org.nearbyshops.shopkeeperapp.OrderDetail.UtilityOrderDetail;
 import org.nearbyshops.shopkeeperapp.R;
 import org.nearbyshops.shopkeeperapp.RetrofitRESTContract.OrderServiceShopStaff;
 import org.nearbyshops.shopkeeperapp.Utility.UtilityLogin;
@@ -306,8 +309,8 @@ public class PlacedOrdersFragment extends Fragment implements AdapterPlacedOrder
         {
             ((NotifyTitleChanged)getActivity())
                     .NotifyTitleChanged(
-                            "Placed ( " + String.valueOf(dataset.size())
-                                    + "/" + String.valueOf(item_count) + " )",0);
+                            "Placed (" + String.valueOf(dataset.size())
+                                    + "/" + String.valueOf(item_count) + ")",0);
 
 
         }
@@ -340,7 +343,7 @@ public class PlacedOrdersFragment extends Fragment implements AdapterPlacedOrder
 
 
     @Override
-    public void notifyConfirmOrder(Order order) {
+    public void notifyConfirmOrder(Order order, final int position) {
 
 
 //        order.setStatusHomeDelivery(OrderStatusHomeDelivery.ORDER_CONFIRMED);
@@ -358,9 +361,9 @@ public class PlacedOrdersFragment extends Fragment implements AdapterPlacedOrder
                 {
                     showToastMessage("Order Confirmed !");
 
-//                    makeNetworkCall(true);
-
-                    makeRefreshNetworkCall();
+//                    makeRefreshNetworkCall();
+                    dataset.remove(position);
+                    adapter.notifyItemRemoved(position);
 
                     refreshConfirmedFragment();
                 }
@@ -382,7 +385,7 @@ public class PlacedOrdersFragment extends Fragment implements AdapterPlacedOrder
     }
 
     @Override
-    public void notifyCancelOrder(final Order order) {
+    public void notifyCancelOrder(final Order order, final int position) {
 
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -393,7 +396,7 @@ public class PlacedOrdersFragment extends Fragment implements AdapterPlacedOrder
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        cancelOrder(order);
+                        cancelOrder(order,position);
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -407,7 +410,14 @@ public class PlacedOrdersFragment extends Fragment implements AdapterPlacedOrder
     }
 
 
-    private void cancelOrder(Order order) {
+    @Override
+    public void notityOrderSelected(Order order) {
+        UtilityOrderDetail.saveOrder(order,getActivity());
+        getActivity().startActivity(new Intent(getActivity(),OrderDetail.class));
+    }
+
+
+    private void cancelOrder(Order order, final int position) {
 
 
 //        Call<ResponseBody> call = orderService.cancelOrderByShop(order.getOrderID());
@@ -425,7 +435,12 @@ public class PlacedOrdersFragment extends Fragment implements AdapterPlacedOrder
                 if(response.code() == 200 )
                 {
                     showToastMessage("Successful");
-                    makeRefreshNetworkCall();
+
+                    dataset.remove(position);
+                    adapter.notifyItemRemoved(position);
+//                    makeRefreshNetworkCall();
+
+
                 }
                 else if(response.code() == 304)
                 {

@@ -23,6 +23,7 @@ import retrofit2.http.Query;
  */
 public interface ShopStaffService {
 
+
     @POST("/api/v1/ShopStaff")
     Call<ShopStaff> postShopStaff(@Header("Authorization") String headers,
                               @Body ShopStaff staff);

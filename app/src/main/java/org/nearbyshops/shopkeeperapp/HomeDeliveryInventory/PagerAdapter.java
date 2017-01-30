@@ -85,8 +85,8 @@ public class PagerAdapter extends FragmentPagerAdapter {
 
 
 
-    private String titlePlaced = "Placed ( 0 / 0 )";
-    private String titleConfirmed = "Confirmed ( 0 / 0 )";
+    private String titlePlaced = "Placed (0/0)";
+    private String titleConfirmed = "Confirmed (0/0)";
     private String titlePacked = "Packed (0/0)";
     private String titleDetachedItems = "Detached Items (0/0)";
 
