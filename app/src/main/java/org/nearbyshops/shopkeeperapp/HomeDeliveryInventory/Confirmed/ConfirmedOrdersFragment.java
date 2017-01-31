@@ -15,6 +15,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import org.nearbyshops.shopkeeperapp.DaggerComponentBuilder;
+import org.nearbyshops.shopkeeperapp.ItemsByCategoryTypeSimple.Interfaces.NotifySearch;
+import org.nearbyshops.shopkeeperapp.ItemsInShop.Interfaces.NotifySort;
 import org.nearbyshops.shopkeeperapp.Model.Order;
 import org.nearbyshops.shopkeeperapp.ModelEndpoints.OrderEndPoint;
 import org.nearbyshops.shopkeeperapp.ModelStatusCodes.OrderStatusHomeDelivery;
@@ -22,6 +24,7 @@ import org.nearbyshops.shopkeeperapp.CommonInterfaces.NotifyTitleChanged;
 import org.nearbyshops.shopkeeperapp.HomeDeliveryInventory.Interface.RefreshFragment;
 import org.nearbyshops.shopkeeperapp.OrderDetail.OrderDetail;
 import org.nearbyshops.shopkeeperapp.OrderDetail.UtilityOrderDetail;
+import org.nearbyshops.shopkeeperapp.OrderHistoryHD.SlidingLayerSort.UtilitySortOrdersHD;
 import org.nearbyshops.shopkeeperapp.R;
 import org.nearbyshops.shopkeeperapp.RetrofitRESTContract.OrderServiceShopStaff;
 import org.nearbyshops.shopkeeperapp.Utility.UtilityLogin;
@@ -45,7 +48,7 @@ import retrofit2.Response;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class ConfirmedOrdersFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener,AdapterConfirmedOrders.NotifyOrderPacked ,RefreshFragment{
+public class ConfirmedOrdersFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener,AdapterConfirmedOrders.NotifyOrderPacked ,RefreshFragment, NotifySearch,NotifySort{
 
 
     @Inject
@@ -227,6 +230,10 @@ public class ConfirmedOrdersFragment extends Fragment implements SwipeRefreshLay
 //                                            null,limit,offset,null);
 
 
+        String current_sort = "";
+        current_sort = UtilitySortOrdersHD.getSort(getContext()) + " " + UtilitySortOrdersHD.getAscending(getContext());
+
+
             Call<OrderEndPoint> call = orderServiceShopStaff.getOrders(
                     UtilityLogin.getAuthorizationHeaders(getActivity()),
                     null,null,false,
@@ -234,7 +241,7 @@ public class ConfirmedOrdersFragment extends Fragment implements SwipeRefreshLay
                     null,null,
                     null,null,
                     null,
-                    null,limit,offset,null);
+                    searchQuery,current_sort,limit,offset,null);
 
 
             call.enqueue(new Callback<OrderEndPoint>() {
@@ -458,6 +465,29 @@ public class ConfirmedOrdersFragment extends Fragment implements SwipeRefreshLay
                 showToastMessage("Network Request Failed. Check your internet connection !");
             }
         });
+    }
+
+
+
+
+    @Override
+    public void notifySortChanged() {
+        makeRefreshNetworkCall();
+    }
+
+
+    String searchQuery = null;
+
+    @Override
+    public void search(final String searchString) {
+        searchQuery = searchString;
+        makeRefreshNetworkCall();
+    }
+
+    @Override
+    public void endSearchMode() {
+        searchQuery = null;
+        makeRefreshNetworkCall();
     }
 
 

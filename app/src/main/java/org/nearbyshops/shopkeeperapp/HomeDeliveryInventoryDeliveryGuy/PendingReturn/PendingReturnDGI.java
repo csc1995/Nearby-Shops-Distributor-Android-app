@@ -13,10 +13,13 @@ import android.widget.Toast;
 
 import org.nearbyshops.shopkeeperapp.DaggerComponentBuilder;
 import org.nearbyshops.shopkeeperapp.CommonInterfaces.NotifyTitleChanged;
+import org.nearbyshops.shopkeeperapp.ItemsByCategoryTypeSimple.Interfaces.NotifySearch;
+import org.nearbyshops.shopkeeperapp.ItemsInShop.Interfaces.NotifySort;
 import org.nearbyshops.shopkeeperapp.Model.Order;
 import org.nearbyshops.shopkeeperapp.ModelEndpoints.OrderEndPoint;
 import org.nearbyshops.shopkeeperapp.ModelRoles.DeliveryGuySelf;
 import org.nearbyshops.shopkeeperapp.ModelStatusCodes.OrderStatusHomeDelivery;
+import org.nearbyshops.shopkeeperapp.OrderHistoryHD.SlidingLayerSort.UtilitySortOrdersHD;
 import org.nearbyshops.shopkeeperapp.R;
 import org.nearbyshops.shopkeeperapp.RetrofitRESTContract.OrderServiceShopStaff;
 import org.nearbyshops.shopkeeperapp.Utility.UtilityLogin;
@@ -39,7 +42,7 @@ import static org.nearbyshops.shopkeeperapp.HomeDeliveryInventoryDeliveryGuy.Del
  */
 
 
-public class PendingReturnDGI extends Fragment implements SwipeRefreshLayout.OnRefreshListener, AdapterPendingReturnDGI.NotifyAcceptReturn {
+public class PendingReturnDGI extends Fragment implements SwipeRefreshLayout.OnRefreshListener, AdapterPendingReturnDGI.NotifyAcceptReturn ,NotifySearch,NotifySort{
 
 
     @Inject
@@ -225,6 +228,7 @@ public class PendingReturnDGI extends Fragment implements SwipeRefreshLayout.OnR
         isDestroyed=false;
     }
 
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -265,6 +269,9 @@ public class PendingReturnDGI extends Fragment implements SwipeRefreshLayout.OnR
 //                        true,true,
 //                        null,limit,offset,null);
 
+        String current_sort = "";
+        current_sort = UtilitySortOrdersHD.getSort(getContext()) + " " + UtilitySortOrdersHD.getAscending(getContext());
+
 
         Call<OrderEndPoint> call = orderServiceShopStaff.getOrders(
                 UtilityLogin.getAuthorizationHeaders(getActivity()),
@@ -273,7 +280,7 @@ public class PendingReturnDGI extends Fragment implements SwipeRefreshLayout.OnR
                 null,null,
                 null,null,
                 null,
-                null,limit,offset,null);
+                searchQuery,current_sort,limit,offset,null);
 
 
 
@@ -357,8 +364,8 @@ public class PendingReturnDGI extends Fragment implements SwipeRefreshLayout.OnR
         {
             ((NotifyTitleChanged)getActivity())
                     .NotifyTitleChanged(
-                            "Pending Return ( " + String.valueOf(dataset.size())
-                                    + "/" + String.valueOf(item_count) + " )",4);
+                            "Pending Return (" + String.valueOf(dataset.size())
+                                    + "/" + String.valueOf(item_count) + ")",4);
 
         }
     }
@@ -366,7 +373,7 @@ public class PendingReturnDGI extends Fragment implements SwipeRefreshLayout.OnR
 
 
     @Override
-    public void notifyAcceptReturn(Order order) {
+    public void notifyAcceptReturn(Order order, final int position) {
 
 
 //        order.setStatusHomeDelivery(OrderStatusHomeDelivery.RETURNED);
@@ -384,7 +391,13 @@ public class PendingReturnDGI extends Fragment implements SwipeRefreshLayout.OnR
                 if(response.code()==200)
                 {
                     showToastMessage("Update Successful !");
-                    makeRefreshNetworkCall();
+//                    makeRefreshNetworkCall();
+
+                    dataset.remove(position);
+                    adapter.notifyItemRemoved(position);
+                    item_count = item_count-1;
+                    notifyTitleChanged();
+
                 }
                 else if(response.code()==304)
                 {
@@ -404,6 +417,28 @@ public class PendingReturnDGI extends Fragment implements SwipeRefreshLayout.OnR
 
             }
         });
+    }
 
+
+
+
+
+    @Override
+    public void notifySortChanged() {
+        makeRefreshNetworkCall();
+    }
+
+    String searchQuery = null;
+
+    @Override
+    public void search(final String searchString) {
+        searchQuery = searchString;
+        makeRefreshNetworkCall();
+    }
+
+    @Override
+    public void endSearchMode() {
+        searchQuery = null;
+        makeRefreshNetworkCall();
     }
 }

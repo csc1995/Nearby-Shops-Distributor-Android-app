@@ -15,10 +15,13 @@ import android.widget.Toast;
 
 import org.nearbyshops.shopkeeperapp.DaggerComponentBuilder;
 import org.nearbyshops.shopkeeperapp.CommonInterfaces.NotifyTitleChanged;
+import org.nearbyshops.shopkeeperapp.ItemsByCategoryTypeSimple.Interfaces.NotifySearch;
+import org.nearbyshops.shopkeeperapp.ItemsInShop.Interfaces.NotifySort;
 import org.nearbyshops.shopkeeperapp.Model.Order;
 import org.nearbyshops.shopkeeperapp.ModelEndpoints.OrderEndPoint;
 import org.nearbyshops.shopkeeperapp.ModelRoles.DeliveryGuySelf;
 import org.nearbyshops.shopkeeperapp.ModelStatusCodes.OrderStatusHomeDelivery;
+import org.nearbyshops.shopkeeperapp.OrderHistoryHD.SlidingLayerSort.UtilitySortOrdersHD;
 import org.nearbyshops.shopkeeperapp.R;
 import org.nearbyshops.shopkeeperapp.RetrofitRESTContract.OrderServiceShopStaff;
 import org.nearbyshops.shopkeeperapp.Utility.UtilityLogin;
@@ -41,7 +44,7 @@ import static org.nearbyshops.shopkeeperapp.HomeDeliveryInventoryDeliveryGuy.Del
  */
 
 
-public class OutForDeliveryFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, AdapterOutForDelivery.NotifyCancelOrder{
+public class OutForDeliveryFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, AdapterOutForDelivery.NotifyCancelOrder, NotifySort,NotifySearch{
 
     @Inject
     OrderServiceShopStaff orderServiceShopStaff;
@@ -259,6 +262,10 @@ public class OutForDeliveryFragment extends Fragment implements SwipeRefreshLayo
 //                        null, deliveryGuySelf.getDeliveryGuyID(),null,null,true,true,
 //                        null,limit,offset,null);
 
+        String current_sort = "";
+        current_sort = UtilitySortOrdersHD.getSort(getContext()) + " " + UtilitySortOrdersHD.getAscending(getContext());
+
+
         Call<OrderEndPoint> call = orderServiceShopStaff.getOrders(
                 UtilityLogin.getAuthorizationHeaders(getActivity()),
                 null,null,false,
@@ -266,7 +273,7 @@ public class OutForDeliveryFragment extends Fragment implements SwipeRefreshLayo
                 null,null,
                 null,null,
                 null,
-                null,limit,offset,null);
+                searchQuery,current_sort,limit,offset,null);
 
 
         call.enqueue(new Callback<OrderEndPoint>() {
@@ -356,8 +363,8 @@ public class OutForDeliveryFragment extends Fragment implements SwipeRefreshLayo
         {
             ((NotifyTitleChanged)getActivity())
                     .NotifyTitleChanged(
-                            "Out For Delivery ( " + String.valueOf(dataset.size())
-                                    + "/" + String.valueOf(item_count) + " )",1);
+                            "Out For Delivery (" + String.valueOf(dataset.size())
+                                    + "/" + String.valueOf(item_count) + ")",1);
 
 
         }
@@ -370,7 +377,7 @@ public class OutForDeliveryFragment extends Fragment implements SwipeRefreshLayo
     }
 
     @Override
-    public void notifyCancelOrder(final Order order) {
+    public void notifyCancelOrder(final Order order, final int position) {
 
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -381,7 +388,7 @@ public class OutForDeliveryFragment extends Fragment implements SwipeRefreshLayo
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        cancelOrder(order);
+                        cancelOrder(order, position);
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -395,7 +402,7 @@ public class OutForDeliveryFragment extends Fragment implements SwipeRefreshLayo
     }
 
 
-    private void cancelOrder(Order order) {
+    private void cancelOrder(Order order, final int position) {
 
 //        Call<ResponseBody> call = orderService.cancelOrderByShop(order.getOrderID());
 
@@ -412,7 +419,14 @@ public class OutForDeliveryFragment extends Fragment implements SwipeRefreshLayo
                 if(response.code() == 200 )
                 {
                     showToastMessage("Successful");
-                    makeRefreshNetworkCall();
+//                    makeRefreshNetworkCall();
+
+                    dataset.remove(position);
+                    adapter.notifyItemRemoved(position);
+                    item_count = item_count-1;
+                    notifyTitleChanged();
+
+
                 }
                 else if(response.code() == 304)
                 {
@@ -432,4 +446,29 @@ public class OutForDeliveryFragment extends Fragment implements SwipeRefreshLayo
         });
 
     }
+
+
+
+
+
+
+    @Override
+    public void notifySortChanged() {
+        makeRefreshNetworkCall();
+    }
+
+    String searchQuery = null;
+
+    @Override
+    public void search(final String searchString) {
+        searchQuery = searchString;
+        makeRefreshNetworkCall();
+    }
+
+    @Override
+    public void endSearchMode() {
+        searchQuery = null;
+        makeRefreshNetworkCall();
+    }
+
 }

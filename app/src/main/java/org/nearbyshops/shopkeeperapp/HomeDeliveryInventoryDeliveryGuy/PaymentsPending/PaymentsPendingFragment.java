@@ -16,10 +16,13 @@ import android.widget.Toast;
 
 import org.nearbyshops.shopkeeperapp.DaggerComponentBuilder;
 import org.nearbyshops.shopkeeperapp.CommonInterfaces.NotifyTitleChanged;
+import org.nearbyshops.shopkeeperapp.ItemsByCategoryTypeSimple.Interfaces.NotifySearch;
+import org.nearbyshops.shopkeeperapp.ItemsInShop.Interfaces.NotifySort;
 import org.nearbyshops.shopkeeperapp.Model.Order;
 import org.nearbyshops.shopkeeperapp.ModelEndpoints.OrderEndPoint;
 import org.nearbyshops.shopkeeperapp.ModelRoles.DeliveryGuySelf;
 import org.nearbyshops.shopkeeperapp.ModelStatusCodes.OrderStatusHomeDelivery;
+import org.nearbyshops.shopkeeperapp.OrderHistoryHD.SlidingLayerSort.UtilitySortOrdersHD;
 import org.nearbyshops.shopkeeperapp.R;
 import org.nearbyshops.shopkeeperapp.RetrofitRESTContract.OrderServiceShopStaff;
 import org.nearbyshops.shopkeeperapp.Utility.UtilityLogin;
@@ -47,7 +50,7 @@ import static org.nearbyshops.shopkeeperapp.HomeDeliveryInventoryDeliveryGuy.Del
 /**
  * A placeholder fragment containing a simple view.
  */
-public class PaymentsPendingFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener,AdapterPaymentsPending.NotifyPaymentReceived {
+public class PaymentsPendingFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener,AdapterPaymentsPending.NotifyPaymentReceived ,NotifySort,NotifySearch{
 
 
 //    @Inject
@@ -295,6 +298,10 @@ public class PaymentsPendingFragment extends Fragment implements SwipeRefreshLay
 //                        null,limit,offset,null);
 
 
+        String current_sort = "";
+        current_sort = UtilitySortOrdersHD.getSort(getContext()) + " " + UtilitySortOrdersHD.getAscending(getContext());
+
+
 
         Call<OrderEndPoint> call = orderServiceShopStaff.getOrders(
                 UtilityLogin.getAuthorizationHeaders(getActivity()),
@@ -303,7 +310,7 @@ public class PaymentsPendingFragment extends Fragment implements SwipeRefreshLay
                 false,null,
                 null,null,
                 null,
-                null,limit,offset,null);
+                searchQuery,current_sort,limit,offset,null);
 
 
         call.enqueue(new Callback<OrderEndPoint>() {
@@ -483,7 +490,7 @@ public class PaymentsPendingFragment extends Fragment implements SwipeRefreshLay
 
 
     @Override
-    public void notifyPaymentReceived(Order order) {
+    public void notifyPaymentReceived(Order order, final int position) {
 
 //        order.setPaymentReceived(true);
 
@@ -502,7 +509,13 @@ public class PaymentsPendingFragment extends Fragment implements SwipeRefreshLay
                 if(response.code()==200)
                 {
                     showToastMessage("Update Successful !");
-                    makeRefreshNetworkCall();
+//                    makeRefreshNetworkCall();
+
+                    dataset.remove(position);
+                    adapter.notifyItemRemoved(position);
+                    item_count = item_count-1;
+                    notifyTitleChanged();
+
                 }
                 else
                 {
@@ -532,9 +545,6 @@ public class PaymentsPendingFragment extends Fragment implements SwipeRefreshLay
 
 
 
-
-
-
     void notifyTitleChanged()
     {
 
@@ -542,11 +552,33 @@ public class PaymentsPendingFragment extends Fragment implements SwipeRefreshLay
         {
             ((NotifyTitleChanged)getActivity())
                     .NotifyTitleChanged(
-                            "Pending Payments ( " + String.valueOf(dataset.size())
-                                    + "/" + String.valueOf(item_count) + " )",3);
+                            "Pending Payments (" + String.valueOf(dataset.size())
+                                    + "/" + String.valueOf(item_count) + ")",3);
 
 
         }
     }
+
+
+
+    @Override
+    public void notifySortChanged() {
+        makeRefreshNetworkCall();
+    }
+
+    String searchQuery = null;
+
+    @Override
+    public void search(final String searchString) {
+        searchQuery = searchString;
+        makeRefreshNetworkCall();
+    }
+
+    @Override
+    public void endSearchMode() {
+        searchQuery = null;
+        makeRefreshNetworkCall();
+    }
+
 
 }

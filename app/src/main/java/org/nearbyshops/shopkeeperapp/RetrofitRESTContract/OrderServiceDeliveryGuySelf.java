@@ -47,6 +47,7 @@ public interface OrderServiceDeliveryGuySelf {
                                   @Query("DeliveryReceived") Boolean deliveryReceived,
                                   @Query("latCenter") Double latCenter, @Query("lonCenter") Double lonCenter,
                                   @Query("PendingOrders") Boolean pendingOrders,
+                                  @Query("SearchString") String searchString,
                                   @Query("SortBy") String sortBy,
                                   @Query("Limit") Integer limit, @Query("Offset") Integer offset,
                                   @Query("metadata_only") Boolean metaonly);

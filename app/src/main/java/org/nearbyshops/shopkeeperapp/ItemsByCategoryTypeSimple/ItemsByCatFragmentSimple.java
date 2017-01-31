@@ -198,7 +198,8 @@ public class ItemsByCatFragmentSimple extends Fragment implements SwipeRefreshLa
                         spanCount = 1;
                     }
 
-                    return (6/spanCount);
+//                    (6/spanCount)
+                    return 3;
 
                 }
                 else if(dataset.get(position) instanceof Item)

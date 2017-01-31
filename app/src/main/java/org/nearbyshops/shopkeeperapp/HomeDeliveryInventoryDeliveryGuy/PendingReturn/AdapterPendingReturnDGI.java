@@ -121,7 +121,7 @@ class AdapterPendingReturnDGI extends RecyclerView.Adapter<AdapterPendingReturnD
         @OnClick(R.id.accept_return)
         void onClickConfirmButton(View view)
         {
-            notifications.notifyAcceptReturn(dataset.get(getLayoutPosition()));
+            notifications.notifyAcceptReturn(dataset.get(getLayoutPosition()), getLayoutPosition());
         }
 
     }
@@ -129,7 +129,7 @@ class AdapterPendingReturnDGI extends RecyclerView.Adapter<AdapterPendingReturnD
 
     interface NotifyAcceptReturn {
 
-        void notifyAcceptReturn(Order order);
+        void notifyAcceptReturn(Order order, int position);
     }
 
 }

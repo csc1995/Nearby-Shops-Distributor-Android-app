@@ -103,7 +103,20 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ShopHome.ShopHome" />
         </activity>
+
+        <!--<activity-->
+            <!--android:name=".HomeDeliveryInventory.HomeDelivery"-->
+            <!--android:label="@string/title_activity_home_delivery"-->
+            <!--android:parentActivityName=".OrdersHomeDelivery.OrdersHomeDelivery"-->
+            <!--android:theme="@style/AppTheme.NoActionBar">-->
+            <!--<meta-data-->
+                <!--android:name="android.support.PARENT_ACTIVITY"-->
+                <!--android:value=".OrdersHomeDelivery.OrdersHomeDelivery" />-->
+        <!--</activity>-->
+
+
         <activity
+            android:launchMode="singleTop"
             android:name=".HomeDeliveryInventory.HomeDelivery"
             android:label="@string/title_activity_home_delivery"
             android:parentActivityName=".OrdersHomeDelivery.OrdersHomeDelivery"
@@ -111,7 +124,18 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".OrdersHomeDelivery.OrdersHomeDelivery" />
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
         </activity>
+
+
+
         <activity
             android:name=".aaDeprecated_DeliveryGuy.DeliveryVehicleActivity"
             android:label="Delivery Vehicles"
@@ -148,24 +172,69 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".HomeDeliveryInventory.HomeDelivery" />
         </activity>
+
+        <!--<activity-->
+            <!--android:name=".HomeDeliveryInventoryDeliveryGuy.DeliveryGuyInventory"-->
+            <!--android:label="@string/title_activity_vehicle_dashboard"-->
+            <!--android:parentActivityName=".aaDeprecated_DeliveryGuy.DeliveryVehicleActivity"-->
+            <!--android:theme="@style/AppTheme.NoActionBar">-->
+            <!--<meta-data-->
+                <!--android:name="android.support.PARENT_ACTIVITY"-->
+                <!--android:value=".aaDeprecated_DeliveryGuy.DeliveryVehicleActivity" />-->
+        <!--</activity>-->
+
+
         <activity
+            android:launchMode="singleTop"
             android:name=".HomeDeliveryInventoryDeliveryGuy.DeliveryGuyInventory"
             android:label="@string/title_activity_vehicle_dashboard"
-            android:parentActivityName=".aaDeprecated_DeliveryGuy.DeliveryVehicleActivity"
+            android:parentActivityName=".OrdersHomeDelivery.OrdersHomeDelivery"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".aaDeprecated_DeliveryGuy.DeliveryVehicleActivity" />
+                android:value=".OrdersHomeDelivery.OrdersHomeDelivery" />
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
         </activity>
+
+
+        <!--<activity-->
+            <!--android:name=".DeliveryGuyDashboard.DeliveryGuyDashboard"-->
+            <!--android:label="Delivery Guy Dashboard"-->
+            <!--android:parentActivityName=".aaDeprecated_DeliveryGuy.DeliveryVehicleActivity"-->
+            <!--android:theme="@style/AppTheme.NoActionBar">-->
+            <!--<meta-data-->
+                <!--android:name="android.support.PARENT_ACTIVITY"-->
+                <!--android:value=".aaDeprecated_DeliveryGuy.DeliveryVehicleActivity" />-->
+        <!--</activity>-->
+
+
         <activity
+            android:launchMode="singleTop"
             android:name=".DeliveryGuyDashboard.DeliveryGuyDashboard"
             android:label="Delivery Guy Dashboard"
-            android:parentActivityName=".aaDeprecated_DeliveryGuy.DeliveryVehicleActivity"
+            android:parentActivityName=".OrdersHomeDelivery.OrdersHomeDelivery"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".aaDeprecated_DeliveryGuy.DeliveryVehicleActivity" />
+                android:value=".OrdersHomeDelivery.OrdersHomeDelivery" />
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
         </activity>
+
+
         <activity
             android:name=".QuickStockEditor.QuickStockEditor"
             android:label="@string/title_activity_quick_stock_editor"

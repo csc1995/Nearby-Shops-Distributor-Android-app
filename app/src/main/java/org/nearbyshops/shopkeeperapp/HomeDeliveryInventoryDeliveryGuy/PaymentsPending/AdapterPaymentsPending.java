@@ -125,7 +125,7 @@ public class AdapterPaymentsPending extends RecyclerView.Adapter<AdapterPayments
         @OnClick(R.id.acceptHandoverButton)
         void onClickConfirmButton(View view)
         {
-            notifications.notifyPaymentReceived(dataset.get(getLayoutPosition()));
+            notifications.notifyPaymentReceived(dataset.get(getLayoutPosition()), getLayoutPosition());
         }
 
     }
@@ -137,7 +137,7 @@ public class AdapterPaymentsPending extends RecyclerView.Adapter<AdapterPayments
 
     public interface NotifyPaymentReceived {
 
-        void notifyPaymentReceived(Order order);
+        void notifyPaymentReceived(Order order, int position);
 
     }
 

@@ -127,14 +127,14 @@ public class AdapterDeliveryApproval extends RecyclerView.Adapter<AdapterDeliver
         @OnClick(R.id.acceptHandoverButton)
         void onClickConfirmButton(View view)
         {
-            notifications.notifyMarkDelivered(dataset.get(getLayoutPosition()));
+            notifications.notifyMarkDelivered(dataset.get(getLayoutPosition()), getLayoutPosition());
         }
 
     }
 
 
     interface NotifyMarkDelivered {
-        void notifyMarkDelivered(Order order);
+        void notifyMarkDelivered(Order order, int position);
     }
 
 }

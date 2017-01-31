@@ -98,8 +98,8 @@ public class ItemsByCatSimple extends AppCompatActivity implements NotifyIndicat
         {
             slidingLayer.setChangeStateOnTap(true);
             slidingLayer.setSlidingEnabled(true);
-//            slidingLayer.setPreviewOffsetDistance(15);
-            slidingLayer.setOffsetDistance(30);
+            slidingLayer.setPreviewOffsetDistance(20);
+            slidingLayer.setOffsetDistance(10);
             slidingLayer.setStickTo(SlidingLayer.STICK_TO_RIGHT);
 
             DisplayMetrics metrics = new DisplayMetrics();

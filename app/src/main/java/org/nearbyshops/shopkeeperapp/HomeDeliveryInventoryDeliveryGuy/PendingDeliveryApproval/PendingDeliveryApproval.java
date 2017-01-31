@@ -13,10 +13,13 @@ import android.widget.Toast;
 
 import org.nearbyshops.shopkeeperapp.DaggerComponentBuilder;
 import org.nearbyshops.shopkeeperapp.CommonInterfaces.NotifyTitleChanged;
+import org.nearbyshops.shopkeeperapp.ItemsByCategoryTypeSimple.Interfaces.NotifySearch;
+import org.nearbyshops.shopkeeperapp.ItemsInShop.Interfaces.NotifySort;
 import org.nearbyshops.shopkeeperapp.Model.Order;
 import org.nearbyshops.shopkeeperapp.ModelEndpoints.OrderEndPoint;
 import org.nearbyshops.shopkeeperapp.ModelRoles.DeliveryGuySelf;
 import org.nearbyshops.shopkeeperapp.ModelStatusCodes.OrderStatusHomeDelivery;
+import org.nearbyshops.shopkeeperapp.OrderHistoryHD.SlidingLayerSort.UtilitySortOrdersHD;
 import org.nearbyshops.shopkeeperapp.R;
 import org.nearbyshops.shopkeeperapp.RetrofitRESTContract.OrderServiceShopStaff;
 import org.nearbyshops.shopkeeperapp.Utility.UtilityLogin;
@@ -40,7 +43,7 @@ import static org.nearbyshops.shopkeeperapp.HomeDeliveryInventoryDeliveryGuy.Del
 
 
 public class PendingDeliveryApproval extends Fragment
-        implements SwipeRefreshLayout.OnRefreshListener,AdapterDeliveryApproval.NotifyMarkDelivered {
+        implements SwipeRefreshLayout.OnRefreshListener,AdapterDeliveryApproval.NotifyMarkDelivered, NotifySearch,NotifySort{
 
 
 //    @Inject
@@ -275,15 +278,18 @@ public class PendingDeliveryApproval extends Fragment
 //                            true,true,
 //                            null,limit,offset,null);
 
+        String current_sort = "";
+        current_sort = UtilitySortOrdersHD.getSort(getContext()) + " " + UtilitySortOrdersHD.getAscending(getContext());
 
-            Call<OrderEndPoint> call = orderServiceShopStaff.getOrders(
+
+        Call<OrderEndPoint> call = orderServiceShopStaff.getOrders(
                     UtilityLogin.getAuthorizationHeaders(getActivity()),
                     null,null,false,
                     OrderStatusHomeDelivery.PENDING_DELIVERY,null,deliveryGuySelf.getDeliveryGuyID(),
                     null,false,
                     null,null,
                     null,
-                    null,limit,offset,null);
+                    searchQuery,current_sort,limit,offset,null);
 
 
 
@@ -343,7 +349,7 @@ public class PendingDeliveryApproval extends Fragment
 
 
     @Override
-    public void notifyMarkDelivered(Order order) {
+    public void notifyMarkDelivered(Order order, final int position) {
 
 
 //        order.setStatusHomeDelivery(OrderStatusHomeDelivery.ORDER_PACKED);
@@ -364,7 +370,11 @@ public class PendingDeliveryApproval extends Fragment
                 if(response.code()==200)
                 {
                     showToastMessage("Handover cancelled !");
-                    makeRefreshNetworkCall();
+//                    makeRefreshNetworkCall();
+                    dataset.remove(position);
+                    adapter.notifyItemRemoved(position);
+                    item_count = item_count-1;
+                    notifyTitleChanged();
                 }
                 else
                 {
@@ -414,12 +424,35 @@ public class PendingDeliveryApproval extends Fragment
         {
             ((NotifyTitleChanged)getActivity())
                     .NotifyTitleChanged(
-                            "Pending Delivery Approval ( " + String.valueOf(dataset.size())
-                                    + "/" + String.valueOf(item_count) + " )",2);
+                            "Pending Delivery Approval (" + String.valueOf(dataset.size())
+                                    + "/" + String.valueOf(item_count) + ")",2);
 
 
         }
     }
+
+
+
+
+    @Override
+    public void notifySortChanged() {
+        makeRefreshNetworkCall();
+    }
+
+    String searchQuery = null;
+
+    @Override
+    public void search(final String searchString) {
+        searchQuery = searchString;
+        makeRefreshNetworkCall();
+    }
+
+    @Override
+    public void endSearchMode() {
+        searchQuery = null;
+        makeRefreshNetworkCall();
+    }
+
 
 
 }

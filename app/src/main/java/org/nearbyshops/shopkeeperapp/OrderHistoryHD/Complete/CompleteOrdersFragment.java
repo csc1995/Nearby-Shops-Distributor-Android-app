@@ -228,8 +228,8 @@ public class CompleteOrdersFragment extends Fragment implements AdapterComplete.
                     null,null,null,
                     null,null,
                     null,null,
-                    false,searchQuery,
-                    current_sort,limit,offset,null);
+                    false,
+                    searchQuery, current_sort,limit,offset,null);
 
 
             call.enqueue(new Callback<OrderEndPoint>() {
@@ -346,13 +346,13 @@ public class CompleteOrdersFragment extends Fragment implements AdapterComplete.
         getActivity().startActivity(new Intent(getActivity(),OrderDetail.class));
     }
 
+
+
+
     @Override
     public void notifySortChanged() {
         makeRefreshNetworkCall();
     }
-
-
-
 
     String searchQuery = null;
 

@@ -17,11 +17,14 @@ import android.widget.Toast;
 import org.nearbyshops.shopkeeperapp.DaggerComponentBuilder;
 import org.nearbyshops.shopkeeperapp.CommonInterfaces.NotifyTitleChanged;
 import org.nearbyshops.shopkeeperapp.DeliveryGuyDashboard.Interfaces.NotifyLocation;
+import org.nearbyshops.shopkeeperapp.ItemsByCategoryTypeSimple.Interfaces.NotifySearch;
+import org.nearbyshops.shopkeeperapp.ItemsInShop.Interfaces.NotifySort;
 import org.nearbyshops.shopkeeperapp.Model.DeliveryAddress;
 import org.nearbyshops.shopkeeperapp.Model.Order;
 import org.nearbyshops.shopkeeperapp.ModelEndpoints.OrderEndPoint;
 import org.nearbyshops.shopkeeperapp.ModelRoles.DeliveryGuySelf;
 import org.nearbyshops.shopkeeperapp.ModelStatusCodes.OrderStatusHomeDelivery;
+import org.nearbyshops.shopkeeperapp.OrderHistoryHD.SlidingLayerSort.UtilitySortOrdersHD;
 import org.nearbyshops.shopkeeperapp.R;
 import org.nearbyshops.shopkeeperapp.RetrofitRESTContract.OrderServiceDeliveryGuySelf;
 import org.nearbyshops.shopkeeperapp.Utility.UtilityLogin;
@@ -47,7 +50,7 @@ import static org.nearbyshops.shopkeeperapp.DeliveryGuyDashboard.DeliveryGuyDash
 /**
  * A placeholder fragment containing a simple view.
  */
-public class FragmentOutForDelivery extends Fragment implements SwipeRefreshLayout.OnRefreshListener,AdapterOutForDelivery.NotifyHandoverToUser,NotifyLocation{
+public class FragmentOutForDelivery extends Fragment implements SwipeRefreshLayout.OnRefreshListener,AdapterOutForDelivery.NotifyHandoverToUser,NotifyLocation, NotifySearch,NotifySort{
 
 
 //    @Inject
@@ -310,6 +313,10 @@ public class FragmentOutForDelivery extends Fragment implements SwipeRefreshLayo
             lon = locationResult.getLongitude();
         }
 
+        String current_sort = "";
+        current_sort = UtilitySortOrdersHD.getSort(getContext()) + " " + UtilitySortOrdersHD.getAscending(getContext());
+
+
         Call<OrderEndPoint> call = orderServiceDelivery
                 .getOrders(UtilityLogin.getAuthorizationHeaders(getActivity()),
                         deliveryGuyID,
@@ -318,7 +325,7 @@ public class FragmentOutForDelivery extends Fragment implements SwipeRefreshLayo
                         null,null,
                         lat,lon,
                         null,
-                        "distance",limit,offset,null);
+                        searchQuery,current_sort,limit,offset,null);
 
 
 
@@ -521,4 +528,29 @@ public class FragmentOutForDelivery extends Fragment implements SwipeRefreshLayo
         makeRefreshNetworkCall();
         showToastMessage("Location Updated !");
     }
+
+
+
+
+
+
+    @Override
+    public void notifySortChanged() {
+        makeRefreshNetworkCall();
+    }
+
+    String searchQuery = null;
+
+    @Override
+    public void search(final String searchString) {
+        searchQuery = searchString;
+        makeRefreshNetworkCall();
+    }
+
+    @Override
+    public void endSearchMode() {
+        searchQuery = null;
+        makeRefreshNetworkCall();
+    }
+
 }

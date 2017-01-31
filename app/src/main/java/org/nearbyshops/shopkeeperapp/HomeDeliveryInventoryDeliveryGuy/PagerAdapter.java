@@ -108,8 +108,8 @@ public class PagerAdapter extends FragmentPagerAdapter {
 
 
 
-    private String titlePendingHandover = "Pending Handover ( 0/0 )";
-    private String titleConfirmed = "Out For Delivery ( 0 / 0 )";
+    private String titlePendingHandover = "Pending Handover (0/0)";
+    private String titleConfirmed = "Out For Delivery (0/0)";
     private String titleDeliveryApproval = "Pending Delivery Approval (0/0)";
     private String titlePendingPayments = "Pending Payments (0/0)";
     private String titlePendingReturn = "Pending Return (0/0)";

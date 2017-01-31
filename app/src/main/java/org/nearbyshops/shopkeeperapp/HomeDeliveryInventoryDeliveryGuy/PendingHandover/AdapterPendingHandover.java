@@ -131,21 +131,21 @@ public class AdapterPendingHandover extends RecyclerView.Adapter<AdapterPendingH
         @OnClick(R.id.acceptHandoverButton)
         void onClickConfirmButton(View view)
         {
-            notifications.notifyCancelHandover(dataset.get(getLayoutPosition()));
+            notifications.notifyCancelHandover(dataset.get(getLayoutPosition()), getLayoutPosition());
         }
 
         @OnClick(R.id.close_button)
         void closeButton(View view)
         {
-            notifications.notifyCancelOrder(dataset.get(getLayoutPosition()));
+            notifications.notifyCancelOrder(dataset.get(getLayoutPosition()), getLayoutPosition());
         }
 
     }
 
 
     interface NotifyCancelHandover {
-        void notifyCancelHandover(Order order);
-        void notifyCancelOrder(Order order);
+        void notifyCancelHandover(Order order, int position);
+        void notifyCancelOrder(Order order, int position);
     }
 
 }
