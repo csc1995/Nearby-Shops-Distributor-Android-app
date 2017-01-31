@@ -57,7 +57,7 @@
                 android:gravity="center"
                 android:layout_weight="1"
                 android:background="#22000000"
-                android:text="Delivery Distance"
+                android:text="Distance"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content" />
 

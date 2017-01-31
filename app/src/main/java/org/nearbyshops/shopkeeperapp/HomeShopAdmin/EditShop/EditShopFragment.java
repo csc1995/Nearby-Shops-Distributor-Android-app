@@ -167,15 +167,13 @@ public class EditShopFragment extends Fragment {
             if(current_mode == MODE_UPDATE)
             {
                 shop = UtilityShopHome.getShop(getContext());
+
+                if(shop!=null) {
+                    bindDataToViews();
+                }
             }
 
-
-            if(shop!=null) {
-                bindDataToViews();
-            }
-
-
-            showLogMessage("Inside OnCreateView - Saved Instance State !");
+//            showLogMessage("Inside OnCreateView - Saved Instance State !");
         }
 
 
@@ -665,6 +663,7 @@ public class EditShopFragment extends Fragment {
         {
             latitude.setText(String.valueOf(result.getDoubleExtra("latitude",0)));
             longitude.setText(String.valueOf(result.getDoubleExtra("longitude",0)));
+            rangeOfDelivery.setText(String.valueOf(result.getDoubleExtra("delivery_range_kms",0)));
         }
 
 
@@ -940,8 +939,25 @@ public class EditShopFragment extends Fragment {
     void pickLocationClick()
     {
         Intent intent = new Intent(getActivity(),PickLocationActivity.class);
+
+        if(!longitude.getText().toString().equals("")&&!latitude.getText().toString().equals(""))
+        {
+            intent.putExtra(PickLocationActivity.INTENT_KEY_CURRENT_LON,Double.parseDouble(longitude.getText().toString()));
+            intent.putExtra(PickLocationActivity.INTENT_KEY_CURRENT_LAT,Double.parseDouble(latitude.getText().toString()));
+
+            if(!rangeOfDelivery.getText().toString().equals(""))
+            {
+                intent.putExtra(
+                        PickLocationActivity.INTENT_KEY_DELIVERY_RANGE,
+                        Double.parseDouble(rangeOfDelivery.getText().toString())
+                );
+            }
+        }
+
+
         startActivityForResult(intent,REQUEST_CODE_PICK_LAT_LON);
     }
+
 
 
 }

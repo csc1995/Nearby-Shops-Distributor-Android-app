@@ -40,6 +40,16 @@ public class PickLocationActivity extends FragmentActivity implements OnMapReady
 
     @Bind(R.id.delivery_range_header)
     TextView deliveryRangeHeader;
+    private double deliveryRange;
+
+
+    public static final String INTENT_KEY_CURRENT_LAT = "current_lat";
+    public static final String INTENT_KEY_CURRENT_LON = "current_lon";
+    public static final String INTENT_KEY_DELIVERY_RANGE = "delivery_range";
+
+
+//    float current_latitude;
+//    float current_longitude;
 
 
 //    Unbinder unbinder;
@@ -90,6 +100,7 @@ public class PickLocationActivity extends FragmentActivity implements OnMapReady
         Intent data = new Intent();
         data.putExtra("latitude",currentMarker.getPosition().latitude);
         data.putExtra("longitude",currentMarker.getPosition().longitude);
+        data.putExtra("delivery_range_kms",(deliveryRange/ 1000));
         setResult(RESULT_OK,data);
         finish();
     }
@@ -128,7 +139,35 @@ public class PickLocationActivity extends FragmentActivity implements OnMapReady
         mMap.setMyLocationEnabled(true);
         mMap.getUiSettings().setMapToolbarEnabled(true);
 
-//        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(,14));
+        double current_lat = getIntent().getDoubleExtra(INTENT_KEY_CURRENT_LAT,-1000);
+        double current_lon = getIntent().getDoubleExtra(INTENT_KEY_CURRENT_LON,-1000);
+        double delivery_range = getIntent().getDoubleExtra(INTENT_KEY_DELIVERY_RANGE,-1);
+
+
+        if(current_lat != -1000 && current_lon != -1000)
+        {
+            LatLng latLng = new LatLng(current_lat,current_lon);
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,14));
+
+
+            currentMarker = mMap.addMarker(new MarkerOptions().position(latLng).snippet(latLng.toString()).title("Selected Location"));
+//            mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+            currentMarker.showInfoWindow();
+
+            // 0 and false are dummy unused variables
+
+            if(delivery_range!=-1)
+            {
+                seekbar.setProgress((int)(delivery_range*1000)/10);
+            }
+
+            onProgressChanged(seekbar,0,false);
+
+        }
+
+
+
+
 
 //        Location currentLocation = UtilityLocation.getCurrentLocation(this);
 
@@ -224,14 +263,20 @@ public class PickLocationActivity extends FragmentActivity implements OnMapReady
                 new CircleOptions()
                         .center(latLng)
                         .radius(seekBar.getProgress()*10)
-                        .fillColor(R.color.cyan900)
+                        .fillColor(0x33000000)
                         .strokeWidth(1)
                         .strokeColor(R.color.gplus_color_2)
+
+//               R.color.cyan900
         );
 
-        deliveryRangeHeader.setText("Delivery Range : " + String.format( "%.2f",(float)((seekBar.getProgress() * 10 ) / 1000)) + " Km : " + String.valueOf((seekBar.getProgress()*10)) + " Meters");
+
+        deliveryRange = ((float)seekBar.getProgress() * 10 );
+        deliveryRangeHeader.setText("Delivery Range : " + String.format( "%.2f",(deliveryRange/ 1000)) + " Km : " + String.valueOf((seekBar.getProgress()*10)) + " Meters");
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentMarker.getPosition(),getZoomLevel(circle)));
     }
+
+
 
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) {
