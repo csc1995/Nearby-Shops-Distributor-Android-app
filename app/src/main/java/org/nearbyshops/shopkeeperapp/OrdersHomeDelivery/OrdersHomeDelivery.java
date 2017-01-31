@@ -7,7 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.RelativeLayout;
 
-import org.nearbyshops.shopkeeperapp.CancelledOrders.CancelledOrdersHomeDelivery;
+import org.nearbyshops.shopkeeperapp.CancelledOrders.CancelledOrdersHD;
 import org.nearbyshops.shopkeeperapp.DeliveryAccounts.DeliveryGuySelection.AccountsSelectionFragment;
 import org.nearbyshops.shopkeeperapp.DeliveryAccounts.DeliveryGuySelection.DeliveryGuySelection;
 import org.nearbyshops.shopkeeperapp.HomeDeliveryInventory.HomeDelivery;
@@ -75,7 +75,7 @@ public class OrdersHomeDelivery extends AppCompatActivity {
     @OnClick(R.id.cancelled_orders)
     void cancelledOrdersClick(View view)
     {
-        Intent intent = new Intent(this, CancelledOrdersHomeDelivery.class);
+        Intent intent = new Intent(this, CancelledOrdersHD.class);
         startActivity(intent);
     }
 

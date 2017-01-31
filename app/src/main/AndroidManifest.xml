@@ -330,15 +330,40 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ShopHome.ShopHome" />
         </activity>
+
+
+        <!--<activity-->
+            <!--android:name=".CancelledOrders.CancelledOrdersHD"-->
+            <!--android:label="@string/title_activity_cancelled_orders_home_delivery"-->
+            <!--android:parentActivityName=".OrdersHomeDelivery.OrdersHomeDelivery"-->
+            <!--android:theme="@style/AppTheme.NoActionBar">-->
+            <!--<meta-data-->
+                <!--android:name="android.support.PARENT_ACTIVITY"-->
+                <!--android:value=".OrdersHomeDelivery.OrdersHomeDelivery" />-->
+        <!--</activity>-->
+
+
         <activity
-            android:name=".CancelledOrders.CancelledOrdersHomeDelivery"
+            android:launchMode="singleTop"
+            android:name=".CancelledOrders.CancelledOrdersHD"
             android:label="@string/title_activity_cancelled_orders_home_delivery"
             android:parentActivityName=".OrdersHomeDelivery.OrdersHomeDelivery"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".OrdersHomeDelivery.OrdersHomeDelivery" />
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
         </activity>
+
+
+
         <activity
             android:name=".OrderDetail.OrderDetail"
             android:label="@string/title_activity_order_detail"

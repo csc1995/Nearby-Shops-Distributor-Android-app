@@ -13,10 +13,13 @@ import android.widget.Toast;
 
 import org.nearbyshops.shopkeeperapp.CommonInterfaces.NotifyTitleChanged;
 import org.nearbyshops.shopkeeperapp.DaggerComponentBuilder;
+import org.nearbyshops.shopkeeperapp.ItemsByCategoryTypeSimple.Interfaces.NotifySearch;
+import org.nearbyshops.shopkeeperapp.ItemsInShop.Interfaces.NotifySort;
 import org.nearbyshops.shopkeeperapp.Model.Order;
 import org.nearbyshops.shopkeeperapp.Model.Shop;
 import org.nearbyshops.shopkeeperapp.ModelEndpoints.OrderEndPoint;
 import org.nearbyshops.shopkeeperapp.ModelStatusCodes.OrderStatusHomeDelivery;
+import org.nearbyshops.shopkeeperapp.OrderHistoryHD.SlidingLayerSort.UtilitySortOrdersHD;
 import org.nearbyshops.shopkeeperapp.R;
 import org.nearbyshops.shopkeeperapp.RetrofitRESTContract.OrderServiceShopStaff;
 import org.nearbyshops.shopkeeperapp.ShopHome.UtilityShopHome;
@@ -38,7 +41,7 @@ import retrofit2.Response;
 
 
 public class FragmentCancelledByUser extends Fragment
-        implements SwipeRefreshLayout.OnRefreshListener,AdapterCancelledByUser.NotifyCancelHandover {
+        implements SwipeRefreshLayout.OnRefreshListener,AdapterCancelledByUser.NotifyCancelHandover, NotifySearch,NotifySort {
 
 
     @Inject
@@ -240,15 +243,21 @@ public class FragmentCancelledByUser extends Fragment
 //            return;
 //        }
 
-        Shop currentShop = UtilityShopHome.getShop(getContext());
+//        Shop currentShop = UtilityShopHome.getShop(getContext());
 
-            Call<OrderEndPoint> call = orderService
+
+        String current_sort = "";
+        current_sort = UtilitySortOrdersHD.getSort(getContext()) + " " + UtilitySortOrdersHD.getAscending(getContext());
+
+
+        Call<OrderEndPoint> call = orderService
                     .getOrders(
                             UtilityLogin.getAuthorizationHeaders(getActivity()),
                             null,null,false,OrderStatusHomeDelivery.CANCELLED_BY_USER,
-                            null,null,null,null,null,null,null,null,null,
-                            limit,offset,null
+                            null,null,null,null,null,null,null,
+                            searchQuery, current_sort,limit,offset,null
                     );
+
 
 
             call.enqueue(new Callback<OrderEndPoint>() {
@@ -383,6 +392,30 @@ public class FragmentCancelledByUser extends Fragment
 
         }
     }
+
+
+
+
+    @Override
+    public void notifySortChanged() {
+        makeRefreshNetworkCall();
+    }
+
+    String searchQuery = null;
+
+    @Override
+    public void search(final String searchString) {
+        searchQuery = searchString;
+        makeRefreshNetworkCall();
+    }
+
+    @Override
+    public void endSearchMode() {
+        searchQuery = null;
+        makeRefreshNetworkCall();
+    }
+
+
 
 
 }
