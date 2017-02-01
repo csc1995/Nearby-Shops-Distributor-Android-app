@@ -23,16 +23,16 @@ import butterknife.OnClick;
 
 public class SlidingLayerSortItems extends Fragment {
 
-    @Bind(R.id.sort_by_item_ratin)
+    @Bind(R.id.sort_rating)
     TextView sort_by_rating;
 
-    @Bind(R.id.sort_by_popularity)
+    @Bind(R.id.sort_popularity)
     TextView sort_by_popularity;
 
     @Bind(R.id.shop_count)
     TextView sort_by_shop_count;
 
-    @Bind(R.id.price_average)
+    @Bind(R.id.item_price)
     TextView sort_by_price_avg;
 
 
@@ -64,7 +64,7 @@ public class SlidingLayerSortItems extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View view = inflater.inflate(R.layout.fragment_sliding_sort_items,container,false);
+        View view = inflater.inflate(R.layout.fragment_sliding_sort_items_by_category,container,false);
         ButterKnife.bind(this,view);
 
         loadDefaultSort();
@@ -128,7 +128,7 @@ public class SlidingLayerSortItems extends Fragment {
 
 
 
-    @OnClick(R.id.sort_by_item_ratin)
+    @OnClick(R.id.sort_rating)
     void sortByNameClick(View view)
     {
         clearSelectionSort();
@@ -146,7 +146,7 @@ public class SlidingLayerSortItems extends Fragment {
 
 
 
-    @OnClick(R.id.sort_by_popularity)
+    @OnClick(R.id.sort_popularity)
     void sortByCreated(View view)
     {
         clearSelectionSort();
@@ -181,7 +181,7 @@ public class SlidingLayerSortItems extends Fragment {
 
 
 
-    @OnClick(R.id.price_average)
+    @OnClick(R.id.item_price)
     void sortByPriceAvg(View view)
     {
         clearSelectionSort();

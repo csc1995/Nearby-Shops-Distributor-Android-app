@@ -218,7 +218,8 @@ public class AdapterItems extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
         Item item = (Item) dataset.get(position);
 
-        holder.categoryName.setText(String.valueOf(position) + " : " + String.valueOf(item.getItemID()) + " : " + item.getItemName());
+//        String.valueOf(position) + " : " + String.valueOf(item.getItemID()) + " : "
+        holder.categoryName.setText(item.getItemName());
 
         ItemStats itemStats = item.getItemStats();
 

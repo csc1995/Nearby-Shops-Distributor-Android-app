@@ -137,4 +137,7 @@ dependencies {
 
     compile 'com.google.android.gms:play-services-location:10.0.1'
     compile 'com.google.android.gms:play-services-maps:10.0.1'
+
+
+    compile group: 'commons-validator', name: 'commons-validator', version: '1.4.0'
 }

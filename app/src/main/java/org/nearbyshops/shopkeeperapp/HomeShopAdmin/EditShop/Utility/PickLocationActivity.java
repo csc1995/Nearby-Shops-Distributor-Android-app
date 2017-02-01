@@ -169,7 +169,7 @@ public class PickLocationActivity extends FragmentActivity implements OnMapReady
 
 
 
-//        Location currentLocation = UtilityLocation.getCurrentLocation(this);
+//        Location currentLocation = UtilityLocationShops.getCurrentLocation(this);
 
 //        if(currentLocation!=null)
 //        {

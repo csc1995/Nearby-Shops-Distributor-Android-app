@@ -683,6 +683,26 @@
                 android:value=".DeliveryGuyHome.DeliveryGuyHome" />
         </activity>
 
+
+
+        <activity
+            android:name=".Services.ServicesActivity"
+            android:label="Discover Services"
+            android:launchMode="singleTop"
+            android:parentActivityName=".DistributorLogin"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".DistributorLogin" />
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+        </activity>
+
     </application>
 
 </manifest>

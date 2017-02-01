@@ -400,7 +400,7 @@
             android:layout_marginTop="10dp"
             android:id="@+id/header_accounts"
             android:layout_below="@id/bordertwo"
-            android:text="Accounts"
+            android:text="Staff Accounts"
             android:textSize="17sp"
             android:background="@color/light_grey"
             android:layout_width="match_parent"
@@ -531,8 +531,6 @@
                 android:layout_height="@dimen/menu_item_width">
 
                 <ImageView
-                    android:src="@drawable/sh_shop_stats_2"
-
                     android:padding="10dp"
                     android:layout_above="@+id/text_shop_stats"
                     android:layout_width="match_parent"
@@ -543,8 +541,6 @@
                     android:padding="10dp"
                     android:id="@+id/text_shop_stats"
                     android:textSize="@dimen/menu_item_text_size"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true"
                     android:layout_alignParentBottom="true"
                     android:textColor="#ffffff"
                     android:text="Shop Stats"
@@ -564,7 +560,8 @@
                 android:layout_height="@dimen/menu_item_width">
 
                 <ImageView
-                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/ic_account_balance_white_24px"
+                    android:scaleType="fitCenter"
                     android:tint="#ffffff"
                     android:padding="10dp"
                     android:layout_above="@+id/text_billing"
@@ -575,8 +572,6 @@
                     android:padding="10dp"
                     android:id="@+id/text_billing"
                     android:textSize="@dimen/menu_item_text_size"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true"
                     android:layout_alignParentBottom="true"
                     android:textColor="#ffffff"
                     android:text="Billing"

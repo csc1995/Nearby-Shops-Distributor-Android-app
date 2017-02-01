@@ -31,7 +31,11 @@
     <string name="title_activity_vehicle_dashboard">Delivery Guy Inventory</string>
     <string name="title_activity_quick_stock_editor">Quick Stock Editor</string>
     <string name="network_request_failed">Network Reqest failed. Check your network connection !</string>
+    <string name="preference_service_url_sds_key">pref_service_url_sds_key</string>
 
+    <string name="dialog_dismissed">Dismissed !</string>
+
+    <string name="content_description_close_dialog">Close Dialog</string>
 
     <!-- An Abstract Item Category can have only Sub Item Categories and cannot contain items under them. -->
     <string name="abstract_category_usage">

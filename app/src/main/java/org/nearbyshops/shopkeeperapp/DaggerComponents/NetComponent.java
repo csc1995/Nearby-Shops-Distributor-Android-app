@@ -58,6 +58,8 @@ import org.nearbyshops.shopkeeperapp.PickFromShopInventory.Packed.PackedOrdersFr
 import org.nearbyshops.shopkeeperapp.PickFromShopInventory.PendingDelivery.PendingDeliveryFragmentPFS;
 import org.nearbyshops.shopkeeperapp.PickFromShopInventory.PendingPayments.PaymentsPendingFragmentPFS;
 import org.nearbyshops.shopkeeperapp.PickFromShopInventory.Placed.PlacedOrdersFragmentPFS;
+import org.nearbyshops.shopkeeperapp.Services.ServiceFragment.ServicesFragment;
+import org.nearbyshops.shopkeeperapp.Services.SubmitURLDialog.SubmitURLDialog;
 import org.nearbyshops.shopkeeperapp.ShopStaffAccounts.EditShopStaff.EditStaffFragment;
 import org.nearbyshops.shopkeeperapp.ShopStaffAccounts.FragmentShopStaff;
 import org.nearbyshops.shopkeeperapp.ShopStaffHome.EditStaffSelf.EditStaffSelfFragment;
@@ -244,4 +246,8 @@ public interface NetComponent {
     void Inject(CancelledByUserFragmentPFS cancelledByUserFragmentPFS);
 
     void Inject(EditDeliverySelfFragment editDeliverySelfFragment);
+
+    void Inject(SubmitURLDialog submitURLDialog);
+
+    void Inject(ServicesFragment servicesFragment);
 }

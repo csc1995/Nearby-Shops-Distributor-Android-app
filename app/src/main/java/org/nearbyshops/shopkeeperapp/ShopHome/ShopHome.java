@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Toast;
 
 import org.nearbyshops.shopkeeperapp.DeliveryAccounts.DeliveryGuyAccounts;
 import org.nearbyshops.shopkeeperapp.Items.ItemsTypeSimple;
@@ -85,7 +86,13 @@ public class ShopHome extends AppCompatActivity {
     @OnClick(R.id.option_billing)
     void billingClick(View view)
     {
-        startActivity(new Intent(this, SSEExample.class));
+        showToastMessage("Feature coming soon !");
+    }
+
+    @OnClick(R.id.option_shop_stats)
+    void optionShopStats()
+    {
+        showToastMessage("Feature coming soon !");
     }
 
 
@@ -174,6 +181,12 @@ public class ShopHome extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         ButterKnife.unbind(this);
+    }
+
+
+    void showToastMessage(String message)
+    {
+        Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
     }
 
 }

@@ -11,7 +11,7 @@ import org.nearbyshops.shopkeeperapp.R;
  * Created by sumeet on 20/10/16.
  */
 
-public class UtilityLocation {
+public class UtilityLocationShops {
 
 
     public static void saveCurrentLocation(Context context, Location location)

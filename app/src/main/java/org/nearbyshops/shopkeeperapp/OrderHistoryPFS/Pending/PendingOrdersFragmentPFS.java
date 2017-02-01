@@ -359,23 +359,23 @@ public class PendingOrdersFragmentPFS extends Fragment implements AdapterOrdersP
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        builder.setTitle("Confirm Cancel Order !")
-                .setMessage("Are you sure you want to cancel this order !")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+            builder.setTitle("Confirm Cancel Order !")
+                    .setMessage("Are you sure you want to cancel this order !")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
 
-                        cancelOrder(order);
-                    }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                            cancelOrder(order);
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
 
-                        showToastMessage(" Not Cancelled !");
-                    }
-                })
-                .show();
+                            showToastMessage(" Not Cancelled !");
+                        }
+                    })
+                    .show();
     }
 
 
