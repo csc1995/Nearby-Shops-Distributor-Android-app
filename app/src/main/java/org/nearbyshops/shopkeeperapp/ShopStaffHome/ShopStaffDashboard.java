@@ -14,6 +14,8 @@ import org.nearbyshops.shopkeeperapp.ItemsInShop.ItemsInShop;
 import org.nearbyshops.shopkeeperapp.ItemsInShopByCat.ItemsInStockByCat;
 import org.nearbyshops.shopkeeperapp.Model.Shop;
 import org.nearbyshops.shopkeeperapp.ModelRoles.ShopStaff;
+import org.nearbyshops.shopkeeperapp.OrdersHomeDelivery.OrdersHomeDelivery;
+import org.nearbyshops.shopkeeperapp.PickFromShopMenu.OrdersPickFromShop;
 import org.nearbyshops.shopkeeperapp.QuickStockEditor.QuickStockEditor;
 import org.nearbyshops.shopkeeperapp.R;
 import org.nearbyshops.shopkeeperapp.ShopHome.UtilityShopHome;
@@ -46,6 +48,16 @@ public class ShopStaffDashboard extends AppCompatActivity {
 
     @Bind(R.id.quick_stock_editor) ImageView quickStockEditor;
     @Bind(R.id.text_quick_stock_editor_text) TextView textQuickStockEditor;
+
+
+    @Bind(R.id.border_orders) TextView borderOrders;
+    @Bind(R.id.header_orders_and_delivery) TextView headerOrders;
+    @Bind(R.id.orders_home_delivery) ImageView home_delivery;
+    @Bind(R.id.text_home_delivery_orders) TextView text_home_delivery;
+
+    @Bind(R.id.orders_pick_from_shop) ImageView pickFromShopOrders;
+    @Bind(R.id.text_pick_from_shop) TextView textPickFromShop;
+
 
     @Bind(R.id.border_bottom) TextView borderBottom;
 
@@ -106,6 +118,40 @@ public class ShopStaffDashboard extends AppCompatActivity {
             textQuickStockEditor.setVisibility(View.VISIBLE);
             borderBottom.setVisibility(View.VISIBLE);
         }
+
+
+        if(staff.isCancelOrders()||
+                staff.isConfirmOrders()||
+                staff.isSetOrdersPacked()||
+                staff.isHandoverToDelivery()||
+                staff.isMarkOrdersDelivered()||
+                staff.isAcceptPaymentsFromDelivery()||
+                staff.isAcceptReturns())
+        {
+            borderOrders.setVisibility(View.VISIBLE);
+            headerOrders.setVisibility(View.VISIBLE);
+            home_delivery.setVisibility(View.VISIBLE);
+            text_home_delivery.setVisibility(View.VISIBLE);
+            borderBottom.setVisibility(View.VISIBLE);
+        }
+
+
+
+        if(staff.isPermitCancelOrdersPFS() ||
+                staff.isPermitConfirmOrdersPFS()||
+                staff.isPermitSetOrdersPackedPFS()||
+                staff.isPermitSetReadyForPickupPFS()||
+                staff.isPermitSetPaymentReceivedPFS()||
+                staff.isPermitMarkDeliveredPFS())
+        {
+            borderOrders.setVisibility(View.VISIBLE);
+            headerOrders.setVisibility(View.VISIBLE);
+            pickFromShopOrders.setVisibility(View.VISIBLE);
+            textPickFromShop.setVisibility(View.VISIBLE);
+            borderBottom.setVisibility(View.VISIBLE);
+        }
+
+
     }
 
 
@@ -146,6 +192,20 @@ public class ShopStaffDashboard extends AppCompatActivity {
     void distributorAccountClick(View view)
     {
         startActivity(new Intent(this, ItemsInStockByCat.class));
+    }
+
+
+    @OnClick(R.id.orders_home_delivery)
+    void homeDeliveryClick()
+    {
+        startActivity(new Intent(this, OrdersHomeDelivery.class));
+    }
+
+
+    @OnClick(R.id.orders_pick_from_shop)
+    void pickFromShopClick()
+    {
+        startActivity(new Intent(this, OrdersPickFromShop.class));
     }
 
 

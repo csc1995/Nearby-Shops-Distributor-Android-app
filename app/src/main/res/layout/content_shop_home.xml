@@ -332,6 +332,7 @@
                 android:layout_height="@dimen/menu_item_width">
 
                 <ImageView
+                    app:srcCompat="@drawable/ic_local_shipping_black_24px"
                     android:tint="#ffffff"
                     android:padding="10dp"
                     android:layout_above="@+id/text_cancel"
@@ -363,6 +364,7 @@
                 android:layout_height="@dimen/menu_item_width">
 
                 <ImageView
+                    app:srcCompat="@drawable/ic_home_black_24px"
                     android:tint="#ffffff"
                     android:padding="10dp"
                     android:layout_above="@+id/text_pick_from_shop"
@@ -441,6 +443,7 @@
                 android:layout_height="@dimen/menu_item_width">
 
                 <ImageView
+                    app:srcCompat="@drawable/ic_account_box_black_24px"
                     android:tint="#ffffff"
                     android:padding="10dp"
                     android:layout_above="@+id/text_staff"
@@ -470,6 +473,7 @@
                 android:layout_height="@dimen/menu_item_width">
 
                 <ImageView
+                    app:srcCompat="@drawable/ic_person_pin_circle_black_24px"
                     android:tint="#ffffff"
                     android:padding="10dp"
                     android:layout_above="@+id/text_delivery_guy_account"
@@ -531,6 +535,7 @@
                 android:layout_height="@dimen/menu_item_width">
 
                 <ImageView
+                    app:srcCompat="@drawable/ic_assessment_black_24px"
                     android:padding="10dp"
                     android:layout_above="@+id/text_shop_stats"
                     android:layout_width="match_parent"
@@ -560,7 +565,7 @@
                 android:layout_height="@dimen/menu_item_width">
 
                 <ImageView
-                    app:srcCompat="@drawable/ic_account_balance_white_24px"
+                    app:srcCompat="@drawable/ic_receipt_black_24px"
                     android:scaleType="fitCenter"
                     android:tint="#ffffff"
                     android:padding="10dp"

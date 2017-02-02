@@ -373,6 +373,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".OrdersHomeDelivery.OrdersHomeDelivery" />
         </activity>
+
         <activity android:name=".SSEExample.SSEExample" />
 
         <service

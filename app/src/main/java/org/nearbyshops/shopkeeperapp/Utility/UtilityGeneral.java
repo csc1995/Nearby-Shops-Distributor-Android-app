@@ -111,8 +111,9 @@ public class UtilityGeneral {
 //        context = MyApplication.getAppContext();
 
         SharedPreferences sharedPref = context.getSharedPreferences(context.getString(R.string.preference_file_name), Context.MODE_PRIVATE);
-        return sharedPref.getString(context.getString(R.string.preference_service_url_sds_key),"http://192.168.1.35:5050");
+        return sharedPref.getString(context.getString(R.string.preference_service_url_sds_key),"http://sds.nearbyshops.org");
 
+        //http://192.168.1.35:5050
         //"http://sds.nearbyshops.org"
     }
 
