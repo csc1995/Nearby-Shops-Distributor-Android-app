@@ -19,7 +19,7 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
-import org.nearbyshops.shopkeeperapp.AddItemsToShopInventory.ItemCategories.EditItemCategoryOld;
+import org.nearbyshops.shopkeeperapp.zzDeprecatedAddItems.ItemCategories.EditItemCategoryOld;
 import org.nearbyshops.shopkeeperapp.DaggerComponentBuilder;
 import org.nearbyshops.shopkeeperapp.Model.ItemCategory;
 import org.nearbyshops.shopkeeperapp.R;

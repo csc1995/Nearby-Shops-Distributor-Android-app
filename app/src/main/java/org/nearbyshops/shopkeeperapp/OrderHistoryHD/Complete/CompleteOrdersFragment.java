@@ -20,8 +20,8 @@ import org.nearbyshops.shopkeeperapp.ItemsByCategoryTypeSimple.Interfaces.Notify
 import org.nearbyshops.shopkeeperapp.ItemsInShop.Interfaces.NotifySort;
 import org.nearbyshops.shopkeeperapp.Model.Order;
 import org.nearbyshops.shopkeeperapp.ModelEndpoints.OrderEndPoint;
-import org.nearbyshops.shopkeeperapp.OrderDetail.OrderDetail;
-import org.nearbyshops.shopkeeperapp.OrderDetail.UtilityOrderDetail;
+import org.nearbyshops.shopkeeperapp.OrderDetailHD.OrderDetail;
+import org.nearbyshops.shopkeeperapp.OrderDetailHD.UtilityOrderDetail;
 import org.nearbyshops.shopkeeperapp.R;
 import org.nearbyshops.shopkeeperapp.RetrofitRESTContract.OrderServiceShopStaff;
 import org.nearbyshops.shopkeeperapp.Utility.UtilityLogin;

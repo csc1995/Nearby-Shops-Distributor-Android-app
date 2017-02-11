@@ -17,7 +17,6 @@ import android.widget.Toast;
 import org.nearbyshops.shopkeeperapp.CommonInterfaces.NotifyTitleChanged;
 import org.nearbyshops.shopkeeperapp.DaggerComponentBuilder;
 import org.nearbyshops.shopkeeperapp.DeliveryGuyDashboard.Interfaces.NotifyLocation;
-import org.nearbyshops.shopkeeperapp.HomeShopAdmin.EditShop.Utility.UtilityLocationShops;
 import org.nearbyshops.shopkeeperapp.ItemsByCategoryTypeSimple.Interfaces.NotifySearch;
 import org.nearbyshops.shopkeeperapp.ItemsInShop.Interfaces.NotifySort;
 import org.nearbyshops.shopkeeperapp.ItemsInShop.Interfaces.ToggleFab;

@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">NearbyShops : ShopKeeper</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_login">Distributor Login</string>
+    <string name="title_activity_login">Nearby Shops : Partner</string>
     <string name="preference_file_name">sharedpreferencefile</string>
     <string name="preference_service_url_key">service_url</string>
     <string name="preference_distributor_id_key">distributor_id_key</string>

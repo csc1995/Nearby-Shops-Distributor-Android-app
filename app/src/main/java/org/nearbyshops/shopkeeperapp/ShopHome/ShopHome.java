@@ -14,11 +14,10 @@ import org.nearbyshops.shopkeeperapp.ItemsInShop.ItemsInShop;
 import org.nearbyshops.shopkeeperapp.ItemsInShopByCat.ItemsInStockByCat;
 import org.nearbyshops.shopkeeperapp.Model.Shop;
 import org.nearbyshops.shopkeeperapp.Notifications.SSEIntentService;
-import org.nearbyshops.shopkeeperapp.OrdersHomeDelivery.OrdersHomeDelivery;
+import org.nearbyshops.shopkeeperapp.OrdersHDMenu.OrdersHomeDelivery;
 import org.nearbyshops.shopkeeperapp.PickFromShopMenu.OrdersPickFromShop;
 import org.nearbyshops.shopkeeperapp.QuickStockEditor.QuickStockEditor;
 import org.nearbyshops.shopkeeperapp.R;
-import org.nearbyshops.shopkeeperapp.SSEExample.SSEExample;
 import org.nearbyshops.shopkeeperapp.ShopStaffAccounts.ShopStaffAccounts;
 
 import butterknife.ButterKnife;

@@ -2,7 +2,9 @@ package org.nearbyshops.shopkeeperapp.Items;
 
 import android.app.SearchManager;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
@@ -121,7 +123,6 @@ public class ItemsTypeSimple extends AppCompatActivity implements NotifyIndicato
                         .commit();
             }
         }
-
     }
 
 
@@ -129,9 +130,23 @@ public class ItemsTypeSimple extends AppCompatActivity implements NotifyIndicato
 
     private void setFabBackground() {
         // assign background to the FAB's
-        fab_remove_selected.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ic_remove_white_24px));
-        fab_add_selected.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ic_add_white_24px));
+
+
+        Drawable removeDrawable = VectorDrawableCompat
+                .create(getResources(),
+                        R.drawable.ic_remove_white_24px, getTheme());
+
+
+        Drawable drawableAdd = VectorDrawableCompat
+                .create(getResources(), R.drawable.ic_add_white_24px, getTheme());
+
+
+//        ContextCompat.getDrawable(this,R.drawable.ic_remove_white_24px)
+//        ContextCompat.getDrawable(this,R.drawable.ic_add_white_24px)
+        fab_remove_selected.setImageDrawable(removeDrawable);
+        fab_add_selected.setImageDrawable(drawableAdd);
     }
+
 
 
 
@@ -287,7 +302,6 @@ public class ItemsTypeSimple extends AppCompatActivity implements NotifyIndicato
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-
         handleIntent(intent);
     }
 

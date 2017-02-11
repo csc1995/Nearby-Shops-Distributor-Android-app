@@ -367,7 +367,9 @@ public class ServicesActivity extends AppCompatActivity implements NotifySort, T
 
             ActivityCompat.requestPermissions(
                     this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION},
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.ACCESS_COARSE_LOCATION
+                    },
                     2);
 
             return;
@@ -546,9 +548,6 @@ public class ServicesActivity extends AppCompatActivity implements NotifySort, T
     {
         Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
     }
-
-
-
 
 
 }

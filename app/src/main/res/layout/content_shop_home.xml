@@ -69,6 +69,7 @@
                 android:layout_height="@dimen/menu_item_width">
 
                 <ImageView
+                    app:srcCompat="@drawable/ic_items_24px"
                     android:tint="#ffffff"
                     android:padding="10dp"
                     android:layout_above="@+id/text_add_items"
@@ -99,6 +100,7 @@
                 android:layout_height="@dimen/menu_item_width">
 
                 <ImageView
+                    app:srcCompat="@drawable/ic_dns_black_24px"
                     android:tint="#ffffff"
                     android:padding="10dp"
                     android:layout_above="@+id/text_items"
@@ -162,7 +164,7 @@
                 android:layout_height="@dimen/menu_item_width">
 
                 <ImageView
-                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/ic_items_24px"
                     android:tint="#ffffff"
                     android:padding="10dp"
                     android:layout_above="@+id/text_add_stock"
@@ -196,7 +198,7 @@
                 android:layout_height="@dimen/menu_item_width">
 
                 <ImageView
-                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/ic_dns_black_24px"
                     android:tint="#ffffff"
                     android:padding="10dp"
                     android:layout_above="@+id/text_stock_items"
@@ -242,6 +244,7 @@
                 android:layout_height="@dimen/menu_item_width">
 
                 <ImageView
+                    app:srcCompat="@drawable/ic_edit_white_36px"
                     android:tint="#ffffff"
                     android:padding="10dp"
                     android:layout_above="@+id/text_quick_stock_editor"
@@ -271,6 +274,7 @@
                 android:layout_height="@dimen/menu_item_width">
 
                 <ImageView
+                    app:srcCompat="@drawable/ic_settings_black_24px"
                     android:tint="#ffffff"
                     android:padding="10dp"
                     android:layout_above="@+id/text_notifications"
@@ -333,8 +337,9 @@
 
                 <ImageView
                     app:srcCompat="@drawable/ic_local_shipping_black_24px"
-                    android:tint="#ffffff"
                     android:padding="10dp"
+                    android:tint="#ffffff"
+
                     android:layout_above="@+id/text_cancel"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />

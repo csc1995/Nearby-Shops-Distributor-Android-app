@@ -19,20 +19,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import org.apache.commons.validator.routines.UrlValidator;
 import org.nearbyshops.shopkeeperapp.DeliveryGuyHome.DeliveryGuyHome;
-import org.nearbyshops.shopkeeperapp.HomeShopAdmin.EditProfile.EditShopAdmin;
-import org.nearbyshops.shopkeeperapp.HomeShopAdmin.EditProfile.EditShopAdminFragment;
-import org.nearbyshops.shopkeeperapp.HomeShopAdmin.ShopAdminHome;
+import org.nearbyshops.shopkeeperapp.ShopAdminHome.EditProfile.EditShopAdmin;
+import org.nearbyshops.shopkeeperapp.ShopAdminHome.EditProfile.EditShopAdminFragment;
+import org.nearbyshops.shopkeeperapp.ShopAdminHome.ShopAdminHome;
 import org.nearbyshops.shopkeeperapp.ModelRoles.DeliveryGuySelf;
-import org.nearbyshops.shopkeeperapp.ModelRoles.Deprecated.Distributor;
 import org.nearbyshops.shopkeeperapp.ModelRoles.ShopAdmin;
 import org.nearbyshops.shopkeeperapp.ModelRoles.ShopStaff;
 import org.nearbyshops.shopkeeperapp.ModelServiceConfig.ServiceConfigurationLocal;
 import org.nearbyshops.shopkeeperapp.RetrofitRESTContract.DeliveryGuySelfService;
-import org.nearbyshops.shopkeeperapp.RetrofitRESTContract.DistributorService;
 import org.nearbyshops.shopkeeperapp.RetrofitRESTContract.ServiceConfigurationService;
 import org.nearbyshops.shopkeeperapp.RetrofitRESTContract.ShopAdminService;
 import org.nearbyshops.shopkeeperapp.RetrofitRESTContract.ShopStaffService;

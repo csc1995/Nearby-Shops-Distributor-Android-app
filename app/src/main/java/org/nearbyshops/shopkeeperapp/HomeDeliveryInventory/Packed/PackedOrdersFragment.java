@@ -25,8 +25,8 @@ import org.nearbyshops.shopkeeperapp.HomeDeliveryInventory.ConfirmItemsForDelive
 import org.nearbyshops.shopkeeperapp.HomeDeliveryInventory.Interface.ConfirmOrdersClicked;
 import org.nearbyshops.shopkeeperapp.CommonInterfaces.NotifyTitleChanged;
 import org.nearbyshops.shopkeeperapp.HomeDeliveryInventory.Interface.RefreshFragment;
-import org.nearbyshops.shopkeeperapp.OrderDetail.OrderDetail;
-import org.nearbyshops.shopkeeperapp.OrderDetail.UtilityOrderDetail;
+import org.nearbyshops.shopkeeperapp.OrderDetailHD.OrderDetail;
+import org.nearbyshops.shopkeeperapp.OrderDetailHD.UtilityOrderDetail;
 import org.nearbyshops.shopkeeperapp.OrderHistoryHD.SlidingLayerSort.UtilitySortOrdersHD;
 import org.nearbyshops.shopkeeperapp.R;
 import org.nearbyshops.shopkeeperapp.RetrofitRESTContract.OrderServiceShopStaff;

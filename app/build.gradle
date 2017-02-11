@@ -3,21 +3,26 @@ apply plugin: 'com.android.application'
 
 
 android {
+    signingConfigs {
+        release {
+            keyAlias 'sumeet'
+            keyPassword 'abcde23870'
+            storeFile file('/media/sumeet/data/BookDiscovery/keystore/androidplaystore.jks')
+            storePassword 'bluetree'
+        }
+    }
     compileSdkVersion 25
     buildToolsVersion '25.0.2'
-
 //    applicationId "org.localareadelivery.distributorapp"
-
     defaultConfig {
         applicationId "org.nearbyshops.shopkeeperapp"
         minSdkVersion 15
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
-
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
-
+        signingConfig signingConfigs.release
     }
     buildTypes {
         release {
@@ -25,26 +30,20 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
     defaultConfig {
 
     }
-
-
 //    lintOptions {
 //        disable 'InvalidPackage'
 //    }
-
-
     repositories {
         maven { url 'https://jitpack.io' }
     }
-
     repositories {
         maven { url "https://clojars.org/repo/" }
     }
-
-
+    productFlavors {
+    }
 }
 
 configurations{
@@ -53,24 +52,18 @@ configurations{
 }
 
 dependencies {
-
-
-
-    compile ('org.glassfish.jersey.media:jersey-media-sse:2.24')
-            {
+    compile('org.glassfish.jersey.media:jersey-media-sse:2.24') {
 //                exclude group: 'javax.inject', module: 'javax.inject'
-            }
-    compile ('org.glassfish.jersey.core:jersey-client:2.24')
-            {
+    }
+    compile('org.glassfish.jersey.core:jersey-client:2.24') {
 //                    exclude group: 'javax.inject', module: 'javax.inject'
-            }
-
+    }
     compile 'com.android.support:support-v4:25.1.0'
     compile 'com.android.support:recyclerview-v7:25.1.0'
     compile 'com.android.support:cardview-v7:25.1.0'
     compile 'com.android.support:appcompat-v7:25.1.0'
     compile 'com.android.support:design:25.1.0'
-    compile ('com.jakewharton:butterknife:7.0.1'){
+    compile('com.jakewharton:butterknife:7.0.1') {
 //        exclude group: 'javax.inject', module: 'javax.inject'
     }
     compile 'com.google.code.gson:gson:2.7'
@@ -80,7 +73,6 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.yalantis:ucrop:2.2.0'
     compile 'com.heinrichreimersoftware:material-intro:1.5.4'
-    compile 'com.google.android.gms:play-services-maps:10.0.1'
     compile 'com.github.clans:fab:1.6.4'
     compile 'com.wunderlist:sliding-layer:1.2.5'
     compile 'com.android.support.constraint:constraint-layout:1.0.0-beta4'
@@ -88,28 +80,23 @@ dependencies {
     compile 'io.reactivex:rxjava:1.2.3'
     compile 'com.jakewharton.rxbinding:rxbinding:1.0.0'
     testCompile 'junit:junit:4.12'
-
-
-
-
-
-//    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
-//    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta2'
-//    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
-
+    //    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
+    //    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta2'
+    //    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
     compile 'com.google.android.gms:play-services-location:10.0.1'
     compile 'com.google.android.gms:play-services-maps:10.0.1'
+    compile 'com.google.android.gms:play-services-maps:10.0.1'
 
-
-    compile group: 'commons-validator', name: 'commons-validator', version: '1.4.0'
-
-
+    compile 'commons-validator:commons-validator:1.4.0'
     compile 'frankiesardo:icepick:3.2.0'
     provided 'frankiesardo:icepick-processor:3.2.0'
-//    apt 'com.google.dagger:dagger-compiler:2.2'
-//    compile 'com.google.dagger:dagger:2.2'
+    //    apt 'com.google.dagger:dagger-compiler:2.2'
+
+    //    compile 'com.google.dagger:dagger:2.2'
+
     //    provided 'javax.annotation:jsr250-api:1.0'
 
+    compile 'com.android.support:multidex:1.0.1'
 
     compile 'com.google.dagger:dagger:2.8'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.8'

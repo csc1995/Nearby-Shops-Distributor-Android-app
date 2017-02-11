@@ -1,16 +1,16 @@
 package org.nearbyshops.shopkeeperapp.DaggerComponents;
 
-import org.nearbyshops.shopkeeperapp.AddItemsToShopInventory.ItemCategories.EditItemCategoryOld;
-import org.nearbyshops.shopkeeperapp.AddItemsToShopInventory.ItemCategories.ItemCategoriesAdapterOld;
-import org.nearbyshops.shopkeeperapp.AddItemsToShopInventory.ItemCategories.ItemCategoriesFragmentOld;
-import org.nearbyshops.shopkeeperapp.AddItemsToShopInventory.Items.AddItemOld;
-import org.nearbyshops.shopkeeperapp.AddItemsToShopInventory.Items.EditItemOld;
-import org.nearbyshops.shopkeeperapp.AddItemsToShopInventory.Items.ItemRemakeAdapter;
+import org.nearbyshops.shopkeeperapp.zzDeprecatedAddItems.ItemCategories.EditItemCategoryOld;
+import org.nearbyshops.shopkeeperapp.zzDeprecatedAddItems.ItemCategories.ItemCategoriesAdapterOld;
+import org.nearbyshops.shopkeeperapp.zzDeprecatedAddItems.ItemCategories.ItemCategoriesFragmentOld;
+import org.nearbyshops.shopkeeperapp.zzDeprecatedAddItems.Items.AddItemOld;
+import org.nearbyshops.shopkeeperapp.zzDeprecatedAddItems.Items.EditItemOld;
+import org.nearbyshops.shopkeeperapp.zzDeprecatedAddItems.Items.ItemRemakeAdapter;
 
-import org.nearbyshops.shopkeeperapp.AddItemsToShopInventory.Items.ItemRemakeFragmentOld;
-import org.nearbyshops.shopkeeperapp.CancelledOrders.CancelledByEndUser.FragmentCancelledByUser;
-import org.nearbyshops.shopkeeperapp.CancelledOrders.CancelledByShop.FragmentCancelledByShop;
-import org.nearbyshops.shopkeeperapp.CancelledOrders.ReturnedByDeliveryGuy.FragmentReturnedByDG;
+import org.nearbyshops.shopkeeperapp.zzDeprecatedAddItems.Items.ItemRemakeFragmentOld;
+import org.nearbyshops.shopkeeperapp.CancelledOrdersHD.CancelledByEndUser.FragmentCancelledByUser;
+import org.nearbyshops.shopkeeperapp.CancelledOrdersHD.CancelledByShop.FragmentCancelledByShop;
+import org.nearbyshops.shopkeeperapp.CancelledOrdersHD.ReturnedByDeliveryGuy.FragmentReturnedByDG;
 import org.nearbyshops.shopkeeperapp.DaggerModules.AppModule;
 import org.nearbyshops.shopkeeperapp.DaggerModules.NetModule;
 import org.nearbyshops.shopkeeperapp.DeliveryAccounts.AccountsFragment;
@@ -38,9 +38,9 @@ import org.nearbyshops.shopkeeperapp.ItemsInShopOld.ItemCategories.ItemCategorie
 import org.nearbyshops.shopkeeperapp.ItemsInShopOld.ItemCategories.ItemCategoriesFragmentEditStock;
 import org.nearbyshops.shopkeeperapp.ItemsInShopOld.Items.FragmentItemsEditor;
 import org.nearbyshops.shopkeeperapp.ItemsInShopByCat.ItemsInStockByCatFragment;
-import org.nearbyshops.shopkeeperapp.HomeShopAdmin.EditProfile.EditShopAdminFragment;
-import org.nearbyshops.shopkeeperapp.HomeShopAdmin.EditShop.EditShopFragment;
-import org.nearbyshops.shopkeeperapp.HomeShopAdmin.ShopAdminHome;
+import org.nearbyshops.shopkeeperapp.ShopAdminHome.EditProfile.EditShopAdminFragment;
+import org.nearbyshops.shopkeeperapp.ShopAdminHome.EditShop.EditShopFragment;
+import org.nearbyshops.shopkeeperapp.ShopAdminHome.ShopAdminHome;
 import org.nearbyshops.shopkeeperapp.ItemsByCategoryTabsOld.ItemCategories.EditItemCategory;
 import org.nearbyshops.shopkeeperapp.ItemsByCategoryTabsOld.ItemCategories.ItemCategoriesAdapter;
 import org.nearbyshops.shopkeeperapp.ItemsByCategoryTabsOld.ItemCategories.ItemCategoriesFragment;
@@ -48,7 +48,7 @@ import org.nearbyshops.shopkeeperapp.ItemsByCategoryTabsOld.Items.AddItem;
 import org.nearbyshops.shopkeeperapp.ItemsByCategoryTabsOld.Items.EditItem;
 import org.nearbyshops.shopkeeperapp.ItemsByCategoryTabsOld.Items.ItemAdapterTwo;
 import org.nearbyshops.shopkeeperapp.ItemsByCategoryTabsOld.Items.ItemRemakeFragment;
-import org.nearbyshops.shopkeeperapp.OrderDetail.FragmentOrderDetail;
+import org.nearbyshops.shopkeeperapp.OrderDetailHD.FragmentOrderDetail;
 import org.nearbyshops.shopkeeperapp.OrderHistoryPFS.Complete.CompleteOrdersFragmentPFS;
 import org.nearbyshops.shopkeeperapp.OrderHistoryPFS.Pending.PendingOrdersFragmentPFS;
 import org.nearbyshops.shopkeeperapp.PickFromShopCancelled.CancelledByShop.CancelledByShopFragmentPFS;

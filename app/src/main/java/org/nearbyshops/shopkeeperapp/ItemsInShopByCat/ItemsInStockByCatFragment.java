@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import org.nearbyshops.shopkeeperapp.DaggerComponentBuilder;
-import org.nearbyshops.shopkeeperapp.HomeShopAdmin.ShopAdminHome;
 import org.nearbyshops.shopkeeperapp.ItemsInShopByCat.SlidingLayerSort.UtilitySortItemsInStock;
 import org.nearbyshops.shopkeeperapp.ItemsInShop.Interfaces.NotifySort;
 import org.nearbyshops.shopkeeperapp.ItemsByCategoryTypeSimple.Interfaces.NotifyBackPressed;

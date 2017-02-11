@@ -20,11 +20,11 @@
 
         <android.support.constraint.Guideline
             android:layout_width="0dp"
-            android:layout_height="375dp"
+            android:layout_height="385dp"
             android:id="@+id/guideline"
             android:orientation="vertical"
             tools:layout_editor_absoluteY="0dp"
-            tools:layout_editor_absoluteX="180dp"
+            tools:layout_editor_absoluteX="10dp"
             app:layout_constraintGuide_percent="0.5" />
 
 
@@ -46,9 +46,8 @@
             android:textColor="@color/white"
             android:padding="5dp"
             android:background="#cd201f"
-            android:layout_marginTop="10dp"
             android:id="@+id/notice"
-            app:layout_constraintTop_toBottomOf="@id/header"
+            app:layout_constraintTop_toBottomOf="@+id/header"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             android:text="@string/notice_account_deactivated"
@@ -69,8 +68,10 @@
 
 
 
-
         <ImageView
+            android:paddingBottom="40dp"
+            android:paddingTop="10dp"
+            app:srcCompat="@drawable/ic_face_black_24px"
             android:layout_marginTop="10dp"
             android:id="@+id/image_edit_profile"
             android:background="@color/buttonColorDark"
@@ -97,6 +98,9 @@
 
 
         <ImageView
+            android:paddingBottom="40dp"
+            android:paddingTop="10dp"
+            app:srcCompat="@drawable/ic_home_black_24px"
             android:layout_marginTop="10dp"
             android:id="@+id/image_edit_shop"
             android:background="@color/gplus_color_2"
@@ -122,6 +126,9 @@
 
 
         <ImageView
+            android:paddingBottom="40dp"
+            android:paddingTop="10dp"
+            app:srcCompat="@drawable/ic_dashboard_white_24px"
             android:layout_marginTop="10dp"
             android:id="@+id/image_shop_dashboard"
             android:background="@color/blueGrey800"
