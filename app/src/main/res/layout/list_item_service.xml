@@ -47,10 +47,11 @@
 
         <LinearLayout
             android:id="@+id/tags"
-            app:layout_constraintTop_toBottomOf="@id/service_url"
+            app:layout_constraintTop_toBottomOf="@+id/service_url"
             android:orientation="horizontal"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            tools:layout_editor_absoluteX="6dp">
 
             <TextView
                 android:visibility="gone"

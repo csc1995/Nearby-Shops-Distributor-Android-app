@@ -2,6 +2,7 @@ package org.nearbyshops.shopkeeperapp.DeliveryAccounts;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -57,7 +58,12 @@ class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>{
         holder.about.setText(deliveryGuy.getAbout());
 
 
-        Drawable drawable = ContextCompat.getDrawable(context,R.drawable.ic_nature_people_white_48px);
+//        Drawable drawable = ContextCompat.getDrawable(context,R.drawable.ic_nature_people_white_48px);
+
+        Drawable drawable = VectorDrawableCompat.create(context.getResources(),
+                R.drawable.ic_nature_people_white_48px,context.getTheme());
+
+
         String imagePath = UtilityGeneral.getServiceURL(context) + "/api/DeliveryGuySelf/Image/" + "three_hundred_"+ deliveryGuy.getProfileImageURL() + ".jpg";
 
         Picasso.with(context)

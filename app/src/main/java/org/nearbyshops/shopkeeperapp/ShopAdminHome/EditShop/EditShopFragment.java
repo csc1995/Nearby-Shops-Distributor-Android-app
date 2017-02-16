@@ -471,12 +471,26 @@ public class EditShopFragment extends Fragment {
         shop.setDeliveryHelplineNumber(deliveryHelplineNumber.getText().toString());
         shop.setShortDescription(shopDescriptionShort.getText().toString());
         shop.setLongDescription(shopDescriptionLong.getText().toString());
-        shop.setLatCenter(Double.parseDouble(latitude.getText().toString()));
 
-        shop.setLonCenter(Double.parseDouble(longitude.getText().toString()));
-        shop.setDeliveryRange(Double.parseDouble(rangeOfDelivery.getText().toString()));
-        shop.setDeliveryCharges(Double.parseDouble(deliveryCharge.getText().toString()));
-        shop.setBillAmountForFreeDelivery(Integer.parseInt(billAmountForFreeDelivery.getText().toString()));
+
+        if(!latitude.getText().toString().equals("") && !longitude.getText().toString().equals("") && !rangeOfDelivery.getText().toString().equals(""))
+        {
+            shop.setLatCenter(Double.parseDouble(latitude.getText().toString()));
+            shop.setLonCenter(Double.parseDouble(longitude.getText().toString()));
+            shop.setDeliveryRange(Double.parseDouble(rangeOfDelivery.getText().toString()));
+        }
+
+
+        if(!deliveryCharge.getText().toString().equals(""))
+        {
+            shop.setDeliveryCharges(Double.parseDouble(deliveryCharge.getText().toString()));
+        }
+
+        if(!billAmountForFreeDelivery.getText().toString().equals(""))
+        {
+            shop.setBillAmountForFreeDelivery(Integer.parseInt(billAmountForFreeDelivery.getText().toString()));
+        }
+
 
         shop.setPickFromShopAvailable(pickFromShopAvailable.isChecked());
         shop.setHomeDeliveryAvailable(homeDeliveryAvailable.isChecked());

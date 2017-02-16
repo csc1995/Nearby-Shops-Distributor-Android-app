@@ -20,7 +20,7 @@
 
         <android.support.constraint.Guideline
             android:layout_width="0dp"
-            android:layout_height="385dp"
+            android:layout_height="375dp"
             android:id="@+id/guideline"
             android:orientation="vertical"
             tools:layout_editor_absoluteY="0dp"

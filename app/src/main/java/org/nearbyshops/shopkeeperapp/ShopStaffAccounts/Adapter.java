@@ -2,6 +2,7 @@ package org.nearbyshops.shopkeeperapp.ShopStaffAccounts;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -64,7 +65,11 @@ class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>{
 //        holder.address.setText(shop.getShopAddress() + "\n" + shop.getCity() + " - " + shop.getPincode());
 //        holder.shopName.setText(shop.getShopName());
 
-        Drawable drawable = ContextCompat.getDrawable(context,R.drawable.ic_nature_people_white_48px);
+//        Drawable drawable = ContextCompat.getDrawable(context,R.drawable.ic_nature_people_white_48px);
+
+        Drawable drawable = VectorDrawableCompat.create(context.getResources(),
+                R.drawable.ic_nature_people_white_48px,context.getTheme());
+
         String imagePath = UtilityGeneral.getServiceURL(context) + "/api/v1/ShopStaff/Image/" + "three_hundred_"+ staff.getProfileImageURL() + ".jpg";
 
         Picasso.with(context)

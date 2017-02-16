@@ -123,7 +123,7 @@ public class DistributorLogin extends AppCompatActivity implements View.OnClickL
 
 
         setupServiceURLEditText();
-
+        setStatusLight();
     }
 
 
