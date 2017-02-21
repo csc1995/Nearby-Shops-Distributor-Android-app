@@ -123,7 +123,7 @@ public class SSEIntentService extends IntentService{
                     new NotificationCompat.Builder(SSEIntentService.this)
                             .setContentTitle(eventName)
                             .setContentText(message)
-                            .setSmallIcon(R.drawable.ic_detach)
+                            .setSmallIcon(R.drawable.fab_add)
                             .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
 
 
