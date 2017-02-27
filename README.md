@@ -3,8 +3,7 @@ Nearby-Shops-Distributor-Android-app
 
 <img src="https://i1.wp.com/nearbyshops.org/wp-content/uploads/2017/02/backdrop_play_store.png" width="108">
 
-
-Android app for Nearby Shops End-User 
+This is one of the three android app's for Nearby Shops e-commerce software. This is an andorid app for shop owners which helps them in Registering their shop and Overall Shop Administration. 
 
 For more information please visit http://nearbyshops.org
 
