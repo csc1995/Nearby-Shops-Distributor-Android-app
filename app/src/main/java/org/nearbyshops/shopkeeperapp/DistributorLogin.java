@@ -1,16 +1,24 @@
 package org.nearbyshops.shopkeeperapp;
 
+import android.Manifest;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,10 +26,24 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResult;
+import com.google.android.gms.location.LocationSettingsStates;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.gson.Gson;
 
 import org.apache.commons.validator.routines.UrlValidator;
 import org.nearbyshops.shopkeeperapp.DeliveryGuyHome.DeliveryGuyHome;
+import org.nearbyshops.shopkeeperapp.ModelServiceConfig.Endpoints.ServiceConfigurationEndPoint;
+import org.nearbyshops.shopkeeperapp.RetrofitRESTContractSDS.ServiceConfigService;
 import org.nearbyshops.shopkeeperapp.ShopAdminHome.EditProfile.EditShopAdmin;
 import org.nearbyshops.shopkeeperapp.ShopAdminHome.EditProfile.EditShopAdminFragment;
 import org.nearbyshops.shopkeeperapp.ShopAdminHome.ShopAdminHome;
@@ -38,7 +60,6 @@ import org.nearbyshops.shopkeeperapp.Services.UtilityLocation;
 import org.nearbyshops.shopkeeperapp.ShopHome.UtilityShopHome;
 import org.nearbyshops.shopkeeperapp.ShopStaffHome.ShopStaffHome;
 import org.nearbyshops.shopkeeperapp.Utility.UtilityServiceConfig;
-import org.nearbyshops.shopkeeperapp.zDeprecatedCode.ShopList.ShopList;
 import org.nearbyshops.shopkeeperapp.Utility.UtilityGeneral;
 import org.nearbyshops.shopkeeperapp.Utility.UtilityLogin;
 
@@ -53,7 +74,22 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class DistributorLogin extends AppCompatActivity implements View.OnClickListener {
+public class DistributorLogin extends AppCompatActivity implements
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener, LocationListener {
+
+
+
+    // variables for google location api
+    GoogleApiClient mGoogleApiClient;
+    Location mLastLocation;
+    LocationRequest mLocationRequest;
+    @Inject ServiceConfigService serviceConfigService;
+    boolean isDestroyed;
+
+//    boolean isDestroyed;
+
+
 
 //    @Bind(R.id.serviceURL) EditText serviceUrlEditText;
     //@Bind(R.id.serviceURLEditText) EditText serviceUrlEditText;
@@ -92,6 +128,22 @@ public class DistributorLogin extends AppCompatActivity implements View.OnClickL
         setSupportActionBar(toolbar);
 
         ButterKnife.bind(this);
+
+
+        // Location Code
+
+        // Create an instance of GoogleAPIClient.
+        if (mGoogleApiClient == null) {
+            mGoogleApiClient = new GoogleApiClient.Builder(this)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(LocationServices.API)
+                    .build();
+        }
+
+        // Location code ends
+
+
 
 
         username.setText(UtilityLogin.getUsername(this));
@@ -134,6 +186,29 @@ public class DistributorLogin extends AppCompatActivity implements View.OnClickL
     }
 
 
+    @Override
+    protected void onStart() {
+
+        if (mGoogleApiClient != null) {
+            mGoogleApiClient.connect();
+        }
+        super.onStart();
+    }
+
+
+    @Override
+    protected void onStop() {
+
+
+        isDestroyed = true;
+
+        if (mGoogleApiClient != null) {
+
+            mGoogleApiClient.disconnect();
+        }
+
+        super.onStop();
+    }
 
     @Override
     protected void onResume() {
@@ -168,20 +243,7 @@ public class DistributorLogin extends AppCompatActivity implements View.OnClickL
         return distributorID;
     }
 
-    @Override
-    public void onClick(View v) {
 
-        switch (v.getId())
-        {
-            case R.id.loginButton:
-
-                startActivity(new Intent(this,ShopList.class));
-
-                break;
-
-        }
-
-    }
 
 /*
     @OnClick(R.id.loginButton)
@@ -359,11 +421,11 @@ public class DistributorLogin extends AppCompatActivity implements View.OnClickL
 
             }
         });
-
-
-
-
     }
+
+
+
+
 
 
     private void networkCallDeliveryLogin()
@@ -761,6 +823,353 @@ public class DistributorLogin extends AppCompatActivity implements View.OnClickL
         Intent intent = new Intent(this, ServicesActivity.class);
         startActivity(intent);
     }
+
+
+    // location code
+
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+
+            ActivityCompat.requestPermissions(
+                    this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION},
+                    1);
+
+
+            return;
+        }
+
+
+        if (mGoogleApiClient == null) {
+
+            return;
+        }
+
+
+        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+
+
+        if (mLastLocation != null) {
+
+            saveLocation(mLastLocation);
+
+
+        }else
+        {
+
+            // if getlastlocation does not work then request the device to get the current location.
+            createLocationRequest();
+
+
+            if(mLocationRequest!=null)
+            {
+                startLocationUpdates();
+            }
+
+        }
+
+    }
+
+
+    private static final int REQUEST_CHECK_SETTINGS = 3;
+
+
+    protected void createLocationRequest() {
+
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(10000);
+        mLocationRequest.setFastestInterval(5000);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
+                .addLocationRequest(mLocationRequest);
+
+        PendingResult<LocationSettingsResult> result =
+                LocationServices.SettingsApi.checkLocationSettings(mGoogleApiClient, builder.build());
+
+
+        result.setResultCallback(new ResultCallback<LocationSettingsResult>() {
+            @Override
+            public void onResult(@NonNull LocationSettingsResult locationSettingsResult) {
+
+                final Status status = locationSettingsResult.getStatus();
+                final LocationSettingsStates states = locationSettingsResult.getLocationSettingsStates();
+
+                switch (status.getStatusCode()) {
+                    case LocationSettingsStatusCodes.SUCCESS:
+                        // All location settings are satisfied. The client can
+                        // initialize location requests here.
+                        break;
+                    case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
+                        // Location settings are not satisfied, but this can be fixed
+                        // by showing the user a dialog.
+                        try {
+                            // Show the dialog by calling startResolutionForResult(),
+                            // and check the result in onActivityResult().
+                            status.startResolutionForResult(
+                                    DistributorLogin.this,
+                                    REQUEST_CHECK_SETTINGS);
+
+                        } catch (IntentSender.SendIntentException e) {
+                            // Ignore the error.
+                        }
+                        break;
+
+                    case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
+                        // Location settings are not satisfied. However, we have no way
+                        // to fix the settings so we won't show the dialog.
+                        // ...
+                        break;
+
+                }
+            }
+
+        });
+    }
+
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_CHECK_SETTINGS) {
+
+            if (resultCode == RESULT_OK) {
+
+
+                showToastMessage("Permission granted !");
+
+                onConnected(null);
+
+            } else {
+
+
+                showToastMessage("Permission not granted !");
+            }
+        }
+    }
+
+
+
+
+
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+        Log.d("applog","Google api client connection failed !");
+
+    }
+
+
+    protected void startLocationUpdates() {
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+
+
+            ActivityCompat.requestPermissions(
+                    this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION},
+                    2);
+
+            return;
+        }
+
+
+        if(mGoogleApiClient.isConnected())
+        {
+            LocationServices.FusedLocationApi.requestLocationUpdates(
+                    mGoogleApiClient, mLocationRequest, this);
+        }
+
+    }
+
+
+
+    protected void stopLocationUpdates() {
+
+        if(mGoogleApiClient.isConnected())
+        {
+            LocationServices.FusedLocationApi.removeLocationUpdates(
+                    mGoogleApiClient, this);
+        }
+
+    }
+
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+        saveLocation(location);
+        stopLocationUpdates();
+    }
+
+
+    void saveLocation(Location location)
+    {
+        UtilityLocation.saveLatitude((float) location.getLatitude(),this);
+        UtilityLocation.saveLongitude((float) location.getLongitude(),this);
+
+        setupURLAuto();
+    }
+
+
+
+
+
+    void setupURLAuto()
+    {
+
+        if(!UtilityGeneral.getServiceURL(this).equals(UtilityGeneral.DEFAULT_SERVICE_URL))
+        {
+            // do not proceed if user has already set the URL
+            return;
+        }
+
+
+        String current_sort = "IS_OFFICIAL_SERVICE_PROVIDER desc,distance asc";
+
+        Call<ServiceConfigurationEndPoint> call = serviceConfigService.getShopListSimple(
+                UtilityLocation.getLatitude(this),
+                UtilityLocation.getLongitude(this),
+                null,null,
+                null,
+                null,null,
+                null,
+                current_sort,1,0);
+
+
+        call.enqueue(new Callback<ServiceConfigurationEndPoint>() {
+            @Override
+            public void onResponse(Call<ServiceConfigurationEndPoint> call, Response<ServiceConfigurationEndPoint> response) {
+
+                if(isDestroyed)
+                {
+                    return;
+                }
+
+                if(response.body()!= null)
+                {
+                    response.body().getItemCount();
+
+
+                    if(response.body().getResults()!=null && response.body().getResults().size()>=1)
+                    {
+//                        UtilityGeneral.saveServiceURL(
+//                                response.body().getResults().get(0).getServiceURL(),
+//                                Home.this
+//                        );
+
+                        String serviceURLString = response.body().getResults().get(0).getServiceURL();
+
+                        if (urlValidator.isValid(serviceURLString)) {
+                            UtilityGeneral.saveServiceURL(serviceURLString);
+                            textInputServiceURL.setError(null);
+                            textInputServiceURL.setErrorEnabled(false);
+                            serviceURL.setText(serviceURLString);
+                            updateStatusLight();
+                        }
+
+
+                    }
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ServiceConfigurationEndPoint> call, Throwable t) {
+
+                if(isDestroyed)
+                {
+                    return;
+                }
+
+//                showToastMessage("Network Request failed !");
+
+            }
+        });
+
+    }
+
+
+
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        switch (requestCode)
+        {
+            case 1:
+
+                if(grantResults.length>0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                {
+
+                    onConnected(null);
+
+                }
+                else
+                {
+                    showToastMessage("Permission denied cant access location !");
+                }
+
+
+                break;
+
+
+            case 2:
+
+                if(grantResults.length>0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                {
+
+                    startLocationUpdates();
+
+                }
+                else
+                {
+                    showToastMessage("Permission denied cant access location !");
+                }
+
+            default:
+
+                break;
+
+        }
+    }
+
+
+    void showToastMessage(String message)
+    {
+        Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
+    }
+
+
 
 
 

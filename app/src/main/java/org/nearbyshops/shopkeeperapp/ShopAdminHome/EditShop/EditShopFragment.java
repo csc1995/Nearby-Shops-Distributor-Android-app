@@ -226,7 +226,7 @@ public class EditShopFragment extends Fragment {
 
     void loadImage(String imagePath) {
 
-        String iamgepath = UtilityGeneral.getServiceURL(getContext()) + "/api/v1/Shop/Image/" + imagePath;
+        String iamgepath = UtilityGeneral.getServiceURL(getContext()) + "/api/v1/Shop/Image/five_hundred_" + imagePath + ".jpg";
 
         Picasso.with(getContext())
                 .load(iamgepath)

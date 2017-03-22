@@ -1,5 +1,6 @@
 package org.nearbyshops.shopkeeperapp.ItemsByCategoryTypeSimple;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,7 +16,11 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 
+import com.google.gson.Gson;
+
 import org.nearbyshops.shopkeeperapp.DaggerComponentBuilder;
+import org.nearbyshops.shopkeeperapp.ItemsByCategoryTypeSimple.EditItem.EditItem;
+import org.nearbyshops.shopkeeperapp.ItemsByCategoryTypeSimple.EditItem.EditItemFragmentNew;
 import org.nearbyshops.shopkeeperapp.ItemsInShop.Interfaces.NotifySort;
 import org.nearbyshops.shopkeeperapp.ItemsInShop.Interfaces.ToggleFab;
 import org.nearbyshops.shopkeeperapp.ItemsByCategoryTypeSimple.Interfaces.NotifyBackPressed;
@@ -744,6 +749,7 @@ public class ItemsByCatFragmentSimple extends Fragment implements SwipeRefreshLa
     }
 
 
+
     @Override
     public boolean backPressed() {
 
@@ -1065,6 +1071,33 @@ public class ItemsByCatFragmentSimple extends Fragment implements SwipeRefreshLa
     {
         // clear the selected items
         listAdapter.selectedItems.clear();
+    }
+
+
+    @Override
+    public void addItem() {
+
+        Intent intent = new Intent(getActivity(),EditItem.class);
+        intent.putExtra(EditItemFragmentNew.EDIT_MODE_INTENT_KEY, EditItemFragmentNew.MODE_ADD);
+        intent.putExtra(EditItemFragmentNew.ITEM_CATEGORY_INTENT_KEY,currentCategory);
+        startActivity(intent);
+    }
+
+    @Override
+    public void editItem(Item item) {
+
+        Intent intentEdit = new Intent(getActivity(), EditItem.class);
+        intentEdit.putExtra(EditItemFragmentNew.EDIT_MODE_INTENT_KEY, EditItemFragmentNew.MODE_ADD);
+        intentEdit.putExtra(EditItemFragmentNew.IS_UPDATE_INTENT_KEY,true);
+
+
+        intentEdit.putExtra(EditItemFragmentNew.ITEM_CATEGORY_INTENT_KEY,currentCategory);
+
+        Gson gson = new Gson();
+        String json = gson.toJson(item);
+        intentEdit.putExtra(EditItemFragmentNew.ITEM_INTENT_KEY,json);
+
+        getActivity().startActivity(intentEdit);
     }
 
 

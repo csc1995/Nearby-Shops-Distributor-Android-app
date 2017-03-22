@@ -23,6 +23,11 @@ import org.nearbyshops.shopkeeperapp.RetrofitRESTContract.DeliveryGuySelfService
 import org.nearbyshops.shopkeeperapp.RetrofitRESTContract.ShopStaffService;
 import org.nearbyshops.shopkeeperapp.RetrofitRESTContractPFS.OrderServiceShopStaffPFS;
 import org.nearbyshops.shopkeeperapp.RetrofitRESTContractSDS.ServiceConfigService;
+import org.nearbyshops.shopkeeperapp.RetrofitRESTContractSubmissions.ItemSubmissionService;
+import org.nearbyshops.shopkeeperapp.RetrofitRESTItemSpecs.ItemImageService;
+import org.nearbyshops.shopkeeperapp.RetrofitRESTItemSpecs.ItemSpecItemService;
+import org.nearbyshops.shopkeeperapp.RetrofitRESTItemSpecs.ItemSpecNameService;
+import org.nearbyshops.shopkeeperapp.RetrofitRESTItemSpecs.ItemSpecValueService;
 import org.nearbyshops.shopkeeperapp.Utility.UtilityGeneral;
 
 import javax.inject.Named;
@@ -254,5 +259,45 @@ public class NetModule {
     {
         return retrofit.create(OrderServiceShopStaffPFS.class);
     }
+
+
+
+
+
+
+    @Provides
+    ItemImageService provideItemImageService(Retrofit retrofit)
+    {
+        return retrofit.create(ItemImageService.class);
+    }
+
+
+    @Provides
+    ItemSpecItemService provideItemSpecItem(Retrofit retrofit)
+    {
+        return retrofit.create(ItemSpecItemService.class);
+    }
+
+    @Provides
+    ItemSpecNameService provideSpecNameService(Retrofit retrofit)
+    {
+        return retrofit.create(ItemSpecNameService.class);
+    }
+
+
+
+    @Provides
+    ItemSpecValueService provideSpecValueService(Retrofit retrofit)
+    {
+        return retrofit.create(ItemSpecValueService.class);
+    }
+
+
+    @Provides
+    ItemSubmissionService provideItemSubmissionService(Retrofit retrofit)
+    {
+        return retrofit.create(ItemSubmissionService.class);
+    }
+
 
 }

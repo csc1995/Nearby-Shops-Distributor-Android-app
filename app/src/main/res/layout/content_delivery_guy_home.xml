@@ -94,6 +94,9 @@
 
 
     <ImageView
+        android:paddingTop="10dp"
+        android:paddingBottom="40dp"
+        app:srcCompat="@drawable/ic_face_black_24px"
         android:layout_marginTop="10dp"
         android:id="@+id/image_edit_profile"
         android:background="@color/blueGrey800"
@@ -120,6 +123,9 @@
 
 
     <ImageView
+        android:paddingTop="10dp"
+        android:paddingBottom="40dp"
+        app:srcCompat="@drawable/ic_dashboard_white_24px"
         android:layout_marginTop="10dp"
         android:id="@+id/image_dashboard"
         android:background="@color/gplus_color_2"

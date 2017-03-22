@@ -1,13 +1,8 @@
 package org.nearbyshops.shopkeeperapp.DaggerComponents;
 
-import org.nearbyshops.shopkeeperapp.zzDeprecatedAddItems.ItemCategories.EditItemCategoryOld;
-import org.nearbyshops.shopkeeperapp.zzDeprecatedAddItems.ItemCategories.ItemCategoriesAdapterOld;
-import org.nearbyshops.shopkeeperapp.zzDeprecatedAddItems.ItemCategories.ItemCategoriesFragmentOld;
-import org.nearbyshops.shopkeeperapp.zzDeprecatedAddItems.Items.AddItemOld;
-import org.nearbyshops.shopkeeperapp.zzDeprecatedAddItems.Items.EditItemOld;
-import org.nearbyshops.shopkeeperapp.zzDeprecatedAddItems.Items.ItemRemakeAdapter;
-
-import org.nearbyshops.shopkeeperapp.zzDeprecatedAddItems.Items.ItemRemakeFragmentOld;
+import org.nearbyshops.shopkeeperapp.FilterItemsBySpecifications.FilterItemsFragment;
+import org.nearbyshops.shopkeeperapp.ItemsByCategoryTypeSimple.EditItem.EditItemFragmentNew;
+import org.nearbyshops.shopkeeperapp.ItemsByCategoryTypeSimple.EditItemImage.EditItemImageFragment;
 import org.nearbyshops.shopkeeperapp.CancelledOrdersHD.CancelledByEndUser.FragmentCancelledByUser;
 import org.nearbyshops.shopkeeperapp.CancelledOrdersHD.CancelledByShop.FragmentCancelledByShop;
 import org.nearbyshops.shopkeeperapp.CancelledOrdersHD.ReturnedByDeliveryGuy.FragmentReturnedByDG;
@@ -44,8 +39,6 @@ import org.nearbyshops.shopkeeperapp.ShopAdminHome.ShopAdminHome;
 import org.nearbyshops.shopkeeperapp.ItemsByCategoryTabsOld.ItemCategories.EditItemCategory;
 import org.nearbyshops.shopkeeperapp.ItemsByCategoryTabsOld.ItemCategories.ItemCategoriesAdapter;
 import org.nearbyshops.shopkeeperapp.ItemsByCategoryTabsOld.ItemCategories.ItemCategoriesFragment;
-import org.nearbyshops.shopkeeperapp.ItemsByCategoryTabsOld.Items.AddItem;
-import org.nearbyshops.shopkeeperapp.ItemsByCategoryTabsOld.Items.EditItem;
 import org.nearbyshops.shopkeeperapp.ItemsByCategoryTabsOld.Items.ItemAdapterTwo;
 import org.nearbyshops.shopkeeperapp.ItemsByCategoryTabsOld.Items.ItemRemakeFragment;
 import org.nearbyshops.shopkeeperapp.OrderDetailHD.FragmentOrderDetail;
@@ -64,7 +57,7 @@ import org.nearbyshops.shopkeeperapp.ShopStaffAccounts.EditShopStaff.EditStaffFr
 import org.nearbyshops.shopkeeperapp.ShopStaffAccounts.FragmentShopStaff;
 import org.nearbyshops.shopkeeperapp.ShopStaffHome.EditStaffSelf.EditStaffSelfFragment;
 import org.nearbyshops.shopkeeperapp.ShopStaffHome.ShopStaffHome;
-import org.nearbyshops.shopkeeperapp.zDeprecatedCode.ShopList.ShopList;
+
 import org.nearbyshops.shopkeeperapp.aaDeprecated_DeliveryGuy.AddVehicleSelfActivity;
 import org.nearbyshops.shopkeeperapp.aaDeprecated_DeliveryGuy.DeliveryVehicleActivity;
 import org.nearbyshops.shopkeeperapp.aaDeprecated_DeliveryGuy.EditAddressActivity;
@@ -91,7 +84,6 @@ import dagger.Component;
 @Singleton
 @Component(modules={AppModule.class, NetModule.class})
 public interface NetComponent {
-
 
 
     void Inject(PlacedOrdersFragment placedOrdersFragment);
@@ -126,19 +118,6 @@ public interface NetComponent {
 
     void Inject(FragmentPriceNotSet fragmentPriceNotSet);
 
-    void Inject(ShopList shopList);
-
-    void Inject(AddItemOld addItemOld);
-
-    void Inject(ItemRemakeAdapter itemRemakeAdapter);
-
-    void Inject(EditItemCategoryOld editItemCategoryOld);
-
-    void Inject(ItemCategoriesAdapterOld itemCategoriesAdapterOld);
-
-    void Inject(ItemCategoriesFragmentOld itemCategoriesFragmentOld);
-
-    void Inject(EditItemOld editItemOld);
 
     void Inject(ItemCategoriesParent itemCategoriesParent);
 
@@ -151,17 +130,12 @@ public interface NetComponent {
 
     void Inject(ItemAdapterTwo itemAdapterTwo);
 
-    void Inject(EditItem editItem);
-
-    void Inject(AddItem addItem);
 
     void Inject(EditItemCategory editItemCategory);
 
     void Inject(ItemCategoriesAdapter itemCategoriesAdapter);
 
     void Inject(ItemCategoriesFragment itemCategoriesFragment);
-
-    void Inject(ItemRemakeFragmentOld itemRemakeFragmentOld);
 
     void Inject(ItemCategoriesAdapterEditStock itemCategoriesAdapterEditStock);
 
@@ -250,4 +224,10 @@ public interface NetComponent {
     void Inject(SubmitURLDialog submitURLDialog);
 
     void Inject(ServicesFragment servicesFragment);
+
+    void Inject(EditItemFragmentNew editItemFragmentNew);
+
+    void Inject(EditItemImageFragment editItemImageFragment);
+
+    void Inject(FilterItemsFragment filterItemsFragment);
 }

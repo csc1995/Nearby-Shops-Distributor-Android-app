@@ -820,6 +820,13 @@ public class ItemsFragmentSimple extends Fragment implements SwipeRefreshLayout.
 
 
     @Override
+    public void addItem() {
+
+    }
+
+
+
+    @Override
     public void removeSelectedFromShop() {
 //        showToastMessage("Remove Selected");
 

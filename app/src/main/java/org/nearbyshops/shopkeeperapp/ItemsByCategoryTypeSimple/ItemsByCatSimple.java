@@ -43,11 +43,9 @@ public class ItemsByCatSimple extends AppCompatActivity implements NotifyIndicat
     @Bind(R.id.fab_menu)
     FloatingActionMenu fab_menu;
 
-    @Bind(R.id.fab_remove_selected_from_shop)
-    FloatingActionButton fab_remove_selected;
-
-    @Bind(R.id.fab_add_selected_to_shop)
-    FloatingActionButton fab_add_selected;
+    @Bind(R.id.fab_remove_selected_from_shop) FloatingActionButton fab_remove_selected;
+    @Bind(R.id.fab_add_selected_to_shop) FloatingActionButton fab_add_selected;
+    @Bind(R.id.fab_add_item) FloatingActionButton fab_add_item;
 
     @Bind(R.id.text_sub)
     TextView itemHeader;
@@ -145,6 +143,8 @@ public class ItemsByCatSimple extends AppCompatActivity implements NotifyIndicat
 //        ContextCompat.getDrawable(this,R.drawable.ic_add_white_24px)
         fab_remove_selected.setImageDrawable(removeDrawable);
         fab_add_selected.setImageDrawable(drawableAdd);
+
+        fab_add_item.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ic_add_white_24px));
     }
 
 
@@ -250,6 +250,21 @@ public class ItemsByCatSimple extends AppCompatActivity implements NotifyIndicat
             ((NotifyFABClick) fragment).addSelectedToShop();
         }
     }
+
+
+
+    @OnClick(R.id.fab_add_item)
+    void fabAddItemClick()
+    {
+        Fragment fragment = getSupportFragmentManager()
+                .findFragmentByTag(TAG_FRAGMENT);
+
+        if(fragment instanceof NotifyFABClick)
+        {
+            ((NotifyFABClick) fragment).addItem();
+        }
+    }
+
 
 
 

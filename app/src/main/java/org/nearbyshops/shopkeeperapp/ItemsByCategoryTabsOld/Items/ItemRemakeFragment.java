@@ -437,7 +437,8 @@ public class ItemRemakeFragment extends Fragment
 
 //        Call<ResponseBody> call2 = itemCategoryService.updateItemCategory(itemCategory,itemCategory.getItemCategoryID());
 
-        Call<ResponseBody> call = itemService.updateItem(item,item.getItemID());
+        Call<ResponseBody> call = itemService.updateItem(UtilityLogin.getAuthorizationHeaders(getActivity()),
+                item,item.getItemID());
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -496,7 +497,8 @@ public class ItemRemakeFragment extends Fragment
     {
 //        Call<ResponseBody> call = itemService.updateItemCategoryBulk(list);
 
-        Call<ResponseBody> call = itemService.updateItemBulk(list);
+        Call<ResponseBody> call = itemService.updateItemBulk(UtilityLogin.getAuthorizationHeaders(getActivity()),
+                list);
 //        Call<ResponseBody> call = null;
 //
 //
@@ -674,9 +676,9 @@ public class ItemRemakeFragment extends Fragment
 
     void addItemClick()
     {
-        Intent addIntent = new Intent(getActivity(), AddItem.class);
-        addIntent.putExtra(ADD_ITEM_INTENT_KEY,notifiedCurrentCategory);
-        startActivity(addIntent);
+//        Intent addIntent = new Intent(getActivity(), AddItem.class);
+//        addIntent.putExtra(ADD_ITEM_INTENT_KEY,notifiedCurrentCategory);
+//        startActivity(addIntent);
     }
 
     @Override

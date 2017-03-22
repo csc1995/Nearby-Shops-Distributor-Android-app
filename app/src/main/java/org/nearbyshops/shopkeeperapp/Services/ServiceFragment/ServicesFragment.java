@@ -433,7 +433,9 @@ public class ServicesFragment extends Fragment implements Adapter.NotifyConfirmO
 
     @Override
     public void fetchedLocation(Location location) {
-        showToastMessage("Location Updated !");
+
+//        showToastMessage("Location Updated !");
+
         makeRefreshNetworkCall();
     }
 

@@ -426,14 +426,13 @@ public class ServicesActivity extends AppCompatActivity implements NotifySort, T
 
 
 
-
-
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
         ButterKnife.unbind(this);
     }
+
+
 
     @Override
     public void notifySortChanged() {

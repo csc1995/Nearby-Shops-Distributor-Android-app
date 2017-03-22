@@ -1,6 +1,7 @@
 package org.nearbyshops.shopkeeperapp.ShopHome;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import org.nearbyshops.shopkeeperapp.DeliveryAccounts.DeliveryGuyAccounts;
+import org.nearbyshops.shopkeeperapp.ItemSubmissionsMenu.ItemSubmissionMenu;
 import org.nearbyshops.shopkeeperapp.Items.ItemsTypeSimple;
 import org.nearbyshops.shopkeeperapp.ItemsByCategoryTypeSimple.ItemsByCatSimple;
 import org.nearbyshops.shopkeeperapp.ItemsInShop.ItemsInShop;
@@ -133,6 +135,11 @@ public class ShopHome extends AppCompatActivity {
     }
 
 
+    @OnClick(R.id.option_submisssion)
+    void optionItemSubmissions()
+    {
+        startActivity(new Intent(this, ItemSubmissionMenu.class));
+    }
 
 
 
@@ -168,9 +175,15 @@ public class ShopHome extends AppCompatActivity {
 
         if(shop!=null)
         {
-            Intent intent = new Intent(this, SSEIntentService.class);
-            intent.putExtra(SSEIntentService.SHOP_ID, shop.getShopID());
-            startService(intent);
+            int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+
+            if (currentapiVersion >= Build.VERSION_CODES.KITKAT){
+                // Do something for lollipop and above versions
+
+                Intent intent = new Intent(this, SSEIntentService.class);
+                intent.putExtra(SSEIntentService.SHOP_ID, shop.getShopID());
+                startService(intent);
+            }
         }
     }
 

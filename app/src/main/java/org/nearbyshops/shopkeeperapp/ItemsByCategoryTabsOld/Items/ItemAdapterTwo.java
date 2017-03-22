@@ -27,6 +27,7 @@ import org.nearbyshops.shopkeeperapp.R;
 import org.nearbyshops.shopkeeperapp.RetrofitRESTContract.ItemService;
 import org.nearbyshops.shopkeeperapp.SelectParent.ItemCategoriesParent;
 import org.nearbyshops.shopkeeperapp.Utility.UtilityGeneral;
+import org.nearbyshops.shopkeeperapp.Utility.UtilityLogin;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -254,7 +255,9 @@ public class ItemAdapterTwo extends RecyclerView.Adapter<ItemAdapterTwo.ViewHold
 
 //            Call<ResponseBody> call = itemCategoryService.deleteItemCategory(dataset.get(getLayoutPosition()).getItemCategoryID());
 
-            Call<ResponseBody> call = itemCategoryService.deleteItem(dataset.get(getLayoutPosition()).getItemID());
+            Call<ResponseBody> call = itemCategoryService.deleteItem(
+                    UtilityLogin.getAuthorizationHeaders(context),
+                    dataset.get(getLayoutPosition()).getItemID());
 
 
             call.enqueue(new Callback<ResponseBody>() {
@@ -336,9 +339,9 @@ public class ItemAdapterTwo extends RecyclerView.Adapter<ItemAdapterTwo.ViewHold
 //                    intent.putExtra(EditItemCategoryOld.ITEM_CATEGORY_INTENT_KEY,dataset.get(getLayoutPosition()));
 //                    context.startActivity(intent);
 
-                    Intent intentEdit = new Intent(context,EditItem.class);
-                    intentEdit.putExtra(EditItem.ITEM_INTENT_KEY,dataset.get(getLayoutPosition()));
-                    context.startActivity(intentEdit);
+//                    Intent intentEdit = new Intent(context,EditItem.class);
+//                    intentEdit.putExtra(EditItem.ITEM_INTENT_KEY,dataset.get(getLayoutPosition()));
+//                    context.startActivity(intentEdit);
 
                     break;
 

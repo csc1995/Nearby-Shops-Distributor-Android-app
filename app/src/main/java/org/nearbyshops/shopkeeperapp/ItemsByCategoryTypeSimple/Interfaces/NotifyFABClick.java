@@ -7,7 +7,7 @@ package org.nearbyshops.shopkeeperapp.ItemsByCategoryTypeSimple.Interfaces;
 public interface NotifyFABClick {
 //    void detachSelectedClick();
 //    void changeParentForSelected();
-//    void addItem();
+    void addItem();
 //    void addfromGlobalItem();
 //    void addItemCategory();
 //    void addfromGlobalItemCat();

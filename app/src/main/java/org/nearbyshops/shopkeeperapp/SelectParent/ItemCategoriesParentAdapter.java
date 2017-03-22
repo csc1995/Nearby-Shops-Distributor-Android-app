@@ -19,7 +19,6 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
-import org.nearbyshops.shopkeeperapp.zzDeprecatedAddItems.ItemCategories.EditItemCategoryOld;
 import org.nearbyshops.shopkeeperapp.DaggerComponentBuilder;
 import org.nearbyshops.shopkeeperapp.Model.ItemCategory;
 import org.nearbyshops.shopkeeperapp.R;
@@ -334,9 +333,10 @@ public class ItemCategoriesParentAdapter extends RecyclerView.Adapter<ItemCatego
 
                 case R.id.action_edit:
 
-                    Intent intent = new Intent(context,EditItemCategoryOld.class);
-                    intent.putExtra(EditItemCategoryOld.ITEM_CATEGORY_INTENT_KEY,dataset.get(getLayoutPosition()));
-                    context.startActivity(intent);
+//                    Intent intent = new Intent(context,EditItemCategoryOld.class);
+//                    intent.putExtra(EditItemCategoryOld.ITEM_CATEGORY_INTENT_KEY,dataset.get(getLayoutPosition()));
+//                    context.startActivity(intent);
+
 
                     break;
 

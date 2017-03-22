@@ -15,7 +15,6 @@ import org.glassfish.jersey.media.sse.EventInput;
 import org.glassfish.jersey.media.sse.InboundEvent;
 import org.glassfish.jersey.media.sse.SseFeature;
 import org.nearbyshops.shopkeeperapp.MyApplication;
-import org.nearbyshops.shopkeeperapp.OrderHistoryPFS.OrderHistoryPFS;
 import org.nearbyshops.shopkeeperapp.R;
 import org.nearbyshops.shopkeeperapp.Utility.UtilityGeneral;
 
@@ -58,14 +57,21 @@ public class SSEIntentService extends IntentService{
 
         logMessage("Inside Notification Intent Service !");
 
-        try{
 
-            handleNotification(intent);
-        }
-        catch (Exception ex)
+
+        while (true)
         {
-            System.out.println("Exception : " + ex.toString());
+            try{
+
+                handleNotification(intent);
+            }
+            catch (Exception ex)
+            {
+                System.out.println("Exception : " + ex.toString());
+            }
         }
+
+
 
     }
 

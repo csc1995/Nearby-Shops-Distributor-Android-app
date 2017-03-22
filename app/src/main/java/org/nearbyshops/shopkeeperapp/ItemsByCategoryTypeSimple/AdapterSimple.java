@@ -1,24 +1,33 @@
 package org.nearbyshops.shopkeeperapp.ItemsByCategoryTypeSimple;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.constraint.ConstraintLayout;
 import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
 
+import org.nearbyshops.shopkeeperapp.ItemsByCategoryTypeSimple.EditItem.EditItem;
+import org.nearbyshops.shopkeeperapp.ItemsByCategoryTypeSimple.EditItem.EditItemFragmentNew;
 import org.nearbyshops.shopkeeperapp.ItemsByCategoryTypeSimple.Utility.HeaderItemsList;
 import org.nearbyshops.shopkeeperapp.Model.Item;
 import org.nearbyshops.shopkeeperapp.Model.ItemCategory;
@@ -343,34 +352,22 @@ public class AdapterSimple extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
 
 
-    class ViewHolderItemSimple extends RecyclerView.ViewHolder {
+    class ViewHolderItemSimple extends RecyclerView.ViewHolder implements PopupMenu.OnMenuItemClickListener{
 
 
         @Bind(R.id.in_shop_color)
         ImageView inShopColor;
 
-        @Bind(R.id.in_shop_text)
-        TextView inShopText;
+        @Bind(R.id.in_shop_text) TextView inShopText;
+        @Bind(R.id.itemName) TextView categoryName;
 
-
-        @Bind(R.id.itemName)
-        TextView categoryName;
-//        TextView categoryDescription;
-
-        @Bind(R.id.items_list_item)
-        CardView itemCategoryListItem;
-        @Bind(R.id.itemImage)
-        ImageView categoryImage;
-        @Bind(R.id.price_range)
-        TextView priceRange;
-        @Bind(R.id.price_average)
-        TextView priceAverage;
-        @Bind(R.id.order_status)
-        TextView shopCount;
-        @Bind(R.id.item_rating)
-        TextView itemRating;
-        @Bind(R.id.rating_count)
-        TextView ratingCount;
+        @Bind(R.id.items_list_item) CardView itemCategoryListItem;
+        @Bind(R.id.itemImage) ImageView categoryImage;
+        @Bind(R.id.price_range) TextView priceRange;
+        @Bind(R.id.price_average) TextView priceAverage;
+        @Bind(R.id.order_status) TextView shopCount;
+        @Bind(R.id.item_rating) TextView itemRating;
+        @Bind(R.id.rating_count) TextView ratingCount;
 
 
 
@@ -408,6 +405,48 @@ public class AdapterSimple extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
             }// item click Ends
 
+
+
+        @OnClick(R.id.more_options)
+        void optionsOverflowClick(View v)
+        {
+            PopupMenu popup = new PopupMenu(context, v);
+            MenuInflater inflater = popup.getMenuInflater();
+            inflater.inflate(R.menu.item_overflow, popup.getMenu());
+            popup.setOnMenuItemClickListener(this);
+            popup.show();
+        }
+
+
+        @Override
+        public boolean onMenuItemClick(MenuItem item) {
+
+            switch (item.getItemId()) {
+
+
+                case R.id.action_edit:
+
+                    if (dataset.get(getLayoutPosition()) instanceof Item) {
+
+
+                        notificationReceiver.editItem((Item)dataset.get(getLayoutPosition()));
+
+                    }
+
+                    break;
+
+
+                default:
+                    break;
+
+            }
+
+            return false;
+        }
+
+
+
+
     }// ViewHolderShopItem Class declaration ends
 
 
@@ -418,6 +457,8 @@ public class AdapterSimple extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         // method for notifying the list object to request sub category
         void notifyRequestSubCategory(ItemCategory itemCategory);
         void notifyItemSelected();
+
+        void editItem(Item item);
     }
 
 

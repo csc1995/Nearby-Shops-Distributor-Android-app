@@ -589,6 +589,71 @@
                     android:layout_height="wrap_content" />
             </RelativeLayout>
         </LinearLayout>
+
+
+
+        <TextView
+            android:layout_below="@id/row_six"
+            android:id="@+id/border_submissions"
+            android:background="#88000000"
+            android:layout_width="match_parent"
+            android:layout_height="1dp" />
+
+
+        <TextView
+            android:layout_below="@id/border_submissions"
+            android:padding="5dp"
+            android:layout_marginTop="10dp"
+            android:id="@+id/header_submission"
+            android:text="Item Submissions"
+            android:textSize="17sp"
+            android:background="@color/light_grey"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/header_submission"
+            android:weightSum="1"
+            android:id="@+id/row_submissions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:layout_weight="1"
+                android:id="@+id/option_submisssion"
+                android:background="@color/phonographyBlue"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/menu_item_width">
+
+                <ImageView
+                    app:srcCompat="@drawable/ic_account_box_black_24px"
+                    android:tint="#ffffff"
+                    android:padding="10dp"
+                    android:layout_above="@+id/text_submissions"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+
+                <TextView
+                    android:padding="10dp"
+                    android:id="@+id/text_submissions"
+                    android:textSize="@dimen/menu_item_text_size"
+                    android:layout_alignParentBottom="true"
+                    android:textColor="#ffffff"
+                    android:text="Item Submissions"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
+
+
+
+        </LinearLayout>
+
+
+
+
     </RelativeLayout>
 
 </android.support.v4.widget.NestedScrollView>
