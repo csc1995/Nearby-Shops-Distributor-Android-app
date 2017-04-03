@@ -23,6 +23,7 @@ import org.nearbyshops.shopkeeperapp.RetrofitRESTContract.DeliveryGuySelfService
 import org.nearbyshops.shopkeeperapp.RetrofitRESTContract.ShopStaffService;
 import org.nearbyshops.shopkeeperapp.RetrofitRESTContractPFS.OrderServiceShopStaffPFS;
 import org.nearbyshops.shopkeeperapp.RetrofitRESTContractSDS.ServiceConfigService;
+import org.nearbyshops.shopkeeperapp.RetrofitRESTContractSubmissions.ItemImageSubmissionService;
 import org.nearbyshops.shopkeeperapp.RetrofitRESTContractSubmissions.ItemSubmissionService;
 import org.nearbyshops.shopkeeperapp.RetrofitRESTItemSpecs.ItemImageService;
 import org.nearbyshops.shopkeeperapp.RetrofitRESTItemSpecs.ItemSpecItemService;
@@ -298,6 +299,13 @@ public class NetModule {
     {
         return retrofit.create(ItemSubmissionService.class);
     }
+
+    @Provides
+    ItemImageSubmissionService provideItemImageSubmissionService(Retrofit retrofit)
+    {
+        return retrofit.create(ItemImageSubmissionService.class);
+    }
+
 
 
 }

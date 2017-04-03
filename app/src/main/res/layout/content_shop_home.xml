@@ -593,6 +593,7 @@
 
 
         <TextView
+            android:layout_marginTop="10dp"
             android:layout_below="@id/row_six"
             android:id="@+id/border_submissions"
             android:background="#88000000"

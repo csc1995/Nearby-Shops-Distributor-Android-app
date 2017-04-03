@@ -179,6 +179,7 @@
 
 
             <ProgressBar
+                android:layout_marginTop="-6dp"
                 android:visibility="invisible"
                 android:id="@+id/progress_bar"
                 style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"

@@ -16,6 +16,7 @@ import org.glassfish.jersey.media.sse.InboundEvent;
 import org.glassfish.jersey.media.sse.SseFeature;
 import org.nearbyshops.shopkeeperapp.MyApplication;
 import org.nearbyshops.shopkeeperapp.R;
+import org.nearbyshops.shopkeeperapp.ShopHome.ShopHome;
 import org.nearbyshops.shopkeeperapp.Utility.UtilityGeneral;
 
 import javax.ws.rs.client.Client;
@@ -51,6 +52,17 @@ public class SSEIntentService extends IntentService{
 
 
     @Override
+    public int onStartCommand(@Nullable Intent intent, int flags, int startId) {
+
+        super.onStartCommand(intent, flags, startId);
+        return START_REDELIVER_INTENT;
+    }
+
+
+
+
+
+    @Override
     protected void onHandleIntent(@Nullable Intent intent) {
 
 //        System.out.println("Inside Notification Intent Service");
@@ -59,20 +71,23 @@ public class SSEIntentService extends IntentService{
 
 
 
-        while (true)
-        {
-            try{
+//        while (true)
+//        {
+//            logMessage("Inside Notification Intent Service While block !");
+//
+//        }
+//
 
-                handleNotification(intent);
-            }
-            catch (Exception ex)
-            {
-                System.out.println("Exception : " + ex.toString());
-            }
+
+
+        try{
+
+            handleNotification(intent);
         }
-
-
-
+        catch (Exception ex)
+        {
+            System.out.println("Exception : " + ex.toString());
+        }
     }
 
 
@@ -125,12 +140,19 @@ public class SSEIntentService extends IntentService{
             String eventName = inboundEvent.getName();
             String message = inboundEvent.readData(String.class);
 
+
+            // The PendingIntent to launch our activity if the user selects this notification
+            PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
+                    new Intent(this, ShopHome.class), 0);
+
             NotificationCompat.Builder mBuilder =
                     new NotificationCompat.Builder(SSEIntentService.this)
                             .setContentTitle(eventName)
                             .setContentText(message)
                             .setSmallIcon(R.drawable.fab_add)
-                            .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
+                            .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                            .setContentIntent(contentIntent);
+
 
 
 //            .setStyle(new NotificationCompat.BigTextStyle().bigText("Order Received !"))

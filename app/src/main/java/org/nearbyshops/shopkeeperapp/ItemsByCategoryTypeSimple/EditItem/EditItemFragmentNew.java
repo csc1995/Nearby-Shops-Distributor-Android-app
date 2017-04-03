@@ -129,8 +129,8 @@ public class EditItemFragmentNew extends Fragment implements AdapterItemImages.n
     public static final String ITEM_INTENT_KEY = "item_intent_key";
 
     public static final String EDIT_MODE_INTENT_KEY = "edit_mode";
-    public static final String IS_UPDATE_INTENT_KEY = "is_update_intent_key";
 
+    public static final String IS_UPDATE_INTENT_KEY = "is_update_intent_key";
     boolean isUpdate = false;
 
     public static final int MODE_UPDATE = 52;
@@ -346,8 +346,7 @@ public class EditItemFragmentNew extends Fragment implements AdapterItemImages.n
 
     void makeNetworkCallItemImages(final boolean clearDataset)
     {
-        if(current_mode==MODE_UPDATE)
-        {
+
 
             Call<ItemImageEndPoint> call = itemImageService.getItemImages(
                     item.getItemID(),ItemImage.IMAGE_ORDER,null,null,null
@@ -398,8 +397,10 @@ public class EditItemFragmentNew extends Fragment implements AdapterItemImages.n
                 }
             });
 
-        }
     }
+
+
+
 
     boolean isDestroyed = false;
 
@@ -1196,8 +1197,9 @@ public class EditItemFragmentNew extends Fragment implements AdapterItemImages.n
 
         Intent intent = new Intent(getActivity(), EditItemImage.class);
 
-        intent.putExtra(EditItemImageFragment.EDIT_MODE_INTENT_KEY,EditItemImageFragment.MODE_UPDATE);
+        intent.putExtra(EditItemImageFragment.EDIT_MODE_INTENT_KEY,EditItemImageFragment.MODE_ADD);
         intent.putExtra(EditItemImageFragment.ITEM_ID_INTENT_KEY,item.getItemID());
+        intent.putExtra(EditItemImageFragment.IS_UPDATE_INTENT_KEY,true);
         UtilityItemImage.saveItemImage(itemImage,getActivity());
 
         startActivity(intent);

@@ -31,7 +31,9 @@ import com.yalantis.ucrop.UCropActivity;
 import org.nearbyshops.shopkeeperapp.DaggerComponentBuilder;
 import org.nearbyshops.shopkeeperapp.Model.Image;
 import org.nearbyshops.shopkeeperapp.Model.ItemImage;
+import org.nearbyshops.shopkeeperapp.ModelItemSubmission.ItemImageSubmission;
 import org.nearbyshops.shopkeeperapp.R;
+import org.nearbyshops.shopkeeperapp.RetrofitRESTContractSubmissions.ItemImageSubmissionService;
 import org.nearbyshops.shopkeeperapp.RetrofitRESTItemSpecs.ItemImageService;
 import org.nearbyshops.shopkeeperapp.Utility.UtilityGeneral;
 import org.nearbyshops.shopkeeperapp.Utility.UtilityLogin;
@@ -67,6 +69,8 @@ public class EditItemImageFragment extends Fragment {
     @Inject
     ItemImageService itemImageService;
 
+    @Inject ItemImageSubmissionService itemImageSubmissionService;
+
 
     // flag for knowing whether the image is changed or not
     boolean isImageChanged = false;
@@ -91,6 +95,11 @@ public class EditItemImageFragment extends Fragment {
     public static final int MODE_UPDATE = 52;
     public static final int MODE_ADD = 51;
 
+    public static final String IS_UPDATE_INTENT_KEY = "is_update_intent_key";
+    boolean isUpdate = false;
+
+
+
     int current_mode = MODE_ADD;
 
     boolean isDestroyed = false;
@@ -98,6 +107,9 @@ public class EditItemImageFragment extends Fragment {
 
 //    Item item = new Item();
     ItemImage itemImage = new ItemImage();
+
+    ItemImageSubmission itemImageSubmission = new ItemImageSubmission();
+
 
     public EditItemImageFragment() {
 
@@ -118,21 +130,16 @@ public class EditItemImageFragment extends Fragment {
 
         ButterKnife.bind(this,rootView);
 
+        isUpdate = getActivity().getIntent().getBooleanExtra(IS_UPDATE_INTENT_KEY,false);
+
+
         if(savedInstanceState==null)
         {
 
             current_mode = getActivity().getIntent().getIntExtra(EDIT_MODE_INTENT_KEY,MODE_ADD);
 
-            if(current_mode == MODE_UPDATE)
-            {
-                itemImage = UtilityItemImage.getItemImage(getContext());
 
-                if(itemImage !=null) {
-                    bindDataToViews();
-                }
-
-            }
-            else if (current_mode == MODE_ADD)
+            if (current_mode == MODE_ADD)
             {
 
 //                if(getActivity().getActionBar()!=null)
@@ -156,6 +163,16 @@ public class EditItemImageFragment extends Fragment {
         }
 
 
+        if(UtilityItemImage.getItemImage(getContext())!=null)
+        {
+            itemImage = UtilityItemImage.getItemImage(getContext());
+        }
+
+
+        if(itemImage !=null) {
+            bindDataToViews();
+        }
+
 
 
         updateIDFieldVisibility();
@@ -178,20 +195,29 @@ public class EditItemImageFragment extends Fragment {
 
         if(current_mode==MODE_ADD)
         {
-            buttonUpdateItem.setText("Add Item Image");
+
             imageID.setVisibility(View.GONE);
+
+            if(isUpdate)
+            {
+
+                if(((AppCompatActivity)getActivity()).getSupportActionBar()!=null)
+                {
+                    ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Edit Item Image");
+                }
+            }
+            else
+            {
+                buttonUpdateItem.setText("Add Item Image");
+            }
+
         }
         else if(current_mode== MODE_UPDATE)
         {
             imageID.setVisibility(View.VISIBLE);
             buttonUpdateItem.setText("Save");
-
-
-            if(((AppCompatActivity)getActivity()).getSupportActionBar()!=null)
-            {
-                ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Edit Item Image");
-            }
         }
+
     }
 
 
@@ -238,7 +264,6 @@ public class EditItemImageFragment extends Fragment {
 
         if(current_mode == MODE_ADD)
         {
-            itemImage = new ItemImage();
             addAccount();
         }
         else if(current_mode == MODE_UPDATE)
@@ -353,17 +378,6 @@ public class EditItemImageFragment extends Fragment {
 
     void getDataFromViews()
     {
-        if(itemImage ==null)
-        {
-            if(current_mode == MODE_ADD)
-            {
-//                itemImage = new ItemImage();
-            }
-            else
-            {
-                return;
-            }
-        }
 
 
         if(!imageID.getText().toString().equals(""))
@@ -400,11 +414,16 @@ public class EditItemImageFragment extends Fragment {
 
         getDataFromViews();
 
+        itemImageSubmission.setItemImage(itemImage);
 
-        Call<ResponseBody> call = itemImageService.updateItemImage(
+//        showToastMessage(itemImage.getImageFilename());
+
+
+        Call<ResponseBody> call = itemImageSubmissionService.updateItem(
                 UtilityLogin.getAuthorizationHeaders(getContext()),
-                itemImage,itemImage.getImageID()
+                itemImageSubmission,itemImageSubmission.getItemImageSubmissionID()
         );
+
 
 
         call.enqueue(new Callback<ResponseBody>() {
@@ -420,7 +439,6 @@ public class EditItemImageFragment extends Fragment {
                 if(response.code()==200)
                 {
                     showToastMessage("Update Successful !");
-                    UtilityItemImage.saveItemImage(itemImage,getContext());
                 }
                 else if(response.code()== 403 || response.code() ==401)
                 {
@@ -435,13 +453,10 @@ public class EditItemImageFragment extends Fragment {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
 
-
                 if(isDestroyed)
                 {
                     return;
                 }
-
-
 
                 showToastMessage("Update failed !");
             }
@@ -458,11 +473,31 @@ public class EditItemImageFragment extends Fragment {
         getDataFromViews();
         itemImage.setItemID(getActivity().getIntent().getIntExtra(ITEM_ID_INTENT_KEY,0));
 
-        Call<ItemImage> call = itemImageService.saveItemImage(UtilityLogin.getAuthorizationHeaders(getContext()), itemImage);
+        itemImageSubmission.setItemImage(itemImage);
 
-        call.enqueue(new Callback<ItemImage>() {
+//        showToastMessage(itemImage.getImageFilename());
+
+        if(isUpdate)
+        {
+            itemImageSubmission.setItemImageID(itemImage.getImageID());
+        }
+        else
+        {
+            itemImageSubmission.setItemImageID(null);
+        }
+
+
+
+
+        Call<ItemImageSubmission> call = itemImageSubmissionService.insertItem(
+                UtilityLogin.getAuthorizationHeaders(getContext()),
+                itemImageSubmission);
+
+
+
+        call.enqueue(new Callback<ItemImageSubmission>() {
             @Override
-            public void onResponse(Call<ItemImage> call, Response<ItemImage> response) {
+            public void onResponse(Call<ItemImageSubmission> call, Response<ItemImageSubmission> response) {
 
 
                 if(isDestroyed)
@@ -478,10 +513,8 @@ public class EditItemImageFragment extends Fragment {
 
                     current_mode = MODE_UPDATE;
                     updateIDFieldVisibility();
-                    itemImage = response.body();
+                    itemImageSubmission = response.body();
                     bindDataToViews();
-
-                    UtilityItemImage.saveItemImage(itemImage,getContext());
 
                 }
                 else if(response.code()== 403 || response.code() ==401)
@@ -496,7 +529,7 @@ public class EditItemImageFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<ItemImage> call, Throwable t) {
+            public void onFailure(Call<ItemImageSubmission> call, Throwable t) {
 
 
                 if(isDestroyed)
@@ -504,11 +537,10 @@ public class EditItemImageFragment extends Fragment {
                     return;
                 }
 
-
-
                 showToastMessage("Add failed !");
             }
         });
+
 
     }
 
